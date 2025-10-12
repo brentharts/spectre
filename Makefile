@@ -105,3 +105,18 @@ trefoil:
 	python3 spectre_tiles_blender.py --trefoil
 overhand:
 	python3 spectre_tiles_blender.py --overhand-knot
+
+fibers:
+	blender --python einstein_fibration.py
+
+a:
+	blender --python einstein_fibration.py -- --iter2 --b=0.5
+
+b:
+	blender --python einstein_fibration.py -- --iter2 --b=1
+
+c:
+	blender --python einstein_fibration.py -- --iter2 --b=1.5
+
+d:
+	blender --python einstein_fibration.py -- --iter2 --b=3
