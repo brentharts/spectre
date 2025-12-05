@@ -8,6 +8,7 @@ FORCE_INT = '--int' in sys.argv
 PLOT = '--plot' in sys.argv
 NE = 50
 NS = 0
+SHOW_END = True
 if '--test1' in sys.argv:
     NS = 0
     NE = 30
@@ -52,6 +53,12 @@ elif '--test9' in sys.argv:
     NE = 2000000
     PLOT = True
     FORCE_INT = False
+elif '--test10' in sys.argv:
+    NS = 0
+    NE = 4000000
+    PLOT = True
+    FORCE_INT = False
+
 elif '--end' in sys.argv:
     NE = int(sys.argv[-1])
 elif '--start-end' in sys.argv:
@@ -62,7 +69,7 @@ elif '--start-end' in sys.argv:
 def plot(x, y, title='none', xlabel='value', ylabel='number', bars=False):
     if FORCE_INT: title += ' (mode=int)'
     else: title += ' (mode=float)'
-    print('ploting data size:', len(x), title)
+    if '--verbose' in sys.argv: print('ploting data size:', len(x), title)
     if len(x) <= 1:
         print('data size too small', len(x))
         return
@@ -113,6 +120,9 @@ strange = []  ## this contains >= 19th
 stranger = [] ## less than 17th step is very rare at first, and only in float mode.
 prev = 0
 phase_trans = {}
+ending_digits = {}
+A_digits = {}
+B_digits = {}
 
 x = []
 y = []
@@ -128,39 +138,45 @@ for i in range(NS, NE):
     y.append(len(sequence)-1)
 
     if NE-NS <= 100: print(sequence, 'initializer:', i+1, 'breaks-at:', len(sequence)-1)
+    if i+2 > NE and SHOW_END:
+        print('end:', sequence, 'initializer:', i+1, 'breaks-at:', len(sequence)-1)
+
+    ss = str(sequence[-1])
+    edigit = int(ss[-1])
+    if edigit not in ending_digits:
+        ending_digits[ edigit ] = i+1
+
 
     if len(sequence) != 18:
-        ss = str(sequence[-1])
+        if edigit not in A_digits:
+            A_digits[ edigit ] = i+1
+
         delta = i - prev
         if len(sequence) >= 20:  ## this first happens at Somos(91)
             #assert i+1 < SOMOS_PHASE2 (not valid) breaks at Somos(780234)
             assert i+1 >= 91
             strange.append((i, len(sequence), sequence[-1], terms[-1]))
-            ## always true?
-            if ss.endswith(('1', '9')):  ## this only happens after Somos(13559)
-                assert i+1 >= 13559
-            if len(sequence) >= 21:  ## this first happens at Somos(2275)
-                assert i+1 >= 2275
 
-            if len(sequence) >= 22:  ## this first happens at Somos(138775)
-                assert i+1 >= 138775
+            ## always true? NO
+            #if ss.endswith(('1', '9')):  ## this only happens after Somos(13559)
+            #    assert i+1 >= 13559
+            #if len(sequence) >= 21:  ## this first happens at Somos(2275)
+            #    assert i+1 >= 2275
+            #if len(sequence) >= 22:  ## this first happens at Somos(138775)
+            #    assert i+1 >= 138775
 
 
         prev = i
         if len(sequence) < 18:
+            if edigit not in B_digits:
+                B_digits[ edigit ] = i+1
+
             if '--verbose' in sys.argv: print('STRANGER %sth'%(len(sequence)-1), sequence, i)
             ## this first happens at Somos8(779731), with breaking on the 16th step and locked into the even phase.
             assert i+1 >= SOMOS_PHASE2
             stranger.append((i, len(sequence), sequence[-1], terms[-1]))
             strange.append((i, len(sequence), sequence[-1], terms[-1]))
 
-            ## always true?
-            #assert not ss.endswith('1')  ## this breaks at N=1243291
-            assert not ss.endswith('3')
-            assert not ss.endswith('5')
-            assert not ss.endswith('7')
-            assert not ss.endswith('9')
-            assert ss.endswith(('1','2', '4', '6', '8'))
     else:
         if '--debug' in sys.argv:
             print('NormalSomos init=%s bindex=%s seq=%s' % (i, len(sequence)-1, sequence))
@@ -181,7 +197,7 @@ y = []; y2 = []; y3 = []
 for s in strange:
     delta = s[0] - prev
     init,lenseq,real,term = s
-    if lenseq >= 21 or '--verbose' in sys.argv or len(strange) < 50:
+    if '--verbose' in sys.argv or len(strange) < 10:
         print('\t'*(lenseq-20), 'integer-break-point:', lenseq-1, 'distance:', delta, 'init:', init, 'real:', real, 'term:',term)
     x.append(init)
     y.append(delta)
@@ -221,21 +237,32 @@ for phase in phases:
 plot(x,y, title='Somos8(%s-%s) - Breaking Points Ratios' % (NS+1, NE), xlabel='integer-to-real phase index', ylabel='number of solutions (log scale)', bars=True)
 print('somos8-search-range: 1 to', NE)
 print('total-stranger:', len(stranger))
-for s in stranger:
-    if '--verbose' in sys.argv: print(s[0],end=',')
-    #assert s[1]==17  ## is this always true? probably not, breaks at a high value
-    if '--dev' in sys.argv:
-        ss = str(s[0])
-        assert not ss.endswith('1')
-        assert not ss.endswith('3')
-        assert not ss.endswith('5')
-        assert not ss.endswith('7')
-        assert not ss.endswith('9')
-        assert ss.endswith(('0','2', '4', '6', '8'))
-    #assert ss.startswith(('7', '8', '9'))  ## this is NOT always true, once over 779731 there is a phase transition, it keeps going!
+
+if '--verbose' in sys.argv: 
+    for s in stranger:
+        print(s[0],end=',')
 
 if stranger:
     print('first stranger:', stranger[0])
     print('last stranger:', stranger[-1])
 else:
     print('note: strangers start at Somos8(779731)')
+
+emap = {'ending-digits-all': ending_digits, 'ending-digits-strange': A_digits, 'ending-digits-stranger':B_digits}
+for name in emap:
+    endict = emap[name]
+    print(name, endict)
+    e = list(endict.keys())
+    e.sort(); x=[]; y=[]; y2=[]
+    #for num in e:
+    for i in range(10):
+        if i in endict:
+            v = endict[i]
+        else:
+            v = 0.0
+        x.append(i)
+        if v==0: y.append(v)  ## fixes math domain error
+        else: y.append(math.log(v))
+        y2.append(v)
+    plot(x,y, title='Somos8(%s-%s) - Order of %s' % (NS+1, NE, name), xlabel='ending digit', ylabel='breaks at (log scale)', bars=True)
+    plot(x,y2, title='Somos8(%s-%s) - Order of %s' % (NS+1, NE, name), xlabel='ending digit', ylabel='breaks at', bars=False)
