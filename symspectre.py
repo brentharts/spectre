@@ -1,7 +1,6 @@
 import sympy as sp
 
 # Define symbolic variables
-n_ITERATIONS = 2  # Number of iterations to build supertiles
 Edge_a, Edge_b = sp.symbols('Edge_a Edge_b')
 a = Edge_a
 b = Edge_b
@@ -47,22 +46,6 @@ def trot_sympy(deg_angle):
     s = sp.sin(angle)
     return sp.Matrix([[c, -s, 0], [s, c, 0]])
 
-Trot_inv_memo = {}
-for deg_angle in range(0, 360, 30):
-    trns = trot_sympy(deg_angle)
-    # print(deg_angle,trns  )
-    if str(trns[1,0]) not in Trot_inv_memo:
-        Trot_inv_memo[str(trns[1,0])] = {}
-    Trot_inv_memo[str(trns[1,0])][str(trns[0,0])] = deg_angle
-    
-def trot_inv(T):
-    """
-    T: rotation matrix for Affine transform
-    """
-    global Trot_inv_memo
-    degAngle1 = Trot_inv_memo[str(T[1, 0])][str(T[0, 0])]
-    return degAngle1
-
 def mul_sympy(A, B):
     """
     Symbolic matrix multiplication for affine transformations.
@@ -70,7 +53,7 @@ def mul_sympy(A, B):
     AB = sp.Matrix(A)
     AB[:, :2] = A[:, :2] * B[:, :2]
     AB[:, 2] = A[:, :2] * B[:, 2] + A[:, 2]
-    return sp.cancel(AB)
+    return AB
 
 # Symbolic representation of the main classes and logic
 class Tile:
@@ -115,7 +98,7 @@ def buildSpectreBase_sympy(spectre_points_all, rotation=30):
     gamma_quad = quad_base 
     tiles["Gamma"] = MetaTile(
         tiles=[Tile("Gamma1", gamma_quad), Tile("Gamma2", gamma_quad)],
-        transformations=([IDENTITY.copy(), gamma2_trans]),
+        transformations=[IDENTITY.copy(), gamma2_trans],
         quad=gamma_quad
     )
     return tiles
@@ -126,7 +109,6 @@ def buildSupertiles_sympy(input_tiles):
     Iteratively build supertiles using symbolic transformations.
     """
     quad = input_tiles["Delta"].quad
-    # print("Current quad:\n", quad)
     total_angle = 0
     transformations = [IDENTITY.copy()]
     
@@ -157,17 +139,12 @@ def buildSupertiles_sympy(input_tiles):
 
     # Symbolic supertile quad points calculation
     super_quad_points = [
-        sp.cancel(sp.Matrix(transformations[6]) * sp.Matrix([quad[2, 0], quad[2, 1], 1]))[:2, 0],
-        sp.cancel(sp.Matrix(transformations[5]) * sp.Matrix([quad[1, 0], quad[1, 1], 1]))[:2, 0],
-        sp.cancel(sp.Matrix(transformations[3]) * sp.Matrix([quad[2, 0], quad[2, 1], 1]))[:2, 0],
-        sp.cancel(sp.Matrix(transformations[0]) * sp.Matrix([quad[1, 0], quad[1, 1], 1]))[:2, 0]
+        (transformations[6] * sp.Matrix([quad[2, 0], quad[2, 1], 1]))[:2, 0],
+        (transformations[5] * sp.Matrix([quad[1, 0], quad[1, 1], 1]))[:2, 0],
+        (transformations[3] * sp.Matrix([quad[2, 0], quad[2, 1], 1]))[:2, 0],
+        (transformations[0] * sp.Matrix([quad[1, 0], quad[1, 1], 1]))[:2, 0]
     ]
-    super_quad= sp.cancel(sp.Matrix([
-        [super_quad_points[0][0], super_quad_points[0][1]],
-        [super_quad_points[1][0], super_quad_points[1][1]],
-        [super_quad_points[2][0], super_quad_points[2][1]], 
-        [super_quad_points[3][0], super_quad_points[3][1]]
-    ]))
+    super_quad = sp.Matrix(super_quad_points).T
     
     # ... (rest of the code remains the same)
     substitutions_map = {
@@ -198,34 +175,22 @@ def buildSupertiles_sympy(input_tiles):
 
 # Corrected main execution block
 SPECTRE_POINTS_SYM = get_spectre_points_sympy(Edge_a, Edge_b)
-# SPECTRE_QUAD_SYM = sp.Matrix([SPECTRE_POINTS_SYM[3, :], SPECTRE_POINTS_SYM[5, :], SPECTRE_POINTS_SYM[7, :], SPECTRE_POINTS_SYM[11, :]])
-print("Spectre(Gamma1) points=", SPECTRE_POINTS_SYM)
-Mystec_SPECTRE_POINTS_SYM = get_spectre_points_sympy(Edge_b, Edge_a)
-# SPECTRE_QUAD_SYM = sp.Matrix([SPECTRE_POINTS_SYM[3, :], SPECTRE_POINTS_SYM[5, :], SPECTRE_POINTS_SYM[7, :], SPECTRE_POINTS_SYM[11, :]])
-print("Spectre(Gamma2) points=", Mystec_SPECTRE_POINTS_SYM)
+SPECTRE_QUAD_SYM = sp.Matrix([SPECTRE_POINTS_SYM[3, :], SPECTRE_POINTS_SYM[5, :], SPECTRE_POINTS_SYM[7, :], SPECTRE_POINTS_SYM[11, :]])
 
 # Pass the full points matrix, not the quad, to the function
-current_tiles_sympy = buildSpectreBase_sympy(SPECTRE_POINTS_SYM)
-# print(0,current_tiles_sympy)
+base_tiles_sympy = buildSpectreBase_sympy(SPECTRE_POINTS_SYM)
 
-print("Built symbolic tiles for iteration ", n_ITERATIONS)
 # The rest of the code should now work without the IndexError
-for i in range(n_ITERATIONS):
-    current_tiles_sympy = buildSupertiles_sympy(current_tiles_sympy)
-    # print(i,current_tiles_sympy)
+first_super_tiles_sympy = buildSupertiles_sympy(base_tiles_sympy)
+print(first_super_tiles_sympy["Delta"].transformations[0])
 
-def do_print_tile(tile_transformation, label):
-    print({'label': label, 'rotate_deg': trot_inv(tile_transformation), 'moves': [tile_transformation[0,2], tile_transformation[1,2]]})
+all_tiles_info = []
+def collect_tiles(tile_transformation, label):
+    global all_tiles_info
+    all_tiles_info.append({'label': label, 'transformation': tile_transformation})
 
-current_tiles_sympy["Delta"].forEachTile(do_print_tile)
-
-# all_tiles_info = []
-# def collect_tiles(tile_transformation, label):
-#     global all_tiles_info
-#     all_tiles_info.append({'label': label, 'transformation': tile_transformation})
-
-# current_tiles_sympy["Delta"].forEachTile(collect_tiles)
-# print(all_tiles_info)
+first_super_tiles_sympy["Delta"].forEachTile(collect_tiles)
+print(all_tiles_info)
 
 # Start of the LaTeX document
 latex_output = r"""\documentclass{article}
@@ -238,17 +203,15 @@ latex_output = r"""\documentclass{article}
 \date{}
 \maketitle
 
-"""
-
-latex_output += f"This document contains the LaTeX representations of the symbolic transformation matrices for {{n_ITERATIONS}}times iteration of the Spectre tiles. "
-latex_output += r"""These matrices describe the rotation and translation of each sub-tile within the main "Delta" supertile. 
-The transformations are expressed in terms of the symbolic edge lengths, \textbf{Edge\_a} and \textbf{Edge\_b}.
+This document contains the LaTeX representations of the symbolic transformation matrices for the first iteration of the Einstein tiles. These matrices describe the rotation and translation of each sub-tile within the main "Delta" supertile. The transformations are expressed in terms of the symbolic edge lengths, \textbf{Edge\_a} and \textbf{Edge\_b}.
 
 """
 
 # Iterate through the list and convert each matrix to LaTeX
-def to_latex_str(transformation_matrix, label):
-    global latex_output    
+for tile_info in all_tiles_info:
+    label = tile_info['label']
+    transformation_matrix = tile_info['transformation']
+    
     # Use sympy.latex() to convert the matrix to LaTeX code
     latex_matrix = sp.latex(transformation_matrix, mat_str='pmatrix')
     
@@ -258,14 +221,13 @@ def to_latex_str(transformation_matrix, label):
     latex_output += f"\\end{{equation*}}\n"
     latex_output += r"\vspace{0.5cm}" + "\n\n"
 
-current_tiles_sympy["Delta"].forEachTile(to_latex_str) 
 # End of the LaTeX document
 latex_output += r"""
 \end{document}
 """
 
-# print(latex_output)
-tmp = './tmp/einsteintile.tex'
+print(latex_output)
+tmp = '/tmp/einsteintile.tex'
 open(tmp,'wb').write(latex_output.encode('utf-8'))
-# import subprocess
-# subprocess.check_call(['pdflatex', '--output-format', 'pdf', '--output-directory','/tmp', tmp])
+import subprocess
+subprocess.check_call(['pdflatex', '--output-format', 'pdf', '--output-directory','/tmp', tmp])
