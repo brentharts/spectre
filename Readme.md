@@ -55,10 +55,41 @@ edges → 120 crossings. Outputs a 3D render and `braided_tiles.obj`
 (tile faces + ribbon strands) for Blender, complementing
 `spectre_tiles_blender.py`. Flags: `--crossings`, `--height`, `--iterations`.
 
+### `braid_words.py` — braid-group bookkeeping
+
+![e8](./braid_words.png)
+
+Answer to "does aperiodicity force non-repeating braid words along
+transversals": **empirically yes, at every scale tested.**
+
+Construction: a transversal line reads a letter at each shared edge it
+crosses — (edge type, which strand is on top at the crossing parameter),
+alphabet {A±, B±, X±}. The over/under sign is fully geometric
+(lexicographic edge orientation + centroid side + sin(πkt) phase), so words
+are reproducible invariants of the tiling, not artifacts of insertion order.
+
+Depth-4 tiling (4401 tiles, 27 540 shared edges), 148 transversals over 5
+angles, word lengths 35–130:
+
+* **0 of 148 words have any period** (exhaustive check of all p ≤ |w|/2);
+  the identical machinery on a hexagon tiling returns period 1 immediately.
+* Run-length (syllable) reduction of the words is also aperiodic — the
+  non-repetition isn't hiding in trivial letter runs.
+* Discovery en route: **~24 % of shared edges pair an a-type edge with a
+  b-type edge** (6 635/27 540). Legal for the Spectre because a=b makes all
+  edge lengths equal — and it is precisely these X-pairings that turn into
+  1-vs-√3 mismatches under per-edge hat scaling, explaining the gap
+  structure measured in `mixed_tiling.py`.
+* Caveat: subword complexity p(n) saturates near |w| at these word lengths,
+  so the linear-vs-exponential complexity class isn't resolved yet — needs
+  depth-5 transversals (words of ~350+ letters). The periodicity result is
+  the definitive statement at this sample size.
+
+
 ---
 ### `chirality_e8.py` — quantifying the spectre ↔ E8 (G.~Lisi 2007) analogy
 
-![e8](./chirality_e8.png)
+![chi](./chirality_e8.png)
 
 Motivated by Distler–Garibaldi (E8 cannot host three chiral generations
 without mirror fermions) vs the spectre being the first strictly chiral
