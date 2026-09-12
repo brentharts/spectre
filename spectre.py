@@ -35,7 +35,7 @@ def get_spectre_points(edge_a, edge_b):
 		(        a_d2 - b_sqrt3_d2,     a_sqrt3_d2 + b + b - b_d2), #// 12: -a
 		(0            - b_sqrt3_d2,                  b + b - b_d2), #// 13: -~a
 		(0                        ,                      b       )  #// 14: +~b
-    ], 'float32')
+    ], 'float64')
     # print(spectre_points)
     return spectre_points
    
@@ -43,7 +43,7 @@ SPECTRE_POINTS = get_spectre_points(Edge_a, Edge_b) # tile(Edge_a, Edge_b)
 Mystic_SPECTRE_POINTS = get_spectre_points(Edge_b, Edge_a) # tile(Edge_b, Edge_a)
 SPECTRE_QUAD = SPECTRE_POINTS[[3,5,7,11],:]
 
-IDENTITY = np.array([[1,0,0],[0,1,0]], 'float32') # == trot(0)
+IDENTITY = np.array([[1,0,0],[0,1,0]], 'float64') # == trot(0)
 
 # Rotation matrix for Affine transform
 trot_memo = {

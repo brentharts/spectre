@@ -11,10 +11,26 @@ Established exactly (sympy, Q(sqrt15); g = 4 - sqrt15 = 1/lambda^2):
                                                     rows are all-ones --
                                                     every supertile holds
                                                     exactly one of each
-    0.094750      {Pi,Xi}        -58+15*sqrt15    ACCIDENTAL: automorphism
-                                                    group of M is trivial;
-                                                    equality holds iff
-                                                    v_Phi = 2(v_Gamma-v_Theta)
+    0.094750      {Pi,Xi}        -58+15*sqrt15    THE -1 EIGENVALUE: the
+                                                    automorphism group of M is
+                                                    trivial, so no permutation
+                                                    symmetry protects it, but
+                                                    Xi_n - Pi_n = +-1 exactly,
+                                                    forever.  With w = e_Xi -
+                                                    e_Pi one has w*M^3 = -w*M^2,
+                                                    so the difference lands in
+                                                    the eigenspace of the
+                                                    (lambda+1) factor of the
+                                                    characteristic polynomial
+                                                    lambda^5 (lambda-1)
+                                                    (lambda+1)
+                                                    (lambda^2-8lambda+1).
+                                                    Bounded difference over a
+                                                    total growing like
+                                                    lambda^2n gives equal
+                                                    frequencies.  Still fragile:
+                                                    a generic perturbation moves
+                                                    that eigenvalue off -1.
     0.016133      {Theta,Lambda}  g^2 = 1/lambda^4  COROLLARY of the triplet:
                                                     row Theta = e_Gamma,
                                                     row Lambda = e_Sigma

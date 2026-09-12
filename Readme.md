@@ -35,11 +35,16 @@ gradient        22.950   0.789    11.2026   1.3431     1.1741    0.1069
 ```
 
 Notes: the pure-spectre 0/0 row validates the pipeline. Pure hats on the
-spectre lattice overlap ~35% because hat area (4√3+6 vs spectre 3√3+3 per
+spectre lattice overlap ~35% because hat area (8√3 vs spectre 3√3+3 at
 unit a) exceeds the spectre spacing. Per-edge mixing produces the largest
 interior gap fraction; the gradient mode has the smallest closure defects
-because neighbouring vertices carry nearly equal s. Exact areas:
-Spectre(1,1) = 3+3√3 ≈ 8.196, Hat(1,√3) = 6+4√3... (measured 13.856).
+because neighbouring vertices carry nearly equal s.
+
+The area of Tile(a,b) is exactly A = 2√3·a² + 3ab + √3·b², so
+Spectre(1,1) = 3+3√3 ≈ 8.196, Hat(1,√3) = 8√3 ≈ 13.856 and
+Turtle(√3,1) = 10√3 ≈ 17.321. Note A(a,b) ≠ A(b,a) — that asymmetry is
+the Mystic, and it is why the Γ₂ = Tile(b,a) sweep in `multiplets.py`
+splits Γ off the triplet.
 
 ### `braided_tiling.py` — first 3D form: edge braiding
 Flat tiling; every *shared* edge between adjacent tiles is lifted into z as
@@ -142,9 +147,16 @@ All five levels are exact, with closed forms:
 * **{Θ,Λ} — conditional.** Row Θ = indicator of Γ, row Λ = indicator of
   Σ, so v_Θ = v_Γ/λ², v_Λ = v_Σ/λ². Holds iff the triplet holds AND the
   indicator rows are intact.
-* **{Π,Ξ} — accidental.** The automorphism group of M is TRIVIAL
-  (verified over all 9! permutations). Equality is nevertheless exact,
-  hinging on the identity v_Φ = 2(v_Γ − v_Θ). No symmetry protects it.
+* **{Π,Ξ} — the −1 eigenvalue.** The automorphism group of M is TRIVIAL
+  (verified over all 9! permutations), so no *permutation* symmetry protects
+  this one — but it is not accidental either. The counts satisfy
+  Ξₙ − Πₙ = ±1 exactly, forever: writing w = e_Ξ − e_Π, one checks
+  w·M³ = −w·M², so the difference functional lands in the eigenspace of the
+  (λ+1) factor of the characteristic polynomial λ⁵(λ−1)(λ+1)(λ²−8λ+1). The
+  frequencies are equal because a −1-eigendirection stays bounded while the
+  total grows like λ²ⁿ. It is still fragile: a generic perturbation moves that
+  eigenvalue off −1, which is exactly what the susceptibility table below
+  shows.
 
 ### Which degeneracies survive deformation
 Splitting susceptibilities |d(v_i−v_j)/dε| over 400 random perturbations

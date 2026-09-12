@@ -103,7 +103,7 @@ def is_odd(v):
 
 def test(a=10.0, b=10.0, rotation=30, steps=(1,2,3,4,5,6,7,8)):
     for iterations in steps:
-        x = buildSpectreTiles(iterations,a,b, rotation_b=rotation)
+        x = buildSpectreTiles(iterations,a,b, rotation=rotation)
         reset_info()
         x["Delta"].forEachTile( plotVertices )
         print('ITERATIONS:', iterations)
