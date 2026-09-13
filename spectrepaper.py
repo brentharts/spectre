@@ -98,10 +98,10 @@ PREAMBLE = r"""\documentclass[11pt]{article}
         showstringspaces=false,commentstyle=\color{gray}\itshape,
         keywordstyle=\color{blue!60!black}\bfseries}
 
-\title{\vspace{-1cm}\textbf{What a Substitution Determines,\\
-and What a Kernel Cannot Reach:\\[2pt]
-\large Exact Spectral Theory of the Spectre Substrate,\\
-with a Lean~4 Checked Fact Layer}}
+\title{\vspace{-1cm}
+\textbf{Phase Grading in Aperiodic Monotiles:} \\ 
+The $\mathbb{Q}(\sqrt{15})$ and $\mathbb{Q}(\sqrt{5})$ Divide, \\ with a Lean~4 Checked Fact Layer}
+
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
 
@@ -831,9 +831,7 @@ def facts_appendix():
 \label{app:facts}
 
 Generated from \code{spectrefacts.py}.  The last column marks the Facts that
-are also proved in Lean; the others are computations, and the distinction is
-kept on the Fact itself so that the paper cannot claim a machine check for
-something no machine checked.
+are also proved in Lean, see \url{https://github.com/brentharts/spectre/wiki/Spectre-Lean}; the others are computations.
 
 \setlength{\tabcolsep}{3pt}
 \scriptsize
