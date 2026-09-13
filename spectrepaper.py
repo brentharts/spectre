@@ -658,7 +658,29 @@ is parameter-free in its \emph{ratios} $\{0,1,2,7\}$, which are the X-charges
 halved; the overall scale $\delta$ is not known, and nothing here determines
 it.
 
-Second, the threshold is theirs and not ours.  Their Corollary~1.3 covers
+Second, the result has a correction history, and it is worth recording
+because the correction was about mirroring.  The first version of~\cite{BH}
+routed its argument through two diagrams of the knot $K15n81556$, asserted to
+represent the same knot.  Wang and Zhang~\cite{WZ} observed that they do not:
+the Jones polynomial distinguishes them, and the pair is a chiral knot
+together with its mirror image.  They then supplied a direct verification of
+the inequality regardless, including a $56$-crossing diagram of
+$7_1\#\overline{7_1}$ that five simultaneous crossing changes unknot.  The
+current version of~\cite{BH} supplies an explicit isotopy between the two
+diagrams and credits them.
+
+The theorem is unaffected --- $u(7_1\#\overline{7_1})\le5<6$ now stands by two
+independent routes, which is a stronger position than it began in --- but
+three things follow for this paper.  The citation must name the corrected
+version rather than the preprint.  The deficit bound $1\le\delta\le4$ is
+unchanged, since neither the upper bound nor Scharlemann's lower bound moved.
+And the episode is a caution rather than a result: it is \emph{not} evidence
+for a mirror-sensitive binding mechanism, and no proof layer in this paper
+would have caught it, because the question is about knot diagrams and this
+paper's kernel sees only arithmetic.  A machine-checked Fact layer is worth
+having and it does not insure against everything.
+
+Third, the threshold is theirs and not ours.  Their Corollary~1.3 covers
 $T(2,2k+1)$ for $k\ge3$ --- index seven and above.  $T(2,3)$ and $T(2,5)$ are
 explicitly outside it, and whether either admits any partner at all is open.
 So $k=7$ is where non-additivity is known to begin, which is the same place
@@ -823,8 +845,13 @@ Notomi, M. (2026). Chiral diffraction from aperiodic monotile structure.
 \emph{Nature Communications} \textbf{17}, 6085.
 \url{https://doi.org/10.1038/s41467-026-75023-7}
 \bibitem{BH} M.~Brittenham and S.~Hermiller (2025). Unknotting number is not
-additive under connected sum. arXiv:2506.24088.
+additive under connected sum. arXiv:2506.24088v2 (15 September 2025).
 \url{https://arxiv.org/abs/2506.24088}
+Cited in its corrected version; see~\cite{WZ} and the discussion in
+Section~\ref{sec:mass}.
+\bibitem{WZ} C.~Wang and Y.~Zhang (2025). A remark on the counterexample to
+the unknotting number conjecture. arXiv:2507.14265.
+\url{https://arxiv.org/abs/2507.14265}
 \bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
 prime. \emph{Invent. Math.} 82, 37--55.
 \bibitem{demoura2021} de Moura, L. and Ullrich, S. (2021). The Lean 4 Theorem
@@ -899,6 +926,12 @@ def selftest():
           'not a limit' in text)
     check('the Brittenham-Hermiller reference is cited and listed',
           r'\cite{BH}' in text and 'arXiv:2506.24088' in text)
+    check('the Brittenham-Hermiller citation names the corrected version',
+          '2506.24088v2' in text)
+    check('the Wang-Zhang correction is cited and described',
+          r'\cite{WZ}' in text and '2507.14265' in text)
+    check('the correction is called a caution, not evidence',
+          'not} evidence' in text or 'is a caution' in text)
     check('the measured chiral angle and its identity appear',
           '15.5225' in text and r'\frac{\kappa-3}{4}' in text)
     check('the Moritake reference is cited and listed',

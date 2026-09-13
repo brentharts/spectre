@@ -598,6 +598,26 @@ fact(key='bh_theorem',
             'the first failure of additivity of unknotting number under '
             'connected sum, settling Kirby 1.69(B) in the negative')
 
+fact(key='bh_version',
+     claim=r'\text{cite v2, not v1}',
+     value=('2506.24088v2', '2025-09-15'),
+     method='the first version routed through two diagrams of K15n81556 '
+            'asserted to be the same knot. Wang and Zhang showed by the Jones '
+            'polynomial that they are a chiral knot and its mirror, and gave '
+            'a direct verification anyway; version two supplies an explicit '
+            'isotopy and credits them. The theorem is unaffected and now has '
+            'two independent routes, but the citation has to name the version')
+
+fact(key='bh_gap_was_chirality',
+     claim=r'\text{the gap was a mirror confusion}',
+     value=True,
+     method='the two diagrams differed by mirroring, which is exactly the '
+            'distinction the binding mechanism turns on. Worth recording as a '
+            'caution about the literature and nothing more: it is not '
+            'evidence for the mechanism, and no proof layer in this paper '
+            'would have caught it, since the question is about knot diagrams '
+            'and not about arithmetic')
+
 fact(key='bh_deficit_bound',
      claim=r'1\le\delta\le4',
      value=(1, 4),
@@ -834,6 +854,12 @@ def selftest():
         fail('the deepest Phi split is near 0.58, so the drift note should go')
     if sp.simplify(RHO_AT_HALF - (1 - SQ15 / 5)) != 0:
         fail('rho_X at p = 1/2 is not 1 - sqrt15/5')
+
+    # the deficit bound must survive the v1 correction unchanged
+    if get('bh_deficit_bound').value != (1, 4):
+        fail('the deficit bound moved; Wang-Zhang did not change it')
+    if 'v2' not in get('bh_version').value[0]:
+        fail('the Brittenham-Hermiller citation does not name version two')
 
     # the measured chiral angle
     if sp.simplify(COS_CHIRAL - (1 + 3 * sp.sqrt(5)) / 8) != 0:
