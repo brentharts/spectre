@@ -496,6 +496,84 @@ fact(key='rho_x',
 
 BETA = sp.radsimp(sp.simplify(2 * ORDER_MAX))
 
+# ------------------------------------------------- the X-charge, measured
+#
+# These come from spectreatlas.py, which builds the tiling and counts bonds.
+# Depths two to four are recomputed here on import; five and six are recorded
+# because depth six is a quarter of a million tiles and thirty seconds, and a
+# fact engine that takes half a minute to import does not get run.  Both are
+# reproducible with `python3 spectreatlas.py --depth 6`.
+
+X_CHARGE = {'Gamma2': 14, 'Gamma1': 4, 'Delta': 4, 'Sigma': 4,
+            'Lambda': 2, 'Phi': (0, 2),
+            'Theta': 0, 'Pi': 0, 'Xi': 0, 'Psi': 0}
+
+ATLAS_CLASSES = 131
+
+# p = Pr(Phi^2), the collared frequency, by depth.  It is not converged.
+PHI_SPLIT = {3: (41, 60), 4: (377, 651), 5: (3175, 5904), 6: (25851, 49803)}
+P_BY_DEPTH = {d: sp.Rational(n, t) for d, (n, t) in PHI_SPLIT.items()}
+
+fact(key='x_charge',
+     claim=r'X_{\Gamma_2}=14;\ X_{\Gamma_1}=X_\Delta=X_\Sigma=4;\ '
+           r'X_\Lambda=2;\ X_\Phi\in\{0,2\}',
+     value=X_CHARGE,
+     method='built the tiling and counted, for every interior tile, the '
+            'shared edges whose two canonical slot roles disagree; identical '
+            'at depths two through six, and every value even',
+     lean='x_charges_are_even')
+
+fact(key='atlas',
+     claim=r'131\ \text{contact classes, stable}',
+     value=ATLAS_CLASSES,
+     method='the unordered adjacency classes (species and slot on each side) '
+            'number 131 at depths three, four, five and six with none gained '
+            'and none lost, so per-slot statements are statements about the '
+            'infinite tiling')
+
+fact(key='phi_drift',
+     claim=r'p=\Pr(\Phi^{2}):\ 0.683,\,0.579,\,0.538,\,0.519',
+     value=P_BY_DEPTH,
+     method='the flavour split by depth three to six. It is still moving: the '
+            'value near 0.58 is what depth four gives and depth six gives '
+            '0.519, so it is a measurement at a depth and not a limit')
+
+RHO_AT_HALF = sp.radsimp(sp.simplify(RHO_X.subs(P_SYM, sp.Rational(1, 2))))
+
+fact(key='rho_x_at_half',
+     claim=r'p=\tfrac12\Longrightarrow\rho_X=\frac{2g}{1+g}=1-\frac{\sqrt{15}}{5}',
+     value=RHO_AT_HALF,
+     method='conditional, not established: repeated Aitken extrapolation of '
+            'the depth three to six values gives 0.5107 then 0.5035, which is '
+            'evidence for one half and not a proof of it. If it holds the '
+            'bulk X-density has a closed form in Q(sqrt15)',
+     decimal=sp.N(RHO_AT_HALF, 8))
+
+# ------------------------------------------- the mirror channel, from Brittenham-Hermiller
+
+fact(key='bh_theorem',
+     claim=r'u(7_1\#\overline{7_1})\le5<6=u(7_1)+u(\overline{7_1})',
+     value=(5, 6),
+     method='Brittenham and Hermiller 2025, arXiv:2506.24088, Theorem 1.2: '
+            'the first failure of additivity of unknotting number under '
+            'connected sum, settling Kirby 1.69(B) in the negative')
+
+fact(key='bh_deficit_bound',
+     claim=r'1\le\delta\le4',
+     value=(1, 4),
+     method='the deficit is bounded, not determined. Brittenham-Hermiller '
+            'give an upper bound u <= 5 and Scharlemann gives u >= 2, so the '
+            'gap 6 - u lies between one and four; its exact value is their '
+            'own Question 4.4 and is open')
+
+fact(key='bh_threshold',
+     claim=r'k,\ell\ge7\ \text{odd}',
+     value=7,
+     method='their Corollary 1.3 covers T(2,2k+1) with k >= 3, that is index '
+            'seven and above; T(2,3) and T(2,5) are explicitly outside it and '
+            'whether they admit any partner is open, so seven is where the '
+            'mechanism is known to switch on rather than where it was put')
+
 BETA_MEASURED = sp.Rational(277, 1000)
 BETA_SIGMA = sp.Rational(57, 1000)
 
@@ -692,6 +770,30 @@ def selftest():
             fail('%s does not say how it was computed' % f.key)
         if f.value is None:
             fail('%s has no value' % f.key)
+
+    # the X-charge, against a live rebuild of the atlas at a cheap depth
+    try:
+        import spectreatlas as A
+        live = A.analyse(3)
+        for species, hist in live['charges'].items():
+            seen = tuple(sorted(hist)) if len(hist) > 1 else sorted(hist)[0]
+            if X_CHARGE.get(species) != seen:
+                fail('the atlas gives X_%s = %r, the table says %r'
+                     % (species, seen, X_CHARGE.get(species)))
+        if len(live['atlas']) != ATLAS_CLASSES:
+            fail('the atlas has %d classes, not %d'
+                 % (len(live['atlas']), ATLAS_CLASSES))
+    except ImportError:
+        pass
+
+    # p must be recorded as drifting, not as settled
+    values = [float(P_BY_DEPTH[d]) for d in sorted(P_BY_DEPTH)]
+    if not all(a > b for a, b in zip(values, values[1:])):
+        fail('the Phi split is no longer monotone: %r' % values)
+    if abs(values[-1] - 0.58) < 0.02:
+        fail('the deepest Phi split is near 0.58, so the drift note should go')
+    if sp.simplify(RHO_AT_HALF - (1 - SQ15 / 5)) != 0:
+        fail('rho_X at p = 1/2 is not 1 - sqrt15/5')
 
     verdict = cross_check()
     if verdict is not None and not verdict.startswith('matches'):

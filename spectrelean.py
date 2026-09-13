@@ -365,6 +365,39 @@ theorem spectre_trace_is_eight :
 '''  % (pairs, hat)
 
 
+def xcharge_section():
+    vals = ', '.join(str(v) for k, v in sorted(F.X_CHARGE.items())
+                     if not isinstance(v, tuple))
+    return r'''
+/-! ## The X-charges are even
+
+The per-species X-charges are measured, not derived: `spectreatlas.py` builds
+the tiling and counts bonds.  What the kernel can settle is the arithmetic
+claim made about them -- that every one is even, which is what lets the
+binding spectrum be written as 2 delta times a small set of integers.
+
+Phi is the exception that has to be stated: it carries 0 or 2 depending on its
+collar, never 1, so the evenness survives the flavour split. -/
+
+def xCharges : List Int := [%s, 0, 2]
+
+theorem x_charges_are_even : ∀ x ∈ xCharges, x %% 2 = 0 := by decide
+
+/-- The Mystic is saturated: all fourteen of its slots are X-bonds. -/
+theorem mystic_is_saturated : xCharges.contains 14 = true := by decide
+
+/-- The binding spectrum is 2 delta times {0, 1, 2, 7}: the charges halved
+land in that set, and every member of it is attained. -/
+theorem binding_spectrum_lands_in :
+    ∀ x ∈ xCharges, (x / 2) ∈ [(0 : Int), 1, 2, 7] := by decide
+
+theorem binding_spectrum_is_attained :
+    ([(0 : Int), 1, 2, 7]).all
+      (fun v => (xCharges.map (fun x => x / 2)).contains v) = true := by
+  decide
+''' % vals
+
+
 def limits_section():
     return r'''
 /-! ## What is not claimed
@@ -401,6 +434,7 @@ def document(audit=None):
             + census_section()
             + arithmetic_section()
             + frequency_section()
+            + xcharge_section()
             + minors_section()
             + limits_section())
 

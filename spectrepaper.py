@@ -516,6 +516,112 @@ channel, cannot bind at all.
 """
 
 
+def xcharge_section():
+    drift = ',\\ '.join('%.3f' % float(F.P_BY_DEPTH[d])
+                        for d in sorted(F.P_BY_DEPTH))
+    depths = ', '.join(str(d) for d in sorted(F.P_BY_DEPTH))
+    return r"""
+\section{The X-charge, and the mirror channel}
+\label{sec:mass}
+
+Everything so far has been arithmetic on a nine by nine matrix.  The X-charge
+is not: it is a statement about which edge of a placed tile meets which edge of
+its neighbour, and no eigenvector recovers it.  The tiling has to be built.
+
+Each tile is a fourteen-gon whose slots carry canonical roles in the cyclic
+sequence \code{aabbaabbaaaabb}.  A shared edge is an \emph{X-bond} when the two
+tiles disagree about the role of the slot they are gluing.  This is a statement
+about roles and not about lengths: a tiling cannot glue edges of different
+length, so typing the bond by realized length makes every bond match by
+construction and the charge collapses to zero everywhere.  The two readings
+differ on exactly one species, and that difference is the content of what
+follows.
+
+\begin{fact}[The contact atlas stabilizes]
+\label{fact:atlas}
+The unordered adjacency classes --- which species meets which, at which pair of
+slots --- number %d at depths %s, with none gained and none lost.  Per-slot
+statements are therefore statements about the infinite tiling and not about a
+patch.
+\end{fact}
+
+\begin{fact}[X-charges, and their parity]
+\label{fact:xcharge}
+On interior tiles the X-status of every slot is deterministic for every species
+but one:
+\begin{align*}
+&\underbrace{X_{\Gamma_2}=14}_{\text{Mystic, saturated}}
+&&\underbrace{X_{\Gamma_1}=X_\Delta=X_\Sigma=4}_{\text{triplet}}
+&&\underbrace{X_\Lambda=2}_{\text{splits }\{\Theta,\Lambda\}}\\[1ex]
+&\underbrace{X_\Phi\in\{0,2\}}_{\text{flavour doubling}}
+&&\underbrace{X_\Theta=X_\Pi=X_\Xi=X_\Psi=0}_{\text{sterile quartet}}
+\end{align*}
+Identical at every depth computed, and every value even, so the binding
+spectrum is $2\delta\{0,1,2,7\}$.  Mystic saturation has a one-line reason:
+$\mathrm{Tile}(b,a)$ realizes every canonical role at the other length, so
+every bond it forms is a role mismatch.
+\end{fact}
+
+\begin{fact}[The flavour frequency is not converged]
+\label{fact:pdrift}
+$\Phi$'s two mixed slots are perfectly correlated --- never one --- so $\Phi$
+splits into flavours $\Phi^{0},\Phi^{2}$.  The collared frequency
+$p=\Pr(\Phi^{2})$ measured at depths %s is
+\[
+p=%s,
+\]
+still falling.  A value near $0.58$ is what depth four gives; it is a
+measurement at a depth, not a limit, and earlier drafts quoted it as though it
+were one.
+\end{fact}
+
+\begin{conj}[The bulk X-density in closed form]
+\label{conj:rho}
+If $p\to\tfrac12$ then
+\[
+\rho_X=\frac{2g}{1+g}=1-\frac{\sqrt{15}}{5}=%s\ldots,
+\qquad g=%s,
+\]
+an element of $\mathbb{Q}(\sqrt{15})$ with no free parameter.  Repeated Aitken
+extrapolation of the measured values gives $0.5107$ then $0.5035$, which is
+evidence for one half and not a proof of it.  This is the open problem of the
+previous draft, reduced from ``compute $p$'' to ``decide whether $p=\tfrac12$''.
+\end{conj}
+
+\subsection{Why the mechanism switches on where it does}
+
+Brittenham and Hermiller~\cite{BH} proved that unknotting number is not
+additive under connected sum: for $K=7_1=T(2,7)$, with $u(K)=3$,
+\[
+u(K\#\overline K)\le5<6=u(K)+u(\overline K).
+\]
+Two features of that theorem matter here and are easy to overstate.
+
+First, the deficit is \emph{bounded, not determined}.  Their result is an
+upper bound; Scharlemann's theorem that unknotting number one implies prime
+gives $u\ge2$; so the gap $\delta=6-u$ satisfies $1\le\delta\le4$, and its
+exact value is their own Question~4.4 and is open.  The binding spectrum above
+is parameter-free in its \emph{ratios} $\{0,1,2,7\}$, which are the X-charges
+halved; the overall scale $\delta$ is not known, and nothing here determines
+it.
+
+Second, the threshold is theirs and not ours.  Their Corollary~1.3 covers
+$T(2,2k+1)$ for $k\ge3$ --- index seven and above.  $T(2,3)$ and $T(2,5)$ are
+explicitly outside it, and whether either admits any partner at all is open.
+So $k=7$ is where non-additivity is known to begin, which is the same place
+the edge braids of the substrate close onto $7_1$.  That coincidence is the
+whole of the mechanism's appeal and it is a coincidence until someone explains
+it.
+
+Additivity of the signature makes the selection rule exact arithmetic:
+$\sigma(K\#K)=-2(k-1)$ forces $u(K\#K)=k-1$, so same-handed pairs cannot bind,
+while $\sigma(K\#\overline K)=0$ and the lower bound is lost.  Binding is a
+mirror-channel phenomenon as a matter of signatures --- and the strictly chiral
+screen, having no mirror channel, cannot bind at all.
+""" % (F.ATLAS_CLASSES, depths, depths, drift,
+       F.get('rho_x_at_half').decimal, tex(F.G_SMALL))
+
+
 def lean_section():
     names = L.theorem_names(L.document())
     sample = r'''theorem q_minus_alternates : vecMul Qminus M = scale (-1) Qminus := by decide
@@ -659,6 +765,11 @@ Goodman-Strauss, C. (2024). An aperiodic monotile.
 \bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
 Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
 \emph{Combinatorial Theory}, 4(2).
+\bibitem{BH} M.~Brittenham and S.~Hermiller (2025). Unknotting number is not
+additive under connected sum. arXiv:2506.24088.
+\url{https://arxiv.org/abs/2506.24088}
+\bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
+prime. \emph{Invent. Math.} 82, 37--55.
 \bibitem{demoura2021} de Moura, L. and Ullrich, S. (2021). The Lean 4 Theorem
 Prover and Programming Language. \emph{CADE-28}, 625--635.
 \bibitem{Eskilt2026} Eskilt, J.R. \emph{et al.} (2026). Joint ACT DR6 and
@@ -675,7 +786,8 @@ def document():
         PREAMBLE, abstract(), introduction(), screen_section(),
         spectral_section(),
         census_section(), charges_section(), deformation_section(),
-        phases_section(), knot_section(), lean_section(), data_section(),
+        phases_section(), knot_section(), xcharge_section(),
+        lean_section(), data_section(),
         facts_appendix(), BIBLIOGRAPHY,
     ])
 
@@ -724,6 +836,14 @@ def selftest():
           'is not evidence' in text)
     check('the Lean section states what Lean does not see',
           'Lean does not see the tiling' in text)
+    check('the BH deficit is called bounded, not determined',
+          'bounded, not determined' in text)
+    check('the p drift is stated rather than a single value quoted',
+          'not a limit' in text)
+    check('the Brittenham-Hermiller reference is cited and listed',
+          r'\cite{BH}' in text and 'arXiv:2506.24088' in text)
+    check('the atlas count and X-charges appear',
+          str(F.ATLAS_CLASSES) in text and 'X_{\\Gamma_2}=14' in text)
 
     print()
     if failures:
