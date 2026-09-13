@@ -98,8 +98,10 @@ PREAMBLE = r"""\documentclass[11pt]{article}
         showstringspaces=false,commentstyle=\color{gray}\itshape,
         keywordstyle=\color{blue!60!black}\bfseries}
 
-\title{\textbf{Exact Spectral Theory of the Spectre Substrate,\\
-with a Lean 4 Checked Fact Layer}}
+\title{\vspace{-1cm}\textbf{What a Substitution Determines,\\
+and What a Kernel Cannot Reach:\\[2pt]
+\large Exact Spectral Theory of the Spectre Substrate,\\
+with a Lean~4 Checked Fact Layer}}
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
 
@@ -144,8 +146,13 @@ def introduction():
 \section{Introduction}
 \label{sec:intro}
 
-This paper carries an earlier program~\cite{SuppNariai} across the conformal
-crossover, and its thesis is that the crossover surface --- a two-dimensional conformal carrier
+This paper carries an earlier program across the conformal crossover.  That
+program established, on the Nariai horizon, that the Araki--Uhlmann relative
+entropy of a coherent excitation equals the boost-energy flux and that
+$S_{\rm rel}=\delta A/4$ is a theorem of linearized Jackiw--Teitelboim
+dynamics on the throat~\cite{HartshornJT}, with the negativity budget of
+wedge-local squeezed states bounded exactly in~\cite{SuppNariai}.  The thesis
+here is that the crossover surface --- a two-dimensional conformal carrier
 with vanishing configurational entropy density --- is a substitution monotile
 phase.  That identification is a conjecture and is labelled as one.  What can
 be done without it, and what occupies most of what follows, is to compute the
@@ -645,55 +652,38 @@ previous draft, reduced from ``compute $p$'' to ``decide whether $p=\tfrac12$''.
 \subsection{Why the mechanism switches on where it does}
 
 Brittenham and Hermiller~\cite{BH} proved that unknotting number is not
-additive under connected sum: for $K=7_1=T(2,7)$, with $u(K)=3$,
-\[
-u(K\#\overline K)\le5<6=u(K)+u(\overline K).
-\]
-Two features of that theorem matter here and are easy to overstate.
+additive: for $K=7_1=T(2,7)$ with $u(K)=3$,
+$u(K\#\overline K)\le5<6$.  Three things about that theorem bear on the
+mechanism, and all three are easy to overstate.
 
-First, the deficit is \emph{bounded, not determined}.  Their result is an
-upper bound; Scharlemann's theorem that unknotting number one implies prime
-gives $u\ge2$; so the gap $\delta=6-u$ satisfies $1\le\delta\le4$, and its
-exact value is their own Question~4.4 and is open.  The binding spectrum above
-is parameter-free in its \emph{ratios} $\{0,1,2,7\}$, which are the X-charges
-halved; the overall scale $\delta$ is not known, and nothing here determines
-it.
+\emph{The deficit is bounded, not determined.}  Theirs is an upper bound;
+Scharlemann gives $u\ge2$; so $\delta=6-u$ lies in $[1,4]$ and its value is
+their own Question~4.4, open.  The binding spectrum is parameter-free in its
+\emph{ratios} $\{0,1,2,7\}$ --- the X-charges halved --- and says nothing
+about the scale.
 
-Second, the result has a correction history, and it is worth recording
-because the correction was about mirroring.  The first version of~\cite{BH}
-routed its argument through two diagrams of the knot $K15n81556$, asserted to
-represent the same knot.  Wang and Zhang~\cite{WZ} observed that they do not:
-the Jones polynomial distinguishes them, and the pair is a chiral knot
-together with its mirror image.  They then supplied a direct verification of
-the inequality regardless, including a $56$-crossing diagram of
-$7_1\#\overline{7_1}$ that five simultaneous crossing changes unknot.  The
-current version of~\cite{BH} supplies an explicit isotopy between the two
-diagrams and credits them.
+\emph{The threshold is theirs.}  Their Corollary~1.3 covers $T(2,2k+1)$ for
+$k\ge3$, index seven up; $T(2,3)$ and $T(2,5)$ are outside it and whether
+either admits any partner is open.  So $k=7$ is where non-additivity is known
+to begin, and it is also where the substrate's edge braids close.  That
+coincidence is the whole of the mechanism's appeal, and it is a coincidence
+until someone explains it.
 
-The theorem is unaffected --- $u(7_1\#\overline{7_1})\le5<6$ now stands by two
-independent routes, which is a stronger position than it began in --- but
-three things follow for this paper.  The citation must name the corrected
-version rather than the preprint.  The deficit bound $1\le\delta\le4$ is
-unchanged, since neither the upper bound nor Scharlemann's lower bound moved.
-And the episode is a caution rather than a result: it is \emph{not} evidence
-for a mirror-sensitive binding mechanism, and no proof layer in this paper
-would have caught it, because the question is about knot diagrams and this
-paper's kernel sees only arithmetic.  A machine-checked Fact layer is worth
-having and it does not insure against everything.
+\emph{The proof was corrected, and the correction was about mirroring.}  The
+first version routed through two diagrams of $K15n81556$ asserted to be one
+knot; Wang and Zhang~\cite{WZ} showed by the Jones polynomial that they are a
+chiral knot and its mirror, and verified the inequality directly anyway.  The
+current version supplies the missing isotopy and credits them.  The theorem is
+unaffected and now stands by two routes, and the deficit bound does not move.
+The episode is a caution, not a result: it is \emph{not} evidence for a
+mirror-sensitive mechanism, and no proof layer here would have caught it,
+because the question is about knot diagrams and this kernel sees arithmetic.
 
-Third, the threshold is theirs and not ours.  Their Corollary~1.3 covers
-$T(2,2k+1)$ for $k\ge3$ --- index seven and above.  $T(2,3)$ and $T(2,5)$ are
-explicitly outside it, and whether either admits any partner at all is open.
-So $k=7$ is where non-additivity is known to begin, which is the same place
-the edge braids of the substrate close onto $7_1$.  That coincidence is the
-whole of the mechanism's appeal and it is a coincidence until someone explains
-it.
-
-Additivity of the signature makes the selection rule exact arithmetic:
+Additivity of the signature then makes the selection rule arithmetic:
 $\sigma(K\#K)=-2(k-1)$ forces $u(K\#K)=k-1$, so same-handed pairs cannot bind,
-while $\sigma(K\#\overline K)=0$ and the lower bound is lost.  Binding is a
-mirror-channel phenomenon as a matter of signatures --- and the strictly chiral
-screen, having no mirror channel, cannot bind at all.
+while $\sigma(K\#\overline K)=0$ and the bound is lost.  Binding is a
+mirror-channel phenomenon as a matter of signatures, and the strictly chiral
+screen has no mirror channel.
 """ % (F.ATLAS_CLASSES, depths, depths, drift,
        F.get('rho_x_at_half').decimal, tex(F.G_SMALL))
 
@@ -710,41 +700,29 @@ theorem seifert_minor_closed_form (m : Nat) : D m = Dclosed m :=
 \section{Verification: computed twice, and proved once}
 \label{sec:lean}
 
-The companion suite recomputes every Fact by a route sharing no code with the
-tiling scripts, in exact arithmetic.  That is a good discipline and it is still
-two computations: two programs can be wrong in the same way, particularly when
-they are written by the same person in the same week.
+Computing a Fact twice by code-disjoint routes is a good discipline and it is
+still two computations; two programs can be wrong in the same way.  The closed
+Facts are therefore also \emph{proved}.  \code{spectrelean.py} emits them as
+Lean~4 and the kernel checks the file --- %d theorems, covering the charge
+eigenvector identities, the census totals and their recurrence, the Mystic
+identity of Fact~\ref{fact:mystic}, the arithmetic of $\mathbb{Z}[\sqrt{15}]$
+including the Pell unit and both channel identities, the frequency
+eigenvector, the X-charge parity, and the Seifert minors of
+Fact~\ref{fact:sandwich}.
 
-The closed Facts are therefore also \emph{proved}.  \code{spectrelean.py}
-emits them as Lean~4 and the kernel checks the file: %d theorems covering the
-charge eigenvector identities, the census totals and their recurrence, the
-Mystic identity of Fact~\ref{fact:mystic}, the arithmetic of
-$\mathbb{Z}[\sqrt{15}]$ including the Pell unit and both channel identities,
-and the Seifert minors of Fact~\ref{fact:sandwich}.
-
-The file is deliberately Mathlib-free.  Everything is \code{Int},
-\code{List Int} or a small structure over them, so it checks against a bare
-toolchain in seconds and needs no package manager --- which costs some elegance
-and buys the property that the proof is as auditable as the arithmetic it
-certifies.
+The file is Mathlib-free: everything is \code{Int}, \code{List Int} or a small
+structure over them, so it checks against a bare toolchain in seconds.  That
+costs some elegance and buys the property that the proof is as auditable as
+the arithmetic it certifies.
 
 \begin{lstlisting}[language=lean]
 %s
 \end{lstlisting}
 
 \noindent
-%s
-
-Three boundaries are worth stating plainly, and they are stated in the Lean
-file itself as comments rather than theorems, because a comment cannot be
-mistaken for a certificate.  Lean does not see the tiling: that $M$ transcribes
-the published substitution is a claim about a transcription, audited by the
-geometric census agreeing at every depth, and no proof here bears on it.  Lean
-does not see Conjecture~\ref{conj:chirality}, which is a selection argument.
-And Lean is deliberately not pointed at anything downstream of the unit
-postulate of Section~\ref{sec:data}: the arithmetic there is elementary and
-correct, and certifying it would lend the premise a credibility it has not
-earned.
+%s  What the kernel does \emph{not} see is the subject of
+Section~\ref{sec:boundary}, and is stated in the Lean file as comments rather
+than theorems, because a comment cannot be mistaken for a certificate.
 """ % (len(names), sample, L.AUDIT_SENTENCE)
 
 
@@ -754,49 +732,39 @@ def boundary_section():
 \label{sec:boundary}
 
 The companion series distinguishes several ways a quantity can fail to be
-available, and the distinction is worth keeping because the categories carry
-different obligations.  Collected here, rather than left scattered through the
-sections that meet them.
+available; the categories carry different obligations, so they are collected
+here rather than left scattered.
 
 \begin{enumerate}
 \item \emph{Not a computation at all.}  Conjecture~\ref{conj:chirality} is a
-selection statement: it says which phase is admissible on a screen and which
-in a bulk, on the grounds that reflection is ambiently realizable in one and
-not the other.  It is not a dynamics and does not purport to be.  Asking for
-its equation of motion is asking for something it does not have, and supplying
-one would be a different paper.
+selection statement --- which phase is admissible where, on the grounds that
+reflection is ambiently realizable in one setting and not the other.  It is
+not a dynamics and does not purport to be.
 
-\item \emph{Exact in principle, not computed here.}  The Spectre's own chiral
-twist angle --- the $\mathbb{Q}(\sqrt{15})$ analogue of the measured
-$\theta_{\rm chiral}$ of Fact~\ref{fact:chiral} --- exists and is computable
-from the Spectre's metatile twist geometry.  It is simply not computed, which
-is why Section~\ref{sec:phases} states it as a prediction.  The same applies
-to the collared frequency $p$ of Fact~\ref{fact:pdrift}: measurable to any
-depth, converging slowly, and not yet given in closed form.
+\item \emph{Exact in principle, not computed here.}  The Spectre's chiral
+twist angle, the $\mathbb{Q}(\sqrt{15})$ analogue of Fact~\ref{fact:chiral},
+which is why Section~\ref{sec:phases} states it as a prediction.  Likewise the
+collared frequency $p$ of Fact~\ref{fact:pdrift}: measurable to any depth,
+converging slowly, not yet closed.
 
-\item \emph{Not determined by the data carried.}  The deficit scale $\delta$
-of the binding spectrum.  Brittenham and Hermiller bound it and nobody has
-fixed it; the ratios $\{0,1,2,7\}$ are ours, the scale is not.  Likewise the
-unit postulate of Section~\ref{sec:data}: the substrate supplies a
-dimensionless number and nothing in $\mathbb{Q}(\sqrt{15})$ knows about
-degrees.  In both cases the constraint is exact and the choice is absent, and
-what is reported is the constraint.
+\item \emph{Not determined by the data carried.}  The deficit scale $\delta$:
+the ratios $\{0,1,2,7\}$ are ours, the scale is not.  And the unit postulate
+of Section~\ref{sec:data}.  In both the constraint is exact, the choice is
+absent, and what is reported is the constraint.
 
-\item \emph{Obstructed by the transcription.}  That the matrix
-of~\eqref{eq:M} transcribes the published substitution.  Every Fact in this
-paper is downstream of it and none bears on it.  It is audited --- the
-geometric census of Section~\ref{sec:census} rebuilds the counts from placed
-tiles and agrees at every depth, by a route sharing no code --- and an audit
-is not a proof.  This is the one place where the paper asks to be trusted, and
-it is better to say so once, plainly, than to let a kernel certificate
-elsewhere imply otherwise.
+\item \emph{Obstructed by the transcription.}  That~\eqref{eq:M} transcribes
+the published substitution.  Every Fact is downstream of it and none bears on
+it.  It is audited --- the geometric census rebuilds the counts from placed
+tiles by a route sharing no code, and agrees at every depth --- and an audit is
+not a proof.
 \end{enumerate}
 
 \noindent
-The fourth category is the interesting one, because it is where the Lean layer
-of Section~\ref{sec:lean} does \emph{not} reach, and the correction history of
-Section~\ref{sec:mass} is a live reminder that external results have this
-category too.  A proof about $M$ is a proof about $M$.
+The fourth category is where the Lean layer does not reach, and the correction
+history of Section~\ref{sec:mass} shows that cited results carry it too.  This
+is the one place the paper asks to be trusted, and it is better said plainly
+than left for a kernel certificate elsewhere to imply otherwise.  A proof about
+$M$ is a proof about $M$.
 """
 
 
@@ -808,33 +776,31 @@ def data_section():
 Isotropic cosmic birefringence is measured nonzero: the 2026 joint
 ACT~DR6~$+$~Planck~PR4 analysis gives
 $\beta=0.277^{\circ}\pm0.057^{\circ}$.  Exact parity-evenness, the branch that
-would disfavour Conjecture~\ref{conj:chirality}, is not what the sky shows.
-The consistency is generic --- any parity-violating photon coupling produces it
---- so it is weak evidence for anything specific.
+would disfavour Conjecture~\ref{conj:chirality}, is not what the sky shows ---
+but the consistency is generic, since any parity-violating photon coupling
+produces it.
 
-The substrate has exactly one intrinsic chiral quantity with a preferred
-magnitude: the order-parameter maximum of Fact~\ref{fact:area}.  Identifying it
-with a Stokes-level asymmetry and reading the result in degrees gives
+The substrate has one intrinsic chiral quantity with a preferred magnitude,
+the order-parameter maximum of Fact~\ref{fact:area}.  Identifying it with a
+Stokes-level asymmetry and reading the result in degrees gives
 \[
 \beta_{\rm pred}=2\cdot\frac{10g}{8+10g}\ \mathrm{[deg]}=%s=%s\ldots^{\circ},
 \]
-which sits $%s\sigma$ from the measurement.
+$%s\sigma$ from the measurement.
 
-That agreement is not evidence and this section does not present it as such.
-The unit postulate --- that a dimensionless area-fraction maximum is an angle
-in degrees --- is the entire modelling step, and it is unjustified.  Degrees
-are a human convention; nothing in $\mathbb{Q}(\sqrt{15})$ knows about them.
-A closed-form number landing near a measured one is what one should expect to
-happen occasionally when a theory supplies several dimensionless constants and
-a free choice of units, and the honest description of the present situation is
-that the substrate supplies a number, the identification is a guess, and the
-guess is currently unrefuted.
+That agreement is not evidence.  The unit postulate --- that a dimensionless
+area fraction is an angle in degrees --- is the entire modelling step and it is
+unjustified: degrees are a human convention and nothing in
+$\mathbb{Q}(\sqrt{15})$ knows about them.  A closed form landing near a
+measurement is what one should expect occasionally from a theory with several
+dimensionless constants and a free choice of units.  The substrate supplies a
+number, the identification is a guess, and the guess is unrefuted.
 
-What makes it worth recording rather than deleting is that it is scheduled.
-At the $0.05^{\circ}$ absolute-calibration class the candidate is separated
-from zero at $%.1f\sigma$; at the $0.01^{\circ}$ class it is separated from the
-WMAP$+$Planck central value $0.342^{\circ}$ at $%.1f\sigma$.  A guess with a
-date on it is worth more than a guess without one, and less than a derivation.
+It is recorded rather than deleted because it is scheduled: at the
+$0.05^{\circ}$ calibration class it separates from zero at $%.1f\sigma$, and at
+$0.01^{\circ}$ from the WMAP$+$Planck value $0.342^{\circ}$ at $%.1f\sigma$.  A
+guess with a date on it beats a guess without one and loses to a derivation ---
+and Section~\ref{sec:phases} now offers a test that needs no postulate at all.
 """ % (tex(F.BETA), F.get('beta').decimal, F.get('beta_tension').value,
        float(sp.N(F.BETA / sp.Rational(5, 100))),
        float(sp.N(abs(sp.Rational(342, 1000) - F.BETA) / sp.Rational(1, 100))))
@@ -893,13 +859,17 @@ Goodman-Strauss, C. (2024). An aperiodic monotile.
 \bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
 Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
 \emph{Combinatorial Theory}, 4(2).
+\bibitem{HartshornJT} Hartshorn, B.~S. (2026). Gravity from Relative Entropy:
+Jackiw--Teitelboim Dynamics on the Nariai Horizon. Research Square.
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
 \bibitem{SuppNariai} Hartshorn, B.~S. (2026). What Wedge-Locality Determines,
 and What the Phase Averages Out: Exact Tests and a Universal Negativity Bound
-for Entropic Gravity on the Nariai Horizon.
-\url{https://github.com/brentharts/CICY}
+for Entropic Gravity on the Nariai Horizon. Zenodo.
+\url{https://doi.org/10.5281/zenodo.21908671}
 \bibitem{SuppMonotile} Hartshorn, B.~S. (2026). What Real-Space Geometry
-Determines: the aperiodic monotile, exactly.
-\url{https://github.com/brentharts/CICY}
+Determines, and What Has No Momentum Space: Exact Methods for the Aperiodic
+Monotile Family. Zenodo.
+\url{https://doi.org/10.5281/zenodo.21893694}
 \bibitem{Moritake2026} Moritake, Y., Takiguchi, M., Aihara, T. and
 Notomi, M. (2026). Chiral diffraction from aperiodic monotile structure.
 \emph{Nature Communications} \textbf{17}, 6085.
@@ -985,8 +955,8 @@ def selftest():
           and 'Obstructed by the transcription' in text)
     check('the transcription is named as the thing taken on trust',
           'asks to be trusted' in text)
-    check('the Lean section states what Lean does not see',
-          'Lean does not see the tiling' in text)
+    check('the Lean section defers its limits to the boundary section',
+          r'does \emph{not} see is the subject of' in text)
     check('the BH deficit is called bounded, not determined',
           'bounded, not determined' in text)
     check('the p drift is stated rather than a single value quoted',
