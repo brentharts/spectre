@@ -292,6 +292,79 @@ theorem minors_alternate (m : Nat) :
 '''
 
 
+def frequency_section():
+    pairs = ', '.join('(%d, %d)' % (int(F.FREQ_Z15[n][0]), int(F.FREQ_Z15[n][1]))
+                      for n in F.SPECIES)
+    hat = ', '.join('(%d, %d)' % p for p in F.HAT_FREQ_Z5)
+    return r'''
+/-! ## The eigenvector, as an eigenvector
+
+The nine frequencies are not merely in Q(sqrt 15): the denominators clear, so
+they are algebraic integers and the whole eigenvector equation lives in
+Z[sqrt 15].  That is what lets the kernel check it with `decide` rather than
+with rational arithmetic it does not have.
+
+This is the check the companion suite does componentwise by substitution.
+Here it is one proposition. -/
+
+def freq : List Z15 :=
+  [%s].map (fun p => ⟨p.1, p.2⟩)
+
+def z15dot (row : List Int) (v : List Z15) : Z15 :=
+  (List.zipWith (fun (c : Int) (z : Z15) => ⟨c * z.a, c * z.b⟩) row v).foldl
+    (· + ·) ⟨0, 0⟩
+
+/-- M f = lambda² f, componentwise, over Z[sqrt 15]. -/
+theorem frequencies_are_an_eigenvector :
+    M.map (fun row => z15dot row freq) = freq.map (fun z => lam2 * z) := by
+  decide
+
+/-- And they sum to one, so they are frequencies and not merely a direction. -/
+theorem frequencies_sum_to_one :
+    freq.foldl (· + ·) ⟨0, 0⟩ = ⟨1, 0⟩ := by decide
+
+/-! ## Aperiodicity, as irrationality
+
+A periodic tiling has a fundamental domain, in which every species occurs a
+whole number of times; so in a periodic tiling every relative frequency is
+rational.  One irrational frequency therefore refutes periodicity.
+
+Which frequency does the refuting is where the two phases differ.  Every
+Spectre frequency has a nonzero sqrt 15 part, so every species is a witness.
+The Hat has four metatiles and its commonest is exactly one third -- rational,
+and so no witness at all.  The Hat's aperiodicity has to be read off a rarer
+tile; the Spectre's can be read off any. -/
+
+theorem every_spectre_frequency_is_irrational :
+    ∀ z ∈ freq, z.b ≠ 0 := by decide
+
+/-- The Hat frequencies, scaled by six to clear denominators, as pairs
+`a + b sqrt 5`. -/
+def hatFreq6 : List (Int × Int) := [%s]
+
+/-- Exactly one Hat frequency is rational, and it is the first, the H
+metatile: six times it is 2, with no sqrt 5 part. -/
+theorem hat_has_exactly_one_rational_frequency :
+    (hatFreq6.filter (fun p => p.2 = 0)).length = 1 := by decide
+
+theorem hat_H_frequency_is_one_third :
+    hatFreq6.getD 0 (0, 0) = (2, 0) := by decide
+
+/-! ## Trace accounting
+
+The marginal pair +1 and -1 cancels and the zero modes contribute nothing, so
+in both phases the trace is the Perron unit plus its conjugate.  The same
+accounting in two different quadratic fields. -/
+
+theorem trace_is_unit_plus_conjugate :
+    lam2 + lam2inv = ⟨8, 0⟩ := by decide
+
+theorem spectre_trace_is_eight :
+    ((List.range 9).map (fun i => (M.getD i []).getD i 0)).foldl (· + ·) 0
+      = 8 := by decide
+'''  % (pairs, hat)
+
+
 def limits_section():
     return r'''
 /-! ## What is not claimed
@@ -327,6 +400,7 @@ def document(audit=None):
             + charges_section()
             + census_section()
             + arithmetic_section()
+            + frequency_section()
             + minors_section()
             + limits_section())
 

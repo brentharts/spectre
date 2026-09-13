@@ -427,6 +427,45 @@ is the discriminant.  The Spectre is graded by $\mathbb{Q}(\sqrt{15})$ and the
 Hat by $\mathbb{Q}(\sqrt5)$.
 \end{fact}
 
+\begin{fact}[Trace accounting, in two fields]
+\label{fact:trace}
+In both phases the marginal pair $\pm1$ cancels and the zero modes contribute
+nothing, so the trace is the Perron unit plus its conjugate:
+\[
+\operatorname{tr}M=\lam^{2}+\lam^{-2}=%d,
+\qquad
+\operatorname{tr}H=\kappa+\kappa^{-1}=%d.
+\]
+The same accounting, run in $\mathbb{Q}(\sqrt{15})$ and in
+$\mathbb{Q}(\sqrt5)$.
+\end{fact}
+
+\subsection{Aperiodicity as irrationality, and which tile witnesses it}
+
+A tiling with a period is a periodic arrangement of a fundamental domain; in a
+fundamental domain every species occurs a whole number of times; so in a
+periodic tiling every relative frequency is rational.  One irrational frequency
+therefore refutes periodicity.  The two phases differ in how much of the tiling
+can do the refuting.
+
+\begin{fact}[Every Spectre species is a witness; one Hat metatile is not]
+\label{fact:witness}
+All %d Spectre frequencies lie in $\mathbb{Z}[\sqrt{15}]$ with nonzero
+$\sqrt{15}$ part, so any one of them refutes periodicity.  The Hat's four
+metatile frequencies are
+\[
+f_H=%s,\qquad f_T=%s,\qquad f_P=%s,\qquad f_F=%s,
+\]
+and the first is rational.  The commonest Hat metatile witnesses nothing, and
+the argument has to be run on a rarer one.
+\end{fact}
+
+\noindent
+That the Spectre frequencies are algebraic \emph{integers} rather than merely
+algebraic numbers is what lets the eigenvector equation be checked in
+$\mathbb{Z}[\sqrt{15}]$ with no rational arithmetic at all, which is how
+Section~\ref{sec:lean} proves it rather than recomputing it.
+
 This sharpens the conjecture at no cost.  If the Spectre-to-Hat transition is
 the emergence of the third spatial dimension, then it is not only a parity
 restoration but a change of the quadratic field that grades all area data ---
@@ -438,7 +477,11 @@ question for data; that they differ is a Fact.
       F.get('hat_perron').decimal,
       tex(F.get('charpoly').value),
       tex(F.get('perron').value),
-      F.get('perron').decimal)
+      F.get('perron').decimal,
+      F.M.trace(), F.HAT_M.trace(),
+      len(F.SPECIES),
+      tex(F.HAT_FREQ['H']), tex(F.HAT_FREQ['T']),
+      tex(F.HAT_FREQ['P']), tex(F.HAT_FREQ['F']))
 
 
 def knot_section():
@@ -573,8 +616,14 @@ def facts_appendix():
         how = f.method.split(';')[0].split('. ')[0]
         if len(how) > 110:
             how = how[:107].rsplit(' ', 1)[0] + '...'
+        # long claims must be allowed to break, or the cell overruns: a
+        # p-column will not break inside $...$, so the claim is split at its
+        # top-level separators and each piece set as its own math group
+        claim = f.claim
+        for sep in (r'\qquad', r'\quad', r';\ ', ',\\ '):
+            claim = claim.replace(sep, '$ ' + sep + ' $')
         rows.append(r'\code{%s} & $%s$ & %s & %s \\'
-                    % (esc(f.key), f.claim, esc(how), mark))
+                    % (esc(f.key), claim, esc(how), mark))
     return r"""
 \appendix
 \footnotesize
@@ -589,9 +638,9 @@ something no machine checked.
 \setlength{\tabcolsep}{3pt}
 \scriptsize
 \sloppy
-\begin{longtable}{>{\raggedright\arraybackslash}p{2.0cm}%%
->{\raggedright\arraybackslash}p{6.1cm}%%
->{\raggedright\arraybackslash}p{5.3cm}c}
+\begin{longtable}{>{\raggedright\arraybackslash}p{3.05cm}%%
+>{\raggedright\arraybackslash}p{5.1cm}%%
+>{\raggedright\arraybackslash}p{4.6cm}c}
 \toprule
 Key & Claim & How & Lean \\
 \midrule
