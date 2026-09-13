@@ -466,6 +466,57 @@ algebraic numbers is what lets the eigenvector equation be checked in
 $\mathbb{Z}[\sqrt{15}]$ with no rational arithmetic at all, which is how
 Section~\ref{sec:lean} proves it rather than recomputing it.
 
+\subsection{Measured, in a laboratory}
+
+The Hat phase is no longer only a mathematical object.  Moritake
+\emph{et al.}~\cite{Moritake2026} fabricated a monotile quasilattice --- the
+centroids of the $T$ metatiles of an $H_6$ patch, %s holes etched in
+silicon nitride over half a millimetre --- and measured its optical
+diffraction.  The pattern shows sharp Bragg peaks whose positions do not move
+with the illumination spot, which is the experimental signature of
+quasicrystalline order, and it is \emph{chiral}: a pinwheel with no mirror
+line, reversing handedness when the structure is mirrored, and responding
+differently to left- and right-handed circular polarization.  That last
+response is absent in every mirror-symmetric quasicrystal, the Penrose tiling
+included.
+
+For the present paper the useful part is that they give the twist in closed
+form.  The metatiles rotate away from the underlying honeycomb by an angle
+whose coefficients follow the Fibonacci recurrence, so the ratio tends to
+$\varphi^{2}$ and the limiting twist is
+\[
+\theta_{\rm chiral}=\arccos\frac{3\varphi-1}{4}
+=\arccos\frac{1+3\sqrt5}{8}=%s\ldots^{\circ}.
+\]
+
+\begin{fact}[The measured angle is the inflation factor]
+\label{fact:chiral}
+$3\varphi-1$ and $\varphi^{4}-3$ are the same number, so
+\[
+\cos\theta_{\rm chiral}=\frac{\kappa-3}{4},
+\qquad \kappa=\varphi^{4},
+\]
+with $\kappa$ the Hat inflation factor of Fact~\ref{fact:phases}.  The angle a
+laboratory measured in a diffraction pattern and the Perron eigenvalue of the
+substitution matrix are one constant, shifted and scaled.
+\end{fact}
+
+\noindent
+This matters for Conjecture~\ref{conj:chirality} in a way the conjecture did
+not anticipate.  The Hat phase's chirality is now an observed
+laboratory property with an exactly predicted magnitude, and that magnitude is
+fixed by the arithmetic of $\mathbb{Q}(\sqrt5)$.
+
+It also yields a prediction rather than a restatement.  Substituting the
+Spectre's inflation factor into the same formula gives
+$(\lambda^{2}-3)/4=%s>1$, which is not a cosine: the Spectre cannot share the
+Hat's twist relation, and its own chiral angle --- whatever it is --- belongs
+to $\mathbb{Q}(\sqrt{15})$ instead.  We do not compute it here, because doing
+so needs the Spectre's metatile twist geometry and not merely its eigenvalue.
+Fabricating the Spectre quasilattice and measuring a \emph{different} chiral
+angle would be a direct test of the two-field claim of
+Fact~\ref{fact:phases}, at optical bench scale, with no cosmology involved.
+
 This sharpens the conjecture at no cost.  If the Spectre-to-Hat transition is
 the emergence of the third spatial dimension, then it is not only a parity
 restoration but a change of the quadratic field that grades all area data ---
@@ -481,7 +532,9 @@ question for data; that they differ is a Fact.
       F.M.trace(), F.HAT_M.trace(),
       len(F.SPECIES),
       tex(F.HAT_FREQ['H']), tex(F.HAT_FREQ['T']),
-      tex(F.HAT_FREQ['P']), tex(F.HAT_FREQ['F']))
+      tex(F.HAT_FREQ['P']), tex(F.HAT_FREQ['F']),
+      '372{,}100', F.get('chiral_angle').decimal,
+      F.SPECTRE_NAIVE)
 
 
 def knot_section():
@@ -765,6 +818,10 @@ Goodman-Strauss, C. (2024). An aperiodic monotile.
 \bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
 Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
 \emph{Combinatorial Theory}, 4(2).
+\bibitem{Moritake2026} Moritake, Y., Takiguchi, M., Aihara, T. and
+Notomi, M. (2026). Chiral diffraction from aperiodic monotile structure.
+\emph{Nature Communications} \textbf{17}, 6085.
+\url{https://doi.org/10.1038/s41467-026-75023-7}
 \bibitem{BH} M.~Brittenham and S.~Hermiller (2025). Unknotting number is not
 additive under connected sum. arXiv:2506.24088.
 \url{https://arxiv.org/abs/2506.24088}
@@ -842,6 +899,12 @@ def selftest():
           'not a limit' in text)
     check('the Brittenham-Hermiller reference is cited and listed',
           r'\cite{BH}' in text and 'arXiv:2506.24088' in text)
+    check('the measured chiral angle and its identity appear',
+          '15.5225' in text and r'\frac{\kappa-3}{4}' in text)
+    check('the Moritake reference is cited and listed',
+          r'\cite{Moritake2026}' in text and 's41467-026-75023-7' in text)
+    check('the Spectre angle is a prediction, not a restatement',
+          'prediction rather than a restatement' in text)
     check('the atlas count and X-charges appear',
           str(F.ATLAS_CLASSES) in text and 'X_{\\Gamma_2}=14' in text)
 

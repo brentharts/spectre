@@ -365,6 +365,45 @@ theorem spectre_trace_is_eight :
 '''  % (pairs, hat)
 
 
+def chiral_section():
+    return r'''
+/-! ## The measured chiral angle, and where it comes from
+
+Moritake et al. measured the twist of the Hat quasilattice's diffraction and
+give its cosine as (3 phi - 1)/4.  The Hat inflation factor is kappa = phi^4.
+These are the same number shifted: 3 phi - 1 = kappa - 3, so the angle a
+laboratory measured is a function of the eigenvalue this file already proves
+things about.
+
+Written over Z[sqrt 5], cleared of denominators: 8 cos theta = 1 + 3 sqrt 5
+and 2 kappa = 7 + 3 sqrt 5, so 8 cos theta = 2 kappa - 6. -/
+
+structure Z5 where
+  a : Int
+  b : Int
+deriving DecidableEq, Repr
+
+instance : Add Z5 := ⟨fun x y => ⟨x.a + y.a, x.b + y.b⟩⟩
+instance : Sub Z5 := ⟨fun x y => ⟨x.a - y.a, x.b - y.b⟩⟩
+instance : Mul Z5 := ⟨fun x y => ⟨x.a * y.a + 5 * x.b * y.b,
+                                  x.a * y.b + x.b * y.a⟩⟩
+
+/-- Twice the Hat inflation factor: 2 kappa = 7 + 3 sqrt 5. -/
+def twoKappa : Z5 := ⟨7, 3⟩
+
+/-- Eight times the measured chiral cosine: 1 + 3 sqrt 5. -/
+def eightCos : Z5 := ⟨1, 3⟩
+
+/-- The measured angle is the inflation factor, shifted and scaled. -/
+theorem chiral_angle_from_inflation : eightCos = twoKappa - ⟨6, 0⟩ := by decide
+
+/-- kappa satisfies the Hat quadratic, so the constant in the angle is not
+free: twice it is a root of x^2 - 14x + 4. -/
+theorem two_kappa_quadratic :
+    twoKappa * twoKappa = ⟨14, 0⟩ * twoKappa - ⟨4, 0⟩ := by decide
+'''
+
+
 def xcharge_section():
     vals = ', '.join(str(v) for k, v in sorted(F.X_CHARGE.items())
                      if not isinstance(v, tuple))
@@ -435,6 +474,7 @@ def document(audit=None):
             + arithmetic_section()
             + frequency_section()
             + xcharge_section()
+            + chiral_section()
             + minors_section()
             + limits_section())
 

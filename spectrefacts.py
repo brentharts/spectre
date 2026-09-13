@@ -549,6 +549,46 @@ fact(key='rho_x_at_half',
             'bulk X-density has a closed form in Q(sqrt15)',
      decimal=sp.N(RHO_AT_HALF, 8))
 
+# --------------------------------------- the chiral angle, measured in a lab
+#
+# Moritake et al. fabricated the Hat quasilattice in SiN and measured its
+# diffraction.  The pattern is chiral, and the twist that makes it chiral has
+# an exact closed form -- which turns out to be a function of the inflation
+# factor this paper already computes, though the experiment does not write it
+# that way.
+
+PHI = (1 + sp.sqrt(5)) / 2
+COS_CHIRAL = sp.radsimp(sp.simplify((3 * PHI - 1) / 4))
+THETA_CHIRAL = sp.deg(sp.acos(COS_CHIRAL))
+
+fact(key='chiral_angle',
+     claim=r'\cos\theta_{\rm chiral}=\tfrac{1}{8}(1+3\sqrt5)',
+     value=COS_CHIRAL,
+     method='Moritake et al. 2026: the metatile twist accumulates as a ratio '
+            'of Fibonacci terms F(2n+1)/F(2n-1), which tends to phi squared, '
+            'and the limiting angle is this arccosine -- measured in '
+            'diffraction from a fabricated SiN quasilattice',
+     decimal=sp.N(THETA_CHIRAL, 6))
+
+fact(key='angle_from_kappa',
+     claim=r'\cos\theta_{\rm chiral}=\tfrac14(\kappa-3)',
+     value=sp.simplify((3 * PHI - 1) - (HAT_LAM2 - 3)),
+     method='3 phi - 1 and phi^4 - 3 are the same number, so the measured '
+            'chiral angle is a function of the Hat inflation factor. The '
+            'experiment and the substitution spectrum meet at one constant',
+     lean='chiral_angle_from_inflation')
+
+SPECTRE_NAIVE = sp.N((LAM2 - 3) / 4, 6)
+
+fact(key='spectre_angle_differs',
+     claim=r'(\lambda^{2}-3)/4>1',
+     value=SPECTRE_NAIVE,
+     method='substituting the Spectre inflation factor into the Hat formula '
+            'gives a cosine greater than one, so the Spectre cannot share it; '
+            'its twist geometry differs and its chiral angle is not computed '
+            'here, which makes it a prediction rather than a restatement')
+
+
 # ------------------------------------------- the mirror channel, from Brittenham-Hermiller
 
 fact(key='bh_theorem',
@@ -794,6 +834,19 @@ def selftest():
         fail('the deepest Phi split is near 0.58, so the drift note should go')
     if sp.simplify(RHO_AT_HALF - (1 - SQ15 / 5)) != 0:
         fail('rho_X at p = 1/2 is not 1 - sqrt15/5')
+
+    # the measured chiral angle
+    if sp.simplify(COS_CHIRAL - (1 + 3 * sp.sqrt(5)) / 8) != 0:
+        fail('the chiral cosine is not (1 + 3 sqrt5)/8')
+    if abs(float(sp.N(THETA_CHIRAL)) - 15.52) > 0.01:
+        fail('the chiral angle is not 15.52 degrees: %s'
+             % float(sp.N(THETA_CHIRAL)))
+    if sp.simplify((3 * PHI - 1) - (HAT_LAM2 - 3)) != 0:
+        fail('3 phi - 1 is not kappa - 3, so the angle does not follow from '
+             'the inflation factor')
+    if float(SPECTRE_NAIVE) <= 1:
+        fail('the Spectre substitution into the Hat formula gives a valid '
+             'cosine, so the claim that the phases cannot share it is wrong')
 
     verdict = cross_check()
     if verdict is not None and not verdict.startswith('matches'):
