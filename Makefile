@@ -1,39 +1,25 @@
-default:
-	./somos8n.py --test10
+# The paper is generated. Edit the facts, not the .tex.
+PYTHON ?= python3
+export PYTHONPATH := ..
 
-t2:
-	./somos8n.py --test2
+all: check paper
 
-t3:
-	./somos8n.py --test3
+facts:
+	$(PYTHON) spectrefacts.py --selftest
 
-t4:
-	./somos8n.py --test4
+lean:
+	$(PYTHON) spectrelean.py --check
 
-t5:
-	./somos8n.py --test5
+paper: facts
+	$(PYTHON) spectrepaper.py
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 
-t6:
-	./somos8n.py --test6
+check: facts lean
+	$(PYTHON) spectrepaper.py --selftest
 
-t7:
-	./somos8n.py --test7
+clean:
+	rm -f spectre_substrate.tex spectre_substrate.pdf *.aux *.log *.out
+	rm -rf __pycache__
 
-t8:
-	./somos8n.py --test8
-
-t9:
-	./somos8n.py --test9
-
-
-a:
-	blender --python einstein_fibration.py -- --iter2 --b=0.5
-
-b:
-	blender --python einstein_fibration.py -- --iter2 --b=1
-
-c:
-	blender --python einstein_fibration.py -- --iter2 --b=1.5
-
-d:
-	blender --python einstein_fibration.py -- --iter2 --b=3
+.PHONY: all facts lean paper check clean
