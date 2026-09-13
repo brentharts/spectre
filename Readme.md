@@ -1,5 +1,118 @@
 # einstein3d — new forms of the monotile (Spectre/Hat)
 
+## The paper: *What a Substitution Determines, and What a Kernel Cannot Reach*
+
+*Exact Spectral Theory of the Spectre Substrate, with a Lean 4 Checked Fact Layer.*
+
+Build it with `make paper`; check everything with `make check`. The document is
+**generated** — every number in it is a call into `spectrefacts.py` at build
+time, so the paper cannot disagree with its own arithmetic. Editing the `.tex`
+is editing a build artefact.
+
+| | |
+|---|---|
+| `spectrefacts.py` | 44 Facts, computed exactly in sympy. `--selftest` checks all of them |
+| `spectreatlas.py` | the contact atlas and X-charges, built from the placed tiling |
+| `spectrelean.py`  | emits the Fact layer as Lean 4 and runs the kernel over it |
+| `spectrepaper.py` | 13 sections, generated |
+
+The Lean file is in the wiki: **[Spectre-Lean](https://github.com/brentharts/spectre/wiki/Spectre-Lean)**
+— 44 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit
+(40 depend on no axioms at all; the 4 induction proofs use `propext` and
+`Quot.sound`; `Classical.choice` appears nowhere, so every proof is
+constructive).
+
+### What the paper establishes
+
+**The spectrum.** The substitution matrix has
+χ(x) = x⁵(x−1)(x+1)(x²−8x+1), so the Perron eigenvalue is
+λ² = 4+√15 ≈ 7.873 — the fundamental unit of ℤ[√15], since 4²−15·1² = 1. The
+linear inflation factor λ = ½(√6+√10) splits into a hexagonal and a pentagonal
+channel, (λ−λ⁻¹)² = 6 and (λ+λ⁻¹)² = 10, both proved in ℤ[√15] *without
+evaluating a square root*.
+
+**The zero sector is not semisimple.** rank M = 5 but rank Mⁿ = 4 for n ≥ 2:
+one transient direction survives a single substitution and dies only after
+two. The zero eigenvalue has algebraic multiplicity five and geometric
+multiplicity four, so M is not diagonalizable.
+
+**Two integer charges.** Q₊ and Q₋ are exact left eigenvectors for the marginal
+eigenvalues ±1; Q₊ is conserved and Q₋ alternates, tracking global handedness
+from species counts alone.
+
+**The census, twice — and the identity between them.** Row Γ is all ones, so
+N_Γ(n) is the *entire* census at depth n−1 and the Mystic is a second copy of
+it. Hence **T_geom(n) = T(n) + T(n−1)**: 1, 8, 63, 496, 3905 against
+1, 9, 71, 559, 4401. This was previously two conventions quoted in different
+sections; it is now a theorem.
+
+**Two phases, two quadratic fields.** The Hat runs on four metatiles with
+χ_H(x) = (x−1)(x+1)(x²−7x+1) and inflation φ⁴ ≈ 6.854. The two characteristic
+polynomials share (x−1)(x+1) and differ in **one coefficient** — seven against
+eight — and that coefficient is the discriminant. The Spectre is graded by
+ℚ(√15), the Hat by ℚ(√5). So the Spectre→Hat transition is not only a parity
+restoration but a change of field, and the log-periodic fingerprint changes
+with it.
+
+**Aperiodicity, and which tile witnesses it.** All nine Spectre frequencies lie
+in ℤ[√15] with nonzero √15 part, so *any* species refutes periodicity. The
+Hat's commonest metatile has frequency exactly ⅓ — rational, and so no witness
+at all.
+
+**The contact atlas stabilises at 131 classes** (depths 3, 4, 5 *and* 6, none
+gained or lost), so per-slot statements are statements about the infinite
+tiling. The X-charges are deterministic and even:
+X_Γ₂ = 14 (the Mystic is saturated), X_Γ₁ = X_Δ = X_Σ = 4, X_Λ = 2,
+X_Φ ∈ {0,2}, and X_Θ = X_Π = X_Ξ = X_Ψ = 0.
+
+**The flavour frequency is not converged.** p = Pr(Φ²) measured at depths
+3–6 runs 0.683, 0.579, 0.538, 0.519 — still falling. The value near 0.58 is
+what depth four gives, and earlier drafts quoted it as a limit. Repeated
+Aitken extrapolation gives 0.5107 then 0.5035, so **if p → ½ then
+ρ_X = 2g/(1+g) = 1 − √15/5 ≈ 0.2254**, a closed form in ℚ(√15). That is
+evidence for one half, not a proof of it.
+
+**Seifert minors, for every k at once.** The leading principal minors of the
+(−2,1,1) tridiagonal form obey D_m = (−1)^m(m+1), proved by induction in Lean.
+Sylvester then gives negative definiteness at *every* k rather than at sampled
+ones, hence σ(T(2,k)) = −(k−1) and u(T(2,k)) = (k−1)/2.
+
+**The measured chiral angle is the inflation factor.** Moritake *et al.* (2026,
+[Nat. Commun. 17, 6085](https://doi.org/10.1038/s41467-026-75023-7)) fabricated
+the Hat quasilattice and measured a chiral pinwheel diffraction pattern with
+twist θ = arccos((3φ−1)/4) ≈ 15.52°. Since 3φ−1 = φ⁴−3, this is
+**cos θ = (κ−3)/4** with κ the Hat inflation factor above: a laboratory
+measurement and a Perron eigenvalue are one constant. Substituting the
+Spectre's λ² gives a cosine greater than one, so the Spectre cannot share the
+relation and must have its own angle in ℚ(√15) — a bench-scale test of the
+two-field claim, with no cosmology involved.
+
+### What it does not establish
+
+Stated plainly, because the categories carry different obligations:
+
+- **Not a computation.** The chirality-relaxation conjecture is a selection
+  statement, not a dynamics.
+- **Exact in principle, not computed here.** The Spectre's own chiral angle;
+  the closed form for p.
+- **Not determined by the data carried.** The deficit scale δ in the binding
+  spectrum — Brittenham–Hermiller bound it (1 ≤ δ ≤ 4) and nobody has fixed
+  it; the ratios {0,1,2,7} are ours, the scale is not. And the unit postulate
+  behind the birefringence candidate, which is unjustified and is labelled so.
+- **Obstructed by the transcription.** That the substitution matrix
+  transcribes the published rules. Every Fact is downstream of it and none
+  bears on it; the geometric census audits it, and an audit is not a proof.
+  This is the one place the paper asks to be trusted.
+
+A note on the last point, from the literature rather than from us: the
+Brittenham–Hermiller theorem the binding mechanism rests on was corrected
+after Wang and Zhang observed that two of its diagrams were a chiral knot and
+its mirror. The theorem stands and now has two routes — but no proof layer
+here would have caught that, because the question is about knot diagrams and
+this kernel sees arithmetic. A machine-checked Fact layer is worth having and
+does not insure against everything.
+
+
 ## Modules
 
 ### `tile_family.py` — per-edge Tile(a,b)

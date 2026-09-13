@@ -692,6 +692,38 @@ def cross_check():
     return 'matches brentharts/spectre chirality_e8.substitution_matrix()'
 
 
+def check_readme(path='Readme.md'):
+    """Check the README's headline numbers against this module.
+
+    The README is hand-written prose -- it is an argument, not a build
+    artefact, so it is not generated.  But it quotes numbers, and a quoted
+    number is exactly the thing that goes stale when the facts move.  This
+    checks the ones worth checking and says which are missing.
+    """
+    import io
+    try:
+        with io.open(path, encoding='utf-8') as handle:
+            text = handle.read()
+    except IOError:
+        return ['%s not found' % path]
+
+    wanted = [
+        ('fact count', str(len(FACTS))),
+        ('Lean theorem count', '44'),
+        ('Perron eigenvalue', '4+\u221a15'),
+        ('atlas classes', str(ATLAS_CLASSES)),
+        ('Mystic X-charge', 'X_\u0393\u2082 = %d' % X_CHARGE['Gamma2']),
+        ('matrix census', ', '.join(str(t) for t in MATRIX_TOTALS[:5])),
+        ('geometric census', ', '.join(str(t) for t in GEOMETRIC_TOTALS[:5])),
+        ('phi split by depth',
+         ', '.join('%.3f' % float(P_BY_DEPTH[d]) for d in sorted(P_BY_DEPTH))),
+        ('chiral angle', str(get('chiral_angle').decimal)[:5]),
+    ]
+    missing = ['%s (%r)' % (name, value) for name, value in wanted
+               if value not in text]
+    return missing
+
+
 def selftest():
     """Check every Fact. Returns the number of problems."""
     problems = []
@@ -924,6 +956,14 @@ def _report():
 
 if __name__ == '__main__':
     import sys
+    if '--readme' in sys.argv:
+        gaps = check_readme()
+        for gap in gaps:
+            print('STALE  ' + gap)
+        print('Readme.md: %s'
+              % ('%d headline number(s) do not match this module' % len(gaps)
+                 if gaps else 'headline numbers agree with spectrefacts.py'))
+        sys.exit(1 if gaps else 0)
     if '--selftest' in sys.argv:
         sys.exit(1 if selftest() else 0)
     if '--census' in sys.argv:
