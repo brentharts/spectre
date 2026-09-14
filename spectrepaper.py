@@ -128,7 +128,18 @@ stipulated: row $\Gamma$ is all ones, so the Mystic contributes exactly the
 previous generation and $T_{\rm geom}(n)=T(n)+T(n-1)$.  We give the tile area
 as an exact quadratic form, the Spectre-to-Hat order parameter in closed form
 in $\mathbb{Q}(\sqrt{15})$, and the Seifert minors of $T(2,k)$ in closed form
-for every $k$.  The Fact layer is emitted as Mathlib-free Lean~4 and checked by
+for every $k$.  Separately from the area grading we derive the operator
+governing the supertile \emph{perimeter}: an exact order-three recurrence whose
+companion matrix has characteristic polynomial $%s$, so the boundary grows by
+$\nu=2+\sqrt5=\varphi^{3}$ while the area grows by $\lam^{2}=4+\sqrt{15}$ ---
+the same $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$ divide, now between
+area and perimeter of one tile.  The boundary is therefore fractal, of
+dimension $%s$, and the resemblance to the Hat's $\varphi^{4}$ is shown to be a
+Lucas identity rather than a shared operator.  Against Wang and
+Zahl~\cite{WangZahl} we report a negative result --- a periodic lattice
+non-concentrates better than the monotile, because aperiodicity is
+non-repetition and not direction spread --- and the multi-scale exponent the
+ladder does fix.  The Fact layer is emitted as Mathlib-free Lean~4 and checked by
 the kernel: %d theorems, no admitted proofs, and a measured axiom audit.  A
 modelling step identifying the order parameter with a birefringence angle is
 reported separately and behind its own caveat, because its premise is a
@@ -138,6 +149,8 @@ postulate and the arithmetic around it cannot repair that.
        tex(F.get('charpoly').value),
        tex(F.get('perron').value),
        F.RANKS[1], F.RANKS[2],
+       tex(F.get('boundary_chi').value),
+       F.get('boundary_dimension').decimal,
        len(L.theorem_names(L.document())))
 
 
@@ -688,6 +701,195 @@ screen has no mirror channel.
        F.get('rho_x_at_half').decimal, tex(F.G_SMALL))
 
 
+def boundary_operator_section():
+    return r"""
+\section{The other unit: a boundary operator in $\mathbb{Q}(\sqrt5)$}
+\label{sec:bdyop}
+
+Everything above grades the substitution by area.  The perimeter is graded by
+something else, and the two do not live in the same field.
+
+Let $P(k)$ be the number of unit tile edges on the boundary of an order-$k$
+supertile.  Reading the child multiset off the substitution table --- the eight
+placement slots are the same for every species, and slot~$7$ is $\Gamma$ in
+every rule, while $\Gamma$ alone has a null slot and therefore seven children
+--- and subtracting each glued edge twice gives, with $Q$ the $\Gamma$
+perimeter and $G$ the number of edges shared between two \emph{different}
+children,
+%%
+\begin{equation}
+\label{eq:bdyid}
+P(k{+}1)=7P(k)+Q(k)-2G(k{+}1),
+\qquad
+Q(k{+}1)=6P(k)+Q(k)-2G_{\Gamma}(k{+}1).
+\end{equation}
+%%
+The coefficients are read from the rule, not fitted to counts, and~\eqref{eq:bdyid}
+is exact at every order computed.  Two structural facts make this small enough
+to state.  First, all eight non-$\Gamma$ species have the \emph{same} boundary
+sequence: the outline of a supertile does not depend on its type, which is what
+collapses a nine-type problem to two.  Second, the glue decomposes by slot pair
+into thirteen contact sequences, and every one of them satisfies the same
+recurrence as $P$ itself.  The contact set is closed under the operator, which
+is why $P$ is.
+
+\begin{fact}
+\label{fact:bdyrec}
+$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.
+\end{fact}
+
+\begin{fact}
+\label{fact:bdychi}
+The companion matrix of that recurrence --- the boundary transfer operator ---
+has characteristic polynomial $\chi_{\partial}(x)=%s$.  The marginal eigenvalue
+$+1$ is a conserved boundary quantity, of the same kind as the $\pm1$ of
+Section~\ref{sec:charges}.
+\end{fact}
+
+\begin{fact}
+\label{fact:nu}
+The Perron root is $\nu=%s=\varphi^{3}=%s$.
+\end{fact}
+
+\noindent
+So the area of a supertile inflates by $\lam^{2}=4+\sqrt{15}$ and its perimeter
+by $2+\sqrt5$.  This is the $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$
+divide of Section~\ref{sec:phases} again, but between area and perimeter of the
+\emph{same} tile rather than between the Spectre and the Hat.  The supertile
+boundary is golden although the tiling is not.
+
+Since $\nu>\lam$ the boundary is fractal: its box dimension is
+$\log\nu/\log\lam=%s$, so a perimeter argument assuming $P(k)\sim\lam^{k}$ is
+wrong, and wrong by a definite amount.
+
+\subsection*{What the golden appearance is not}
+
+$\varphi^{3}$ next to the Hat's $\varphi^{4}$ invites the conjecture that the
+Spectre's boundary combinatorics \emph{are} the Hat's.  They are not, and the
+refutation is worth more than the conjecture.
+
+\begin{fact}
+\label{fact:goldenabsent}
+$x^{2}-4x-1$ divides neither $\chi_{M}$ nor $\chi_{H}$, and a search over
+integer matrices built from $M$ and $H$ --- sums, differences, powers,
+transposes, adjugates, integer shifts --- finds it in none of them.
+\end{fact}
+
+\begin{fact}
+\label{fact:lucas}
+$\varphi^{n}$ has minimal polynomial $x^{2}-L_{n}x+(-1)^{n}$ with $L_{n}$
+Lucas.  So $x^{2}-4x-1$ \emph{is} $\varphi^{3}$ and $x^{2}-7x+1$ \emph{is}
+$\varphi^{4}$: once two quantities are both powers of $\varphi$, their minimal
+polynomials are forced to be adjacent Lucas quadratics and the resemblance
+carries no information beyond $\mathbb{Q}(\sqrt5)$.
+\end{fact}
+
+\noindent
+The asymmetry is worth recording: the Spectre's own unit is not golden, since
+$\chi_{M}$ contributes the trace $8$ and $8$ is not a Lucas number.  The three
+operators sit at traces $8$, $7$ and $4$ with norms $+1$, $+1$ and $-1$.
+
+What survives is weaker and true.  The ratio $\mu=\lam^{2}/\nu$ has minimal
+polynomial $%s$ --- degree four, not two --- so it lies in the compositum
+$\mathbb{Q}(\sqrt3,\sqrt5)$ and in neither quadratic field alone.
+
+\begin{prop}
+\label{prop:compositum}
+The Spectre and the Hat meet in $\mu$ as a compositum, not by either field
+containing the other.
+\end{prop}
+""" % (', '.join(str(n) for n in F.get('boundary_recurrence').value[:6]),
+       tex(F.get('boundary_chi').value),
+       tex(F.get('boundary_growth').value),
+       F.get('boundary_growth').decimal,
+       F.get('boundary_dimension').decimal,
+       tex(F.get('compositum').value))
+
+
+def kakeya_section():
+    return r"""
+\section{A multi-scale reading, and a negative result}
+\label{sec:kakeya}
+
+Wang and Zahl~\cite{WangZahl} prove that a family of $\delta$-tubes in
+$\mathbb{R}^{3}$ whose directions do not concentrate --- not too many tubes
+contained in a common convex set --- has a union of almost maximal volume.
+That is a hypothesis about a direction set and a conclusion about a volume, and
+both halves are measurable on a finite family.  The braided tiling supplies one:
+every shared edge carries a two-strand braid, each strand is a curve in
+$\mathbb{R}^{3}$, and its $\delta$-neighbourhood is a tube.  We report what the
+measurement gives, including where it goes against us.
+
+\subsection*{Directions: the monotile does worse than a lattice}
+
+The obvious bridge fails.  Measured against a periodic hexagonal control with
+identical machinery, tube families built from the Spectre are \emph{not} better
+spread: on the rank of the dual point cloud the periodic lattice scores higher,
+and its slab fractions decay faster.  The reason is not subtle in retrospect.
+Kakeya non-concentration asks for a direction set that is \emph{spread};
+aperiodicity supplies \emph{non-repetition}.  A hexagonal lattice has a
+perfectly spread direction set by symmetry, and a Spectre tiling draws its
+edges from a small set of directions on the same hexagonal grid --- repeating
+them less often does not make them more numerous.  The bridge as posed asks the
+monotile for its weakest property.
+
+\subsection*{Scales: what the substitution actually has}
+
+What a substitution tiling has is scales, and the ladder is the one this paper
+is about: a patch of diameter $D$ carries $\rho_{n}=D\lam^{-n}$, graded by the
+same unit as everything else.  Along that ladder the families do separate.
+Comparing the local direction law inside a $\rho$-ball with the global one, and
+normalising against a bootstrap draw of the same size --- without which the
+statistic measures the central limit theorem and not the geometry --- the
+Spectre holds a ratio near unity, flat across scales spanning a factor of
+twenty, while the periodic control sits near a third of that and equally flat.
+The Spectre's balls look like random subsamples of the whole patch at every
+zoom; the lattice's are hyperuniform, carrying the global direction mix with
+sub-random discrepancy.
+
+Flatness across scales is the signature of a \emph{sticky} family, and
+stickiness is the obstruction a Kakeya argument must survive rather than a
+property that helps it.  So the honest statement is that the Spectre braid is a
+concrete finite sticky family, which is a harder object to offer than a better
+one.
+
+\subsection*{The exponent the ladder wants}
+
+A genuine multi-scale family puts tubes of many thicknesses in at once, one per
+substitution level, with $\delta_{c}=\delta_{0}\lam^{-sc}$.  The natural guess
+$s=2$, one factor of the fundamental unit per level, is wrong, and
+Section~\ref{sec:bdyop} says why: every interface edge is a \emph{unit} tile
+edge whatever level it sits at, so length does not scale with level and only
+the population does.  One factor of the unit per level is the right grading for
+areas and the wrong grading for a thickness attached to a fixed-length edge.
+
+\begin{prop}
+\label{prop:sstar}
+Interfaces at coarseness $c$ in a depth-$N$ patch number
+$\bigl(T(c)P(N-c)-P(N)\bigr)/2$, so they grow in $c$ by $\mu=\lam^{2}/\nu$, and
+the thickness exponent making every level carry comparable volume is
+%%
+\begin{equation}
+\label{eq:sstar}
+s^{*}=1-\frac{\log\nu}{\log\lam^{2}}=%s .
+\end{equation}
+\end{prop}
+
+\noindent
+Two cautions attach to~\eqref{eq:sstar}.  It is exact but \emph{not algebraic}:
+a ratio of logarithms of algebraic numbers has a closed form and arbitrary
+precision but is not a root of any polynomial.  The algebraic object is $\nu$;
+$s^{*}$ is what remains after taking its logarithm, and a reader wanting an
+element of $\mathbb{Z}[\sqrt{15}]$ should stop at $\nu$ and accept it in
+$\mathbb{Q}(\sqrt5)$.  And $s^{*}$ had to be derived rather than fitted:
+because the interface count depends on $T(c)$ and on $P(N-c)$ together, a
+single-exponent fit needs $c$ large and $N-c$ large at once, which no finite
+patch provides.  Fitting one anyway returns values that drift with depth and
+never settle --- and the closed form reproduces those drifting values, which is
+how we know the drift was the estimator and not the geometry.
+""" % (F.get('balanced_exponent').decimal,)
+
+
 def lean_section():
     names = L.theorem_names(L.document())
     sample = r'''theorem q_minus_alternates : vecMul Qminus M = scale (-1) Qminus := by decide
@@ -756,7 +958,27 @@ absent, and what is reported is the constraint.
 the published substitution.  Every Fact is downstream of it and none bears on
 it.  It is audited --- the geometric census rebuilds the counts from placed
 tiles by a route sharing no code, and agrees at every depth --- and an audit is
-not a proof.
+not a proof.  Section~\ref{sec:bdyop} adds a second input of exactly this kind:
+the three seed values of Fact~\ref{fact:bdyrec} are counted from placed tiles,
+not derived here.  They are audited the same way and carry the same status, and
+saying so is the point of keeping this category.
+
+\item \emph{Established in the aggregate, open in the fine decomposition.}
+The boundary operator of Fact~\ref{fact:bdychi} governs the perimeter, the
+glue, and all thirteen contact sequences exactly.  Resolved further, by species
+and edge index, a handful of components obey neither it nor its obvious
+extensions, while their ratios still approach $\nu$.  So the extra spectrum is
+subdominant and cannot move the Perron root, and its exact content is not
+settled by the orders we can compute.  What is claimed is the aggregate
+operator; the full fine operator is not claimed.
+
+\item \emph{Fixed by reading, not by the geometry.}  The boundary sequences
+must be read from $k=1$.  At $k=0$ a supertile is a single tile, there is no
+assembly, and a recurrence describing assembly has nothing to describe; read
+from $k=0$ only $P$ obeys it, read from $k=1$ all of them do.  Two contact
+sequences that look like exceptions differ from their partners in the first
+term alone.  This is a convention made explicit rather than a gap, and it is
+listed because an unstated one would look like a gap.
 \end{enumerate}
 
 \noindent
@@ -880,6 +1102,10 @@ Section~\ref{sec:mass}.
 \bibitem{WZ} C.~Wang and Y.~Zhang (2025). A remark on the counterexample to
 the unknotting number conjecture. arXiv:2507.14265.
 \url{https://arxiv.org/abs/2507.14265}
+\bibitem{WangZahl} H.~Wang and J.~Zahl (2025). Volume estimates for unions
+of convex sets, and the Kakeya set conjecture in three dimensions.
+\emph{arXiv:2502.17655}.
+
 \bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
 prime. \emph{Invent. Math.} 82, 37--55.
 \bibitem{demoura2021} de Moura, L. and Ullrich, S. (2021). The Lean 4 Theorem
@@ -899,6 +1125,7 @@ def document():
         spectral_section(),
         census_section(), charges_section(), deformation_section(),
         phases_section(), knot_section(), xcharge_section(),
+        boundary_operator_section(), kakeya_section(),
         lean_section(), data_section(), boundary_section(),
         facts_appendix(), BIBLIOGRAPHY,
     ])
@@ -975,6 +1202,47 @@ def selftest():
           'prediction rather than a restatement' in text)
     check('the atlas count and X-charges appear',
           str(F.ATLAS_CLASSES) in text and 'X_{\\Gamma_2}=14' in text)
+
+    print('the boundary operator')
+    check('the perimeter sequence is the live one',
+          all(str(n) in text for n in F.BOUNDARY_SEQ[:6]))
+    check('the boundary characteristic polynomial appears',
+          tex(F.get('boundary_chi').value) in text)
+    check('the growth rate is named as phi cubed',
+          r'\varphi^{3}' in text and F.get('boundary_growth').decimal
+          is not None and str(F.get('boundary_growth').decimal)[:6] in text)
+    check('the boundary is called fractal',
+          'the boundary is fractal' in text)
+    check('the derived identity is present and called derived',
+          r'\label{eq:bdyid}' in text
+          and 'read from the rule, not fitted to counts' in text)
+    check('the golden resemblance is refuted, not asserted',
+          'divides neither' in text and 'Lucas' in text)
+    check('the Spectre unit is said not to be golden',
+          'not a Lucas number' in text)
+    check('the compositum claim is stated as the weaker survivor',
+          'compositum' in text and 'neither quadratic field alone' in text)
+
+    print('the Kakeya section keeps its negative')
+    check('the Wang-Zahl reference is cited and listed',
+          r'\cite{WangZahl}' in text and '2502.17655' in text)
+    check('it is distinct from the Wang-Zhang citation',
+          r'\cite{WZ}' in text and '2507.14265' in text)
+    check('the negative result is stated, not buried',
+          'the obvious bridge fails' in text.lower()
+          and 'weakest property' in text)
+    check('stickiness is called an obstruction, not an advantage',
+          'obstruction a Kakeya argument must survive' in text)
+    check('the bootstrap correction is named',
+          'central limit theorem' in text)
+    check('s* is called exact but not algebraic',
+          'not algebraic' in text)
+    check('the drifting fit is explained as the estimator',
+          'the estimator and not the geometry' in text)
+    check('the seed convention is stated in the boundary section',
+          'read from $k=1$' in text)
+    check('the fine spectrum is left open explicitly',
+          'the full fine operator is not claimed' in text)
 
     print()
     if failures:

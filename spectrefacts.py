@@ -928,6 +928,129 @@ def _perron_col():
     return sp.Matrix([[FREQ[n]] for n in SPECIES])
 
 
+# ================================================================= boundary
+#
+# The perimeter of a supertile, and the operator that governs it.  Everything
+# in this block is downstream of one measured input, BOUNDARY_SEED, in exactly
+# the way everything else is downstream of M: it is geometry transcribed, not
+# derived here, and it is audited elsewhere by a route that shares no code
+# (spectre_boundary.py counts it from placed tiles; spectre_boundary_operator.py
+# rederives the recurrence from the substitution rule).  Section "The boundary,
+# restated" in the paper puts it in the transcription category for that reason.
+
+BOUNDARY_SEED = (14, 46, 182)
+BOUNDARY_COEFFS = (5, -3, -1)          # P(k) = 5P(k-1) - 3P(k-2) - P(k-3)
+
+
+def boundary_perimeter(kmax=8):
+    """P(k), boundary edges of an order-k supertile, from the recurrence."""
+    out = list(BOUNDARY_SEED)
+    while len(out) <= kmax:
+        a, b, c = BOUNDARY_COEFFS
+        out.append(a * out[-1] + b * out[-2] + c * out[-3])
+    return out[:kmax + 1]
+
+
+BOUNDARY_SEQ = boundary_perimeter(6)
+
+BOUNDARY_CHI = sp.factor(sp.expand(
+    x ** 3 - BOUNDARY_COEFFS[0] * x ** 2 - BOUNDARY_COEFFS[1] * x
+    - BOUNDARY_COEFFS[2]))
+
+NU = 2 + sp.sqrt(5)                    # the boundary growth rate
+LUCAS = [2, 1, 3, 4, 7, 11, 18, 29, 47]
+
+fact(key='boundary_recurrence',
+     claim=r'P(k)=5P(k-1)-3P(k-2)-P(k-3)',
+     value=BOUNDARY_SEQ,
+     method='exact integer recurrence on the supertile perimeter, derived in '
+            'spectre_boundary_operator.py from the substitution table and '
+            'not fitted to the counts')
+
+fact(key='boundary_chi',
+     claim=r'\chi_{\partial}(x)=(x-1)(x^{2}-4x-1)',
+     value=BOUNDARY_CHI,
+     method='characteristic polynomial of the companion matrix of the '
+            'recurrence; the marginal eigenvalue +1 is a conserved boundary '
+            'quantity')
+
+fact(key='boundary_growth',
+     claim=r'\nu=2+\sqrt{5}=\varphi^{3}',
+     value=sp.radsimp(NU),
+     method='Perron root of the boundary operator; equal to the cube of the '
+            'golden ratio',
+     decimal=sp.N(NU, 12))
+
+fact(key='boundary_field',
+     claim=r'\nu\in\mathbb{Q}(\sqrt{5}),\ \lambda^{2}\in\mathbb{Q}(\sqrt{15})',
+     value=(sp.minimal_polynomial(NU, x),
+            sp.minimal_polynomial(LAM2, x)),
+     method='area and perimeter of the same tile inflate in different '
+            'quadratic fields')
+
+BOUNDARY_DIM = sp.log(NU) / sp.log(LAM)
+
+fact(key='boundary_dimension',
+     claim=r'\dim_{\mathrm{box}}\partial=\log\nu/\log\lambda',
+     value=BOUNDARY_DIM,
+     method='nu exceeds lambda, so the supertile boundary is fractal and the '
+            'perimeter does not scale with the linear inflation',
+     decimal=sp.N(BOUNDARY_DIM, 12))
+
+MU_BALANCE = sp.radsimp(sp.simplify(LAM2 / NU))
+S_STAR = sp.simplify(1 - sp.log(NU) / sp.log(LAM2))
+MU_MINPOLY = sp.minimal_polynomial(MU_BALANCE, x)
+
+fact(key='balanced_exponent',
+     claim=r's^{*}=1-\log\nu/\log\lambda^{2}',
+     value=S_STAR,
+     method='the thickness exponent making every substitution level carry '
+            'comparable volume; exact but not algebraic, being a ratio of '
+            'logarithms of algebraic numbers',
+     decimal=sp.N(S_STAR, 12))
+
+fact(key='compositum',
+     claim=r'\mu=\lambda^{2}/\nu\ \text{has degree }4',
+     value=MU_MINPOLY,
+     method='the balanced ratio lies in Q(sqrt3, sqrt5) and in neither '
+            'quadratic field alone, so the Spectre and the Hat meet in the '
+            'compositum rather than one containing the other')
+
+GOLDEN_ABSENT = not any(
+    sp.simplify(pp - (x ** 2 - 4 * x - 1)) == 0
+    for poly in (CHARPOLY, HAT_CHARPOLY)
+    for pp, _ in sp.factor_list(sp.expand(poly))[1])
+
+fact(key='golden_absent',
+     claim=r'(x^{2}-4x-1)\nmid\chi_{M},\ \chi_{H}',
+     value=GOLDEN_ABSENT,
+     method='the boundary quadratic divides neither substitution matrix; the '
+            'shared field is forced by Lucas, not by a common operator')
+
+LUCAS_DEFLATION = all(
+    sp.simplify(sp.minimal_polynomial(PHI ** n, x)
+                - (x ** 2 - LUCAS[n] * x + (-1) ** n)) == 0
+    for n in range(1, 7))
+
+fact(key='lucas_deflation',
+     claim=r'\varphi^{n}:\ x^{2}-L_{n}x+(-1)^{n}',
+     value=LUCAS_DEFLATION,
+     method='every power of the golden ratio has a Lucas quadratic for its '
+            'minimal polynomial, so agreement of two such polynomials carries '
+            'no information beyond Q(sqrt5)')
+
+SPECTRE_NOT_GOLDEN = all(sp.simplify(LAM2 - PHI ** n) != 0
+                         for n in range(1, 13))
+
+fact(key='spectre_not_golden',
+     claim=r'\lambda^{2}\neq\varphi^{n}',
+     value=SPECTRE_NOT_GOLDEN,
+     method='the trace of the Spectre unit is eight, which is not a Lucas '
+            'number, so the area inflation is not golden even though the '
+            'perimeter inflation is')
+
+
+
 def _with_mystic(depth):
     """The census a reader gets by following the prose: Gamma = G1 + G2."""
     counts = matrix_census(depth)
