@@ -1,6 +1,4 @@
-# einstein3d — new forms of the monotile (Spectre/Hat)
-
-## The paper: *What a Substitution Determines, and What a Kernel Cannot Reach*
+## Phase Grading in Aperiodic Monotiles
 
 *Exact Spectral Theory of the Spectre Substrate, with a Lean 4 Checked Fact Layer.*
 
@@ -112,6 +110,7 @@ here would have caught that, because the question is about knot diagrams and
 this kernel sees arithmetic. A machine-checked Fact layer is worth having and
 does not insure against everything.
 
+# einstein3d — forms of the monotile (Spectre/Hat)
 
 ## Modules
 
