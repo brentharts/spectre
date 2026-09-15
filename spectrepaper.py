@@ -135,7 +135,9 @@ $\nu=2+\sqrt5=\varphi^{3}$ while the area grows by $\lam^{2}=4+\sqrt{15}$ ---
 the same $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$ divide, now between
 area and perimeter of one tile.  The boundary is therefore fractal, of
 dimension $%s$, and the resemblance to the Hat's $\varphi^{4}$ is shown to be a
-Lucas identity rather than a shared operator.  Against Wang and
+Lucas identity rather than a shared operator.  The perimeter sequence is
+counted twice, the second time in exact $\mathbb{Q}(\sqrt3)$ arithmetic, so no
+result here rests on a floating-point tolerance.  Against Wang and
 Zahl~\cite{WangZahl} we report a negative result --- a periodic lattice
 non-concentrates better than the monotile, because aperiodicity is
 non-repetition and not direction spread --- and the multi-scale exponent the
@@ -735,7 +737,24 @@ is why $P$ is.
 
 \begin{fact}
 \label{fact:bdyrec}
-$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.  Checked by the Lean kernel.
+$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.  Checked by the Lean kernel,
+and the sequence itself counted twice --- see Fact~\ref{fact:bdyexact}.
+\end{fact}
+
+\noindent
+The seed of that recurrence is counted from placed tiles, and the count used
+a rounding key: two edges were identified when their endpoint coordinates
+agreed to four decimals.  A key of that kind can fail in both directions, by
+merging edges that differ below the tolerance and splitting edges that agree
+above it, and nothing inside a floating-point computation bounds the failure
+--- it can only be removed.
+
+\begin{fact}
+\label{fact:bdyexact}
+The same sequence, recounted with edges identified by \emph{equality} of
+exact $\mathbb{Q}(\sqrt3)$ endpoint coordinates and from an independent
+transcription of the placement chain, agrees at every order computed.  The
+rounding key is therefore not load-bearing for any of the boundary results.
 \end{fact}
 
 \noindent
@@ -979,8 +998,12 @@ it.  It is audited --- the geometric census rebuilds the counts from placed
 tiles by a route sharing no code, and agrees at every depth --- and an audit is
 not a proof.  Section~\ref{sec:bdyop} adds a second input of exactly this kind:
 the three seed values of Fact~\ref{fact:bdyrec} are counted from placed tiles,
-not derived here.  They are audited the same way and carry the same status, and
-saying so is the point of keeping this category.
+not derived here.  They are audited the same way --- and, since
+Fact~\ref{fact:bdyexact}, audited better than the matrix is, because the
+second count is in exact quadratic-field arithmetic rather than a second
+float computation.  That removes the rounding key from the boundary results;
+it does not remove the transcription, which is the same act of reading a
+published substitution and is what this category is for.
 
 \item \emph{Established in the aggregate, open in the fine decomposition.}
 The boundary operator of Fact~\ref{fact:bdychi} governs the perimeter, the
@@ -1270,6 +1293,14 @@ def selftest():
           'the full fine operator is not claimed' in text)
     check('the boundary recurrence is claimed as kernel-checked',
           'Checked by the Lean kernel' in text)
+    check('the abstract says no result rests on a tolerance',
+          'floating-point tolerance' in text)
+    check('the perimeter is said to be counted twice',
+          r'\label{fact:bdyexact}' in text and 'counted twice' in text)
+    check('the rounding key is named as a risk and then as removed',
+          'rounding key' in text and 'not load-bearing' in text)
+    check('and the transcription is not claimed to be removed with it',
+          'it does not remove the transcription' in text)
     check('the boundary invariant is stated and attributed to induction',
           r'\label{fact:bdyinv}' in text and 'by induction in Lean' in text)
     check('the unformalised last step is named as unformalised',

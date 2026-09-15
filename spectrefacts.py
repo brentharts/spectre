@@ -688,6 +688,41 @@ def cross_check():
     return 'matches brentharts/spectre chirality_e8.substitution_matrix()'
 
 
+def cross_check_boundary():
+    """Compare BOUNDARY_SEED against an exact-arithmetic second count.
+
+    The perimeter sequence is this module's one measured input, in the same
+    way M is: it is counted from placed tiles, not derived here.  The count
+    in spectre_boundary.py identifies two edges when their endpoint
+    coordinates agree to four decimal places, and a rounding key of that
+    kind can fail in both directions -- merging edges that differ below the
+    tolerance, splitting edges that agree above it.  Nothing in a float
+    computation bounds that; it can only be removed.
+
+    pyCICY.theories.spectre counts the same sequence with edges identified
+    by EQUALITY of exact Q(sqrt3) endpoint pairs, from an independent
+    transcription of the placement chain.  If the two agree, the rounding
+    key is no longer the weakest link in the boundary results; if they
+    disagree, the float count is wrong and everything downstream with it.
+
+    Returns None when pyCICY is not on the path, a message otherwise.
+    """
+    try:
+        from pyCICY.theories import spectre as X
+    except ImportError:
+        return None
+    try:
+        theirs = X.boundary_sequence(len(BOUNDARY_SEQ) - 1)
+    except Exception as exc:                      # pragma: no cover
+        return 'pyCICY boundary_sequence failed: %s' % exc
+    if list(theirs) != list(BOUNDARY_SEQ):
+        return ('the perimeter sequences differ: %r against %r'
+                % (theirs, BOUNDARY_SEQ))
+    return ('matches pyCICY.theories.spectre.boundary_sequence() in exact '
+            'Q(sqrt3), so the four-decimal rounding key is not load-bearing')
+
+
+
 def check_readme(path='Readme.md'):
     """Check the README's headline numbers against this module.
 
@@ -917,6 +952,10 @@ def selftest():
         print('  cross-check: %s'
               % (verdict or 'brentharts/spectre not on the path, so the '
                             'matrix is unconfirmed by a second route'))
+        bverdict = cross_check_boundary()
+        print('  cross-check: %s'
+              % (bverdict or 'pyCICY not on the path, so the perimeter is '
+                             'counted only with a rounding key'))
     return len(problems)
 
 
@@ -1081,6 +1120,18 @@ fact(key='lam_below_four',
             'inflation, though the inference between them is elementary real '
             'arithmetic and is not formalised',
      lean='lam2_below_sixteen')
+
+
+BOUNDARY_EXACT_FIELD = 'Q(sqrt3)'
+
+fact(key='boundary_exact',
+     claim=r'P(k)\ \text{counted exactly in }\mathbb{Q}(\sqrt3)',
+     value=BOUNDARY_SEQ,
+     method='the same sequence recounted with edges identified by equality '
+            'of exact quadratic-field coordinates rather than by a '
+            'four-decimal rounding key, in an independent implementation '
+            '(pyCICY.theories.spectre); agreement removes the rounding key '
+            'from the boundary results rather than bounding its error')
 
 
 def _with_mystic(depth):
