@@ -119,8 +119,7 @@ CHARPOLY = sp.factor(M.charpoly(x).as_expr())
 fact(key='charpoly',
      claim=r'\chi_M(x)=x^{5}(x-1)(x+1)(x^{2}-8x+1)',
      value=CHARPOLY,
-     method='exact characteristic polynomial over Z, factored',
-     lean='charpoly_factors')
+     method='exact characteristic polynomial over Z, factored')
 
 fact(key='perron',
      claim=r'\lambda^{2}=4+\sqrt{15}',
@@ -238,7 +237,7 @@ fact(key='q_values',
      claim=r'Q_{+}\equiv-1,\quad Q_{-}=+1,-1,+1,-1',
      value=(Q_PLUS_BY_DEPTH, Q_MINUS_BY_DEPTH),
      method='evaluated on the matrix census at depths one to four',
-     lean='charges_on_patches')
+     lean='charges_at_depth_1')
 
 fact(key='censuses',
      claim=r'T=1,8,63,496;\ T_{\rm geom}=1,9,71,559',
@@ -260,7 +259,7 @@ fact(key='mystic_rule',
      method='row Gamma of M is all ones, so N_Gamma(n) is the whole census at '
             'n-1 and the Mystic is a second copy of it; the geometric total '
             'is therefore the matrix total plus the previous one',
-     lean='mystic_is_previous_total')
+     lean='mystic_1')
 
 
 # ------------------------------------------------------ the ledger identity
@@ -272,15 +271,13 @@ fact(key='ledger',
      claim=r'N_\Theta(n)=N_\Gamma(n-1)',
      value=LEDGER,
      method='row Theta of M is the indicator of Gamma, so the count is the '
-            'previous generation of Gamma verbatim',
-     lean='ledger_theta_gamma')
+            'previous generation of Gamma verbatim')
 
 fact(key='ledger_lambda',
      claim=r'N_\Lambda(n)=N_\Sigma(n-1)',
      value=all(matrix_census(n)['Lambda'] == matrix_census(n - 1)['Sigma']
                for n in range(1, 7)),
-     method='row Lambda of M is the indicator of Sigma',
-     lean='ledger_lambda_sigma')
+     method='row Lambda of M is the indicator of Sigma')
 
 
 # ------------------------------------------- the two monotile phases
@@ -302,8 +299,7 @@ HAT_LAM2 = sp.nsimplify(sp.Rational(7, 2) + sp.Rational(3, 2) * sp.sqrt(5))
 fact(key='hat_charpoly',
      claim=r'\chi_H(x)=(x-1)(x+1)(x^{2}-7x+1)',
      value=HAT_CHARPOLY,
-     method='characteristic polynomial of the four-metatile Hat substitution',
-     lean='hat_charpoly_factors')
+     method='characteristic polynomial of the four-metatile Hat substitution')
 
 fact(key='hat_perron',
      claim=r'\kappa=\tfrac12(7+3\sqrt5)=\varphi^{4}',
@@ -965,7 +961,8 @@ fact(key='boundary_recurrence',
      value=BOUNDARY_SEQ,
      method='exact integer recurrence on the supertile perimeter, derived in '
             'spectre_boundary_operator.py from the substitution table and '
-            'not fitted to the counts')
+            'not fitted to the counts',
+     lean='boundary_values')
 
 fact(key='boundary_chi',
      claim=r'\chi_{\partial}(x)=(x-1)(x^{2}-4x-1)',
@@ -1049,6 +1046,41 @@ fact(key='spectre_not_golden',
             'number, so the area inflation is not golden even though the '
             'perimeter inflation is')
 
+
+
+BOUNDARY_INVARIANT = set(
+    BOUNDARY_SEQ[k + 2] - 4 * BOUNDARY_SEQ[k + 1] - BOUNDARY_SEQ[k]
+    for k in range(len(BOUNDARY_SEQ) - 2))
+
+fact(key='boundary_invariant',
+     claim=r'P(k+2)-4P(k+1)-P(k)=-16',
+     value=sorted(BOUNDARY_INVARIANT),
+     method='the quadratic factor of chi applied to the sequence annihilates '
+            'the growing part and leaves the constant belonging to the '
+            'marginal eigenvalue +1; equivalent to the order-three recurrence '
+            'together with its seed, and proved for every k in Lean',
+     lean='boundary_invariant')
+
+BOUNDARY_GROWTH_OK = all(
+    BOUNDARY_SEQ[k + 3] >= 4 * BOUNDARY_SEQ[k + 2] + 30
+    for k in range(len(BOUNDARY_SEQ) - 3))
+
+fact(key='boundary_growth_bound',
+     claim=r'P(k+3)\ge 4P(k+2)+30',
+     value=BOUNDARY_GROWTH_OK,
+     method='the perimeter more than quadruples at every step past the seed, '
+            'while lambda < 4; half of the fractal-boundary statement, and '
+            'the half a kernel can settle',
+     lean='boundary_growth')
+
+fact(key='lam_below_four',
+     claim=r'\lambda^{2}<16',
+     value=sp.simplify(16 - LAM2) > 0,
+     method='16 - lambda^2 = 12 - sqrt15, positive since 12^2 > 15; with the '
+            'growth bound above this is why the boundary outruns the linear '
+            'inflation, though the inference between them is elementary real '
+            'arithmetic and is not formalised',
+     lean='lam2_below_sixteen')
 
 
 def _with_mystic(depth):

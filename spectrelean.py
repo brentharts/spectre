@@ -437,6 +437,104 @@ theorem binding_spectrum_is_attained :
 ''' % vals
 
 
+def boundary_section():
+    return '''
+/-! ## The supertile boundary, and the unit that grades it
+
+The perimeter of an order-k supertile obeys an exact order-three recurrence.
+Elsewhere in the repo that recurrence is *derived* from the substitution rule
+-- the eight placement slots, the null slot in Gamma, and the thirteen
+slot-pair contacts -- and here it is taken as the definition of `P` and its
+consequences are proved.
+
+Two things are worth proving rather than tabulating.  The first is the
+factorisation of the characteristic polynomial.  `(x-1)(x^2-4x-1)` says that
+the marginal eigenvalue `+1` carries a conserved quantity, exactly as `Qplus`
+does for the area matrix, and applying the quadratic factor to the sequence
+should annihilate the growing part and leave that constant behind.  It does,
+and the constant is -16.  That single affine identity is equivalent to the
+order-three recurrence together with its seed, and it is the eigenvalue
+structure made arithmetic.
+
+The second is that the boundary is fractal.  The perimeter grows by a factor
+of at least four per step, while the linear inflation is lambda < 4, so the
+perimeter outruns the linear scale and the boundary dimension exceeds one.
+Both halves are proved below.  The final inference between them is one line of
+elementary real arithmetic and is NOT formalised here: comparing a Z15 element
+with a real growth rate needs an order on Z15 and a square root, neither of
+which this Mathlib-free file has.  What is proved is the certificate. -/
+
+/-- Boundary edges of an order-k supertile.  The three seed values are counted
+from placed tiles; every later value is forced. -/
+def P : Nat → Int
+  | 0     => %d
+  | 1     => %d
+  | 2     => %d
+  | n + 3 => 5 * P (n + 2) - 3 * P (n + 1) - P n
+
+/-- The published sequence, evaluated by the kernel rather than tabulated. -/
+theorem boundary_values :
+    %s :=
+  ⟨%s⟩
+
+/-- The quadratic factor of the characteristic polynomial, applied to the
+sequence, leaves the constant belonging to the eigenvalue `+1`.  Proved for
+every k by one-step induction, so no strong induction is needed. -/
+theorem boundary_invariant :
+    ∀ k : Nat, P (k + 2) - 4 * P (k + 1) - P k = -16 := by
+  intro k
+  induction k with
+  | zero => rfl
+  | succ n ih =>
+    show 5 * P (n + 2) - 3 * P (n + 1) - P n - 4 * P (n + 2) - P (n + 1) = -16
+    omega
+
+/-- The sequence never falls back, carried as a pair so that plain induction
+suffices.  Needed because the growth bound below is only available once the
+sequence is past its seed. -/
+theorem P_lower : ∀ k : Nat, P k ≥ %d ∧ P (k + 1) ≥ %d := by
+  intro k
+  induction k with
+  | zero => exact ⟨by decide, by decide⟩
+  | succ n ih =>
+    cases ih with
+    | intro h0 h1 =>
+      have hi := boundary_invariant n
+      refine ⟨by omega, ?_⟩
+      show P (n + 2) ≥ %d
+      omega
+
+/-- The perimeter more than quadruples at every step past the seed. -/
+theorem boundary_growth : ∀ k : Nat, P (k + 3) ≥ 4 * P (k + 2) + 30 := by
+  intro k
+  have hi : P (k + 3) - 4 * P (k + 2) - P (k + 1) = -16 :=
+    boundary_invariant (k + 1)
+  have hl : P (k + 1) ≥ %d := (P_lower k).2
+  omega
+
+theorem boundary_strictly_grows : ∀ k : Nat, P (k + 3) > 4 * P (k + 2) := by
+  intro k
+  have := boundary_growth k
+  omega
+
+/-- A sufficient certificate for `0 < a + b * sqrt 15`: the rational part is
+nonnegative and dominates the surd part squared. -/
+def Z15posCert (z : Z15) : Prop := 0 ≤ z.a ∧ 15 * z.b * z.b < z.a * z.a
+
+theorem sixteen_minus_lam2 : (⟨16, 0⟩ : Z15) - lam2 = ⟨12, -1⟩ := by decide
+
+/-- Hence lambda² < 16 and lambda < 4, while the perimeter grows by at least
+4 per step: the boundary outruns the linear inflation. -/
+theorem lam2_below_sixteen : Z15posCert ((⟨16, 0⟩ : Z15) - lam2) := by
+  refine ⟨?_, ?_⟩ <;> decide
+''' % (F.BOUNDARY_SEQ[0], F.BOUNDARY_SEQ[1], F.BOUNDARY_SEQ[2],
+       ' ∧ '.join('P %d = %d' % (i, v)
+                   for i, v in enumerate(F.BOUNDARY_SEQ[:7])),
+       ', '.join(['rfl'] * len(F.BOUNDARY_SEQ[:7])),
+       F.BOUNDARY_SEQ[0], F.BOUNDARY_SEQ[1],
+       F.BOUNDARY_SEQ[1], F.BOUNDARY_SEQ[1])
+
+
 def limits_section():
     return r'''
 /-! ## What is not claimed
@@ -476,6 +574,7 @@ def document(audit=None):
             + xcharge_section()
             + chiral_section()
             + minors_section()
+            + boundary_section()
             + limits_section())
 
 

@@ -735,7 +735,20 @@ is why $P$ is.
 
 \begin{fact}
 \label{fact:bdyrec}
-$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.
+$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.  Checked by the Lean kernel.
+\end{fact}
+
+\noindent
+The factorisation of $\chi_{\partial}$ is not left as a spectral remark.  Its
+quadratic factor applied to the sequence annihilates the growing part and
+leaves behind the constant belonging to the marginal eigenvalue, and that
+identity is proved for every $k$:
+
+\begin{fact}
+\label{fact:bdyinv}
+$P(k+2)-4P(k+1)-P(k)=-16$ for all $k$, by induction in Lean.  Together with
+the seed this is equivalent to Fact~\ref{fact:bdyrec}, and it is the $+1$
+eigenvalue made arithmetic --- the boundary's analogue of $Q_{+}$.
 \end{fact}
 
 \begin{fact}
@@ -760,7 +773,13 @@ boundary is golden although the tiling is not.
 
 Since $\nu>\lam$ the boundary is fractal: its box dimension is
 $\log\nu/\log\lam=%s$, so a perimeter argument assuming $P(k)\sim\lam^{k}$ is
-wrong, and wrong by a definite amount.
+wrong, and wrong by a definite amount.  Both halves of that comparison are
+kernel-checked --- $P(k+3)\ge4P(k+2)+30$ for every $k$, and
+$\lam^{2}<16$ hence $\lam<4$ --- but the inference between them is not.
+Relating an integer growth bound to a real inflation rate needs an order on
+$\mathbb{Z}[\sqrt{15}]$ and a square root, neither of which the Mathlib-free
+file has, so what Lean certifies is the pair of bounds and the last step is
+elementary arithmetic done by hand.
 
 \subsection*{What the golden appearance is not}
 
@@ -1168,6 +1187,12 @@ def selftest():
           str(len(L.theorem_names(L.document()))) in text)
     check('every fact is in the appendix',
           all(esc(f.key) in text for f in F.FACTS))
+    # A Fact carrying a `lean` name prints a checkmark in the appendix, so a
+    # name with no theorem behind it is the paper claiming a machine check
+    # nobody ran.  Six of these were shipped before this check existed.
+    _lean_names = set(L.theorem_names(L.document()))
+    check('every Lean attribution names a theorem that exists',
+          all(f.lean in _lean_names for f in F.FACTS if f.lean))
 
     print('the caveats survive')
     check('the unit postulate is called unjustified', 'unjustified' in text)
@@ -1243,6 +1268,12 @@ def selftest():
           'read from $k=1$' in text)
     check('the fine spectrum is left open explicitly',
           'the full fine operator is not claimed' in text)
+    check('the boundary recurrence is claimed as kernel-checked',
+          'Checked by the Lean kernel' in text)
+    check('the boundary invariant is stated and attributed to induction',
+          r'\label{fact:bdyinv}' in text and 'by induction in Lean' in text)
+    check('the unformalised last step is named as unformalised',
+          'elementary arithmetic done by hand' in text)
 
     print()
     if failures:
