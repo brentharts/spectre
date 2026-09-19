@@ -99,8 +99,8 @@ PREAMBLE = r"""\documentclass[11pt]{article}
         keywordstyle=\color{blue!60!black}\bfseries}
 
 \title{\vspace{-1cm}
-\textbf{Phase Grading in Aperiodic Monotiles:} \\ 
-The $\mathbb{Q}(\sqrt{15})$ and $\mathbb{Q}(\sqrt{5})$ Divide, \\ with a Lean~4 Checked Fact Layer}
+\textbf{One Tile, Two Units:} \\ 
+Area Inflation in $\mathbb{Q}(\sqrt{15})$ and Boundary Inflation in $\mathbb{Q}(\sqrt{5})$ \\ for the Spectre Monotile}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
@@ -137,15 +137,7 @@ area and perimeter of one tile.  The boundary is therefore fractal, of
 dimension $%s$, and the resemblance to the Hat's $\varphi^{4}$ is shown to be a
 Lucas identity rather than a shared operator.  The perimeter sequence is
 counted twice, the second time in exact $\mathbb{Q}(\sqrt3)$ arithmetic, so no
-result here rests on a floating-point tolerance.  Against Wang and
-Zahl~\cite{WangZahl} we report a negative result --- a periodic lattice
-non-concentrates better than the monotile, because aperiodicity is
-non-repetition and not direction spread --- and the multi-scale exponent the
-ladder does fix.  The Fact layer is emitted as Mathlib-free Lean~4 and checked by
-the kernel: %d theorems, no admitted proofs, and a measured axiom audit.  A
-modelling step identifying the order parameter with a birefringence angle is
-reported separately and behind its own caveat, because its premise is a
-postulate and the arithmetic around it cannot repair that.
+result here rests on a floating-point tolerance.  
 \end{abstract}
 """ % (number(len(F.SPECIES)),
        tex(F.get('charpoly').value),
@@ -153,8 +145,7 @@ postulate and the arithmetic around it cannot repair that.
        F.RANKS[1], F.RANKS[2],
        tex(F.get('boundary_chi').value),
        F.get('boundary_dimension').decimal,
-       len(L.theorem_names(L.document())))
-
+       )
 
 def introduction():
     return r"""
@@ -169,7 +160,8 @@ dynamics on the throat~\cite{HartshornJT}, with the negativity budget of
 wedge-local squeezed states bounded exactly in~\cite{SuppNariai}.  The thesis
 here is that the crossover surface --- a two-dimensional conformal carrier
 with vanishing configurational entropy density --- is a substitution monotile
-phase.  That identification is a conjecture and is labelled as one.  What can
+phase \cite{SmithEtAl, SmithEtAl2, SuppMonotile}.  
+That identification is a conjecture and is labelled as one.  What can
 be done without it, and what occupies most of what follows, is to compute the
 substitution's exact structure: the identification is only worth making if the
 object identified has content, and the content is arithmetic.
@@ -177,23 +169,115 @@ object identified has content, and the content is arithmetic.
 Statements are stratified by epistemic weight.  \emph{Facts} are computations
 or theorems.  \emph{Propositions} are computations with a modelling step.
 \emph{Conjectures} are sharp claims not yet proved.  A reader who rejects every
-conjecture here still keeps every Fact, and the Facts are the reason to read
-on.
-
-Two things about how this document is made.  First, every number in it is
-computed at build time by \code{spectrefacts.py} and inserted by
-\code{spectrepaper.py}; nothing is transcribed.  That is not tidiness.  The
-previous draft quoted the charge values of Section~\ref{sec:charges} beside
-patch totals that do not produce them --- both numbers correct, the pair of
-them unreproducible --- because the two lived in different sections and prose
-has no selftest.  Section~\ref{sec:census} now derives the relation between the
-two censuses instead of stipulating either.
-
-Second, the Facts that are closed statements are not merely computed twice.
+conjecture here still keeps every Fact, and the Facts are the reason to read on.
+The Facts that are closed statements are not merely computed twice.
 They are proved.  \code{spectrelean.py} emits them as Lean~4 and the kernel
 checks them, which is a different kind of evidence from a second computation
 and is reported separately in Section~\ref{sec:lean}.
 """
+
+
+def bigpicture_section():
+    return r"""
+\section{What this is a substrate for}
+\label{sec:bigpicture}
+
+The results below are arithmetic: two algebraic units, the fields they
+generate, and the operators whose spectra they are.  A reader coming from
+physics is owed an account of why arithmetic of this kind is the right thing
+to compute, and where each piece of it is consumed.  This section is that
+account.  It contains no new Facts; it says what the Facts are for.
+
+\subsection*{Why a tiling carries a unit at all}
+
+A substitution tiling is a rule for replacing every tile by a patch of tiles
+similar to it, applied without end.  Counting tiles under the rule is a linear
+map, its matrix has a leading eigenvalue, and by Perron--Frobenius that
+eigenvalue is an algebraic integer.  For the Spectre it is
+$\lam^{2}=%s$, the fundamental unit of $\mathbb{Z}[\sqrt{15}]$
+(Section~\ref{sec:spectral}).  Nothing about that number was chosen: it is
+forced by the rule, and the rule is forced by the tile.
+
+The unit is Pisot --- its conjugate $%s$ lies inside the unit circle --- and
+the Pisot property is what turns geometry into arithmetic.  Bombieri and
+Taylor, and Solomyak after them, showed that a Pisot inflation gives a tiling
+whose diffraction is pure point: it scatters like a crystal despite having no
+period.  Bellissard's gap-labelling theorem then says that the integrated
+density of states of any Hamiltonian on the tiling takes its values in the
+frequency module, which for the Spectre is $\mathbb{Z}[1/\lam^{2}]=
+\mathbb{Z}[\sqrt{15}]$.  So the field is not decoration.  It is the set of
+numbers an experiment on this tiling is permitted to return, whether that
+experiment is a diffraction pattern or a spectral gap.
+
+\subsection*{Two fields, and what separates them}
+
+The Hat, the other aperiodic monotile, inflates in $\mathbb{Q}(\sqrt5)$
+(Section~\ref{sec:phases}).  A diffraction measurement can tell the two fields
+apart, and the 2026 measurement cited there does.  That is the sense in which
+the tiling is a \emph{phase}: two monotiles, two fields, and an observable
+that reads which one is present.
+
+What Section~\ref{sec:bdyop} adds is that the second field was already inside
+the first tile.  The Spectre's area inflates in $\mathbb{Q}(\sqrt{15})$; its
+perimeter inflates by $\nu=2+\sqrt5=\varphi^{3}$, in $\mathbb{Q}(\sqrt5)$.  One
+tile, two units.  The consequence for physics is a rule of thumb that the
+rest of this paper makes exact: \emph{the field an observable lands in tells
+you what kind of quantity it is.}  Counts, densities, areas, integrated
+densities of states --- anything that scales with the number of tiles --- are
+$\mathbb{Q}(\sqrt{15})$ quantities.  Lengths, interfaces, contact lines,
+anything that scales with a boundary --- are $\mathbb{Q}(\sqrt5)$
+quantities.  Their ratio, which a multi-scale argument needs, lives in
+neither and is a degree-four number in the compositum
+$\mathbb{Q}(\sqrt3,\sqrt5)$ (Proposition~\ref{prop:compositum}).
+
+The boundary is also fractal, of dimension $%s$, because $\nu$ exceeds the
+linear inflation $\lam$.  A supertile's outline grows faster than its size.
+That is the geometric content of ``two units'': a shape whose perimeter and
+area do not scale together cannot be assigned a single inflation factor, and
+the mismatch is measured by the ratio of the two fields' units.
+
+A fractal with a Hausdorff dimension of $%s$ represents a geometric structure with a complexity that sits precisely between a 1D line and a 2D plane.
+In nature and medicine, fractal dimensions around 1.40 are frequently observed in the highly folded structural boundaries of the human brain (such as the boundary between the cerebral cortex and white matter \cite{bullmore}).
+
+\subsection*{Where the substrate is consumed}
+
+Three programmes draw on this.  The first is the horizon programme this paper
+grew from~\cite{DorauMuch,HartshornJT,SuppNariai}.  There the Nariai throat's
+crossover surface is a two-dimensional carrier with zero configurational
+entropy density, and the conjecture --- labelled as one in
+Section~\ref{sec:data} --- is that it is a substitution monotile phase \cite{SmithEtAl, SmithEtAl2, SuppMonotile}.  
+If so, every exact quantity here is an exact quantity of the horizon: its
+gap labels, its charges, its two units.  The identification is a modelling
+step; the arithmetic is not.
+
+The second is spectral.  The integer charges of Section~\ref{sec:charges},
+the X-charge of Section~\ref{sec:mass}, and the gap-label module are all
+statements about what a Hamiltonian on the tiling can and cannot do, and they
+are exact, so a numerical spectrum that disagrees with them is wrong rather
+than approximate.  That is a useful kind of constraint to have.
+
+The third is the multi-scale programme of Section~\ref{sec:kakeya}, and it
+is recorded here as a negative result because that is what it is.  The
+Kakeya machinery of Wang and Zahl wants a direction set that is spread;
+aperiodicity supplies non-repetition, which is a different property, and a
+periodic lattice beats the monotile on the quantity Kakeya actually needs.
+What the substitution does have is scales, graded by the unit, and along that
+ladder the monotile behaves as a sticky family --- which in the Kakeya
+programme is the obstruction a proof must survive, not a help.  A reader
+hoping the aperiodic substrate would make Kakeya easier should stop hoping
+here; a reader wanting a concrete, finite, computable sticky family now has
+one.
+
+\subsection*{How to read the rest}
+
+The Facts are exact and most are proved in Lean.  The Propositions carry one
+modelling step each, named where it occurs.  The Conjectures are sharp and
+unproved.  The negative results are not softened.  And the complete list of
+Facts, with the route by which each was obtained and whether a kernel
+checked it, is not in this document at all: it is the supplementary
+material of Section~\ref{sec:supp}, generated from the same source so the
+two cannot disagree.
+""" % (tex(F.LAM2), tex(F.G_SMALL), F.get('boundary_dimension').decimal, F.get('boundary_dimension').decimal)
 
 
 def screen_section():
@@ -226,8 +310,8 @@ can reflections be realized ambiently? --- is exactly the criterion by which
 the two phases differ, and by nothing else.  Everything that follows equips the
 conjecture with exact structure rather than defending it: an integer census
 charge locked to handedness (Section~\ref{sec:charges}), an order parameter
-along the Tile$(a,b)$ continuum (Section~\ref{sec:deform}), and --- new here
---- a second, arithmetic distinction between the phases
+along the Tile$(a,b)$ continuum (Section~\ref{sec:deform}), 
+and a second, arithmetic distinction between the phases
 (Section~\ref{sec:phases}) that the parity argument does not supply.
 """
 
@@ -672,7 +756,7 @@ $u(K\#\overline K)\le5<6$.  Three things about that theorem bear on the
 mechanism, and all three are easy to overstate.
 
 \emph{The deficit is bounded, not determined.}  Theirs is an upper bound;
-Scharlemann gives $u\ge2$; so $\delta=6-u$ lies in $[1,4]$ and its value is
+Scharlemann \cite{Scharlemann} gives $u\ge2$; so $\delta=6-u$ lies in $[1,4]$ and its value is
 their own Question~4.4, open.  The binding spectrum is parameter-free in its
 \emph{ratios} $\{0,1,2,7\}$ --- the X-charges halved --- and says nothing
 about the scale.
@@ -846,7 +930,7 @@ containing the other.
 
 def kakeya_section():
     return r"""
-\section{A multi-scale reading, and a negative result}
+\section{Discussion: a multi-scale reading, and a negative result}
 \label{sec:kakeya}
 
 Wang and Zahl~\cite{WangZahl} prove that a family of $\delta$-tubes in
@@ -855,8 +939,8 @@ contained in a common convex set --- has a union of almost maximal volume.
 That is a hypothesis about a direction set and a conclusion about a volume, and
 both halves are measurable on a finite family.  The braided tiling supplies one:
 every shared edge carries a two-strand braid, each strand is a curve in
-$\mathbb{R}^{3}$, and its $\delta$-neighbourhood is a tube.  We report what the
-measurement gives, including where it goes against us.
+$\mathbb{R}^{3}$, and its $\delta$-neighbourhood is a tube.  
+
 
 \subsection*{Directions: the monotile does worse than a lattice}
 
@@ -868,8 +952,7 @@ Kakeya non-concentration asks for a direction set that is \emph{spread};
 aperiodicity supplies \emph{non-repetition}.  A hexagonal lattice has a
 perfectly spread direction set by symmetry, and a Spectre tiling draws its
 edges from a small set of directions on the same hexagonal grid --- repeating
-them less often does not make them more numerous.  The bridge as posed asks the
-monotile for its weakest property.
+them less often does not make them more numerous.  
 
 \subsection*{Scales: what the substitution actually has}
 
@@ -954,10 +1037,11 @@ The file is Mathlib-free: everything is \code{Int}, \code{List Int} or a small
 structure over them, so it checks against a bare toolchain in seconds.  That
 costs some elegance and buys the property that the proof is as auditable as
 the arithmetic it certifies.
-
+\begin{footnotesize}
 \begin{lstlisting}[language=lean]
 %s
 \end{lstlisting}
+\end{footnotesize}
 
 \noindent
 %s  What the kernel does \emph{not} see is the subject of
@@ -968,7 +1052,7 @@ than theorems, because a comment cannot be mistaken for a certificate.
 
 def boundary_section():
     return r"""
-\section{The boundary, restated}
+\section{Conclusion: The boundary, restated}
 \label{sec:boundary}
 
 The companion series distinguishes several ways a quantity can fail to be
@@ -1034,11 +1118,11 @@ $M$ is a proof about $M$.
 
 def data_section():
     return r"""
-\section{A modelling step, and what it would take to believe it}
+\section{Results: A modelling step}
 \label{sec:data}
 
 Isotropic cosmic birefringence is measured nonzero: the 2026 joint
-ACT~DR6~$+$~Planck~PR4 analysis gives
+ACT~DR6~$+$~Planck~PR4 analysis \cite{Eskilt2026} gives
 $\beta=0.277^{\circ}\pm0.057^{\circ}$.  Exact parity-evenness, the branch that
 would disfavour Conjecture~\ref{conj:chirality}, is not what the sky shows ---
 but the consistency is generic, since any parity-violating photon coupling
@@ -1115,23 +1199,40 @@ Key & Claim & How & Lean \\
 
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
-\bibitem{SmithEtAl} Smith, D., Myers, J.S., Kaplan, C.S. and
-Goodman-Strauss, C. (2024). An aperiodic monotile.
-\emph{Combinatorial Theory}, 4(1).
-\bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
-Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
-\emph{Combinatorial Theory}, 4(2).
+
 \bibitem{HartshornJT} Hartshorn, B.~S. (2026). Gravity from Relative Entropy:
 Jackiw--Teitelboim Dynamics on the Nariai Horizon. Research Square.
 \url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
+
 \bibitem{SuppNariai} Hartshorn, B.~S. (2026). What Wedge-Locality Determines,
 and What the Phase Averages Out: Exact Tests and a Universal Negativity Bound
 for Entropic Gravity on the Nariai Horizon. Zenodo.
 \url{https://doi.org/10.5281/zenodo.21908671}
+
+\bibitem{SmithEtAl} Smith, D., Myers, J.S., Kaplan, C.S. and
+Goodman-Strauss, C. (2024). An aperiodic monotile.
+\emph{Combinatorial Theory}, 4(1).
+
+\bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
+Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
+\emph{Combinatorial Theory}, 4(2).
+
 \bibitem{SuppMonotile} Hartshorn, B.~S. (2026). What Real-Space Geometry
 Determines, and What Has No Momentum Space: Exact Methods for the Aperiodic
 Monotile Family. Zenodo.
 \url{https://doi.org/10.5281/zenodo.21893694}
+
+\bibitem{bullmore}
+E.~Bullmore, M.~Brammer, I.~Harvey, R.~Persaud, R.~Murray, M.~Ron (1994)
+Fractal analysis of the boundary between white matter and cerebral cortex in magnetic resonance images: a controlled study of schizophrenic and manic-depressive patients
+\url{https://doi.org/10.1017/s0033291700027926}
+
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\url{https://doi.org/10.1103/lmq8-nsty}
+
+
+
+
 \bibitem{Moritake2026} Moritake, Y., Takiguchi, M., Aihara, T. and
 Notomi, M. (2026). Chiral diffraction from aperiodic monotile structure.
 \emph{Nature Communications} \textbf{17}, 6085.
@@ -1150,26 +1251,74 @@ of convex sets, and the Kakeya set conjecture in three dimensions.
 
 \bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
 prime. \emph{Invent. Math.} 82, 37--55.
-\bibitem{demoura2021} de Moura, L. and Ullrich, S. (2021). The Lean 4 Theorem
-Prover and Programming Language. \emph{CADE-28}, 625--635.
+
 \bibitem{Eskilt2026} Eskilt, J.R. \emph{et al.} (2026). Joint ACT DR6 and
 Planck PR4 constraints on cosmic birefringence.
-\bibitem{repo} \url{https://github.com/brentharts/spectre}
+
 \end{thebibliography}
 
 \end{document}
 """
 
 
+def supplement_pointer():
+    n = len(F.FACTS)
+    nl = sum(1 for f in F.FACTS if f.lean)
+    return r"""
+\appendix
+\footnotesize
+
+\section*{Declarations}
+
+\subsection*{Funding}
+The author received no specific funding for this work.
+
+\subsection*{Author Contributions}
+B.H. conceived the theoretical framework, performed the analytical calculations, developed the numerical simulations, analyzed the results, and authored the manuscript.
+
+\subsection*{Competing Interests}
+The author declares no competing interests.
+
+\subsection*{Affiliations}
+The author declares no affiliations.
+
+\subsection*{Code and Data Availability}
+\label{sec:supp}
+
+All source code, datasets, analyzed, and supporting the findings of this study are publicly available on GitHub:
+\newline
+\url{https://github.com/brentharts/spectre/}
+\newline
+\url{https://github.com/brentharts/nariai/}
+\newline
+\url{https://github.com/brentharts/CICY/}.
+
+The complete table of Facts --- all %d of them, each with its key, its claim,
+the route by which it was obtained, and a mark on the %d that are also proved
+by the Lean~4 kernel --- is published separately as
+\emph{Supplementary Material: Every Fact, and how it was obtained}, at
+\url{https://github.com/brentharts/spectre/blob/master/spectre_supplement.pdf}.
+It is generated from \code{spectrefacts.py} by \code{spectre\_supplement.py},
+the same source that produces every number in this document.
+
+The LEAN4 source code is available at: \url{https://github.com/brentharts/spectre/wiki/Spectre-Lean}
+
+
+
+
+""" % (n, nl)
+
+
 def document():
     return '\n'.join([
-        PREAMBLE, abstract(), introduction(), screen_section(),
+        PREAMBLE, abstract(), introduction(), bigpicture_section(),
+        screen_section(),
         spectral_section(),
         census_section(), charges_section(), deformation_section(),
         phases_section(), knot_section(), xcharge_section(),
         boundary_operator_section(), kakeya_section(),
         lean_section(), data_section(), boundary_section(),
-        facts_appendix(), BIBLIOGRAPHY,
+        supplement_pointer(), BIBLIOGRAPHY,
     ])
 
 
@@ -1208,8 +1357,23 @@ def selftest():
           all(('%+d' % v) in text for v in F.Q_MINUS_BY_DEPTH))
     check('the Lean theorem count matches the Lean file',
           str(len(L.theorem_names(L.document()))) in text)
-    check('every fact is in the appendix',
-          all(esc(f.key) in text for f in F.FACTS))
+    # The table moved to spectre_supplement.py.  What this document must
+    # now guarantee is that it points at the supplement, quotes the same
+    # Fact count the supplement carries, and that the supplement really
+    # does hold every Fact -- checked here, from this side, so the split
+    # cannot silently lose a row.
+    import spectre_supplement as SUPP
+    supp = SUPP.document()
+    check('the table is out of the main paper',
+          r'\begin{longtable}' not in text)
+    check('the main paper points at the supplement',
+          'spectre_supplement.pdf' in text)
+    check('the main paper quotes the true Fact count',
+          ('all %d of them' % len(F.FACTS)) in text)
+    check('every fact is in the supplement',
+          all(esc(f.key) in supp for f in F.FACTS))
+    check('the supplement names this paper by its title',
+          'One Tile, Two Units' in supp)
     # A Fact carrying a `lean` name prints a checkmark in the appendix, so a
     # name with no theorem behind it is the paper claiming a machine check
     # nobody ran.  Six of these were shipped before this check existed.
@@ -1293,6 +1457,19 @@ def selftest():
           'the full fine operator is not claimed' in text)
     check('the boundary recurrence is claimed as kernel-checked',
           'Checked by the Lean kernel' in text)
+    print('the big picture')
+    check('the substrate section exists and precedes the screen',
+          text.index(r'\label{sec:bigpicture}') < text.index(r'\label{sec:screen}'))
+    check('it explains why a tiling carries a unit',
+          'Perron' in text and 'Pisot' in text and 'Bellissard' in text)
+    check('it states the one-tile-two-units rule of thumb',
+          'tells' in text and 'what kind of quantity it is' in text)
+    check('it records the Kakeya result as negative',
+          'stop hoping' in text)
+    check('it names the horizon identification as a conjecture',
+          'labelled as one' in text)
+    check('the title is the new one',
+          'One Tile, Two Units' in text)
     check('the abstract says no result rests on a tolerance',
           'floating-point tolerance' in text)
     check('the perimeter is said to be counted twice',

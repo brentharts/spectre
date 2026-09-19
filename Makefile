@@ -41,9 +41,10 @@ ELAN_INIT_URL ?= https://raw.githubusercontent.com/leanprover/elan/master/elan-i
 export PATH := $(LEAN_PREFIX)/bin:$(ELAN_HOME)/bin:$(PATH)
 
 # --------------------------------------------------------------- the targets
-
+install_cicy:
+	cd .. && git clone https://github.com/brentharts/CICY.git
 facts:
-	$(PYTHON) spectrefacts.py --selftest
+	PYTHONPATH=../CICY $(PYTHON) spectrefacts.py --selftest
 
 atlas:
 	$(PYTHON) spectreatlas.py --selftest
@@ -60,6 +61,12 @@ paper: facts
 	$(PYTHON) spectrepaper.py
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+
+paperfast:
+	$(PYTHON) spectrepaper.py
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	open spectre_substrate.pdf
 
 readme:
 	$(PYTHON) spectrefacts.py --readme
