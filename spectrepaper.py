@@ -1191,6 +1191,57 @@ indistinguishable from the lattice in it.
        last[0], rel, pois, nsig)
 
 
+def sixsphere_subsection():
+    return r"""
+\subsection*{A neighbouring exact structure: the cusp fibre of the complex six-sphere}
+
+One exact structure outside this paper touches the tiles, and it is stated here
+so that its limits are on the page.  Alpöge's construction of a complex
+structure on the six-sphere~\cite{Alpoge}, a preprint that is unrefereed,
+builds a compact complex threefold fibred by tori over $\mathbb{P}^1$ whose cusp
+fibre $W$ is a quotient of a toric surface associated with the $A_2$
+triangulation of the plane.
+
+\textbf{Imported fact (computed in \texttt{pyCICY}, not recomputed in this
+paper, and not one of its numbered Facts).}  Every Tile$(a,b)$, the Hat and the
+Spectre among them, is a union of kites of the $[3.4.6.4]$ Laves lattice, which
+\texttt{pyCICY.monotile} builds exactly in $\mathbb{Q}(\sqrt3)$.  At the regular
+proportions, the $61$ sites of a two-ring Laves patch are all cells of the $A_2$
+triangulation of the matching kind, and its $102$ bonds are exactly the $102$
+cover relations between them, so the Laves lattice is the Hasse diagram of the
+cusp fan.  Under this identification the lattice rolled up on a torus is $W$:
+a hexagon centre is a $\mathrm{dP}_6$ component, an edge midpoint a double
+curve, a hexagon vertex a triple point.  Per fundamental domain there is one
+component, three double curves and two triple points, so $e(W)=2$ counts the
+hexagon vertices, and the dual complex is a triangulated torus
+($V-E+F=0$).  The check is exact; its limits are that it concerns the
+regular proportions $a=\sqrt3\,b$ and not the Spectre's $a=b$, where the
+combinatorics survive and the metric match does not.
+
+\textbf{The contrast.}  The substrate of a \emph{periodic} tiling descends to a
+torus, which is what $W$ is.  No aperiodic tiling can: it is invariant under no
+lattice.  Both objects inherit the lattice from $A_2$; the six-sphere knows
+nothing of monotiles, and the relation is a contrast, not an identity of
+tilings.
+
+\textbf{What does not connect.}  The period field of the construction is
+$\mathbb{Q}(\zeta_{12})$, which shares $\mathbb{Q}(\sqrt3)$ with the tile
+geometry and nothing with the field $\mathbb{Q}(\sqrt{15})$ of this paper's
+inflation or with the Spectre's $\mathbb{Q}(\sqrt6,\sqrt{10})$.  The integer
+$6$ occurs on both sides, in the invariant form of the six-sphere's monodromy
+and in the Spectre's inflation $\lambda=(\sqrt6+\sqrt{10})/2$, but it arises
+differently in each and nothing uses either; the Laves valences $(6,4,3)$ echo
+the orbifold orders $(3,4,\infty)$, but the valence-$4$ sites are double curves
+over the cusp and not over the order-$4$ point.  Both are coincidences, and no
+link between the two objects should be inferred from them.  The base orbifold
+of the six-sphere must be hyperbolic (no Euclidean triangle group contains both
+$3$ and $4$), while the substrate's symmetry is Euclidean; and the threefold
+carries no holomorphic $3$-form, so it supports no four-dimensional
+$\mathcal N=1$ compactification, and nothing here connects it to the screen or
+to the Weyl-curvature conjecture above.
+"""
+
+
 def weyl_section():
     return r"""
 \section{The initial surface and the Weyl curvature: a conjecture}
@@ -1252,6 +1303,7 @@ have (Section~\ref{sec:mass}); the conjecture would say that these are two
 faces of one fact about which Weyl chirality is available.
 
 @@VARIETY@@
+@@SIXSPHERE@@
 \subsection*{What it does not claim, and what is missing}
 
 \begin{itemize}
@@ -1281,7 +1333,7 @@ one-chirality curvature from the tile data, with the Hat phase supplying the
 opposite chirality; and it is retired if the integer chirality data
 (Proposition~\ref{prop:parity}) can be shown to carry no relation to the
 chirality of any gravitational sector.  Neither has been attempted.
-""".replace("@@VARIETY@@", variety_subsection())
+""".replace("@@VARIETY@@", variety_subsection()).replace("@@SIXSPHERE@@", sixsphere_subsection())
 
 
 def data_section():
@@ -1428,6 +1480,10 @@ twistor theory. \emph{Gen. Relativ. Gravit.} 7, 31--52.
 \bibitem{Guevara2026} A.~Guevara, A.~Lupsasca, D.~Skinner, A.~Strominger and
 K.~Weil (2026). Single-minus graviton tree amplitudes are nonzero. OpenAI
 preprint (unrefereed). \url{https://cdn.openai.com/pdf/graviton.pdf}
+
+\bibitem{Alpoge} L.~Alp\"oge (2026). A compact complex threefold fibred by
+tori over the projective line, and the six-sphere. Preprint (unrefereed).
+\url{https://alpo.ge/s6.pdf}
 
 \bibitem{BarbourLobo} J.~Barbour, F.~S.~N.~Lobo and M.~I.~R.~Louren\c{c}o
 (2026). Structural morphology and the gravitational arrow of time.
@@ -1706,6 +1762,21 @@ def selftest():
     check('all three Barbour works are cited and listed',
           all((r'bibitem{%s}' % k) in text for k in ('BarbourLourenco', 'BarbourLobo', 'BarbourEntropy'))
           and r'\cite{BarbourLobo,BarbourEntropy}' in text)
+
+    print('the six-sphere remark')
+    flat = ' '.join(text.split())
+    check('the remark exists and cites Alpoge as unrefereed',
+          r'\cite{Alpoge}' in text and 'unrefereed' in flat and r'bibitem{Alpoge}' in text)
+    check('it states the 61 sites and 102 bonds',
+          '$61$ sites' in flat and '$102$ bonds' in flat)
+    check('it is labelled as imported, not one of the numbered Facts',
+          'not recomputed in this paper' in flat and 'not one of its numbered Facts' in flat)
+    check('it states the periodic-versus-aperiodic contrast',
+          'No aperiodic tiling can' in flat)
+    check('it says the fields and the shared 6 do not connect',
+          'Both are coincidences' in flat and 'no link between the two objects should be inferred' in flat)
+    check('it says the regular proportions a = sqrt3 b are the exact case',
+          'regular proportions' in flat and r'a=\sqrt3\,b' in flat)
 
     print()
     if failures:
