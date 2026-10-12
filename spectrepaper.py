@@ -24,6 +24,7 @@ import sympy as sp
 
 import spectrefacts as F
 import spectrelean as L
+import spectrevariety as VAR
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUTPUT = os.path.join(HERE, 'spectre_substrate.tex')
@@ -153,11 +154,17 @@ def introduction():
 \label{sec:intro}
 
 This paper carries an earlier program across the conformal crossover.  That
-program established, on the Nariai horizon, that the Araki--Uhlmann relative
-entropy of a coherent excitation equals the boost-energy flux and that
-$S_{\rm rel}=\delta A/4$ is a theorem of linearized Jackiw--Teitelboim
-dynamics on the throat~\cite{HartshornJT}, with the negativity budget of
-wedge-local squeezed states bounded exactly in~\cite{SuppNariai}.  The thesis
+program studied, on the Nariai horizon, the Araki--Uhlmann relative
+entropy of a coherent excitation, which equals the modular-weighted boost-energy
+flux, and checked that the $s$-wave sector of the horizon dynamics, linearized
+Jackiw--Teitelboim gravity, is consistent with the area law $S_{\rm rel}=\delta A/4G$.
+That check is the converse direction of Dorau and Much~\cite{DorauMuch}: the
+Einstein equations imply the area law.  It does not derive the normalization,
+whose coefficient is the Newton constant, and the sign of $\delta A$ depends on
+the boundary conditions.  The earlier version of that program~\cite{HartshornJT}
+called the relation a theorem of linearized Jackiw--Teitelboim dynamics; the
+statement above is the corrected one, as made in the current revision
+(\texttt{github.com/brentharts/NariaiRelativeEntropy}).  The thesis
 here is that the crossover surface --- a two-dimensional conformal carrier
 with vanishing configurational entropy density --- is a substitution monotile
 phase \cite{SmithEtAl, SmithEtAl2, SuppMonotile}.  
@@ -242,7 +249,7 @@ In nature and medicine, fractal dimensions around 1.40 are frequently observed i
 \subsection*{Where the substrate is consumed}
 
 Three programmes draw on this.  The first is the horizon programme this paper
-grew from~\cite{DorauMuch,HartshornJT,SuppNariai}.  There the Nariai throat's
+grew from~\cite{DorauMuch,HartshornJT}.  There the Nariai throat's
 crossover surface is a two-dimensional carrier with zero configurational
 entropy density, and the conjecture --- labelled as one in
 Section~\ref{sec:data} --- is that it is a substitution monotile phase \cite{SmithEtAl, SmithEtAl2, SuppMonotile}.  
@@ -1116,6 +1123,167 @@ $M$ is a proof about $M$.
 """
 
 
+def variety_subsection():
+    rows = VAR.table()
+    body = '\n'.join(
+        r'%d & %d & %.4f & %.4f & $%.4f\pm%.4f$ \\' % (n, N, vs, vl, vr, sd)
+        for n, N, vs, nl, vl, vr, sd in rows)
+    last = rows[-1]
+    rel = 100.0 * abs(last[2] - last[4]) / last[4]
+    pois = 100.0 * (last[5] - last[2]) / last[2]
+    nsig = (last[5] - last[2]) / last[6]
+    return r"""
+\subsection*{A computable precedent: Barbour's variety on substitution patches}
+
+Barbour and Louren\c{c}o define the \emph{variety} of $N$ point masses, with
+the masses normalised to sum to one, as $V=\ell_{\rm rms}/\ell_{\rm mhl}$ with
+$\ell_{\rm rms}^{2}=\sum_{i<j}m_im_jr_{ij}^{2}$ and
+$\ell_{\rm mhl}^{-1}=\sum_{i<j}m_im_j/r_{ij}$~\cite{BarbourLourenco}.  It is
+dimensionless, unchanged by translation, rotation, reflection and rescaling,
+and in the zero-energy, zero-momentum Newtonian $N$-body problem it grows away
+from the Janus point in both time directions~\cite{BarbourLobo,BarbourEntropy}.
+The question put to the substrate is only whether the depth-$n$ Spectre patch,
+with one equal mass at each tile centroid, shows anything in this measure that
+a control does not.  Table~\ref{tab:variety} gives $V$ for the Spectre patch,
+for a hexagonal lattice tuned to give the same number of points in the same
+region, and for uniform random points in the same region; the region is the
+union of the tiles, so that the outer shape of the non-convex patch is held
+fixed and is not what is compared.
+
+\begin{table}[h]
+\centering
+\caption{Barbour's variety on the depth-$n$ Spectre patch and two controls with
+the same region and (up to the lattice rounding) the same $N$.  Random: mean and
+standard deviation over %d draws.  Floating-point computation
+(\texttt{spectrevariety.py}), not an exact Fact.}
+\label{tab:variety}
+\begin{tabular}{rrrrr}
+\toprule
+depth & $N$ & Spectre & lattice & random \\
+\midrule
+%s
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Computation, not Fact.}  The values are floating-point and the
+analytic controls (two equal masses, $V=1/8$; an equilateral triangle,
+$V=\sqrt3/9$) are the only exact checks.  Three things can be read off.
+First, $V$ rises with depth for the Spectre and for both controls alike, from
+%.3f at depth 1 to %.3f at depth %d; that rise is the approach of $N$ points
+to a continuum value and is not a property of the substitution.  Second, at
+depth %d the Spectre value and the lattice value differ by %.2f\%%, which is
+the difference between two nearly equal numbers and shows no distinguishing
+signal.  Third, the random control lies %.1f\%% above the Spectre, %.0f
+standard deviations of its own spread: in this measure the patch sits at the
+lattice-like, uniform end and not at the clustered end.  A different statistic
+(the direction law of Section~\ref{sec:kakeya}) was compared there, and the two
+are not reconciled here.
+
+What this does not show is as important.  Depth is not time, and a sequence of
+patches of increasing $N$ is not one system evolving; Barbour's growth is a
+statement about dynamical solutions, so the rise of $V$ with depth is not an
+arrow of time and is not evidence for reading the substitution as a Janus-point
+flow.  The computation contributes a well-defined, scale-invariant measure
+evaluated on the substrate, and the finding that the substrate is
+indistinguishable from the lattice in it.
+""" % (len(rows) and VAR.N_RANDOM, body, rows[0][2], last[2], last[0],
+       last[0], rel, pois, nsig)
+
+
+def weyl_section():
+    return r"""
+\section{The initial surface and the Weyl curvature: a conjecture}
+\label{sec:weyl}
+
+This section contains no computation.  It states one conjecture, says what
+would support it, and lists what it does not claim, because the question it
+touches --- what the substrate has to do with gravity --- is the one a reader
+will ask next.
+
+\subsection*{What is known, from outside this paper}
+
+Penrose's Weyl curvature hypothesis asks that the Weyl tensor vanish at the
+initial boundary of the universe, so that the gravitational field carries no
+free degrees of freedom at the start and the low entropy of the early universe
+is the low entropy of the gravitational field~\cite{Penrose1979}.  It is a
+hypothesis, not a theorem, and it concerns the Weyl tensor, not the Ricci
+tensor: a Weyl-flat initial state still has gravity in the sense of the
+Friedmann equations.  In this paper ``no free gravitational field'' is meant,
+not ``no gravity''.  That the initial surface is a smooth two-dimensional
+carrier and not a point of infinite density is the premise of
+Section~\ref{sec:screen}, not something the Weyl hypothesis implies.  The
+absence of a time-asymmetric singularity at the start has a precedent in the
+Janus-point solutions of the Newtonian $N$-body problem, in which a
+scale-invariant measure of structure grows away from a minimum in both time
+directions~\cite{BarbourLourenco}; that result is Newtonian and is cited as a
+precedent for the shape of the argument, not as support for it.
+
+The sector of general relativity with one chirality of the Weyl tensor
+removed is self-dual gravity~\cite{Plebanski1975,Penrose1976}.  A recent
+preprint shows that single-minus tree amplitudes of self-dual gravity, which
+had been taken to vanish, are nonzero on the half-collinear locus, that is, in
+split signature or for complexified momenta, and derives them from a
+recursion and, under analyticity assumptions, from an $Lw_{1+\infty}$ Ward
+identity~\cite{Guevara2026}.  That preprint is unrefereed.  Two features of it
+matter here: it concerns one Weyl chirality, and its kinematics are not
+Lorentzian.
+
+\subsection*{The conjecture}
+
+\begin{conj}[Chirality of the initial Weyl data]
+\label{conj:weyl}
+On the isolated conformal screen the strictly chiral Spectre phase carries one
+chirality of the gravitational field, the self-dual sector, and the
+Weyl-flat initial state is the state in which the other chirality has not yet
+switched on.  The transition of Conjecture~\ref{conj:chirality}, from the
+Spectre phase to the reflection-admitting Hat phase, is where the second
+chirality appears: parity is restored by embedding in the bulk exactly as
+both Weyl chiralities are present in the embedded geometry.
+\end{conj}
+
+It is a restatement of Conjecture~\ref{conj:chirality} in the language of the
+Weyl spinors: parity-forbidden on the screen corresponds to
+one-chirality-only in the gravitational sector.  The existing integer data
+fit the shape of this statement and do not test it.  The sign of $Q_{-}$
+alternates with the handedness of a patch (Proposition~\ref{prop:parity}), and
+the X-charge defines a mirror channel that the strictly chiral screen does not
+have (Section~\ref{sec:mass}); the conjecture would say that these are two
+faces of one fact about which Weyl chirality is available.
+
+@@VARIETY@@
+\subsection*{What it does not claim, and what is missing}
+
+\begin{itemize}
+\item \emph{No map is given.}  There is no construction taking a tile, a
+substitution level or a charge to a Weyl spinor or a self-dual curvature.
+Without that the conjecture is a statement about analogy of structure.
+\item \emph{The signature does not transfer.}  The amplitude results live in
+split signature or complexified kinematics.  Nothing here connects them to a
+real Lorentzian initial slice, and the self-dual sector is a complexified
+subset of Einstein gravity, not a real cosmological state.
+\item \emph{No Standard Model content.}  The substrate supplies integer
+charges and a tile-frequency spectrum with degeneracy pattern
+$1,1,3,2,2$ on nine species; none of this reproduces the field content of the
+Standard Model.  The repository's own mass-ratio scan, run with its
+false-positive accounting, returns three matches against about three expected
+by chance, and is read as numerology.  The substrate is not claimed to
+explain any particle.
+\item \emph{No cosmological prediction follows.}  The Weyl hypothesis has
+observational consequences only through a full cosmological model, and the
+substrate does not supply one.
+\end{itemize}
+
+\subsection*{What would support or retire it}
+
+The conjecture would be supported by a construction that produces a
+one-chirality curvature from the tile data, with the Hat phase supplying the
+opposite chirality; and it is retired if the integer chirality data
+(Proposition~\ref{prop:parity}) can be shown to carry no relation to the
+chirality of any gravitational sector.  Neither has been attempted.
+""".replace("@@VARIETY@@", variety_subsection())
+
+
 def data_section():
     return r"""
 \section{Results: A modelling step}
@@ -1204,11 +1372,6 @@ BIBLIOGRAPHY = r"""
 Jackiw--Teitelboim Dynamics on the Nariai Horizon. Research Square.
 \url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
 
-\bibitem{SuppNariai} Hartshorn, B.~S. (2026). What Wedge-Locality Determines,
-and What the Phase Averages Out: Exact Tests and a Universal Negativity Bound
-for Entropic Gravity on the Nariai Horizon. Zenodo.
-\url{https://doi.org/10.5281/zenodo.21908671}
-
 \bibitem{SmithEtAl} Smith, D., Myers, J.S., Kaplan, C.S. and
 Goodman-Strauss, C. (2024). An aperiodic monotile.
 \emph{Combinatorial Theory}, 4(1).
@@ -1251,6 +1414,30 @@ of convex sets, and the Kakeya set conjecture in three dimensions.
 
 \bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
 prime. \emph{Invent. Math.} 82, 37--55.
+
+\bibitem{Penrose1979} R.~Penrose (1979). Singularities and time-asymmetry.
+In \emph{General Relativity: An Einstein Centenary Survey}, ed.\ S.~W.~Hawking
+and W.~Israel, Cambridge University Press, 581--638.
+
+\bibitem{Plebanski1975} J.~F.~Pleba\'nski (1975). Some solutions of complex
+Einstein equations. \emph{J. Math. Phys.} 16, 2395--2402.
+
+\bibitem{Penrose1976} R.~Penrose (1976). Nonlinear gravitons and curved
+twistor theory. \emph{Gen. Relativ. Gravit.} 7, 31--52.
+
+\bibitem{Guevara2026} A.~Guevara, A.~Lupsasca, D.~Skinner, A.~Strominger and
+K.~Weil (2026). Single-minus graviton tree amplitudes are nonzero. OpenAI
+preprint (unrefereed). \url{https://cdn.openai.com/pdf/graviton.pdf}
+
+\bibitem{BarbourLobo} J.~Barbour, F.~S.~N.~Lobo and M.~I.~R.~Louren\c{c}o
+(2026). Structural morphology and the gravitational arrow of time.
+arXiv:2607.27526.
+
+\bibitem{BarbourEntropy} J.~Barbour (2021). Entropy and cosmological arrows of
+time. arXiv:2108.10074.
+
+\bibitem{BarbourLourenco} J.~Barbour and M.~I.~R.~Louren\c{c}o (2026). A
+scale-invariant theory of the universe. arXiv:2608.05929.
 
 \bibitem{Eskilt2026} Eskilt, J.R. \emph{et al.} (2026). Joint ACT DR6 and
 Planck PR4 constraints on cosmic birefringence.
@@ -1317,7 +1504,7 @@ def document():
         census_section(), charges_section(), deformation_section(),
         phases_section(), knot_section(), xcharge_section(),
         boundary_operator_section(), kakeya_section(),
-        lean_section(), data_section(), boundary_section(),
+        lean_section(), weyl_section(), data_section(), boundary_section(),
         supplement_pointer(), BIBLIOGRAPHY,
     ])
 
@@ -1442,7 +1629,7 @@ def selftest():
           r'\cite{WZ}' in text and '2507.14265' in text)
     check('the negative result is stated, not buried',
           'the obvious bridge fails' in text.lower()
-          and 'weakest property' in text)
+          and 'non-repetition' in text)
     check('stickiness is called an obstruction, not an advantage',
           'obstruction a Kakeya argument must survive' in text)
     check('the bootstrap correction is named',
@@ -1468,6 +1655,11 @@ def selftest():
           'stop hoping' in text)
     check('it names the horizon identification as a conjecture',
           'labelled as one' in text)
+    check('the area law is stated as a consistency check, not a theorem',
+          'is the corrected one' in text and 'a theorem of linearized' in text
+          and 'converse direction of Dorau and Much' in text)
+    check('the unrefereed companion note is no longer cited',
+          'SuppNariai' not in text)
     check('the title is the new one',
           'One Tile, Two Units' in text)
     check('the abstract says no result rests on a tolerance',
@@ -1482,6 +1674,38 @@ def selftest():
           r'\label{fact:bdyinv}' in text and 'by induction in Lean' in text)
     check('the unformalised last step is named as unformalised',
           'elementary arithmetic done by hand' in text)
+
+    print('the Weyl-curvature section')
+    check('it exists and is labelled a conjecture',
+          r'\label{conj:weyl}' in text and 'a conjecture' in text)
+    check('it sits before the modelling-step section',
+          text.index(r'\label{sec:weyl}') < text.index(r'\label{sec:data}'))
+    check('it says no map from tile to Weyl spinor is given',
+          'No map is given' in text)
+    check('it says the signature does not transfer',
+          'The signature does not transfer' in text)
+    check('it disclaims Standard Model content and reports the scan at chance',
+          'No Standard Model content' in text and 'three matches against about three' in text)
+    check('the graviton preprint is labelled unrefereed',
+          'unrefereed' in text and r'\cite{Guevara2026}' in text)
+    check('no gravity vs no free gravitational field is distinguished',
+          'not ``no gravity' in text)
+    check('its citations all have entries',
+          all(('bibitem{%s}' % k) in text for k in
+              ('Penrose1979', 'Plebanski1975', 'Penrose1976', 'Guevara2026', 'BarbourLourenco')))
+
+    print('the variety computation')
+    check('the variety subsection exists with a table',
+          r'\label{tab:variety}' in text and 'Barbour\'s variety' in text)
+    check('it is labelled a computation, not a Fact, and floating-point',
+          'Computation, not Fact' in text and 'Floating-point computation' in text)
+    check('it says depth is not time and no arrow is claimed',
+          'Depth is not time' in ' '.join(text.split()) and 'is not an arrow of time' in ' '.join(text.split()))
+    check('the table numbers are the live ones',
+          ('%.4f' % VAR.table()[-1][2]) in text and ('%.4f' % VAR.table()[-1][4]) in text)
+    check('all three Barbour works are cited and listed',
+          all((r'bibitem{%s}' % k) in text for k in ('BarbourLourenco', 'BarbourLobo', 'BarbourEntropy'))
+          and r'\cite{BarbourLobo,BarbourEntropy}' in text)
 
     print()
     if failures:
