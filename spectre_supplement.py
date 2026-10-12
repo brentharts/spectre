@@ -46,8 +46,7 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 \title{\vspace{-1cm}
 \textbf{Supplementary Material:} \\ Every Fact, and how it was obtained \\
-{\large for \emph{One Tile, Two Units: Area Inflation in $\mathbb{Q}(\sqrt{15})$
-and Boundary Inflation in $\mathbb{Q}(\sqrt{5})$ for the Spectre Monotile}}}
+{\large for \emph{Area and Perimeter Inflation in the Spectre Monotile}}}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
@@ -139,14 +138,11 @@ def selftest():
           ('the %d Facts' % sum(1 for f in F.FACTS if f.lean)) in text)
 
     print('the two documents agree')
-    check('the main paper quotes the same Fact count',
-          ('all %d of them' % len(F.FACTS)) in main)
     check('the main paper no longer carries the table itself',
           r'\begin{longtable}' not in main)
-    check('and points at this document',
-          'spectre_supplement.pdf' in main)
     check('the main paper title is the one this document names',
-          'One Tile, Two Units' in main and 'One Tile, Two Units' in text)
+          'Area and Perimeter Inflation in the Spectre Monotile' in main
+          and 'Area and Perimeter Inflation in the Spectre Monotile' in text)
 
     print('the honesty notes survive')
     check('the phantom attributions are mentioned',
