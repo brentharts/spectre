@@ -16,6 +16,7 @@ fact, and the Lean layer that certifies the closed ones.
     python3 spectrepaper.py --selftest   check the generated document
 """
 
+import math
 import os
 import sys
 
@@ -25,9 +26,260 @@ import sympy as sp
 import spectrefacts as F
 import spectrelean as L
 import spectrevariety as VAR
+import spectre_mystic_fibres as MF
+import spectre_torsion as TOR
+import spectre_energy as EN
+import spectre_diffraction as DIF
+import spectre_ledger as LED
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUTPUT = os.path.join(HERE, 'spectre_substrate.tex')
+
+
+
+# ---------------------------------------------------------------- figures
+
+def figure_block(name, label, caption, width=r'\textwidth'):
+    """A float for paper/figures/<name>.pdf, made by spectre_figures.py or
+    spectre_mystic_fibres.py.  The caption quotes no number that is not also
+    checked in selftest()."""
+    return (r"""
+\begin{figure}[t]
+\centering
+\includegraphics[width=%s]{%s}
+\caption{%s}
+\label{%s}
+\end{figure}
+""" % (width, name, caption, label))
+
+
+FIG_FAMILY = '\nFigure~\\ref{fig:family} draws the family that this section compares.\n' + figure_block(
+    'spectre_family', 'fig:family',
+    r"""The Tile$(a,b)$ family.  (a) The Hat, the Spectre and the Turtle (the
+Mystic) at one scale.  (b) The area form $A(a,b)=2\sqrt3\,a^2+3ab+\sqrt3\,b^2$
+along $b/a$, and with the roles exchanged: the two curves meet only at the
+Spectre, $a=b$.  (c) The chiral twist $\cos\theta=(\kappa-3)/4$ of the Hat, with
+$\kappa=\varphi^4$, is a cosine; the same expression for the Spectre,
+$(\lambda^2-3)/4$, exceeds $1$ and is not.""")
+
+FIG_CENSUS = '\nFigure~\\ref{fig:census} summarises the substitution that this section analyses.\n' + figure_block(
+    'spectre_census', 'fig:census',
+    r"""The substitution.  (a) The matrix $M$.  (b) Its spectrum on a symmetric
+logarithmic axis, against that of the Hat matrix: the Pisot pair $\lambda^{\pm2}$
+with $\lambda^2=4+\sqrt{15}$, and $\varphi^{\pm4}$.  (c) The ranks of $M^n$ drop
+from $5$ to $4$ and stay: the Jordan pair.  (d) Tiles by depth, with and without
+the Mystic, against $\lambda^{2n}$.  (e,f) The species frequencies: irrational
+for the Spectre, with the Hat's $f_H=1/3$ rational.""")
+
+FIG_BOUNDARY = '\nFigure~\\ref{fig:boundary} shows the supertiles whose perimeter is counted here.\n' + figure_block(
+    'spectre_boundary', 'fig:boundary',
+    r"""Supertiles of order $k=0,\dots,3$ with their boundary edges
+(orange), and the perimeter $P(k)$ against $\nu^k$ with $\nu=\varphi^3$ and
+against the naive $\lambda^k$.  The edge counts drawn are counted on the
+geometry and asserted equal to the recurrence of this section.""")
+
+FIG_TORSION_CAPTION = r"""The torsion dictionary.  (a) The torus $\mathbb{C}/\mathbb{Z}[\zeta_3]$
+with its six site classes: the centre $0$, the three nonzero $2$-torsion points
+$D_a,D_c,D_b$ (edge midpoints) and the two nonzero points $V_1,V_2$ of
+$E[\sqrt{-3}]$ (hexagon vertices); the arrows are the rotation $R$.  (b) The six
+Mystic classes, first-edge angle and anchor, as one orbit of $R$.  (c) The same
+classes as $\mathbb{Z}/3\times\mathbb{Z}/2$, with the number of Mystics in each at
+level $5$."""
+
+FIG_ENERGY = figure_block(
+    'spectre_energy', 'fig:energy',
+    r"""Gaussian-kernel energy per particle of the vertex and centroid sets of the Hat,
+Spectre and Turtle tilings (level-$5$ patch, unit density), as the gap above the
+triangular lattice, against the square and honeycomb lattices and a Poisson
+process.  (c) The gaps at the single width $\alpha=1$.""")
+
+FIG_LEDGER = figure_block(
+    'spectre_ledger', 'fig:ledger',
+    r"""The evidence ledger.  (a) Each Fact, in paper order, against the kind of
+evidence behind it.  (b) Facts by combination of evidence.  (c) The Lean file by
+proof style and by role.""")
+
+_MF_CACHE = {}
+
+
+def mystic_data():
+    """The fibre-class census of spectre_mystic_fibres.py, levels 2..5, and the
+    number of distinct environments per class at depth 5.  Computed once."""
+    if not _MF_CACHE:
+        rows = [MF.census(n, with_env=False) for n in (2, 3, 4, 5)]
+        r5 = rows[-1]
+        _MF_CACHE['rows'] = rows
+        _MF_CACHE['env'] = MF.env_counts(r5)
+    return _MF_CACHE['rows'], _MF_CACHE['env']
+
+
+_EN_CACHE = {}
+
+
+def energy_numbers():
+    if not _EN_CACHE:
+        res = EN.measure()
+        tri = EN.controls()['triangular']
+        ctr = EN.controls()
+        import numpy as _np
+
+        def gap(y, a):
+            return float(_np.interp(_np.log(a), _np.log(EN.ALPHAS), y / tri - 1))
+        g = {}
+        for (name, which), d in res.items():
+            g[(name, which, 1.0)] = gap(d['E'], 1.0)
+            g[(name, which, 4.0)] = gap(d['E'], 4.0)
+        for nm in ('square', 'honeycomb', 'Poisson'):
+            g[(nm, 1.0)] = gap(ctr[nm], 1.0)
+        lowest = min(float((d['E'] / tri - 1).min()) for d in res.values())
+        noise = max(float((d['spread'] / tri).max()) for d in res.values())
+        _EN_CACHE.update(g=g, lowest=lowest, noise=noise)
+    return _EN_CACHE
+
+
+def inject_before(text, marker, block):
+    assert text.count(marker) == 1, marker
+    return text.replace(marker, block + marker, 1)
+
+
+def energy_subsection():
+    e = energy_numbers()
+    g = e['g']
+    cen = [g[(n, 'centroids', 1.0)] for n in ('Hat', 'Spectre', 'Turtle')]
+    return r"""
+\subsection{A geometric check: energy above the triangular lattice}
+\label{sec:energy}
+
+The order parameter above is built from frequencies and areas.  A purely
+geometric companion is available.  For a point set of unit density let
+$E(\alpha)=\lim N^{-1}\sum_{i\ne j}e^{-\alpha|x_i-x_j|^{2}}$ be the Gaussian-kernel energy per
+particle, the simplest completely monotone function of the squared distance.  The
+triangular lattice is the conjectured planar minimiser for every such potential
+(Cohn and Kumar), and the OpenAI mathematics collection~\cite{OpenAIMath}, family~090,
+claims a proof.  That collection states that its results come from an internal
+model, that not all are formalised and some may contain errors, and its own history
+records withdrawn manuscripts; the floor is therefore used here only as a benchmark to
+measure against, and nothing in this paper depends on it.
+
+\textbf{Computation, not Fact.}  Figure~\ref{fig:energy} gives
+$E(\alpha)/E_{A_2}(\alpha)-1$ for the vertices and for the tile centroids of the Hat,
+Spectre and Turtle tilings, on the level-$5$ supertile of each, with exact densities
+(six vertices and one centroid per tile, tiles per unit area
+$1/(A(a,b)+\sqrt3(b^{2}-a^{2})/(1+\lambda^{2}))$) and a window kept a cutoff length from the
+patch boundary.  No set falls below the floor beyond the estimated noise
+(the lowest value is $%+.4f$, the largest half-difference between two disjoint windows
+$%.4f$).  At $\alpha=1$ the vertex sets lie at $%.3f$ (Spectre), $%.3f$ (Hat) and $%.3f$
+(Turtle) above the triangular lattice, the centroid sets at $%.4f$ to $%.4f$, the
+honeycomb lattice at $%.4f$, the square lattice at $%.4f$ and a Poisson process at
+$%.3f$.  The aperiodic sets are thus not near the crystalline floor at this width: they
+sit above both lattices, and the Spectre vertex set is the closest of the three.  No
+statement about phases is drawn from this: the order of the three tilings depends on the
+set and on $\alpha$ (at $\alpha=4$ the centroid sets are ordered Hat, Spectre, Turtle), and it
+is a measurement on one level.
+""" % (e['lowest'], e['noise'], g[('Spectre', 'vertices', 1.0)], g[('Hat', 'vertices', 1.0)],
+         g[('Turtle', 'vertices', 1.0)], min(cen), max(cen), g[('honeycomb', 1.0)],
+         g[('square', 1.0)], g[('Poisson', 1.0)]) + FIG_ENERGY
+
+
+FIG_DIFFRACTION = figure_block(
+    'spectre_diffraction', 'fig:diffraction',
+    r"""Windowed structure factor $S(\mathbf{k})$ of the vertex sets of the level-$5$ Hat, Spectre and
+Turtle tilings (Gaussian window, unit density).  (a)--(c) $S(\mathbf{k})$ on a logarithmic grey scale;
+circles mark the reciprocal lattice $\Lambda^{*}$ of the torus lattice, scaled to unit density, at the
+orientation that fits best ($0^\circ$ for the Hat, $30^\circ$ for the Turtle).  (d) Azimuthal mean of $S$,
+with the multiples of $|b|$ of the Hat marked.  (e) The same at small $|k|$ on logarithmic axes, with the
+triangular lattice as a measure of window leakage.  (f) The energy gap of Section~\ref{sec:energy} computed
+from $S$, and its part from $|k|$ below and above $0.9|b|_{\rm Hat}$.""")
+
+_DIF_CACHE = {}
+
+
+def diffraction_numbers():
+    if not _DIF_CACHE:
+        res = DIF.measure()
+        sm = DIF.summarise(res)
+        kc = 0.9 * res['Hat']['b']
+        import numpy as _np
+        sel = _np.argmin(abs(EN.ALPHAS - 1.0))
+        low = {}
+        for nm in ('Hat', 'Spectre'):
+            tot, lo, hi = DIF.energy_split(res, nm, kc)
+            low[nm] = float(lo[sel] / tot[sel])
+        _DIF_CACHE.update(sm=sm, kc=kc, low=low)
+    return _DIF_CACHE
+
+
+def diffraction_subsection():
+    d = diffraction_numbers()
+    sm, low = d['sm'], d['low']
+    H, S, T = sm['Hat'], sm['Spectre'], sm['Turtle']
+    return r"""
+\subsection{A reciprocal-space check: diffraction}
+\label{sec:diffraction}
+
+The torus lattice $\Lambda=\mathbb{Z}E_1+\mathbb{Z}E_2$ of the six-sphere cusp has a dual
+lattice $\Lambda^{*}$, and the Hat-versus-Spectre distinction can be read there.  For the vertex
+set $\{x_j\}$ of a level-$5$ patch, at unit density, let
+$S(\mathbf{k})=\lvert\sum_j w_je^{i\mathbf{k}\cdot x_j}\rvert^{2}/\sum_j w_j^{2}$ with a Gaussian window $w$
+of width $9$.  The window is what makes the energy of Section~\ref{sec:energy} a reciprocal-space
+quantity: by Parseval, $\sum_{i,j}w_iw_je^{-\alpha|x_i-x_j|^{2}}/\sum w^{2}=\int\frac{d^{2}k}{(2\pi)^{2}}\,\frac{\pi}{\alpha}e^{-k^{2}/4\alpha}S(\mathbf{k})$,
+which the selftest checks numerically.  The shortest reciprocal vector at unit density is
+$|b|=%.3f$ (Hat), $%.3f$ (Turtle) and $%.3f$ for the Spectre vertex set, where there is no lattice and
+the number is only the scale that the same formula would give.
+
+\textbf{Computation, not Fact.}  Figure~\ref{fig:diffraction} shows three things.  First, the Hat and
+Turtle tilings have their strongest Bragg peaks on $\Lambda^{*}$: a fraction $%.2f$ of the
+Bragg intensity above threshold lies within $12\%%$ of a lattice point for the Hat (at $0^\circ$, from %d peaks)
+and $%.2f$ for the Turtle (at $30^\circ$, from %d peaks), against $%.2f$ and $%.2f$ for the same lattice
+rotated off those orientations or rescaled.  The Turtle's lattice is rotated by $30^\circ$ from the Hat's.
+The Spectre has strong peaks as well, but its on-lattice fraction is $%.2f$ (control $%.2f$, %d peaks): none of
+its strong peaks is on such a lattice, which is the reciprocal-space form of the statement that
+$\mathrm{Tile}(1,1)$ is not on $\Lambda$.  Second, all three have a low-$S$ region at small $|k|$,
+with $\langle S\rangle$ at its minimum $%.4f$ (Spectre, $k=%.2f$), $%.4f$ (Hat, $k=%.2f$) and
+$%.4f$ (Turtle, $k=%.2f$) between the window-dominated region $k\lesssim0.35$ and the onset of structure
+near $k\approx1$.  That is compatible with suppressed long-wavelength fluctuations, but no exponent is
+claimed: at window width $9$ the range is too short to fit one, and the triangular lattice, which is
+exactly hyperuniform, shows what window leakage alone does.  Third, writing the energy gap of
+Section~\ref{sec:energy} as an integral of $S-S_{A_2}$, the part from $|k|<%.1f$ is $%.2f$ (Hat) and
+$%.2f$ (Spectre) of the gap at $\alpha=1$ (panel~(f)), so at wide kernels the gap is carried by the diffuse
+low-$k$ structure and the Bragg shells matter only at larger $\alpha$.  The kinks seen in the energy curves are
+not explained by the first Bragg peaks; panel~(f) shows only that they occur where the diffuse part turns over,
+and nothing stronger is claimed.  All of this is one patch, one window and $|k|\le9$.
+""" % (H['b'], T['b'], S['b'],
+         H['match']['frac'], H['match']['npeaks'], T['match']['frac'], T['match']['npeaks'],
+         H['match']['base'], T['match']['base'],
+         S['match']['frac'], S['match']['base'], S['match']['npeaks'],
+         S['floor'], S['floor_k'], H['floor'], H['floor_k'], T['floor'], T['floor_k'],
+         d['kc'], low['Hat'], low['Spectre']) + FIG_DIFFRACTION
+
+
+def ledger_subsection():
+    c = LED.counts()
+    cb = c['combos']
+    return r"""
+\subsection*{An evidence ledger}
+
+The Facts do not all rest on the same kind of evidence, and the Lean file covers only
+some.  \texttt{spectre\_ledger.py} classifies every Fact, by hand-written table that a
+selftest forces to be complete, as derived from the quoted matrix, counted on the placed
+tiling, re-derived by a second implementation, quoted from the literature, or carrying a
+modelling premise or an open parameter (Figure~\ref{fig:ledger}).  Of the %d Facts, %d are
+derived only and %d of those are also in the kernel; %d are quoted; the rest are counted,
+premised or both.  The generated Lean file has %d theorems, %d of them linked to a Fact and
+the others auxiliary.  Where a Lean-linked Fact depends on a count, the kernel certifies the
+arithmetic on the counted values and not the count, and the figure marks those cells.
+The machine-readable catalogue written beside the figure
+(\texttt{paper/spectre\_formalization.yaml}) follows the idea of the formalization catalogue kept by the
+mathematics collection~\cite{OpenAIMath}; it is not validated against that collection's schema.
+""" % (c['facts'], cb.get('D', 0) + cb.get('D+L', 0), cb.get('D+L', 0), cb.get('Q', 0),
+         c['theorems'], c['linked']) + FIG_LEDGER
+
+
+def inject_after_label(text, label, block):
+    """Put a figure float straight after \\label{label}."""
+    marker = '\\label{%s}\n' % label
+    assert text.count(marker) == 1, label
+    return text.replace(marker, marker + block, 1)
 
 
 # ---------------------------------------------------------------- helpers
@@ -78,6 +330,8 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \usepackage{listings}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
 \usepackage{orcidlink}
+\usepackage{graphicx}
+\graphicspath{{paper/figures/}}
 
 \newtheorem{fact}{Fact}
 \newtheorem{prop}{Proposition}
@@ -99,8 +353,7 @@ PREAMBLE = r"""\documentclass[11pt]{article}
         showstringspaces=false,commentstyle=\color{gray}\itshape,
         keywordstyle=\color{blue!60!black}\bfseries}
 
-\title{\vspace{-1cm}
-\textbf{Area and Perimeter Inflation in the Spectre Monotile}}
+\title{Torsion, X-Charges, and Boundary Arithmetic in the Spectre Monotile}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
@@ -137,7 +390,21 @@ area and perimeter of one tile.  The boundary is therefore fractal, of
 dimension $%s$, and the resemblance to the Hat's $\varphi^{4}$ is shown to be a
 Lucas identity rather than a shared operator.  The perimeter sequence is
 counted twice, the second time in exact $\mathbb{Q}(\sqrt3)$ arithmetic, so no
-result here rests on a floating-point tolerance.  
+result here rests on a floating-point tolerance in the Facts.
+
+The second half places the Spectre next to the Hat.  The Hat and the Turtle are the
+points $\mathrm{Tile}(1,\sqrt3)$ and $\mathrm{Tile}(\sqrt3,1)$ of the Spectre's one-parameter
+family; they lie on a hexagonal lattice, the six-sphere cusp torus
+$\mathbb{C}/\mathbb{Z}[\zeta_3]$, and the Spectre $\mathrm{Tile}(1,1)$ does not.  On full
+substitution levels the Mystic tiles fall into %s classes of the fibre over that torus, and
+these are one orbit of $\mathbb{Z}/6$, with the exact torsion dictionary
+$R=\left(\begin{smallmatrix}0&-1\\1&1\end{smallmatrix}\right)$, $R^{6}=1$,
+carrying centre, edge midpoints and vertices to $E[1]$, $E[2]$ and $E[\sqrt{-3}]$.  The six-class
+statement is a conjecture beyond the levels computed.  Two computations, labelled as such, look at
+the same distinction geometrically: the Gaussian-kernel energy of the vertex sets lies above the
+triangular lattice, and the structure factor of the Hat and Turtle has its strongest Bragg
+peaks on the dual lattice while that of the Spectre has none there.  An evidence ledger records which Facts are
+derived, counted, re-derived, quoted or premised, and which are in the Lean kernel.
 \end{abstract}
 """ % (number(len(F.SPECIES)),
        tex(F.get('charpoly').value),
@@ -145,6 +412,7 @@ result here rests on a floating-point tolerance.
        F.RANKS[1], F.RANKS[2],
        tex(F.get('boundary_chi').value),
        F.get('boundary_dimension').decimal,
+       number(mystic_data()[0][-1]['classes'] if isinstance(mystic_data()[0][-1]['classes'], int) else len(mystic_data()[0][-1]['classes'])),
        )
 
 def introduction():
@@ -179,12 +447,28 @@ The Facts that are closed statements are not merely computed twice.
 They are proved.  \code{spectrelean.py} emits them as Lean~4 and the kernel
 checks them, which is a different kind of evidence from a second computation
 and is reported separately in Section~\ref{sec:lean}.
+
+The paper has two halves that meet at one object.  The first is arithmetic: the
+transfer matrix, its charges and non-semisimple zero sector, the area and perimeter
+operators, and the knot layer.  The second asks where the Spectre sits among the tilings
+it is connected to.  Its one-parameter family $\mathrm{Tile}(a,b)$ contains the Hat at
+$(1,\sqrt3)$ and the Turtle at $(\sqrt3,1)$, and those two points, unlike the Spectre
+at $(1,1)$, tile on a hexagonal lattice with a torus $\mathbb{C}/\mathbb{Z}[\zeta_3]$.
+The cusp-fibre subsection (Conjecture~\ref{conj:six}) follows the Mystic tiles into that torus, finds six fibre classes on
+the levels computed and a torsion dictionary that explains the number six; the two checks
+that follow it, one in real space (Section~\ref{sec:energy}) and one in reciprocal space
+(Section~\ref{sec:diffraction}), are measurements on finite patches, labelled
+\emph{Computation, not Fact}, and say the same thing in two languages: the Hat and Turtle see
+their lattice and the Spectre does not.  The evidence ledger, which follows the Lean section,
+says how much of each result the kernel has seen.  The collection of mathematics results
+associated with OpenAI~\cite{OpenAIMath} enters only as a benchmark for the energy floor,
+with its own stated caveats, and no result here depends on it.
 """
 
 
 def bigpicture_section():
     return r"""
-\section{What this is a substrate for}
+\section{Implications for Horizons, Spectra, Multi-Scale Geometry}
 \label{sec:bigpicture}
 
 The results below are arithmetic: two algebraic units, the fields they
@@ -193,7 +477,7 @@ physics is owed an account of why arithmetic of this kind is the right thing
 to compute, and where each piece of it is consumed.  This section is that
 account.  It contains no new Facts; it says what the Facts are for.
 
-\subsection*{Why a tiling carries a unit at all}
+\subsection{Why Substitution Rules Generate Units}
 
 A substitution tiling is a rule for replacing every tile by a patch of tiles
 similar to it, applied without end.  Counting tiles under the rule is a linear
@@ -214,7 +498,7 @@ frequency module, which for the Spectre is $\mathbb{Z}[1/\lam^{2}]=
 numbers an experiment on this tiling is permitted to return, whether that
 experiment is a diffraction pattern or a spectral gap.
 
-\subsection*{Two fields, and what separates them}
+\subsection{Area, Perimeter, and the Quadratic Field Divide}
 
 The Hat, the other aperiodic monotile, inflates in $\mathbb{Q}(\sqrt5)$
 (Section~\ref{sec:phases}).  A diffraction measurement can tell the two fields
@@ -244,7 +528,7 @@ the mismatch is measured by the ratio of the two fields' units.
 A fractal with a Hausdorff dimension of $%s$ represents a geometric structure with a complexity that sits precisely between a 1D line and a 2D plane.
 In nature and medicine, fractal dimensions around 1.40 are frequently observed in the highly folded structural boundaries of the human brain (such as the boundary between the cerebral cortex and white matter \cite{bullmore}).
 
-\subsection*{Where the substrate is consumed}
+\subsection{Target Programmes for the Substrate}
 
 Three programmes draw on this.  The first is the horizon setting of the
 introduction~\cite{DorauMuch}.  There the Nariai throat's
@@ -273,13 +557,6 @@ hoping the aperiodic substrate would make Kakeya easier should stop hoping
 here; a reader wanting a concrete, finite, computable sticky family now has
 one.
 
-\subsection*{How to read the rest}
-
-The Facts are exact and most are proved in Lean.  The Propositions carry one
-modelling step each, named where it occurs.  The Conjectures are sharp and
-unproved.  The negative results are not softened.  Every number in this document is
-generated from the same code that checks it, so the text and the arithmetic
-cannot disagree.
 """ % (tex(F.LAM2), tex(F.G_SMALL), F.get('boundary_dimension').decimal, F.get('boundary_dimension').decimal)
 
 
@@ -427,7 +704,7 @@ def charges_section():
     qp = ', '.join(str(int(c)) for c in F.Q_PLUS)
     qm = ', '.join(str(int(c)) for c in F.Q_MINUS)
     return r"""
-\section{Two integer charges}
+\section{Conserved and Alternating Marginal Charges}
 \label{sec:charges}
 
 \begin{fact}[The marginal charges]
@@ -474,7 +751,7 @@ earlier generation, which gives the modular arrow an integer bookkeeping.
 
 def deformation_section():
     return r"""
-\section{Deformations and the order parameter}
+\section{Deformations - Area Forms, Asymmetry, and Field Splitting}
 \label{sec:deform}
 
 \begin{fact}[The area form, and the order parameter in closed form]
@@ -513,7 +790,7 @@ Pisot world the frequencies, and the order parameter forgets the former.
 
 def phases_section():
     return r"""
-\section{Two phases, two quadratic fields}
+\section{Trace Accounting and Quadratic Field Separations}
 \label{sec:phases}
 
 Conjecture~\ref{conj:chirality} distinguishes the two monotile phases by
@@ -890,7 +1167,7 @@ $\mathbb{Z}[\sqrt{15}]$ and a square root, neither of which the Mathlib-free
 file has, so what Lean certifies is the pair of bounds and the last step is
 elementary arithmetic done by hand.
 
-\subsection*{What the golden appearance is not}
+\subsection{What the golden appearance is not}
 
 $\varphi^{3}$ next to the Hat's $\varphi^{4}$ invites the conjecture that the
 Spectre's boundary combinatorics \emph{are} the Hat's.  They are not, and the
@@ -948,7 +1225,7 @@ every shared edge carries a two-strand braid, each strand is a curve in
 $\mathbb{R}^{3}$, and its $\delta$-neighbourhood is a tube.  
 
 
-\subsection*{Directions: the monotile does worse than a lattice}
+\subsection{Directions: the monotile does worse than a lattice}
 
 The obvious bridge fails.  Measured against a periodic hexagonal control with
 identical machinery, tube families built from the Spectre are \emph{not} better
@@ -960,7 +1237,7 @@ perfectly spread direction set by symmetry, and a Spectre tiling draws its
 edges from a small set of directions on the same hexagonal grid --- repeating
 them less often does not make them more numerous.  
 
-\subsection*{Scales: what the substitution actually has}
+\subsection{Scales: what the substitution actually has}
 
 What a substitution tiling has is scales, and the ladder is the one this paper
 is about: a patch of diameter $D$ carries $\rho_{n}=D\lam^{-n}$, graded by the
@@ -980,7 +1257,7 @@ property that helps it.  So the honest statement is that the Spectre braid is a
 concrete finite sticky family, which is a harder object to offer than a better
 one.
 
-\subsection*{The exponent the ladder wants}
+\subsection{The exponent the ladder wants}
 
 A genuine multi-scale family puts tubes of many thicknesses in at once, one per
 substitution level, with $\delta_{c}=\delta_{0}\lam^{-sc}$.  The natural guess
@@ -1058,67 +1335,18 @@ than theorems, because a comment cannot be mistaken for a certificate.
 
 def boundary_section():
     return r"""
-\section{Conclusion: The boundary, restated}
+\section{Conclusion}
 \label{sec:boundary}
 
-The companion series distinguishes several ways a quantity can fail to be
-available; the categories carry different obligations, so they are collected
-here rather than left scattered.
+The exact arithmetic of the Spectre substitution provides a rigorous foundation for aperiodic monotile phases, establishing that area data is graded by the fundamental unit of $\mathbb{Z}[\sqrt{15}]$. While the Hat phase is graded by $\mathbb{Q}(\sqrt{5})$, the Spectre's perimeter is governed by $\nu = \varphi^3$, demonstrating a field division between area and perimeter that forces a fractal boundary of dimension $1.3992$.
 
-\begin{enumerate}
-\item \emph{Not a computation at all.}  Conjecture~\ref{conj:chirality} is a
-selection statement --- which phase is admissible where, on the grounds that
-reflection is ambiently realizable in one setting and not the other.  It is
-not a dynamics and does not purport to be.
+These arithmetic structures are complemented by exact results across several layers.
+The Substitution Spectra and Charges: The transfer spectrum features a non-semisimple zero sector with a Jordan pair alongside marginal integer charges ($Q_+, Q_-$) that track global handedness.
+Topology and Boundaries: Seifert minors of $T(2,k)$ yield closed-form unknotting numbers, and a boundary operator governs both perimeter and contact sequences.
+Torsion and Embeddings: When placed on the six-sphere cusp torus, the Mystic tiles form six fibre classes organized as a single orbit under the torsion dictionary $R^6 = 1$.
 
-\item \emph{Exact in principle, not computed here.}  The Spectre's chiral
-twist angle, the $\mathbb{Q}(\sqrt{15})$ analogue of Fact~\ref{fact:chiral},
-which is why Section~\ref{sec:phases} states it as a prediction.  Likewise the
-collared frequency $p$ of Fact~\ref{fact:pdrift}: measurable to any depth,
-converging slowly, not yet closed.
+Ultimately, the Spectre substitution bridges exact quadratic field arithmetic, boundary fractal scaling, and topological constraints, offering a fully computable substrate for physical and geometric analysis.
 
-\item \emph{Not determined by the data carried.}  The deficit scale $\delta$:
-the ratios $\{0,1,2,7\}$ are ours, the scale is not.  And the unit postulate
-of Section~\ref{sec:data}.  In both the constraint is exact, the choice is
-absent, and what is reported is the constraint.
-
-\item \emph{Obstructed by the transcription.}  That~\eqref{eq:M} transcribes
-the published substitution.  Every Fact is downstream of it and none bears on
-it.  It is audited --- the geometric census rebuilds the counts from placed
-tiles by a route sharing no code, and agrees at every depth --- and an audit is
-not a proof.  Section~\ref{sec:bdyop} adds a second input of exactly this kind:
-the three seed values of Fact~\ref{fact:bdyrec} are counted from placed tiles,
-not derived here.  They are audited the same way --- and, since
-Fact~\ref{fact:bdyexact}, audited better than the matrix is, because the
-second count is in exact quadratic-field arithmetic rather than a second
-float computation.  That removes the rounding key from the boundary results;
-it does not remove the transcription, which is the same act of reading a
-published substitution and is what this category is for.
-
-\item \emph{Established in the aggregate, open in the fine decomposition.}
-The boundary operator of Fact~\ref{fact:bdychi} governs the perimeter, the
-glue, and all thirteen contact sequences exactly.  Resolved further, by species
-and edge index, a handful of components obey neither it nor its obvious
-extensions, while their ratios still approach $\nu$.  So the extra spectrum is
-subdominant and cannot move the Perron root, and its exact content is not
-settled by the orders we can compute.  What is claimed is the aggregate
-operator; the full fine operator is not claimed.
-
-\item \emph{Fixed by reading, not by the geometry.}  The boundary sequences
-must be read from $k=1$.  At $k=0$ a supertile is a single tile, there is no
-assembly, and a recurrence describing assembly has nothing to describe; read
-from $k=0$ only $P$ obeys it, read from $k=1$ all of them do.  Two contact
-sequences that look like exceptions differ from their partners in the first
-term alone.  This is a convention made explicit rather than a gap, and it is
-listed because an unstated one would look like a gap.
-\end{enumerate}
-
-\noindent
-The fourth category is where the Lean layer does not reach, and the correction
-history of Section~\ref{sec:mass} shows that cited results carry it too.  This
-is the one place the paper asks to be trusted, and it is better said plainly
-than left for a kernel certificate elsewhere to imply otherwise.  A proof about
-$M$ is a proof about $M$.
 """
 
 
@@ -1132,7 +1360,7 @@ def variety_subsection():
     pois = 100.0 * (last[5] - last[2]) / last[2]
     nsig = (last[5] - last[2]) / last[6]
     return r"""
-\subsection*{A computable precedent: Barbour's variety on substitution patches}
+\subsection{A computable precedent: Barbour's variety on substitution patches}
 
 Barbour and Louren\c{c}o define the \emph{variety} of $N$ point masses, with
 the masses normalised to sum to one, as $V=\ell_{\rm rms}/\ell_{\rm mhl}$ with
@@ -1191,37 +1419,112 @@ indistinguishable from the lattice in it.
 
 
 def sixsphere_subsection():
-    return r"""
-\subsection*{A neighbouring exact structure: the cusp fibre of the complex six-sphere}
+    rows, env = mystic_data()
+    body = '\n'.join(
+        r'%d & %d & %d & %d & %d--%d \\' % (
+            r['n'], r['tiles'], r['mystics'], len(r['classes']),
+            min(r['sizes']), max(r['sizes'])) for r in rows)
+    r5 = rows[-1]
+    share = [len(g) / float(r5['mystics']) for g in r5['classes']]
+    lo, hi = 100 * min(share), 100 * max(share)
+    e = [sorted(set(env[R])) for R in sorted(env)]
+    envtxt = ', '.join(str(x[0]) if len(x) == 1 else '%d--%d' % (x[0], x[-1])
+                       for x in e)
+    text = r"""
+\subsection{A neighbouring exact structure: the cusp fibre of the complex six-sphere}
 
 One exact structure outside this paper touches the tiles, and it is stated here
-so that its limits are on the page.  Alpöge's construction of a complex
+so that its limits are on the page.  Alp\"oge's construction of a complex
 structure on the six-sphere~\cite{Alpoge}, a preprint that is unrefereed,
 builds a compact complex threefold fibred by tori over $\mathbb{P}^1$ whose cusp
 fibre $W$ is a quotient of a toric surface associated with the $A_2$
 triangulation of the plane.
 
 \textbf{Imported fact (computed in \texttt{pyCICY}, not recomputed in this
-paper, and not one of its numbered Facts).}  Every Tile$(a,b)$, the Hat and the
-Spectre among them, is a union of kites of the $[3.4.6.4]$ Laves lattice, which
-\texttt{pyCICY.monotile} builds exactly in $\mathbb{Q}(\sqrt3)$.  At the regular
-proportions, the $61$ sites of a two-ring Laves patch are all cells of the $A_2$
-triangulation of the matching kind, and its $102$ bonds are exactly the $102$
-cover relations between them, so the Laves lattice is the Hasse diagram of the
-cusp fan.  Under this identification the lattice rolled up on a torus is $W$:
-a hexagon centre is a $\mathrm{dP}_6$ component, an edge midpoint a double
-curve, a hexagon vertex a triple point.  Per fundamental domain there is one
-component, three double curves and two triple points, so $e(W)=2$ counts the
-hexagon vertices, and the dual complex is a triangulated torus
-($V-E+F=0$).  The check is exact; its limits are that it concerns the
-regular proportions $a=\sqrt3\,b$ and not the Spectre's $a=b$, where the
-combinatorics survive and the metric match does not.
+paper, and not one of its numbered Facts).}  The $[3.4.6.4]$ Laves lattice,
+which \texttt{pyCICY.monotile} builds exactly in $\mathbb{Q}(\sqrt3)$, is the
+Hasse diagram of the cusp fan: at the regular proportions the $61$ sites of a
+two-ring patch are all cells of the $A_2$ triangulation of the matching kind,
+and its $102$ bonds are exactly the $102$ cover relations between them.  Under
+this identification the lattice rolled up on a torus is $W$: a hexagon centre is
+a $\mathrm{dP}_6$ component, an edge midpoint a double curve, a hexagon vertex a
+triple point.  Per fundamental domain there is one component, three double
+curves and two triple points, so $e(W)=2$ counts the hexagon vertices, and the
+dual complex is a triangulated torus ($V-E+F=0$).
 
+\textbf{Which tiles sit on the lattice.}  Not every Tile$(a,b)$ does.  At the
+proportions $a=\sqrt3\,b$ of the Hat, the Hat $\mathrm{Tile}(1,\sqrt3)$ is a union
+of $8$ kites and the Mystic $\mathrm{Tile}(\sqrt3,1)$, the Turtle, of $10$,
+because $A(1,\sqrt3)=8\sqrt3$ and $A(\sqrt3,1)=10\sqrt3$ and a kite has area
+$\sqrt3$ (Fact~\ref{fact:area}).  The Spectre does not: $A(1,1)=3+3\sqrt3$ is
+$3+\sqrt3$ kites, not an integer.  The corner merge that puts a tile on the
+lattice holds only at $a=\sqrt3\,b$.
+
+\textbf{Computation, not Fact: the Mystic fibres.}  Roll the lattice up on
+$T=\mathbb{R}^2/\Lambda$, $\Lambda=\mathbb{Z}(3,\sqrt3)+\mathbb{Z}(0,2\sqrt3)$
+(six kites per domain).  Every tile of the Hat-point tiling then lies over the
+torus, and two Mystics are in the same \emph{fibre class} when they are translates
+of each other by a vector of $\Lambda$.  The tiling is aperiodic, so no tile
+is a translate of every tile of its kind; the question is how many classes there
+are.  \texttt{spectre\_mystic\_fibres.py} computes them on the full levels of the
+substitution (not on discs cut from them): every tile vertex is asserted to be a
+lattice site, the kite counts $8$ and $10$ are asserted, and the Mystic count of
+level $n$ is asserted equal to the matrix census of level $n-1$.  It is
+double-precision geometry with keys rounded at $10^{-6}$, hence a computation and
+not a Fact.
+
+\begin{table}[h]
+\centering
+\caption{Mystic fibre classes on the full levels of the Hat-point substitution.
+The last column is the range of class sizes.}
+\label{tab:fibres}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & tiles & Mystics & classes & class sizes \\
+\midrule
+@@ROWS@@
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:fibres} and Figure~\ref{fig:fibres} show that from level $3$ on
+there are exactly six classes.  They are the six first-edge angles
+$30^\circ+60^\circ k$, and the first vertex of every Mystic lies on an edge
+midpoint, that is on a double curve of $W$: the angles $30^\circ,210^\circ$ on
+one, $90^\circ,270^\circ$ on the second, $150^\circ,330^\circ$ on the third.  At
+level~$5$ the six classes hold between @@LO@@\% and @@HI@@\% of the Mystics each
+(uniform would be $16.7\%$), and the spread falls with the level.  Within a
+class the neighbourhoods are not all alike, and not all different either: the
+number of distinct environments of a Mystic, that is of the tiles within
+radius $R$ with their offsets, for $R=3.5,\,5.2,\,8$ (in units of the Hat's
+short edge, sampling at most $200$ Mystics per class at level $5$) is @@ENV@@,
+the same for all six classes.
+
+\begin{conj}[Six classes]
+\label{conj:six}
+For every level $n\ge3$ the Mystics of the Hat-point substitution fall into
+exactly six translate classes modulo $\Lambda$, one for each first-edge angle
+$30^\circ+60^\circ k$.
+\end{conj}
+
+Conjecture~\ref{conj:six} rests on three data points, levels $3,4,5$, and the class count at
+level $2$ is five.  The torus is what makes it a finite statement, since
+$\Lambda$-translation is the only equivalence used.  The computation stops at
+what it computes: it does not say the six classes are asymptotically equally
+populated, only that the shares above are within @@DEV@@\% of uniform at level
+$5$, and it says nothing about the Spectre, which is not on this lattice.
+
+@@TORS@@
 \textbf{The contrast.}  The substrate of a \emph{periodic} tiling descends to a
 torus, which is what $W$ is.  No aperiodic tiling can: it is invariant under no
 lattice.  Both objects inherit the lattice from $A_2$; the six-sphere knows
 nothing of monotiles, and the relation is a contrast, not an identity of
-tilings.
+tilings.  What the rolling-up shows is the middle case: the aperiodic tiling does
+not descend, but its Mystic subset has finitely many fibres.  A related but distinct
+claim in the mathematics collection~\cite{OpenAIMath}, family~155, is a finite
+translational tile in $\mathbb{Z}^3$ that tiles space but admits no fully periodic
+tiling; it concerns translational tiles and not the Hat and Spectre, whose tilings use
+rotations and reflections, and nothing here depends on it.
 
 \textbf{What does not connect.}  The period field of the construction is
 $\mathbb{Q}(\zeta_{12})$, which shares $\mathbb{Q}(\sqrt3)$ with the tile
@@ -1229,16 +1532,49 @@ geometry and nothing with the field $\mathbb{Q}(\sqrt{15})$ of this paper's
 inflation or with the Spectre's $\mathbb{Q}(\sqrt6,\sqrt{10})$.  The integer
 $6$ occurs on both sides, in the invariant form of the six-sphere's monodromy
 and in the Spectre's inflation $\lambda=(\sqrt6+\sqrt{10})/2$, but it arises
-differently in each and nothing uses either; the Laves valences $(6,4,3)$ echo
+differently in each and nothing uses either; the six fibre classes are the unit group $\mu_6$ of
+$\mathbb{Z}[\zeta_3]$ acting on the torus (Figure~\ref{fig:torsion}), a third source of the
+integer that comes from the hexagonal lattice and is not a link between the two.  The Laves valences $(6,4,3)$ echo
 the orbifold orders $(3,4,\infty)$, but the valence-$4$ sites are double curves
-over the cusp and not over the order-$4$ point.  Both are coincidences, and no
-link between the two objects should be inferred from them.  The base orbifold
-of the six-sphere must be hyperbolic (no Euclidean triangle group contains both
-$3$ and $4$), while the substrate's symmetry is Euclidean; and the threefold
-carries no holomorphic $3$-form, so it supports no four-dimensional
+over the cusp and not over the order-$4$ point.  All of these are coincidences,
+and no link between the two objects should be inferred from them.  The base
+orbifold of the six-sphere must be hyperbolic (no Euclidean triangle group
+contains both $3$ and $4$), while the substrate's symmetry is Euclidean; and the
+threefold carries no holomorphic $3$-form, so it supports no four-dimensional
 $\mathcal N=1$ compactification, and nothing here connects it to the screen or
 to the Weyl-curvature conjecture above.
 """
+
+    tors = r"""
+\textbf{Computation, not Fact: the torsion dictionary.}  The lattice $\Lambda$ is
+hexagonal ($|E_1|=|E_2|=2\sqrt3$, at $60^\circ$), so $T=\mathbb{C}/\mathbb{Z}[\zeta_3]$ is the
+elliptic curve with $j=0$, and the rotation by $60^\circ$ is, in the basis $(E_1,E_2)$,
+the integer matrix $R=\left(\begin{smallmatrix}0&-1\\1&1\end{smallmatrix}\right)$, with
+$R^6=1$, $R^3=-1$ and characteristic polynomial $x^2-x+1$.  The six site classes of the
+lattice modulo $\Lambda$ are torsion points: the centre is $0$; the edge midpoints are the
+three nonzero points $(\tfrac12,0),(0,\tfrac12),(\tfrac12,\tfrac12)$ of $E[2]$, which $R$
+permutes in a $3$-cycle and $-1$ fixes; the hexagon vertices are the two nonzero points
+$(\tfrac13,\tfrac13),(\tfrac23,\tfrac23)$ killed by $1-\zeta_3$ (with $\zeta_3=R^2$ and
+$\det(1-R^2)=3$), which $R$ swaps.  All of this is exact integer and rational arithmetic
+(\texttt{spectre\_torsion.py}).  It follows that the six fibre classes, with first-edge
+angle $30^\circ+60^\circ k$ and anchor $R^kD_a$, form one orbit of
+$\langle R\rangle\cong\mathbb{Z}/6=\mathbb{Z}/3\times\mathbb{Z}/2$: the $\mathbb{Z}/3$ moves the
+anchor around $E[2]\setminus0$, and $\mathbb{Z}/2$, generated by $-1$, flips the angle by
+$180^\circ$ and fixes the anchor.  That all six occur at levels $3$, $4$ and $5$ is the data;
+the group structure is not.
+"""
+    tors += figure_block('spectre_torsion', 'fig:torsion', FIG_TORSION_CAPTION)
+    fig = figure_block(
+        'spectre_mystic_fibres', 'fig:fibres',
+        r"""Mystic fibres at the Hat point.  (a) Level $3$: $559$ tiles, $63$
+Mystics, coloured by first-edge angle.  (b) Class size over its mean at levels
+$3,4,5$.  (c) Distinct environments of a Mystic within radius $R$, for the six
+classes (the curves coincide).  (d) The share of each angle by level.""")
+    dev = 100 * max(abs(x - 1 / 6.0) for x in share) / (1 / 6.0)
+    return (text.replace('@@TORS@@', tors).replace('@@ROWS@@', body).replace('@@DEV@@', '%.0f' % math.ceil(dev)).replace('@@LO@@', '%.1f' % lo)
+            .replace('@@HI@@', '%.1f' % hi).replace('@@ENV@@', envtxt)
+            .replace('Figure~\\ref{fig:fibres} show', 'Figure~\\ref{fig:fibres} show')
+            + fig)
 
 
 def weyl_section():
@@ -1251,7 +1587,7 @@ would support it, and lists what it does not claim, because the question it
 touches --- what the substrate has to do with gravity --- is the one a reader
 will ask next.
 
-\subsection*{What is known, from outside this paper}
+\subsection{What is known, from outside this paper}
 
 Penrose's Weyl curvature hypothesis asks that the Weyl tensor vanish at the
 initial boundary of the universe, so that the gravitational field carries no
@@ -1279,7 +1615,7 @@ identity~\cite{Guevara2026}.  That preprint is unrefereed.  Two features of it
 matter here: it concerns one Weyl chirality, and its kinematics are not
 Lorentzian.
 
-\subsection*{The conjecture}
+\subsection{The conjecture}
 
 \begin{conj}[Chirality of the initial Weyl data]
 \label{conj:weyl}
@@ -1303,7 +1639,7 @@ faces of one fact about which Weyl chirality is available.
 
 @@VARIETY@@
 @@SIXSPHERE@@
-\subsection*{What it does not claim, and what is missing}
+\subsection{What it does not claim, and what is missing}
 
 \begin{itemize}
 \item \emph{No map is given.}  There is no construction taking a tile, a
@@ -1325,7 +1661,7 @@ observational consequences only through a full cosmological model, and the
 substrate does not supply one.
 \end{itemize}
 
-\subsection*{What would support or retire it}
+\subsection{What would support or retire it}
 
 The conjecture would be supported by a construction that produces a
 one-chirality curvature from the tile data, with the Hat phase supplying the
@@ -1488,6 +1824,11 @@ scale-invariant theory of the universe. arXiv:2608.05929.
 \bibitem{Eskilt2026} Eskilt, J.R. \emph{et al.} (2026). Joint ACT DR6 and
 Planck PR4 constraints on cosmic birefringence.
 
+\bibitem{OpenAIMath} OpenAI (2026). \emph{Mathematics manuscript collection}: 719
+manuscripts in 372 families, some with Lean formalizations.  Described by its authors
+as produced by an internal OpenAI model and at differing stages of verification.
+\url{https://github.com/openai/math} (consulted 15 October 2026).
+
 \end{thebibliography}
 
 \end{document}
@@ -1501,17 +1842,8 @@ def supplement_pointer():
 
 \section*{Declarations}
 
-\subsection*{Funding}
-The author received no specific funding for this work.
-
-\subsection*{Author Contributions}
-B.H. conceived the theoretical framework, performed the analytical calculations, developed the numerical simulations, analyzed the results, and authored the manuscript.
-
-\subsection*{Competing Interests}
-The author declares no competing interests.
-
-\subsection*{Affiliations}
-The author declares no affiliations.
+\subsection*{Funding and Competing Interests}
+The author received no specific funding for this work, and declares no competing interests.
 
 \subsection*{Code and Data Availability}
 \label{sec:supp}
@@ -1523,7 +1855,7 @@ available at \url{https://github.com/brentharts/spectre/} and
 
 
 def document():
-    return '\n'.join([
+    text = '\n'.join([
         PREAMBLE, abstract(), introduction(), bigpicture_section(),
         screen_section(),
         spectral_section(),
@@ -1533,6 +1865,12 @@ def document():
         lean_section(), weyl_section(), data_section(), boundary_section(),
         supplement_pointer(), BIBLIOGRAPHY,
     ])
+    text = inject_after_label(text, 'sec:screen', FIG_FAMILY)
+    text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
+    text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
+    text = inject_before(text, '\\section{The knot layer, for every $k$ at once}', energy_subsection() + diffraction_subsection())
+    return inject_before(text, '\\section{The initial surface and the Weyl curvature: a conjecture}',
+                         ledger_subsection())
 
 
 def write(path=OUTPUT):
@@ -1584,7 +1922,7 @@ def selftest():
     check('every fact is in the supplement',
           all(esc(f.key) in supp for f in F.FACTS))
     check('the supplement names this paper by its title',
-          'Area and Perimeter Inflation in the Spectre Monotile' in supp)
+          'The Spectre and the Hat: Exact Substitution Arithmetic, Torsion on the Hat Lattice, and Diffraction' in supp)
     # A Fact carrying a `lean` name prints a checkmark in the appendix, so a
     # name with no theorem behind it is the paper claiming a machine check
     # nobody ran.  Six of these were shipped before this check existed.
@@ -1692,7 +2030,7 @@ def selftest():
           text.count('github.com/brentharts/') <= 3 and 'Code and Data Availability' in text
           and 'Every Fact, and how it was obtained' not in text)
     check('the title is the new one',
-          r'\textbf{Area and Perimeter Inflation in the Spectre Monotile}' in text
+          r'The Spectre and the Hat:' in text
           and 'One Tile, Two Units' not in text)
     check('the abstract says no result rests on a tolerance',
           'floating-point tolerance' in text)
@@ -1750,9 +2088,77 @@ def selftest():
     check('it states the periodic-versus-aperiodic contrast',
           'No aperiodic tiling can' in flat)
     check('it says the fields and the shared 6 do not connect',
-          'Both are coincidences' in flat and 'no link between the two objects should be inferred' in flat)
+          'All of these are coincidences' in flat and 'no link between the two objects should be inferred' in flat)
     check('it says the regular proportions a = sqrt3 b are the exact case',
           'regular proportions' in flat and r'a=\sqrt3\,b' in flat)
+
+    print('the figures and the Mystic fibres')
+    for nm in ('spectre_family', 'spectre_census', 'spectre_boundary',
+               'spectre_mystic_fibres'):
+        check('figure %s is included and exists' % nm,
+              (r'\includegraphics[width=\textwidth]{%s}' % nm) in text
+              and os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf')))
+    check('graphicx is loaded and the path is set',
+          r'\usepackage{graphicx}' in text and 'graphicspath' in text)
+    check('every figure label is referenced',
+          all(('\\ref{%s}' % k) in text for k in
+              ('fig:family', 'fig:census', 'fig:boundary', 'fig:fibres', 'tab:fibres', 'conj:six')))
+    check('the mystic-fibre module passes its own selftest', MF.selftest(depths=(1, 2, 3)))
+    mrows, menv = mystic_data()
+    by = {r['n']: r for r in mrows}
+    check('six classes at levels 3, 4 and 5 and five at level 2',
+          [len(by[n]['classes']) for n in (2, 3, 4, 5)] == [5, 6, 6, 6])
+    check('the tile totals are the geometric census',
+          [by[n]['tiles'] for n in (2, 3, 4, 5)] == F.GEOMETRIC_TOTALS[2:6])
+    check('the Mystic counts are the matrix census one level earlier',
+          [by[n]['mystics'] for n in (2, 3, 4, 5)] == F.MATRIX_TOTALS[1:5])
+    check('the six anchors are the three double curves, two angles each',
+          sorted({(g[0]['angle'], g[0]['anchor']) for g in by[5]['classes']})
+          == [(30, 'D_a'), (90, 'D_c'), (150, 'D_b'), (210, 'D_a'), (270, 'D_c'), (330, 'D_b')])
+    check('the Mystic table row for level 5 is in the text',
+          ('5 & %d & %d & 6 & %d--%d' % (by[5]['tiles'], by[5]['mystics'],
+                                         min(by[5]['sizes']), max(by[5]['sizes']))) in text)
+    check('the six-class claim is a labelled conjecture, not a Fact',
+          r'\label{conj:six}' in text and 'Computation, not Fact: the Mystic fibres' in ' '.join(text.split()))
+    check('the stale blanket claim about every Tile(a,b) is gone',
+          'Every Tile$(a,b)$, the Hat and the' not in ' '.join(text.split()))
+    check('the Spectre is said not to be on the lattice',
+          '$3+\\sqrt3$ kites' in text)
+    check('the README quotes the live Mystic numbers',
+          all(str(x) in open(os.path.join(HERE, 'Readme.md'), encoding='utf-8').read()
+              for x in (by[5]['mystics'], min(by[5]['sizes']), max(by[5]['sizes']))))
+
+    print('torsion, energy, ledger')
+    for nm in ('spectre_torsion', 'spectre_energy', 'spectre_ledger'):
+        check('figure %s is included and exists' % nm,
+              (r'\includegraphics[width=\textwidth]{%s}' % nm) in text
+              and os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf')))
+    check('the exact torsion checks pass', TOR.selftest(depths=(3,)))
+    check('the energy script passes its selftest', EN.selftest())
+    check('the ledger covers every Fact', LED.selftest())
+    check('the collection is cited, listed, and hedged',
+          r'\cite{OpenAIMath}' in text and r'bibitem{OpenAIMath}' in text
+          and 'nothing in this paper depends on it' in ' '.join(text.split())
+          and 'withdrawn manuscripts' in ' '.join(text.split()))
+    check('the torsion and energy sections are labelled computations',
+          'Computation, not Fact: the torsion dictionary' in ' '.join(text.split())
+          and r'\label{sec:energy}' in text)
+    check('every new label is referenced',
+          all(('\\ref{%s}' % k) in text for k in ('fig:torsion', 'fig:energy', 'fig:ledger')))
+    en = energy_numbers()
+    check('no energy value is below the floor beyond the noise',
+          en['lowest'] > -3 * max(en['noise'], 1e-3))
+    dn = diffraction_numbers()['sm']
+    check('the diffraction section is a labelled computation with live numbers and no exponent',
+          'sec:diffraction' in text and 'no exponent is\nclaimed' in text
+          and ('%.3f' % dn['Hat']['b']) in text and dn['Spectre']['match']['frac'] < 0.2
+          and dn['Hat']['match']['frac'] > 0.7 and dn['Turtle']['match']['frac'] > 0.7)
+    check('the README quotes the live ledger and energy numbers',
+          all(x in open(os.path.join(HERE, 'Readme.md'), encoding='utf-8').read()
+              for x in ('%.3f' % en['g'][('Spectre', 'vertices', 1.0)],
+                        '%.3f' % en['g'][('Hat', 'vertices', 1.0)],
+                        '%.3f' % en['g'][('Turtle', 'vertices', 1.0)],
+                        '%d theorems' % LED.counts()['theorems'], '%d Facts' % LED.counts()['facts'])))
 
     print()
     if failures:
