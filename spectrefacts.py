@@ -723,6 +723,13 @@ def cross_check_boundary():
 
 
 
+def _lean_theorem_count():
+    """Theorems in the generated Lean file (imported late: spectrelean imports
+    this module)."""
+    import spectrelean
+    return len(spectrelean.theorem_names(spectrelean.document()))
+
+
 def check_readme(path='Readme.md'):
     """Check the README's headline numbers against this module.
 
@@ -739,8 +746,8 @@ def check_readme(path='Readme.md'):
         return ['%s not found' % path]
 
     wanted = [
-        ('fact count', str(len(FACTS))),
-        ('Lean theorem count', '44'),
+        ('fact count', '%d Facts' % len(FACTS)),
+        ('Lean theorem count', '%d theorems' % _lean_theorem_count()),
         ('Perron eigenvalue', '4+\u221a15'),
         ('atlas classes', str(ATLAS_CLASSES)),
         ('Mystic X-charge', 'X_\u0393\u2082 = %d' % X_CHARGE['Gamma2']),
