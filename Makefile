@@ -4,6 +4,7 @@
 # The paper is generated: edit the facts, not the .tex.
 #
 #   make check        facts, atlas, Lean kernel, and the generated document
+#   make figures      rebuild paper/figures/*.pdf and *.png
 #   make paper        rebuild spectre_substrate.pdf
 #   make lean         emit SpectreFacts.lean and check it
 #   make install_lean install a Lean 4 toolchain (Ubuntu/Debian, macOS)
@@ -57,7 +58,15 @@ lean:
 	  exit 1; }
 	$(PYTHON) spectrelean.py --check
 
-paper: facts
+figures:
+	$(PYTHON) spectre_figures.py
+	$(PYTHON) spectre_mystic_fibres.py
+	$(PYTHON) spectre_torsion.py
+	$(PYTHON) spectre_energy.py
+	$(PYTHON) spectre_diffraction.py
+	$(PYTHON) spectre_ledger.py
+
+paper: facts figures
 	$(PYTHON) spectrepaper.py
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
@@ -72,6 +81,12 @@ readme:
 	$(PYTHON) spectrefacts.py --readme
 
 check: facts atlas lean readme
+	$(PYTHON) spectre_figures.py --check
+	$(PYTHON) spectre_mystic_fibres.py --check
+	$(PYTHON) spectre_torsion.py --check
+	$(PYTHON) spectre_energy.py --check
+	$(PYTHON) spectre_diffraction.py --check
+	$(PYTHON) spectre_ledger.py --check
 	$(PYTHON) spectrepaper.py --selftest
 
 paper-clean:
@@ -213,6 +228,6 @@ c:
 d:
 	blender --python einstein_fibration.py -- --iter2 --b=3
 
-.PHONY: facts atlas lean readme paper check paper-clean \
+.PHONY: facts atlas lean readme figures paper check paper-clean \
         install_lean install_lean_tarball install_lean_deps \
         lean_env uninstall_lean
