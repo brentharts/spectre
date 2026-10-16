@@ -1,4 +1,109 @@
-## Phase Grading in Aperiodic Monotiles
+# spectre — the Spectre and the Hat: exact arithmetic, torsion on the Hat lattice, diffraction
+
+The **Spectre** is the chiral aperiodic monotile of Smith, Myers, Kaplan and
+Goodman-Strauss. This repository computes what its substitution system
+*determines*, exactly: the inflation factor, the spectrum of the 9×9
+substitution matrix, the area and perimeter laws, two integer charges, the
+transition to the Hat, and the tiling's fibres on the cusp torus of Alpöge's
+complex six-sphere. The paper
+[`spectre_substrate.tex`](spectre_substrate.tex) is **generated** from these
+scripts, so each number in it is a call into code that has a self-test, and the
+closed statements are checked by the Lean 4 kernel. Everything below is
+reproduced by `make figures`, `make paper` and `make check`.
+
+### One family, three tiles
+
+![Tile(a,b): Hat, Spectre, Turtle; the area form; the chiral twist](paper/figures/spectre_family.png)
+
+Hat, Spectre and Turtle are members of one family, Tile(a,b), whose area is the
+exact quadratic form A(a,b) = 2√3·a² + 3ab + √3·b². The Hat's chiral twist is a
+genuine cosine, cos θ = (κ−3)/4 with κ = φ⁴, giving 15.52°; the same expression
+for the Spectre, (λ²−3)/4 = 1.2182, exceeds 1, so the Spectre has no such angle.
+(`spectre_figures.py`)
+
+### The substitution
+
+![The substitution matrix, its spectrum, the census and the frequencies](paper/figures/spectre_census.png)
+
+The nine-species matrix has χ(x) = x⁵(x−1)(x+1)(x²−8x+1), so the inflation is
+λ² = 4+√15, the fundamental unit of ℤ[√15]. The ranks of Mⁿ fall from 5 to 4 and
+stay: the zero sector is a Jordan pair, not semisimple. The Mystic count of
+level n is the matrix census of level n−1. All Spectre frequencies are
+irrational; the Hat's f_H = 1/3 is rational, so it carries no periodicity
+witness. (`spectre_figures.py`)
+
+### The boundary
+
+![Supertile outlines and the perimeter law](paper/figures/spectre_boundary.png)
+
+The perimeter of an order-k supertile obeys
+P(k) = 5P(k−1) − 3P(k−2) − P(k−3), with P = 14, 46, 182, 758, 3198, 13534, so it
+grows like ν = φ³ = 2+√5 and not like λ. The boundary has dimension
+log ν / log λ = 1.3993. The counts drawn are counted on the geometry and
+asserted equal to the recurrence. (`spectre_figures.py`)
+
+### Mystic fibres on the six-sphere's cusp torus
+
+![Mystic fibre classes on the full substitution levels](paper/figures/spectre_mystic_fibres.png)
+
+At the Hat proportions every tile is a union of kites of the [3.4.6.4] Laves
+lattice (the Hat 8 kites, the Mystic or Turtle 10). Rolling that lattice up on
+the torus that is the cusp fibre of Alpöge's complex six-sphere, the Mystics of
+the full levels fall into **six translate classes**: 6 at levels 3, 4 and 5
+(63, 496 and 3905 Mystics), one for each first-edge angle 30°+60°k, anchored on
+the three double curves. At level 5 the class sizes are 629 to 674. The
+six-class claim for all n ≥ 3 is a conjecture, and it is a floating-point
+computation with asserted lattice-site checks, not a Fact. The Spectre itself
+is not on this lattice: its area is 3+√3 kites. (`spectre_mystic_fibres.py`)
+
+### The torsion dictionary
+
+![The six Mystic classes as torsion data of the hexagonal torus](paper/figures/spectre_torsion.png)
+
+The cusp torus is hexagonal, so it is ℂ/ℤ[ζ₃], the elliptic curve with j = 0, and
+the 60° rotation is the integer matrix R = [[0, −1], [1, 1]] in the lattice basis
+(R⁶ = 1, R³ = −1). The six site classes of the lattice modulo Λ are torsion
+points: the centre is 0, the three edge midpoints (the double curves) are the
+nonzero points of E[2], and the two hexagon vertices are the nonzero points of
+E[√−3]. R cycles the three 2-torsion points and swaps the two vertex classes. The
+six Mystic classes, (first vertex, first-edge angle), are therefore one orbit of
+ℤ/6 = ℤ/3 × ℤ/2: the ℤ/3 moves the anchor and −1 flips the angle. The group
+structure is exact arithmetic; that all six classes occur is data. (`spectre_torsion.py`)
+
+### Energy above the triangular lattice
+
+![Gaussian-kernel energy of the tiling point sets against the triangular lattice](paper/figures/spectre_energy.png)
+
+For unit density, the Gaussian-kernel energy per particle is compared with the
+triangular lattice, the conjectured minimiser for every completely monotone
+potential of squared distance. The [OpenAI mathematics
+collection](https://github.com/openai/math) (family 090) claims a proof; that
+collection says its results come from an internal model, are at differing stages of
+verification and include withdrawn manuscripts, so the floor is a benchmark here and
+nothing depends on it. At width α = 1 the vertex sets of the Spectre, Hat and Turtle
+tilings lie 0.064, 0.109 and 0.149 above the triangular lattice, the centroid sets
+0.003 to 0.009, the square and honeycomb lattices 0.0002 and 0.0073, and a Poisson
+process 0.467. No computed set falls below the floor beyond the estimated noise.
+(`spectre_energy.py`)
+
+### The evidence ledger
+
+![What kind of evidence stands behind each Fact](paper/figures/spectre_ledger.png)
+
+Each of the 58 Facts is classified as derived from the quoted matrix, counted on the
+tiling, re-derived by a second implementation, quoted from the literature, or carrying
+a premise. The generated Lean file has 51 theorems, 18 linked to a Fact; where a
+linked Fact depends on a count, the kernel certifies the arithmetic on the counted
+values and not the count. `paper/spectre_formalization.yaml` is a machine-readable
+catalogue in the spirit of the one kept by the OpenAI collection. (`spectre_ledger.py`)
+
+### Diffraction (computation, not a Fact)
+
+![diffraction](paper/figures/spectre_diffraction.png)
+
+The windowed structure factor of the level-5 vertex sets: the Hat and Turtle have their strongest Bragg peaks on the dual of the torus lattice (the Turtle's rotated 30°), the Spectre has strong peaks but none on such a lattice. All three have a low-S region at small k; no exponent is claimed. (`spectre_diffraction.py`)
+
+## Paper: The Spectre and the Hat
 
 *Exact Spectral Theory of the Spectre Substrate, with a Lean 4 Checked Fact Layer.*
 
@@ -9,16 +114,16 @@ is editing a build artefact.
 
 | | |
 |---|---|
-| `spectrefacts.py` | 44 Facts, computed exactly in sympy. `--selftest` checks all of them |
+| `spectrefacts.py` | 58 Facts, computed exactly in sympy. `--selftest` checks all of them |
 | `spectreatlas.py` | the contact atlas and X-charges, built from the placed tiling |
 | `spectrelean.py`  | emits the Fact layer as Lean 4 and runs the kernel over it |
 | `spectrepaper.py` | 13 sections, generated |
 
 The Lean file is in the wiki: **[Spectre-Lean](https://github.com/brentharts/spectre/wiki/Spectre-Lean)**
-— 44 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit
-(40 depend on no axioms at all; the 4 induction proofs use `propext` and
-`Quot.sound`; `Classical.choice` appears nowhere, so every proof is
-constructive).
+— 51 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit that
+`make lean` writes into the header of `SpectreFacts.lean` (an earlier version of this
+paragraph quoted 40 + 4 theorems for a smaller file; it was not re-measured when the
+file grew to 51, so no split is quoted here).
 
 ### What the paper establishes
 
