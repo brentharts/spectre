@@ -130,7 +130,7 @@ KIND = {
     'chair_mesh': 'D', 'chair_volume': 'D', 'chair_labels': 'DX', 'chair_tilings': 'D',
     'chair_screen': 'C', 'chair_atlas': 'DX', 'chair_equations': 'DX',
     'chair_chiral': 'D', 'chair_forced_chirality': 'D', 'chair_orientation': 'D',
-    'chair_surface': 'CX', 'chair_exponents': 'D',
+    'chair_surface': 'CX', 'chair_exponents': 'D', 'chair_coincidence': 'DX',
     'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
 }
 _REGISTERED = False
@@ -185,10 +185,14 @@ def register():
     fact(key='chair_screen',
          claim=r'6555\ \text{tilings leave 4 free classes; 6 leave 12, and 3 of those use all 24 orientations}',
          value={'free_classes': {4: 6555, 12: 6}, 'survivors': 6, 'after_orientation_rule': 3,
-                'chosen_index_in_sort_order': 1268},
+                'chosen_index_in_sort_order': 1268,
+                'legal_contacts_of_the_six': [62, 62, 62, 44, 44, 44],
+                'mirror_contacts_legal_in_any': 0},
          method='every one of the 6561 tilings is glued to depth two; six leave 12 height '
                 'classes, three of those use the maximum number of orientations, the first '
-                'in sort order is the recorded substitution. Recorded from the 3-minute '
+                'in sort order is the recorded substitution. For all six, no mirror contact '
+                'is legal (the 8-orientation family has 62 legal contacts, the other three 44), '
+                'so forced chirality does not depend on the selection rule. Recorded from the 3-minute '
                 'screen, repeated by `chair44facts.py --full`; the selection rule is a '
                 'convention, stated in symchair44.py')
 
@@ -273,6 +277,26 @@ def register():
                 'genuine surface (zero fractal excess), unlike the Spectre boundary '
                 'of dimension 1.399')
 
+    import chair44_twoadic as TA
+    tw = TA.report()
+    c = tw['counts']
+    fact(key='chair_coincidence',
+         claim=r'\text{modular coincidence at depth }3,\ c(M)=28\cdot2^{M}-48\ (M\ge3)',
+         value=dict(labels=tw['labels'], primitive_exponent=tw['primitive_exponent'],
+                    depth=tw['coincidence_depth'], address_0_0_2=tw['address_0_0_2'],
+                    coincident=tw['coincident_addresses'], of=tw['words_at_depth'],
+                    counts=c[:9], reachable_sets=sum(tw['subset_sizes'].values()),
+                    non_singleton=tw['transfer_dim'], spectral_radius=2),
+         method='the cell substitution on 24 x 7 = 168 labelled unit cells, rebuilt from the child '
+                'poses: column sum 8, primitive at power 3, least modular-coincidence depth 3 '
+                'with (0,0,2) among the 336 of 512 coincident addresses, matching the depth and '
+                'address recorded upstream (substitution_modular_coincidence). A subset automaton '
+                '(209 reachable label sets, 41 non-singleton) counts the words not yet coincided, '
+                'c(M) = 28*2^M - 48, so the undetermined set in Z_2^3 has box dimension 1. '
+                'Pure-point diffraction and limit-periodicity follow only through the cited '
+                'Lee-Moody / Schlottmann theorem, which is not re-proved here',
+         lean='coincidence_closed')
+
     # ---- Spectre side
     seq = F.BOUNDARY_SEQ
     closed = [2 * fib(3 * k + 5) + 4 for k in range(len(seq))]
@@ -337,6 +361,9 @@ def selftest(full=False):
     ok(o['charpoly'] == x ** 3 * (x - 8) * (x - 2) ** 20 and o['rank'] == o['rank_square'] == 21
        and o['semisimple'] and o['row_sums'] == o['col_sums'] == [8], 'orientation')
     ok(get('chair_surface').value[0], 'surface laws')
+    w = get('chair_coincidence').value
+    ok(w['primitive_exponent'] == 3 and w['depth'] == 3 and w['address_0_0_2'] and w['coincident'] == 336
+       and w['counts'] == [1, 8, 64, 176, 400, 848, 1744, 3536, 7120], 'coincidence')
     d = get('chair_exponents').value
     ok(d == (2, sp.Rational(1, 3), 2, 0), 'exponents')
     ok(get('boundary_fibonacci').value[1] and len(F.BOUNDARY_SEQ) == 7, 'fibonacci form')
@@ -357,6 +384,11 @@ def selftest(full=False):
     if full:
         chosen, summary = S.screen_tilings(verbose=False)
         ok(summary['classes_histogram'] == {4: 6555, 12: 6} and chosen == S.CHILDREN, 'screen')
+        surv = [tuple(sorted(t, key=S.child_order)) for t in S.double_chair_tilings()
+                if not S.gluing(list(t), 2)[1] and len(S.gluing(list(t), 2)[0]) == 12]
+        legal = [S.legal_contacts(S.label_table(c)) for c in surv]
+        ok(sorted(len(l) for l in legal) == [44, 44, 44, 62, 62, 62]
+           and all(S.frame_det(p[0]) == 1 for l in legal for p in l), 'forced chirality for all six')
     return n
 
 

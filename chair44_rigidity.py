@@ -368,9 +368,6 @@ def main(argv=None):
         print("wrote", a.json)
 
 
-if __name__ == "__main__":
-    main()
-
 
 ## ------------------------------------------------------------ continuous refinement
 def mu_pose(field, reps, a, b, sg, mirror, th_deg, s, t, G=96, tilt=False):
@@ -408,3 +405,6 @@ def refine(field, ident, key, shift, G=96, tilt=False):
         if best is None or r.fun < best.fun:
             best = r
     return (float(best.fun), float(best.x[0]), float(best.x[1]), float(best.x[2]))
+
+if __name__ == "__main__":
+    main()

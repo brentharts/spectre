@@ -165,6 +165,20 @@ def test_atlas_latex():
         assert os.path.getsize(path.replace(".tex", ".pdf")) > 20000
 
 
+def test_twoadic_coincidence_rate():
+    import chair44_twoadic as TA
+    r = TA.report()
+    assert r["labels"] == 168 and r["column_sums"] == [8] and r["primitive_exponent"] == 3
+    assert r["coincidence_depth"] == 3 and r["address_0_0_2"] and r["coincident_addresses"] == 336
+    c = r["counts"]
+    assert c[:7] == [1, 8, 64, 176, 400, 848, 1744]
+    assert all(c[m + 1] == 2 * c[m] + 48 for m in range(3, len(c) - 1))
+    assert sum(r["subset_sizes"].values()) == 209 and r["transfer_dim"] == 41
+    import sympy as sp
+    x = sp.symbols('x')
+    assert sp.simplify(r["charpoly"] - x ** 5 * (x - 2) ** 4 * (x - 1) ** 32) == 0
+
+
 def test_full_screen():
     chosen, summary = S.screen_tilings(verbose=False)
     assert summary["classes_histogram"] == {4: 6555, 12: 6}
@@ -176,7 +190,7 @@ def main():
     full = "--full" in sys.argv
     tests = [test_mesh_equals_json, test_panels_sites_labels_equal_data, test_substitution_equals_atlas_and_chair44,
              test_double_chair_tilings, test_gluing_and_classes, test_exact_invariants_symbolic_and_numeric,
-             test_latex_and_obj, test_contact_atlas, test_atlas_latex] + ([test_full_screen] if full else [])
+             test_latex_and_obj, test_contact_atlas, test_atlas_latex, test_twoadic_coincidence_rate] + ([test_full_screen] if full else [])
     failed = 0
     for t in tests:
         t0 = time.time()
