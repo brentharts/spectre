@@ -612,6 +612,28 @@ theorem direction_split (k : Nat) :
   have h : Fib (3 * k + 5) = Fib (3 * k + 3) + Fib (3 * k + 4) := rfl
   omega
 
+/-! ### Chair44: how fast the modular coincidence sets in
+
+The label of a lattice cell is fixed once enough top digits of its address are read.  The
+number of digit words of length `M` that have not yet fixed it was counted by a subset
+automaton: 176, 400, 848, ... from `M = 3`, each term twice the last plus 48.  The kernel
+proves the closed form `28 * 2^M - 48` for every `M >= 3` from that recurrence. -/
+
+def cc : Nat → Nat
+  | 0     => 176
+  | n + 1 => 2 * cc n + 48
+
+theorem coincidence_closed : ∀ n : Nat, cc n + 48 = 224 * 2 ^ n := by
+  intro n
+  induction n with
+  | zero => decide
+  | succ k ih =>
+    have e : cc (k + 1) = 2 * cc k + 48 := rfl
+    rw [e, Nat.pow_succ]
+    omega
+
+theorem coincidence_counts : cc 0 = 176 ∧ cc 1 = 400 ∧ cc 2 = 848 := by decide
+
 /-! ### Chair44
 
 The counts below were made by `symchair44.py`.  The kernel checks the arithmetic that

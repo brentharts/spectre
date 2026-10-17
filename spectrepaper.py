@@ -575,7 +575,7 @@ orientation species & $9$ tiles & $24$ rotations \\
 zero sector & not semisimple & semisimple \\
 frequencies & irrational (Pisot) & rational, $1/24$ \\
 strict chirality & yes, by the tile & yes, by the contacts \\
-spectrum of the tiling & Pisot, pure point & Pisot route unavailable \\
+spectrum of the tiling & Pisot, pure point & 2-adic, pure point (cited theorem) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -603,7 +603,7 @@ general: it is plausibly a feature of a planar polygon of unit edges grown by a
 non-integer inflation, and it does not survive a passage to an integer inflation in three
 dimensions.
 
-\subsection{The orientation spectrum}
+\subsection{The orientation spectrum, and the 2-adic route}
 
 Let the $24$ proper rotations be the species and let $M_{FF'}$ count the children of an
 $F$-oriented chair that are $F'$-oriented.  The characteristic polynomial is
@@ -615,8 +615,29 @@ count: a Pisot unit, irrational frequencies and a zero sector with a Jordan pair
 consequence is a narrowing.  The Pisot route to pure-point diffraction and the
 irrational-frequency witness of aperiodicity (Section~\ref{sec:phases}) both need an inflation
 that is a Pisot number and frequencies that are irrational, and an integer inflation $2$ with
-rational frequencies supplies neither.  A replacement presumably lives in the $2$-adic
-hierarchy the substitution defines, but that is a suggestion and is not established here.
+rational frequencies supplies neither.
+
+The replacement is $2$-adic, and it is not new here: Tsiokos's repository records it
+\cite{Tsiokos1}.  The substitution acts on $24\times7=168$ labelled unit cells, is primitive
+(every entry of its $168\times168$ matrix is positive at power $3$), and has a modular
+coincidence: at depth $3$ there are @coinc@ of $512$ addresses, among them $(0,0,2)$, at which
+all $168$ labels expand to the same label.  By the theorem of Lee and Moody with
+Schlottmann \cite{LeeMoody,Schlottmann,LMS}, a primitive lattice substitution with a modular
+coincidence has fixed-point label classes that are regular model sets with a $2$-adic internal
+space, so its diffraction is pure point and the fixed point is limit-periodic.  That implication
+is a cited theorem and is not re-proved, and whether every tiling lies in the substitution hull
+is left open upstream.  What is added here is a recomputation of the finite part from our own
+generator, which agrees on the depth and the address, and a rate.  A subset automaton on the label
+sets (only @reach@ are reachable, @nons@ of them with more than one label) counts the digit words
+of length $M$ that have not yet fixed the label:
+$c(M)=1,8,64,176,400,848,1744,\dots$, that is $c(M+1)=2c(M)+48$ and $c(M)=28\cdot2^{M}-48$
+from $M=3$, proved in Lean for all $M$ (\code{coincidence\_closed}).  The undetermined fraction
+is $c(M)/8^{M}\sim28\cdot4^{-M}$, and the transfer matrix on the non-singleton states has
+spectral radius exactly $2$, so the set of addresses not yet determined, which is where the
+window boundaries lie, has box dimension $\log_{2}2=1$ in the internal space $\mathbb{Z}_{2}^{3}$
+of dimension $3$.  The two $2$'s are the same number as the linear inflation and the
+subdominant orientation eigenvalue, and no link between them is claimed.  The Spectre rests on
+a Pisot unit and an irrational window; Chair44 rests on an integer inflation and a $2$-adic one.
 
 \subsection{Chirality: a qualification}
 
@@ -648,8 +669,10 @@ parameter for the third dimension as such.
 
 This is a qualification and not a refutation.  The conjecture says nothing about tiles of
 the bulk, the Chair44 is not proposed as a substrate, and three caveats attach.  The einstein
-property is Tsiokos's claim.  The forced chirality is relative to the decoration the gluing
-selects, and a different labelling of the same chair is not excluded.  And one example is one
+property is Tsiokos's claim.  The forced chirality was tested on all six substitutions
+that leave twelve height classes, not only the published one: none has a legal mirror contact,
+so it does not depend on the selection rule, but a decoration outside that family is not
+excluded.  And one example is one
 example: a three-dimensional aperiodic tile whose legal contacts include a mirror image
 would show that forced chirality is not a feature of dimension three, and
 \code{symchair44.legal\_contacts} will test any labelled candidate for it.
@@ -666,7 +689,10 @@ evidence for rigidity and not a proof of it.
         realized=A['realized'], neq=g('chair_equations').value[0], orank=orient['rank'], eqrank=g('chair_equations').value[1],
         ker=g('chair_equations').value[2], charpoly=r'x^{3}(x-8)(x-2)^{20}',
         Db='%.4f' % float(g('boundary_dimension').decimal), sstar='%.4f' % float(g('balanced_exponent').decimal),
-        sym=c['undecorated'], mir=c['undecorated_improper'])
+        sym=c['undecorated'], mir=c['undecorated_improper'],
+        coinc=g('chair_coincidence').value['coincident'],
+        reach=g('chair_coincidence').value['reachable_sets'],
+        nons=g('chair_coincidence').value['non_singleton'])
 
 
 
@@ -762,7 +788,7 @@ The third is a control.  Everything above is planar, and Section~\ref{sec:chair}
 questions to the three-dimensional einstein tile Chair44, which is rebuilt from scratch.
 The interface law carries over and the form of the exponents carries over, but the fractal
 boundary does not (its surface has dimension exactly $2$), the Pisot route to a pure-point
-spectrum is unavailable (its inflation is the integer $2$), and its chirality, forced by its
+spectrum is replaced by a $2$-adic one (its inflation is the integer $2$), and its chirality, forced by its
 contacts, qualifies the conjecture that embedding in a third dimension restores parity.
 
 The remainder places the Spectre next to the Hat.  Its one-parameter family
@@ -869,8 +895,8 @@ entitled to ask which of it is an accident of the plane.  Section~\ref{sec:chair
 puts the same questions to the three-dimensional einstein tile Chair44: the
 substitution is rebuilt from scratch, its orientation spectrum is computed, and
 its boundary exponents are set beside the Spectre's.  Some things carry over (the
-interface law and the form of the exponents) and some do not (the Pisot route to
-a pure-point spectrum, and the fractal boundary), and the second list is as
+interface law and the form of the exponents) and some do not (the Pisot mechanism
+behind a pure-point spectrum, replaced by a $2$-adic one, and the fractal boundary), and the second list is as
 informative as the first.
 
 """ % (tex(F.LAM2), tex(F.G_SMALL), F.get('boundary_dimension').decimal, F.get('boundary_dimension').decimal)
@@ -1578,7 +1604,7 @@ The Substitution Spectra and Charges: The transfer spectrum features a non-semis
 Topology and Boundaries: Seifert minors of $T(2,k)$ yield closed-form unknotting numbers, and a boundary operator governs both perimeter and contact sequences.
 Torsion and Embeddings: When placed on the six-sphere cusp torus, the Mystic tiles form six fibre classes organized as a single orbit under the torsion dictionary $R^6 = 1$.
 The Boundary in Closed Form: the perimeter is $2F_{3k+5}+4$ for every $k$, proved in Lean, and its edges split into direction classes with Fibonacci totals that are counted through $k=6$.
-The Three-Dimensional Control: the einstein tile Chair44 has an ordinary surface as its boundary, of dimension exactly $2$, a semisimple orientation spectrum with rational frequencies, and a chirality forced by its contacts. The first two say that the fractal boundary and the Pisot route to a pure-point spectrum belong to the planar tile; the third qualifies Conjecture~\ref{conj:chirality}, since a tile that fills three-dimensional space does not recover parity merely by living there.
+The Three-Dimensional Control: the einstein tile Chair44 has an ordinary surface as its boundary, of dimension exactly $2$, a semisimple orientation spectrum with rational frequencies, and a chirality forced by its contacts. The first two say that the fractal boundary and the Pisot mechanism for a pure-point spectrum belong to the planar tile, the chair's own being $2$-adic; the third qualifies Conjecture~\ref{conj:chirality}, since a tile that fills three-dimensional space does not recover parity merely by living there.
 
 Ultimately, the Spectre substitution bridges exact quadratic field arithmetic, boundary fractal scaling, and topological constraints, offering a fully computable substrate for physical and geometric analysis.
 
@@ -1593,7 +1619,7 @@ the perimeter recurrence are in the same position, counted from placed tiles and
 and the second count in exact $\mathbb{Q}(\sqrt3)$ arithmetic removes the rounding key from the
 boundary results without removing the transcription.  Second, the Chair44's einstein property
 and aperiodicity are its author's claimed proof, quoted and not checked, and the forced
-chirality of Section~\ref{sec:chair} is relative to the decoration the gluing selects.  Third,
+chirality of Section~\ref{sec:chair} is tested over the six substitutions of one construction family and not beyond it.  Third,
 the modelling steps are modelling steps: Conjecture~\ref{conj:chirality} is a selection
 statement and not a dynamics, and the unit postulate of Section~\ref{sec:data} is the whole
 of the birefringence number.  Fourth, the boundary operator governs the perimeter, the glue and
@@ -2045,6 +2071,15 @@ arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
 \url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).  The titles of the two
 preprints are not reproduced here.
 
+\bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
+sets. \emph{Discrete Comput. Geom.} 25, 173--201.
+
+\bibitem{Schlottmann} M.~Schlottmann (2000). Generalized model sets and dynamical systems.
+In \emph{Directions in Mathematical Quasicrystals}, CRM Monograph Series 13, AMS, 143--159.
+
+\bibitem{LMS} J.-Y.~Lee, R.~V.~Moody and B.~Solomyak (2003). Consequences of pure point
+diffraction spectra for multiset substitution systems. \emph{Discrete Comput. Geom.} 29, 525--560.
+
 \bibitem{Scharlemann} M.~Scharlemann (1985). Unknotting number one knots are
 prime. \emph{Invent. Math.} 82, 37--55.
 
@@ -2281,6 +2316,10 @@ def selftest():
     check('the availability statement is short and names the repositories',
           text.count('github.com/brentharts/') <= 3 and 'Code and Data Availability' in text
           and 'Every Fact, and how it was obtained' not in text)
+    check('the 2-adic route is stated as cited and not re-proved',
+          'modular coincidence' in ' '.join(text.split()) and r'\cite{LeeMoody,Schlottmann,LMS}' in text
+          and 'is a cited theorem and is not re-proved' in text and 'coincidence\\_closed' in text
+          and 'a suggestion and is not established here' not in text)
     check('the title is the new one',
           r'\title{%s}' % TITLE in text
           and 'One Tile, Two Units' not in text
