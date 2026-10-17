@@ -8,11 +8,11 @@ project:
 lean:
   file: SpectreFacts.lean
   generated_by: spectrelean.py
-  theorems: 51
-  linked_to_a_fact: 18
-  auxiliary: 33
-  proof_styles: {decide: 43, induction: 3, other: 5}
-  axiom_audit: not-run-in-this-build  # `make lean` measures it
+  theorems: 65
+  linked_to_a_fact: 26
+  auxiliary: 39
+  proof_styles: {decide: 51, induction: 4, other: 10}
+  axiom_audit: {no_axioms: 42, standard_foundation: 23}
 evidence_kinds: {D: derived, C: counted-on-the-tiling, X: second-route, Q: quoted, P: premise-or-open, L: lean-checked}
 facts:
   - key: charpoly
@@ -151,3 +151,43 @@ facts:
     lean: lam2_below_sixteen
   - key: boundary_exact
     evidence: [C, X]
+  - key: chair_mesh
+    evidence: [D, L]
+    lean: chair_euler
+  - key: chair_volume
+    evidence: [D, L]
+    lean: chair_labels_sum
+  - key: chair_labels
+    evidence: [D, X, L]
+    lean: chair_labels_range
+  - key: chair_tilings
+    evidence: [D]
+  - key: chair_screen
+    evidence: [C]
+  - key: chair_atlas
+    evidence: [D, X, L]
+    lean: chair_atlas_counts
+  - key: chair_equations
+    evidence: [D, X, L]
+    lean: chair_rank_nullity
+  - key: chair_chiral
+    evidence: [D]
+  - key: chair_forced_chirality
+    evidence: [D]
+  - key: chair_orientation
+    evidence: [D]
+  - key: chair_surface
+    evidence: [C, X, L]
+    lean: chair_surface
+    lean_scope: arithmetic-on-counted-inputs
+  - key: chair_exponents
+    evidence: [D]
+  - key: boundary_fibonacci
+    evidence: [D, L]
+    lean: boundary_fibonacci
+  - key: boundary_directions
+    evidence: [C, L]
+    lean: direction_split
+    lean_scope: arithmetic-on-counted-inputs
+  - key: boundary_z3_bounded
+    evidence: [C]
