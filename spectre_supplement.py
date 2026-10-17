@@ -46,7 +46,7 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 \title{\vspace{-1cm}
 \textbf{Supplementary Material:} \\ Every Fact, and how it was obtained \\
-{\large for \emph{Area and Perimeter Inflation in the Spectre Monotile}}}
+{\large for \emph{@TITLE@}}}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
@@ -108,7 +108,7 @@ def document():
     body = body.replace(r'\appendix', '', 1)
     body = body.replace(r'\section{Every Fact, and how it was obtained}',
                         r'\section*{The table}', 1)
-    return '\n'.join([PREAMBLE, preface(), body, r'\end{document}', ''])
+    return '\n'.join([PREAMBLE.replace('@TITLE@', P.TITLE), preface(), body, r'\end{document}', ''])
 
 
 def write(path=OUTPUT):
@@ -141,8 +141,7 @@ def selftest():
     check('the main paper no longer carries the table itself',
           r'\begin{longtable}' not in main)
     check('the main paper title is the one this document names',
-          'Area and Perimeter Inflation in the Spectre Monotile' in main
-          and 'Area and Perimeter Inflation in the Spectre Monotile' in text)
+          P.TITLE in main and P.TITLE in text)
 
     print('the honesty notes survive')
     check('the phantom attributions are mentioned',

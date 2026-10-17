@@ -535,6 +535,137 @@ theorem lam2_below_sixteen : Z15posCert ((⟨16, 0⟩ : Z15) - lam2) := by
        F.BOUNDARY_SEQ[1], F.BOUNDARY_SEQ[1])
 
 
+
+def chair_section():
+    """Chair44 and the Fibonacci form of the boundary.  The label table is generated from
+    symchair44 (the signed heights forced by gluing); the kernel then certifies the arithmetic
+    on it, not the gluing."""
+    import symchair44 as S
+    labels = S.label_table(S.CHILDREN)
+    return r'''
+/-! ## The Fibonacci form of the boundary, and the Chair44 control
+
+Two things are added to the boundary of the Spectre and to its three-dimensional
+control.  Both are proved by plain induction, or by `decide`, so the kernel is the
+only thing trusted.  Neither uses `native_decide`, which would trust the compiler.
+
+The perimeter obeys `P(k+3) = 5P(k+2) - 3P(k+1) - P(k)`, and the Fibonacci numbers
+obey `F(n+6) = 4F(n+3) + F(n)`.  Those two recurrences have the same characteristic
+quadratic `x^2 - 4x - 1` on the growing part, so with the same three seeds the
+perimeter is `2 F(3k+5) + 4`. -/
+
+/-- Fibonacci numbers. -/
+def Fib : Nat → Nat
+  | 0     => 0
+  | 1     => 1
+  | n + 2 => Fib n + Fib (n + 1)
+
+theorem fib_step (n : Nat) : Fib (n + 6) = 4 * Fib (n + 3) + Fib n := by
+  have h2 : Fib (n + 2) = Fib n + Fib (n + 1) := rfl
+  have h3 : Fib (n + 3) = Fib (n + 1) + Fib (n + 2) := rfl
+  have h4 : Fib (n + 4) = Fib (n + 2) + Fib (n + 3) := rfl
+  have h5 : Fib (n + 5) = Fib (n + 3) + Fib (n + 4) := rfl
+  have h6 : Fib (n + 6) = Fib (n + 4) + Fib (n + 5) := rfl
+  omega
+
+/-- The Fibonacci form of the perimeter, as a function. -/
+def Pfib (k : Nat) : Int := 2 * (Fib (3 * k + 5) : Int) + 4
+
+theorem Pfib_rec (n : Nat) :
+    Pfib (n + 3) = 5 * Pfib (n + 2) - 3 * Pfib (n + 1) - Pfib n := by
+  unfold Pfib
+  have e0 : 3 * (n + 3) + 5 = 3 * n + 14 := by omega
+  have e1 : 3 * (n + 2) + 5 = 3 * n + 11 := by omega
+  have e2 : 3 * (n + 1) + 5 = 3 * n + 8 := by omega
+  rw [e0, e1, e2]
+  have f1 : Fib (3 * n + 11) = 4 * Fib (3 * n + 8) + Fib (3 * n + 5) :=
+    fib_step (3 * n + 5)
+  have f2 : Fib (3 * n + 14) = 4 * Fib (3 * n + 11) + Fib (3 * n + 8) :=
+    fib_step (3 * n + 8)
+  omega
+
+/-- For every k, the perimeter of an order-k supertile is `2 F(3k+5) + 4`.  The
+induction carries three consecutive values so that plain induction suffices. -/
+theorem boundary_fibonacci : ∀ k : Nat, P k = Pfib k := by
+  have key : ∀ k : Nat, P k = Pfib k ∧ P (k + 1) = Pfib (k + 1) ∧
+      P (k + 2) = Pfib (k + 2) := by
+    intro k
+    induction k with
+    | zero => exact ⟨by decide, by decide, by decide⟩
+    | succ n ih =>
+      obtain ⟨h0, h1, h2⟩ := ih
+      refine ⟨h1, h2, ?_⟩
+      have e : P (n + 3) = 5 * P (n + 2) - 3 * P (n + 1) - P n := rfl
+      have r := Pfib_rec n
+      show P (n + 3) = Pfib (n + 3)
+      rw [e, r, h0, h1, h2]
+  intro k
+  exact (key k).1
+
+/-- The even and odd direction classes of the boundary edges.  The counts themselves are
+made on the placed tiling; what the kernel certifies is that the two totals the counts
+give, `F(3k+4)+1` and `F(3k+3)+1`, add up to the perimeter. -/
+theorem direction_split (k : Nat) :
+    2 * (((Fib (3 * k + 4) : Int) + 1) + ((Fib (3 * k + 3) : Int) + 1)) = P k := by
+  rw [boundary_fibonacci k]
+  unfold Pfib
+  have h : Fib (3 * k + 5) = Fib (3 * k + 3) + Fib (3 * k + 4) := rfl
+  omega
+
+/-! ### Chair44
+
+The counts below were made by `symchair44.py`.  The kernel checks the arithmetic that
+ties them together.  The height labels are the 192 signed pyramid heights forced by
+exact complementarity on every shared face; the kernel does not see the gluing, only
+what the table then satisfies. -/
+
+set_option maxRecDepth 100000
+
+def chairLabels : List Int :=
+  %s
+
+theorem chair_labels_length : chairLabels.length = 192 := by decide
+
+/-- The signed heights sum to zero, so the volume of the solid is exactly 7 for every
+base width and height unit (volume = 7 + (4/3) w^2 h * the sum). -/
+theorem chair_labels_sum : chairLabels.foldl (· + ·) 0 = 0 := by decide
+
+/-- Every site carries a nonzero height of magnitude at most 12. -/
+theorem chair_labels_range :
+    chairLabels.all (fun v => decide (1 ≤ v.natAbs ∧ v.natAbs ≤ 12)) = true := by decide
+
+/-- 4272 triangles, 6408 edges, 2138 vertices: Euler characteristic 2, and every edge
+borders two triangles. -/
+theorem chair_euler : (2138 : Int) - 6408 + 4272 = 2 := by decide
+
+theorem chair_triangles : 24 * (73 * 2 + 8 * 4) = 4272 := by decide
+
+theorem chair_closed : 3 * 4272 = 2 * 6408 := by decide
+
+/-- 2388 raw contacts, half of them mirror images; 44 legal, of which 30 are realized. -/
+theorem chair_atlas_counts : 2388 = 2 * 1194 ∧ 44 = 30 + 14 := by decide
+
+/-- 180 + 12 = 192: the rank of the 372 site equations and the 12 free height classes. -/
+theorem chair_rank_nullity : 180 + 12 = 192 := by decide
+
+/-- Surface faces of a depth-N patch: 24 faces on each of 8^N tiles, less two for every
+shared face, and there are 12 (8^N - 4^N) of those.  The result is 24 * 4^N, which is
+a surface-area law with exponent 2 = log 4 / log 2. -/
+theorem chair_surface (N : Nat) :
+    (24 : Int) * 8 ^ N - 2 * (12 * (8 ^ N - 4 ^ N)) = 24 * 4 ^ N := by omega
+
+/-- The interface law B_c = (T(c) P(N-c) - P(N)) / 2 with T(c) = 8^c, P(k) = 24 * 4^k,
+in the form 8^c * 24 * 4^m = 24 * 2^c * 4^(c+m), where N = c + m. -/
+theorem chair_interface (c m : Nat) :
+    (8 ^ c * 24 * 4 ^ m : Nat) = 24 * 2 ^ c * 4 ^ (c + m) := by
+  rw [Nat.pow_add]
+  have h : (8 : Nat) ^ c = 2 ^ c * 4 ^ c := by
+    rw [← Nat.mul_pow]
+  rw [h]
+  simp only [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm]
+''' % ('[' + ', '.join(str(v) for v in labels) + ']')
+
+
 def limits_section():
     return r'''
 /-! ## What is not claimed
@@ -575,6 +706,7 @@ def document(audit=None):
             + chiral_section()
             + minors_section()
             + boundary_section()
+            + chair_section()
             + limits_section())
 
 

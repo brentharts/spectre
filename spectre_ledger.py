@@ -78,6 +78,11 @@ KIND = {
     'boundary_exact': 'CX',
 }
 
+# The Chair44 section's Facts live in chair44facts.py and are appended to F.FACTS by register().
+import chair44facts as _C44                # noqa: E402
+_C44.register()
+KIND.update(_C44.KIND)
+
 
 def proof_style(text):
     """decide / induction / other, per theorem, read from the generated Lean."""
