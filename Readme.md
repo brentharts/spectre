@@ -90,9 +90,9 @@ process 0.467. No computed set falls below the floor beyond the estimated noise.
 
 ![What kind of evidence stands behind each Fact](paper/figures/spectre_ledger.png)
 
-Each of the 73 Facts is classified as derived from the quoted matrix, counted on the
+Each of the 74 Facts is classified as derived from the quoted matrix, counted on the
 tiling, re-derived by a second implementation, quoted from the literature, or carrying
-a premise. The generated Lean file has 65 theorems, 26 linked to a Fact; where a
+a premise. The generated Lean file has 67 theorems, 27 linked to a Fact; where a
 linked Fact depends on a count, the kernel certifies the arithmetic on the counted
 values and not the count. `paper/spectre_formalization.yaml` is a machine-readable
 catalogue in the spirit of the one kept by the OpenAI collection. (`spectre_ledger.py`)
@@ -115,13 +115,13 @@ is editing a build artefact.
 | | |
 |---|---|
 | `spectrefacts.py` | 58 Facts, computed exactly in sympy. `--selftest` checks all of them |
-| `chair44facts.py` | 15 more Facts (73 in all once registered): the Chair44 atlas, orientation spectrum and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
+| `chair44facts.py` | 16 more Facts (74 in all once registered): the Chair44 atlas, orientation spectrum and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
 | `spectreatlas.py` | the contact atlas and X-charges, built from the placed tiling |
 | `spectrelean.py`  | emits the Fact layer as Lean 4 and runs the kernel over it |
 | `spectrepaper.py` | 16 sections, generated |
 
 The Lean file is in the wiki: **[Spectre-Lean](https://github.com/brentharts/spectre/wiki/Spectre-Lean)**
-— 65 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit that
+— 67 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit that
 `make lean` writes into the header of `SpectreFacts.lean` (an earlier version of this
 paragraph quoted 40 + 4 theorems for a smaller file; it was not re-measured when the
 file grew to 51, so no split is quoted here).
