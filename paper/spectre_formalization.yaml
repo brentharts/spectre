@@ -8,11 +8,11 @@ project:
 lean:
   file: SpectreFacts.lean
   generated_by: spectrelean.py
-  theorems: 65
-  linked_to_a_fact: 26
-  auxiliary: 39
-  proof_styles: {decide: 51, induction: 4, other: 10}
-  axiom_audit: {no_axioms: 42, standard_foundation: 23}
+  theorems: 67
+  linked_to_a_fact: 27
+  auxiliary: 40
+  proof_styles: {decide: 52, induction: 5, other: 10}
+  axiom_audit: {no_axioms: 43, standard_foundation: 24}
 evidence_kinds: {D: derived, C: counted-on-the-tiling, X: second-route, Q: quoted, P: premise-or-open, L: lean-checked}
 facts:
   - key: charpoly
@@ -182,6 +182,9 @@ facts:
     lean_scope: arithmetic-on-counted-inputs
   - key: chair_exponents
     evidence: [D]
+  - key: chair_coincidence
+    evidence: [D, X, L]
+    lean: coincidence_closed
   - key: boundary_fibonacci
     evidence: [D, L]
     lean: boundary_fibonacci
