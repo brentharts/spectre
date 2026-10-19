@@ -64,6 +64,8 @@ KIND = {
     'rho_x_at_half': 'CP',
     # chirality: the angle is quoted, what follows from it is arithmetic
     'chiral_angle': 'Q', 'angle_from_kappa': 'D', 'spectre_angle_differs': 'D',
+    # the Spectre twist: exact from the transcribed quadrilateral map, re-checked on spectre.py itself
+    'twist_two_levels': 'DX', 'spectre_twist': 'DX', 'twist_field': 'D', 'twist_family': 'D',
     # knots: all quoted
     'bh_theorem': 'Q', 'bh_version': 'Q', 'bh_gap_was_chirality': 'Q',
     'bh_deficit_bound': 'Q', 'bh_threshold': 'Q',

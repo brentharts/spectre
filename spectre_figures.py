@@ -159,10 +159,16 @@ def fig_family():
     ax.axvspan(-1, 1, ymin=0.42, ymax=0.58, color="#d3eee3")
     ax.scatter([cos_h], [0], s=70, color=BLUE, zorder=5)
     ax.scatter([cos_s], [0], s=70, color=ORANGE, zorder=5)
+    cos_t = float(F.TWIST_COS)
+    th_s = float(F.TWIST_FAMILY[0][1])
+    ax.scatter([cos_t], [0], s=70, color=VIOLET, zorder=6)
     ax.annotate("Hat\n$\\cos\\theta=(\\kappa-3)/4$\n$=%.4f$ → %.2f°" % (cos_h, th),
-                (cos_h, 0), (cos_h - 0.1, 0.55), ha="center", fontsize=8.5,
+                (cos_h, 0), (cos_h - 0.26, -0.8), ha="center", fontsize=8.5,
                 color=BLUE, arrowprops=dict(arrowstyle="-", color=BLUE, lw=0.8))
-    ax.annotate("Spectre\n$(\\lambda^2-3)/4=%.4f>1$\nnot a cosine" % cos_s,
+    ax.annotate("Spectre, computed\n$\\theta_S=%.2f°$, $\\cos\\theta_S=%.4f$\n(supertile quadrilaterals)" % (th_s, cos_t),
+                (cos_t, 0), (cos_t - 0.2, 0.62), ha="center", fontsize=8.5,
+                color=VIOLET, arrowprops=dict(arrowstyle="-", color=VIOLET, lw=0.8))
+    ax.annotate("Spectre, Hat formula\n$(\\lambda^2-3)/4=%.4f>1$\nnot a cosine" % cos_s,
                 (cos_s, 0), (cos_s + 0.02, -0.75), ha="center", fontsize=8.5,
                 color=ORANGE, arrowprops=dict(arrowstyle="-", color=ORANGE, lw=0.8))
     ax.axvline(1, color=INK, lw=0.8, ls=(0, (4, 3)))
@@ -171,7 +177,7 @@ def fig_family():
     ax.set_xlim(0.4, 1.4)
     ax.set_ylim(-1.2, 1.2)
     ax.set_yticks([])
-    ax.set_title("(c) the chiral twist exists only for the Hat", fontsize=10)
+    ax.set_title("(c) the twist of the Hat and of the Spectre", fontsize=10)
     for s_ in ("top", "right", "left"):
         ax.spines[s_].set_visible(False)
     _save(fig, "spectre_family")

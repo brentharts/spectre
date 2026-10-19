@@ -581,8 +581,297 @@ fact(key='spectre_angle_differs',
      value=SPECTRE_NAIVE,
      method='substituting the Spectre inflation factor into the Hat formula '
             'gives a cosine greater than one, so the Spectre cannot share it; '
-            'its twist geometry differs and its chiral angle is not computed '
-            'here, which makes it a prediction rather than a restatement')
+            'its own twist is computed below from the supertile geometry, and '
+            'it is not the Q(sqrt15) angle this fact once anticipated')
+
+
+# ------------------------------------------- the Spectre's own twist, computed
+#
+# The Hat twist above needed the Hat's metatile geometry, and the sentence that
+# followed it (the Spectre "cannot share it") left the Spectre's own twist as
+# an open prediction because that needs the Spectre's metatile geometry and not
+# merely its eigenvalues.  The geometry is already in the substitution: a
+# supertile carries a quadrilateral (four tile vertices), and building the next
+# supertile moves those four points by an exact map.  The map is the one
+# quoted input here, transcribed from spectre.py's buildSupertiles (the seven
+# (turn, from-corner, to-corner) steps below and the four output corners); the
+# selftest runs spectre.py itself and checks the result against it, so the
+# transcription is not taken on trust.
+#
+# With corners written as complex numbers w_1..w_4 the rotations are sixth
+# roots of unity, so the unmirrored map is complex linear, w -> C w, with C over
+# Z[omega].  The construction then mirrors (x -> -x, i.e. z -> -conj z), so one
+# level is the conjugate-linear map  F(w) = D conj(w)  with D = -conj(C), and two
+# levels are  B = D conj(D), complex linear again.
+
+TWIST_STEPS = ((60, 3, 1), (0, 2, 0), (60, 3, 1), (60, 3, 1),
+               (0, 2, 0), (60, 3, 1), (-120, 3, 3))
+TWIST_OUT = ((6, 2), (5, 1), (3, 2), (0, 1))  # (transformation, base corner)
+
+
+def _unit(deg):
+    """exp(i deg) for a multiple of 60 degrees, as an exact element of Q(sqrt3, i)."""
+    k = (deg // 60) % 6
+    return [sp.Integer(1), sp.Rational(1, 2) + sp.sqrt(3) * sp.I / 2,
+            -sp.Rational(1, 2) + sp.sqrt(3) * sp.I / 2, sp.Integer(-1),
+            -sp.Rational(1, 2) - sp.sqrt(3) * sp.I / 2,
+            sp.Rational(1, 2) - sp.sqrt(3) * sp.I / 2][k]
+
+
+def twist_quad0(a=1, b=1):
+    """Corners 3, 5, 7, 11 of the Spectre tile Tile(a, b): the quadrilateral of the
+    level-0 supertile, as exact complex numbers."""
+    r3 = sp.sqrt(3)
+    a, b = sp.sympify(a), sp.sympify(b)   # exact: a python int / 2 would be a float
+    return sp.Matrix([
+        (a + a / 2 + b * r3 / 2) + sp.I * (-a * r3 / 2 + b / 2),
+        (2 * a + a / 2 + b * r3 / 2) + sp.I * (-a * r3 / 2 + b + b / 2),
+        3 * a + sp.I * 2 * b,
+        (a / 2 - b * r3 / 2) + sp.I * (a * r3 / 2 + 2 * b - b / 2)])
+
+
+def twist_maps():
+    """(C, D, B): the unmirrored one-level map, the conjugate-linear one-level map
+    F(w) = D conj(w), and the two-level map B = D conj(D); exact 4 x 4 matrices."""
+    ws = sp.symbols('w1:5')
+    total, trans = 0, [(sp.Integer(1), sp.Integer(0))]
+    for angle, src, dst in TWIST_STEPS:
+        total += angle
+        rot = _unit(total)
+        prev = trans[-1]
+        trans.append((rot, sp.expand(prev[0] * ws[src] + prev[1] - rot * ws[dst])))
+    out = [sp.expand(trans[t][0] * ws[c] + trans[t][1]) for t, c in TWIST_OUT]
+    C = sp.Matrix([[sp.radsimp(sp.expand_complex(e.coeff(w))) for w in ws] for e in out])
+    D = -C.applyfunc(sp.conjugate)
+    B = (D * D.applyfunc(sp.conjugate)).applyfunc(
+        lambda e: sp.radsimp(sp.expand_complex(e)))
+    return C, D, B
+
+
+_Q8_INDEX = {sp.sqrt(3) ** (i & 1) * sp.sqrt(5) ** ((i >> 1) & 1) * sp.I ** (i >> 2): i
+             for i in range(8)}
+
+
+class _Q8(object):
+    """An element of Q(sqrt3, sqrt5, i) as eight rational coordinates on the basis
+    sqrt3^p sqrt5^q i^r.  (sympy's algebraic-field conversion works too, but takes
+    a third of a second per number; this is exact and instant.)"""
+
+    __slots__ = ('c',)
+
+    def __init__(self, coords):
+        self.c = tuple(sp.Rational(v) for v in coords)
+
+    @classmethod
+    def from_sympy(cls, e):
+        out = [sp.Rational(0)] * 8
+        for term in sp.Add.make_args(sp.expand(sp.expand_complex(e))):
+            coeff, rest = term.as_coeff_Mul()
+            if rest not in _Q8_INDEX:
+                raise ValueError('not in Q(sqrt3, sqrt5, i): %s' % term)
+            out[_Q8_INDEX[rest]] += sp.Rational(coeff)
+        return cls(out)
+
+    def to_sympy(self):
+        basis = [sp.Integer(1), sp.sqrt(3), sp.sqrt(5), sp.sqrt(15)]
+        return sp.radsimp(sum(self.c[i] * basis[i & 3] * (sp.I if i & 4 else 1) for i in range(8)))
+
+    def __mul__(self, o):
+        if not isinstance(o, _Q8):
+            return _Q8([v * o for v in self.c])
+        out = [sp.Rational(0)] * 8
+        for i, x in enumerate(self.c):
+            if x == 0:
+                continue
+            for j, y in enumerate(o.c):
+                if y == 0:
+                    continue
+                f = 1
+                if (i & 1) and (j & 1):
+                    f *= 3
+                if (i & 2) and (j & 2):
+                    f *= 5
+                if (i & 4) and (j & 4):
+                    f *= -1
+                out[i ^ j] += x * y * f
+        return _Q8(out)
+
+    __rmul__ = __mul__
+
+    def __add__(self, o):
+        return _Q8([x + y for x, y in zip(self.c, o.c)])
+
+    def __sub__(self, o):
+        return _Q8([x - y for x, y in zip(self.c, o.c)])
+
+    def __neg__(self):
+        return _Q8([-x for x in self.c])
+
+    def _flip(self, mask):
+        return _Q8([-x if bin(i & mask).count('1') % 2 else x for i, x in enumerate(self.c)])
+
+    def conj(self):
+        return self._flip(4)
+
+    def inverse(self):
+        prod = _Q8([1, 0, 0, 0, 0, 0, 0, 0])
+        for mask in range(1, 8):                 # the seven non-trivial automorphisms
+            prod = prod * self._flip(mask)
+        norm = (self * prod).c
+        if any(norm[i] != 0 for i in range(1, 8)) or norm[0] == 0:
+            raise ZeroDivisionError('zero or inconsistent norm')
+        return prod * (1 / norm[0])
+
+    def __truediv__(self, o):
+        return self * o.inverse()
+
+    def __eq__(self, o):
+        return self.c == o.c
+
+    def __ne__(self, o):
+        return not self == o
+
+    def is_zero(self):
+        return all(v == 0 for v in self.c)
+
+
+def _q8_nullspace(rows):
+    """One null vector of a square matrix (list of lists of _Q8) with a one-dimensional
+    kernel, by Gauss-Jordan elimination."""
+    n = len(rows)
+    m = [list(r) for r in rows]
+    pivots, r = [], 0
+    for col in range(n):
+        piv = next((i for i in range(r, n) if not m[i][col].is_zero()), None)
+        if piv is None:
+            continue
+        m[r], m[piv] = m[piv], m[r]
+        inv = m[r][col].inverse()
+        m[r] = [e * inv for e in m[r]]
+        for i in range(n):
+            if i != r and not m[i][col].is_zero():
+                f = m[i][col]
+                m[i] = [x - f * y for x, y in zip(m[i], m[r])]
+        pivots.append(col)
+        r += 1
+    free = [c for c in range(n) if c not in pivots]
+    if len(free) != 1:
+        raise AssertionError('the kernel is not one-dimensional')
+    f = free[0]
+    vec = [_Q8([0] * 8) for _ in range(n)]
+    vec[f] = _Q8([1, 0, 0, 0, 0, 0, 0, 0])
+    for row, col in enumerate(pivots):
+        vec[col] = -m[row][f]
+    return vec
+
+
+def _twist_eigen():
+    """Exact dominant eigen-data of the quadrilateral map, in Q(sqrt3, sqrt5, i)
+    (where sqrt15 = sqrt3 sqrt5): the right and left eigenvectors v, l of B for
+    lambda^2, and mu with F v = mu v."""
+    _, D, B = twist_maps()
+    lam2 = _Q8.from_sympy(LAM2)
+    Bq = [[_Q8.from_sympy(B[i, j]) for j in range(4)] for i in range(4)]
+    one, zero = _Q8([1, 0, 0, 0, 0, 0, 0, 0]), _Q8([0] * 8)
+    shifted = [[Bq[i][j] - (lam2 if i == j else zero) for j in range(4)] for i in range(4)]
+    v = _q8_nullspace(shifted)
+    l = _q8_nullspace([[shifted[j][i] for j in range(4)] for i in range(4)])
+    Dq = [[_Q8.from_sympy(D[i, j]) for j in range(4)] for i in range(4)]
+    vbar = [e.conj() for e in v]
+    Dv = []
+    for i in range(4):
+        acc = zero
+        for j in range(4):
+            acc = acc + Dq[i][j] * vbar[j]
+        Dv.append(acc)
+    k = next(i for i in range(4) if not v[i].is_zero())
+    mu = Dv[k] / v[k]
+    if any(Dv[i] != mu * v[i] for i in range(4)):    # F maps the eigenspace to itself
+        raise AssertionError('F does not preserve the dominant eigenspace')
+    return v, l, mu
+
+
+_TWIST_EIGEN = _twist_eigen()
+
+
+def twist_exact(a=1, b=1):
+    """The dominant behaviour of the quadrilateral under F, exactly.
+
+    B v = lambda^2 v has a one-dimensional eigenspace, and F maps it to itself,
+    F v = mu v with |mu|^2 = lambda^2.  Writing the quadrilateral of level 0 as
+    s v plus a part that is smaller by the factor lambda^2 per two levels, the
+    quadrilaterals of levels 2m and 2m+1 are asymptotic to lambda^{2m} s v and
+    lambda^{2m} conj(s) mu v, so one level multiplies by  c = (conj(s)/s) mu
+    with s = (l.Q0)/(l.v) for the left eigenvector l.  Returns (z, mu) with
+    z = c^2 / lambda^2 = exp(-2 i theta), as sympy numbers."""
+    v, l, mu = _TWIST_EIGEN
+    q0 = [_Q8.from_sympy(e) for e in twist_quad0(a, b)]
+    zero = _Q8([0] * 8)
+    num, den = zero, zero
+    for i in range(4):
+        num = num + l[i] * q0[i]
+        den = den + l[i] * v[i]
+    s_ = num / den
+    c = s_.conj() / s_ * mu
+    z = c * c / _Q8.from_sympy(LAM2)
+    return sp.radsimp(sp.expand_complex(z.to_sympy())), mu.to_sympy()
+
+
+TWIST_B = twist_maps()[2]
+TWIST_Z, TWIST_MU = twist_exact()
+TWIST_COS2 = sp.radsimp(sp.simplify(sp.re(TWIST_Z)))      # cos 2 theta
+TWIST_SIN2 = sp.radsimp(sp.simplify(-sp.im(TWIST_Z)))     # sin 2 theta
+TWIST_TAN = sp.radsimp(sp.simplify(TWIST_SIN2 / (1 + TWIST_COS2)))
+TWIST_THETA = sp.deg(sp.atan(TWIST_TAN))
+TWIST_COS = sp.sqrt(sp.radsimp((1 + TWIST_COS2) / 2))
+
+fact(key='twist_two_levels',
+     claim=r'\chi_{B}(x)=(x-1)^{2}(x^{2}-8x+1),\ B\,v=\lambda^{2}v',
+     value=sp.factor(TWIST_B.charpoly(x).as_expr()),
+     method='the supertile quadrilateral moves by an exact map, transcribed from '
+            'the construction; applied twice it is complex linear, and its '
+            'characteristic polynomial contains the quadratic factor of the '
+            'substitution matrix. The dominant eigenvalue is the real number '
+            'lambda^2, so over two levels the quadrilateral is dilated and not '
+            'rotated')
+
+fact(key='spectre_twist',
+     claim=r'\tan\theta_S=\tfrac{1}{13}(5\sqrt3-6),\ \cos2\theta_S=\tfrac1{10}(4+3\sqrt3)',
+     value=(TWIST_TAN, TWIST_COS2),
+     method='one level is a similarity of ratio lambda with rotation minus '
+            'theta_S on even levels and plus theta_S on odd ones, because the '
+            'construction mirrors at every level; theta_S is the phase of '
+            '(conj(s)/s) mu from the dominant eigenvector, computed exactly',
+     decimal=sp.N(TWIST_THETA, 8))
+
+fact(key='twist_field',
+     claim=r'\cos2\theta_S\in\mathbb{Q}(\sqrt3),\ \notin\mathbb{Q}(\sqrt{15})',
+     value=(sp.minimal_polynomial(TWIST_COS2, x), sp.minimal_polynomial(TWIST_COS, x)),
+     method='the angle lies in the field of the hexagonal tile coordinates; '
+            'sqrt15 enters the one-level factor only through its modulus, '
+            'lambda, and drops out of the phase. The Spectre twist therefore '
+            'does not belong to Q(sqrt15), which corrects the earlier '
+            'statement that it would')
+
+
+def twist_at(r):
+    """The twist theta_S(a=1, b=r) in degrees (decimal), from the same exact derivation."""
+    z, _ = twist_exact(1, r)
+    return float(sp.N(-sp.deg(sp.arg(sp.N(z, 30))) / 2, 12))
+
+
+TWIST_FAMILY = [(sp.Integer(1), twist_at(1))]
+for _r in (sp.sqrt(3), 1 / sp.sqrt(3)):
+    TWIST_FAMILY.append((_r, twist_at(_r)))
+
+fact(key='twist_family',
+     claim=r'\theta_S(b/a)\ \text{varies continuously with the tile shape}',
+     value=TWIST_FAMILY,
+     method='the same derivation for Tile(1, r): the rotation depends on the '
+            'quadrilateral and so on the shape, passing through the Spectre '
+            'value at r = 1; at r = sqrt3 the same substitution rule gives a '
+            'different angle, which is not a statement about the Hat, whose '
+            'tiling is generated by its own four-metatile rule')
 
 
 # ------------------------------------------- the mirror channel, from Brittenham-Hermiller
@@ -686,6 +975,80 @@ def cross_check():
     if theirs != M:
         return 'the matrices differ:\n%s' % (theirs - M)
     return 'matches brentharts/spectre chirality_e8.substitution_matrix()'
+
+
+def cross_check_twist(max_level=6, moment_level=4):
+    """Check the exact twist against spectre.py itself, by two routes.
+
+    twist_maps() is transcribed from spectre.py's buildSupertiles, so this runs
+    spectre.py and compares:
+
+    1. the quadrilaterals it builds at levels 0..max_level: consecutive edge
+       vectors must be related by the factor lambda e^{-i theta_S} on even levels
+       and lambda e^{+i theta_S} on odd ones, and two levels by the real number
+       lambda^2;
+    2. the placed tiles of the level-moment_level supertile, which does not use the
+       quadrilaterals at all: the complex central moments of order 2, 3 and 4 of
+       the filled region must rotate between consecutive levels by p theta_S in
+       the same way (a rotation of the region, an area-weighted statement).
+
+    Returns None when spectre.py is not importable, otherwise a message that
+    starts with 'matches' or says what disagreed."""
+    try:
+        import numpy as np
+        import spectre as S
+    except ImportError:
+        return None
+    theta = float(sp.N(TWIST_THETA / sp.deg(1), 15))          # radians
+    lam = float(sp.N(LAM, 15))
+    quads = [np.array([complex(p[0], p[1]) for p in
+                       S.buildSpectreTiles(n, 1.0, 1.0)['Delta'].quad]) for n in range(max_level + 1)]
+    for n in range(max_level - 2, max_level):
+        e0 = np.diff(np.append(quads[n], quads[n][0]))
+        e1 = np.diff(np.append(quads[n + 1], quads[n + 1][0]))
+        e2 = np.diff(np.append(quads[n + 2], quads[n + 2][0])) if n + 2 <= max_level else None
+        want = lam * np.exp(-1j * theta * (1 if n % 2 == 0 else -1))
+        if np.max(np.abs(e1 / e0 - want)) > 1e-3 * lam:
+            return 'one-level quadrilateral ratio %s differs from lambda e^{-+i theta}' % (e1 / e0)
+        if e2 is not None and np.max(np.abs(e2 / e0 - lam ** 2)) > 1e-3 * lam ** 2:
+            return 'two-level quadrilateral ratio %s differs from lambda^2' % (e2 / e0)
+    pts = S.get_spectre_points(1.0, 1.0)
+    pz = pts[:, 0] + 1j * pts[:, 1]
+    gx, gw = np.polynomial.legendre.leggauss(8)
+    gt, gw = (gx + 1) / 2, gw / 2
+
+    def central_moments(level):
+        placed = []
+        S.buildSpectreTiles(level, 1.0, 1.0)['Delta'].forEachTile(lambda T, lab: placed.append(T.copy()))
+        T = np.array(placed)
+        z = (pts[:, 0] * T[:, 0, 0][:, None] + pts[:, 1] * T[:, 0, 1][:, None] + T[:, 0, 2][:, None]
+             + 1j * (pts[:, 0] * T[:, 1, 0][:, None] + pts[:, 1] * T[:, 1, 1][:, None] + T[:, 1, 2][:, None]))
+        sign = np.sign(T[:, 0, 0] * T[:, 1, 1] - T[:, 0, 1] * T[:, 1, 0])
+        z0, d = z, np.roll(z, -1, axis=1) - z
+        raw = []
+        for p in range(5):
+            acc = 0
+            for t, w in zip(gt, gw):
+                zz = z0 + t * d
+                acc = acc + w * (np.conj(z0) + t * np.conj(d)) * zz ** p * d
+            raw.append(((acc.sum(axis=1) / 2j) * sign).sum())
+        c = raw[1] / raw[0]
+        from math import comb
+        return [sum(comb(p, k) * (-c) ** (p - k) * raw[k] for k in range(p + 1)) for p in range(5)]
+
+    lo, hi = central_moments(moment_level - 1), central_moments(moment_level)
+    for p in (2, 3, 4):
+        rot = np.angle(hi[p] / lo[p])                        # = p * (rotation of the region)
+        want = p * (theta if (moment_level - 1) % 2 else -theta)
+        off = (rot - want + np.pi) % (2 * np.pi) - np.pi
+        if abs(off) > np.radians(0.12) * p:
+            return ('the order-%d moments rotate by %.4f degrees per level, not %.4f'
+                    % (p, np.degrees(rot) / p, np.degrees(want) / p))
+        if abs(abs(hi[p] / lo[p]) / lam ** (p + 2) - 1) > 0.02:
+            return 'the order-%d moments do not scale like lambda^%d' % (p, p + 2)
+    return ('matches spectre.py: quadrilaterals at levels 0..%d and the moments of the level-%d supertile '
+            'rotate by -+%.4f degrees per level with ratio lambda'
+            % (max_level, moment_level, float(sp.N(TWIST_THETA, 8))))
 
 
 def cross_check_boundary():
@@ -947,6 +1310,33 @@ def selftest():
     verdict = cross_check()
     if verdict is not None and not verdict.startswith('matches'):
         fail('the quoted matrix disagrees with the tiling code: ' + verdict)
+
+    # the Spectre twist, derived exactly
+    target = ((4 + 3 * sp.sqrt(3)) + sp.I * (3 - 4 * sp.sqrt(3))) / 10
+    if sp.simplify(TWIST_Z - target) != 0:
+        fail('exp(-2 i theta_S) is not (4 + 3 sqrt3 + i (3 - 4 sqrt3)) / 10')
+    if sp.simplify(TWIST_Z * sp.conjugate(TWIST_Z) - 1) != 0:
+        fail('the twist factor does not have modulus one')
+    if sp.simplify(TWIST_TAN - (5 * sp.sqrt(3) - 6) / 13) != 0:
+        fail('tan theta_S is not (5 sqrt3 - 6) / 13')
+    if abs(float(sp.N(TWIST_THETA)) - 11.5650512) > 1e-6:
+        fail('the Spectre twist is not 11.56505 degrees')
+    if sp.degree(sp.minimal_polynomial(TWIST_COS2, x), x) != 2 or TWIST_COS2.has(sp.sqrt(5)) \
+            or TWIST_COS2.has(sp.sqrt(15)):
+        fail('cos 2 theta_S is not a quadratic irrational of Q(sqrt3)')
+    if sp.simplify(sp.minimal_polynomial(TWIST_COS, x) - (400 * x ** 4 - 560 * x ** 2 + 169)) != 0:
+        fail('cos theta_S does not have minimal polynomial 400x^4 - 560x^2 + 169')
+    quad_factor = [pp for pp, _ in sp.factor_list(sp.expand(CHARPOLY))[1] if sp.degree(pp, x) == 2]
+    two_level = sp.factor_list(sp.expand(get('twist_two_levels').value))[1]
+    if not any(sp.simplify(pp - qf) == 0 for pp, _ in two_level for qf in quad_factor):
+        fail('the two-level map does not carry the quadratic factor of the substitution matrix')
+    if sp.simplify(TWIST_MU * sp.conjugate(TWIST_MU) - LAM2) != 0:
+        fail('|mu|^2 is not lambda^2')
+    if abs(TWIST_FAMILY[1][1] - 27.2366) > 1e-3 or abs(TWIST_FAMILY[2][1] + 2.8039) > 1e-3:
+        fail('the twist at b/a = sqrt3 and 1/sqrt3 moved')
+    verdict = cross_check_twist()
+    if verdict is not None and not verdict.startswith('matches'):
+        fail('the twist disagrees with the tiling code: ' + verdict)
 
     for msg in problems:
         print('FAIL  ' + msg)
