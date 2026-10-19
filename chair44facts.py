@@ -131,7 +131,7 @@ KIND = {
     'chair_screen': 'C', 'chair_atlas': 'DX', 'chair_equations': 'DX',
     'chair_chiral': 'D', 'chair_forced_chirality': 'D', 'chair_orientation': 'D',
     'chair_surface': 'CX', 'chair_exponents': 'D', 'chair_coincidence': 'DX',
-    'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
+    'chair_twist': 'D', 'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
 }
 _REGISTERED = False
 
@@ -276,6 +276,19 @@ def register():
                 'mu = lambda^d / nu with the Chair44 values: its supertile surface is a '
                 'genuine surface (zero fractal excess), unlike the Spectre boundary '
                 'of dimension 1.399')
+
+    import chair44_twist as TW
+    fact(key='chair_twist',
+         claim=r'\text{supertile}=2\cdot\text{chair},\ \text{twist}=0,\ \tfrac18\textstyle\sum_i H_i=\tfrac14 I',
+         value=dict(scaled_chair=TW.supertile_is_scaled_chair(), angles=TW.child_angles(),
+                    mean=TW.mean_child_matrix() == [[sp.Rational(1, 4) if i == j else 0 for j in range(3)] for i in range(3)],
+                    depth3=TW.mean_frame(3)[0][0], group=TW.holonomy_group_order()),
+         method='the 8 child chairs are laid on the doubled lattice and their cells compared with '
+                'the doubled chair: equal, so the inflation is a pure scaling by 2 with no net '
+                'rotation and no mirror; the child frames are rotations by 0, 90, 120, 180 degrees '
+                '(rational multiples of pi) whose mean matrix is exactly I/4, so the mean frame at '
+                'depth n is I/4^n. Contrast Fact 11: the Spectre supertile is turned by 11.565 '
+                'degrees (irrational) and mirrored at every level')
 
     import chair44_twoadic as TA
     tw = TA.report()

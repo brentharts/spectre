@@ -162,11 +162,21 @@ def test_spectre_link():
     assert L.torsion_tie(verbose=False)[1]
 
 
+def test_twist():
+    import chair44_twist as T
+    assert T.supertile_is_scaled_chair()
+    assert all(C.frame_det(H) == 1 for H, _ in C.CHILDREN)
+    assert T.mean_child_matrix() == [[Fr(1, 4) if i == j else Fr(0) for j in range(3)] for i in range(3)]
+    assert T.mean_frame(2) == [[Fr(1, 16) if i == j else Fr(0) for j in range(3)] for i in range(3)]
+    assert set(T.child_angles()) == {0.0, 90.0, 120.0, 180.0}
+    assert T.holonomy_group_order() == 24
+
+
 def main():
     quick = "--quick" in sys.argv
     tests = [test_contact_enumeration, test_substitution_and_patches, test_chair_boundary_law,
              test_meshes_and_mirror_winding, test_spectre_hierarchy_and_boundary,
-             test_spectre_raw_contacts, test_family_machinery, test_nonlattice_rigidity, test_spectre_link,
+             test_spectre_raw_contacts, test_family_machinery, test_nonlattice_rigidity, test_spectre_link, test_twist,
              lambda: test_class_labelling_model(slow=not quick)]
     names = [t.__name__ for t in tests[:-1]] + ["test_class_labelling_model"]
     failed = 0

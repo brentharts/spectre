@@ -90,7 +90,7 @@ process 0.467. No computed set falls below the floor beyond the estimated noise.
 
 ![What kind of evidence stands behind each Fact](paper/figures/spectre_ledger.png)
 
-Each of the 78 Facts is classified as derived from the quoted matrix, counted on the
+Each of the 79 Facts is classified as derived from the quoted matrix, counted on the
 tiling, re-derived by a second implementation, quoted from the literature, or carrying
 a premise. The generated Lean file has 67 theorems, 27 linked to a Fact; where a
 linked Fact depends on a count, the kernel certifies the arithmetic on the counted
@@ -115,7 +115,8 @@ is editing a build artefact.
 | | |
 |---|---|
 | `spectrefacts.py` | 62 Facts, computed exactly in sympy. `--selftest` checks all of them |
-| `chair44facts.py` | 16 more Facts (78 in all once registered): the Chair44 atlas, orientation spectrum and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
+| `chair44facts.py` | 17 more Facts (79 in all once registered): the Chair44 atlas, orientation spectrum, zero twist and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
+| `chair44_twist.py` | the Chair44 inflation geometry: supertile = 2 x chair exactly (twist 0, no mirror), mean child matrix I/4. `--verify` |
 | `spectreatlas.py` | the contact atlas and X-charges, built from the placed tiling |
 | `spectrelean.py`  | emits the Fact layer as Lean 4 and runs the kernel over it |
 | `spectrepaper.py` | 16 sections, generated |
