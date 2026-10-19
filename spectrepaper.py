@@ -216,7 +216,7 @@ def diffraction_subsection():
     sm, low = d['sm'], d['low']
     H, S, T = sm['Hat'], sm['Spectre'], sm['Turtle']
     return r"""
-\subsection{A reciprocal-space check: diffraction}
+\subsection{Reciprocal-Space Analysis: Structure Factors and Dual Lattices}
 \label{sec:diffraction}
 
 The torus lattice $\Lambda=\mathbb{Z}E_1+\mathbb{Z}E_2$ of the six-sphere cusp has a dual
@@ -260,7 +260,7 @@ def ledger_subsection():
     cb = c['combos']
     return r"""
 \subsection*{An evidence ledger}
-
+\begin{footnotesize}
 The Facts do not all rest on the same kind of evidence, and the Lean file covers only
 some.  \texttt{spectre\_ledger.py} classifies every Fact, by hand-written table that a
 selftest forces to be complete, as derived from the quoted matrix, counted on the placed
@@ -273,6 +273,7 @@ arithmetic on the counted values and not the count, and the figure marks those c
 The machine-readable catalogue written beside the figure
 (\texttt{paper/spectre\_formalization.yaml}) follows the idea of the formalization catalogue kept by the
 mathematics collection~\cite{OpenAIMath}; it is not validated against that collection's schema.
+\end{footnotesize}
 """ % (c['facts'], cb.get('D', 0) + cb.get('D+L', 0), cb.get('D+L', 0), cb.get('Q', 0),
          c['theorems'], c['linked']) + FIG_LEDGER
 
@@ -355,7 +356,7 @@ PREAMBLE = r"""\documentclass[11pt]{article}
         showstringspaces=false,commentstyle=\color{gray}\itshape,
         keywordstyle=\color{blue!60!black}\bfseries}
 
-\title{Exact Substitution Arithmetic of the Spectre Monotile, with a Three-Dimensional Control}
+\title{Area, Perimeter and Parity: Comparing the Spectre Monotile with Tsiokos's Chair44 Three-Dimensional Monotile}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me})}
@@ -512,7 +513,7 @@ def chair_section():
     c = g('chair_chiral').value
     forced = g('chair_forced_chirality').value
     return fill(r"""
-\section{A three-dimensional control: Chair44}
+\section{From Plane to Bulk: Tsiokos's Chair44}
 \label{sec:chair}
 
 Everything above is two-dimensional, and the question this section asks is which of it
@@ -529,7 +530,7 @@ the published solid (\code{symchair44\_tests.py}).  Nine tests and ten more in
 \code{chair44\_tests.py} carry the comparison; the Facts of this section are in
 \code{chair44facts.py} and are listed with the others in the supplement.
 
-\subsection{What is rebuilt}
+\subsection{Combinatorial Reconstruction of the Chair44 Tile}
 
 The mesh has $@V@$ vertices, $@E@$ edges and $@T@$ triangles, is a closed
 manifold of Euler characteristic $2$, and has volume exactly $7$ for \emph{every} base
@@ -551,8 +552,10 @@ alone.  The kernel checks the arithmetic that ties them together
 \code{decide} and \code{omega}, not \code{native\_decide}, which would trust the compiler
 more than an inductive proof.
 
+\begin{footnotesize}
 \begin{table}[h]
 \centering
+\footnotesize
 \caption{The Spectre and the Chair44 side by side.  $d$ is the dimension, $\lam$ the linear
 inflation, $\nu$ the boundary growth per level, $D_b=\log\nu/\log\lam$,
 $s^{*}=1-D_b/d$ and $\mu=\lam^{d}/\nu$.  The last two rows are about what is claimed, not
@@ -579,10 +582,11 @@ spectrum of the tiling & Pisot, pure point & 2-adic, pure point (cited theorem) 
 \bottomrule
 \end{tabular}
 \end{table}
+\end{footnotesize}
 
 \subsection{The boundary operator in three dimensions}
 
-The Chair44 supertile of depth $N$ has $24\cdot4^{N}$ boundary faces and
+The Chair44 super-tile of depth $N$ has $24\cdot4^{N}$ boundary faces and
 $12(8^{N}-4^{N})$ shared faces, since $24$ faces on each of $8^{N}$ tiles less two for every
 shared face leaves $24\cdot4^{N}$; the identity is proved in Lean for all $N$
 (\code{chair\_surface}).  The faces point equally in all six axis directions,
@@ -595,7 +599,7 @@ B_{c}=\tfrac12\bigl(T(c)P(N-c)-P(N)\bigr)=12\cdot4^{N}(2^{c}-1),
 \]
 so the interface law is not an accident of the plane.  What is different is the exponent.
 With $\lam=2$ and $\nu=4$ the boundary grows by exactly $\lam^{2}$, so
-$D_b=2=d-1$: the supertile boundary of the Chair44 is an ordinary surface, with no fractal
+$D_b=2=d-1$: the supertile boundary of Tsiokos's Chair44 is an ordinary surface, with no fractal
 excess, where the Spectre's has $+0.3993$.  Area and perimeter inflate in the same field, so there is no divide
 between them, and the balanced exponent is the rational $s^{*}=1/3$.  The one-tile-two-units
 rule of Section~\ref{sec:bigpicture} therefore describes the Spectre and not tilings in
@@ -621,8 +625,8 @@ The replacement is $2$-adic, and it is not new here: Tsiokos's repository record
 \cite{Tsiokos1}.  The substitution acts on $24\times7=168$ labelled unit cells, is primitive
 (every entry of its $168\times168$ matrix is positive at power $3$), and has a modular
 coincidence: at depth $3$ there are @coinc@ of $512$ addresses, among them $(0,0,2)$, at which
-all $168$ labels expand to the same label.  By the theorem of Lee and Moody with
-Schlottmann \cite{LeeMoody,Schlottmann,LMS}, a primitive lattice substitution with a modular
+all $168$ labels expand to the same label.  By the theorem of Lee and Moody (2001) with
+Schlottmann (2000) \cite{LeeMoody,Schlottmann,LMS}, a primitive lattice substitution with a modular
 coincidence has fixed-point label classes that are regular model sets with a $2$-adic internal
 space, so its diffraction is pure point and the fixed point is limit-periodic.  That implication
 is a cited theorem and is not re-proved, and whether every tiling lies in the substitution hull
@@ -637,9 +641,9 @@ spectral radius exactly $2$, so the set of addresses not yet determined, which i
 window boundaries lie, has box dimension $\log_{2}2=1$ in the internal space $\mathbb{Z}_{2}^{3}$
 of dimension $3$.  The two $2$'s are the same number as the linear inflation and the
 subdominant orientation eigenvalue, and no link between them is claimed.  The Spectre rests on
-a Pisot unit and an irrational window; Chair44 rests on an integer inflation and a $2$-adic one.
+a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inflation and a $2$-adic one.
 
-\subsection{Chirality: a qualification}
+\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
 
 Conjecture~\ref{conj:chirality} rests on a sentence: a planar patch embedded in a
 three-dimensional bulk has its reflection realised as an ambient rotation, so parity that is
@@ -677,9 +681,7 @@ example: a three-dimensional aperiodic tile whose legal contacts include a mirro
 would show that forced chirality is not a feature of dimension three, and
 \code{symchair44.legal\_contacts} will test any labelled candidate for it.
 
-\subsection{What this section does not show}
-
-It does not show that the Chair44 is an einstein, or aperiodic, or that the pyramid
+This section does not show that the Chair44 is an einstein monotile, or aperiodic, or that the pyramid
 decoration is the only one that works.  It re-derives its atlas and finds it self-consistent
 and equal to the published one.  A numerical scan of sliding and tilted placements
 of smoothed variants, in \code{chair44\_rigidity.py}, found no non-lattice contact, which is
@@ -709,12 +711,11 @@ semisimple, and two marginal integer charges track handedness.  The supertile pe
 separate recurrence, with the closed form $P(k)=2F_{3k+5}+4$, whose growth
 $\nu=\varphi^{3}$ lies in $\mathbb{Q}(\sqrt5)$: area and perimeter of one tile inflate in
 different quadratic fields, and the boundary is fractal, of dimension $@dim@$.  As a
-three-dimensional control the same quantities are computed for the einstein tile Chair44,
+three-dimensional control the same quantities are computed for the Tsiokos einstein tile Chair44,
 rebuilt from scratch.  Its boundary is an ordinary surface, and its chirality is forced by its
 contacts, which qualifies a conjecture that a third dimension restores parity.  Every number is a
 Fact computed once and classified by the evidence behind it, and the closed ones are proved in
-Lean~4.  The perimeter is counted a second time in exact $\mathbb{Q}(\sqrt3)$ arithmetic, so no
-result here rests on a floating-point tolerance in the Facts.
+Lean~4.
 \end{abstract}
 """, perron=tex(F.get('perron').value), dim='%.3f' % float(F.get('boundary_dimension').decimal))
 
@@ -730,12 +731,12 @@ spheres are compact, has related the Araki--Uhlmann relative entropy of a
 coherent excitation to the modular-weighted boost-energy flux through the
 horizon, and the $s$-wave sector of the horizon dynamics, linearized
 Jackiw--Teitelboim gravity, is consistent with the area law
-$S_{\rm rel}=\delta A/4G$.  That is the converse direction of the result of
+$S_{\rm rel}=\delta A/4G$ \cite{hartshorn2026}.  That is the converse direction of the result of
 Dorau and Much~\cite{DorauMuch}: the Einstein equations imply the area law.  It
 does not derive the normalization, whose coefficient is the Newton constant,
 and the sign of $\delta A$ depends on the boundary conditions.  Nothing in the
 present paper depends on that result; it is the setting in which the question
-arises.  The thesis is that the crossover surface --- a two-dimensional
+arises.  The thesis is that the Big-Bang or Penrose CCC crossover surface --- is a two-dimensional
 conformal carrier with vanishing configurational entropy density --- is a
 substitution monotile phase \cite{SmithEtAl, SmithEtAl2}.  That identification
 is a conjecture and is labelled as one.  What can be done without it, and what
@@ -870,13 +871,13 @@ That is the geometric content of ``two units'': a shape whose perimeter and
 area do not scale together cannot be assigned a single inflation factor, and
 the mismatch is measured by the ratio of the two fields' units.
 
-A fractal with a Hausdorff dimension of $%s$ represents a geometric structure with a complexity that sits precisely between a 1D line and a 2D plane.
-In nature and medicine, fractal dimensions around 1.40 are frequently observed in the highly folded structural boundaries of the human brain (such as the boundary between the cerebral cortex and white matter \cite{bullmore}).
+A fractal with a Hausdorff dimension of $%s$ represents a geometric structure with a complexity that sits precisely between a 1D line and a 2D plane \cite{Kraus2013}.
+Side-note: in nature and medicine, fractal dimensions around 1.40 are frequently observed in the highly folded structural boundaries of the human brain (such as the boundary between the cerebral cortex and white matter \cite{bullmore}).
 
 \subsection{Target Programmes for the Substrate}
 
 Three programmes draw on this.  The first is the horizon setting of the
-introduction~\cite{DorauMuch}.  There the Nariai throat's
+introduction~\cite{hartshorn2026, DorauMuch}.  There the Nariai throat's
 crossover surface is a two-dimensional carrier with zero configurational
 entropy density, and the conjecture --- labelled as one in
 Section~\ref{sec:data} --- is that it is a substitution monotile phase \cite{SmithEtAl, SmithEtAl2}.  
@@ -1003,7 +1004,7 @@ def census_section():
         r'%d & %d & %d & %d \\' % (d, m, g, mys)
         for d, m, g, mys in F.census_table())
     return r"""
-\section{The census, twice, and the identity between them}
+\section{Matrix Iteration Versus Placed Patch Counts}
 \label{sec:census}
 
 A patch can be counted two ways and the difference matters, so it is settled
@@ -1198,10 +1199,10 @@ algebraic numbers is what lets the eigenvector equation be checked in
 $\mathbb{Z}[\sqrt{15}]$ with no rational arithmetic at all, which is how
 Section~\ref{sec:lean} proves it rather than recomputing it.
 
-\subsection{Measured, in a laboratory}
+\subsection{Laboratory Observations of Quasicrystalline Chirality by Moritake}
 
-The Hat phase is no longer only a mathematical object.  Moritake
-\emph{et al.}~\cite{Moritake2026} fabricated a monotile quasilattice --- the
+The Hat phase is no longer just a mathematical object.  Moritake
+\emph{et al.} (2026) ~\cite{Moritake2026} fabricated a monotile quasilattice --- the
 centroids of the $T$ metatiles of an $H_6$ patch, %s holes etched in
 silicon nitride over half a millimetre --- and measured its optical
 diffraction.  The pattern shows sharp Bragg peaks whose positions do not move
@@ -1212,7 +1213,7 @@ differently to left- and right-handed circular polarization.  That last
 response is absent in every mirror-symmetric quasicrystal, the Penrose tiling
 included.
 
-For the present paper the useful part is that they give the twist in closed
+For this paper the useful part is that they give the twist in closed
 form.  The metatiles rotate away from the underlying honeycomb by an angle
 whose coefficients follow the Fibonacci recurrence, so the ratio tends to
 $\varphi^{2}$ and the limiting twist is
@@ -1243,8 +1244,8 @@ It also yields a prediction rather than a restatement.  Substituting the
 Spectre's inflation factor into the same formula gives
 $(\lambda^{2}-3)/4=%s>1$, which is not a cosine: the Spectre cannot share the
 Hat's twist relation, and its own chiral angle --- whatever it is --- belongs
-to $\mathbb{Q}(\sqrt{15})$ instead.  We do not compute it here, because doing
-so needs the Spectre's metatile twist geometry and not merely its eigenvalue.
+to $\mathbb{Q}(\sqrt{15})$ instead.  We do not compute it here, \textit{\textbf{because doing
+so needs the Spectre's metatile twist geometry and not merely its eigenvalues}}.
 Fabricating the Spectre quasilattice and measuring a \emph{different} chiral
 angle would be a direct test of the two-field claim of
 Fact~\ref{fact:phases}, at optical bench scale, with no cosmology involved.
@@ -1314,8 +1315,8 @@ is not: it is a statement about which edge of a placed tile meets which edge of
 its neighbour, and no eigenvector recovers it.  The tiling has to be built.
 
 Each tile is a fourteen-gon whose slots carry canonical roles in the cyclic
-sequence \code{aabbaabbaaaabb}.  A shared edge is an \emph{X-bond} when the two
-tiles disagree about the role of the slot they are gluing.  This is a statement
+sequence \code{aabbaabbaaaabb} \cite{SmithEtAl}.  A shared edge is an \emph{X-bond} when the two
+tiles disagree about the role of the slot they are gluing \cite{LeeMoody}.  This is a statement
 about roles and not about lengths: a tiling cannot glue edges of different
 length, so typing the bond by realized length makes every bond match by
 construction and the charge collapses to zero everywhere.  The two readings
@@ -1373,9 +1374,9 @@ evidence for one half and not a proof of it.  This is the open problem of the
 previous draft, reduced from ``compute $p$'' to ``decide whether $p=\tfrac12$''.
 \end{conj}
 
-\subsection{Why the mechanism switches on where it does}
+\subsection{The Onset of Non-Additivity: Thresholds in Unknotting Numbers}
 
-Brittenham and Hermiller~\cite{BH} proved that unknotting number is not
+Brittenham and Hermiller (2025) ~\cite{BH} proved that unknotting number is not
 additive: for $K=7_1=T(2,7)$ with $u(K)=3$,
 $u(K\#\overline K)\le5<6$.  Three things about that theorem bear on the
 mechanism, and all three are easy to overstate.
@@ -1395,7 +1396,7 @@ until someone explains it.
 
 \emph{The proof was corrected, and the correction was about mirroring.}  The
 first version routed through two diagrams of $K15n81556$ asserted to be one
-knot; Wang and Zhang~\cite{WZ} showed by the Jones polynomial that they are a
+knot; Wang and Zhang (2025) ~\cite{WZ} showed by the Jones polynomial that they are a
 chiral knot and its mirror, and verified the inequality directly anyway.  The
 current version supplies the missing isotopy and credits them.  The theorem is
 unaffected and now stands by two routes, and the deficit bound does not move.
@@ -1562,7 +1563,7 @@ theorem pell_fundamental_unit : lam2 * lam2inv = (1, 0) := by decide
 theorem seifert_minor_closed_form (m : Nat) : D m = Dclosed m :=
   (D_closed_pair m).1'''
     return r"""
-\section{Verification: computed twice, and proved once}
+\section{Formal Verification: Machine-Checked Proofs in Lean 4}
 \label{sec:lean}
 
 Computing a Fact twice by code-disjoint routes is a good discipline and it is
@@ -1576,9 +1577,7 @@ eigenvector, the X-charge parity, and the Seifert minors of
 Fact~\ref{fact:sandwich}.
 
 The file is Mathlib-free: everything is \code{Int}, \code{List Int} or a small
-structure over them, so it checks against a bare toolchain in seconds.  That
-costs some elegance and buys the property that the proof is as auditable as
-the arithmetic it certifies.
+structure over them.
 \begin{footnotesize}
 \begin{lstlisting}[language=lean]
 %s
@@ -1586,9 +1585,7 @@ the arithmetic it certifies.
 \end{footnotesize}
 
 \noindent
-%s  What the kernel does \emph{not} see is the subject of
-Section~\ref{sec:boundary}, and is stated in the Lean file as comments rather
-than theorems, because a comment cannot be mistaken for a certificate.
+%s
 """ % (len(names), sample, L.AUDIT_SENTENCE)
 
 
@@ -1597,18 +1594,20 @@ def boundary_section():
 \section{Conclusion}
 \label{sec:boundary}
 
-The exact arithmetic of the Spectre substitution provides a rigorous foundation for aperiodic monotile phases, establishing that area data is graded by the fundamental unit of $\mathbb{Z}[\sqrt{15}]$. While the Hat phase is graded by $\mathbb{Q}(\sqrt{5})$, the Spectre's perimeter is governed by $\nu = \varphi^3$, demonstrating a field division between area and perimeter that forces a fractal boundary of dimension $1.3992$.
+The exact arithmetic of the Spectre substitution provides a rigorous foundation for aperiodic monotile phases in two dimensions, establishing that area data is graded by the fundamental unit of $\mathbb{Z}[\sqrt{15}]$. While the Hat phase is graded by $\mathbb{Q}(\sqrt{5})$, the Spectre's perimeter is governed by $\nu = \varphi^3$, demonstrating a field division between area and perimeter that forces a fractal boundary of dimension $1.3992$.
 
 These arithmetic structures are complemented by exact results across several layers.
 The Substitution Spectra and Charges: The transfer spectrum features a non-semisimple zero sector with a Jordan pair alongside marginal integer charges ($Q_+, Q_-$) that track global handedness.
 Topology and Boundaries: Seifert minors of $T(2,k)$ yield closed-form unknotting numbers, and a boundary operator governs both perimeter and contact sequences.
 Torsion and Embeddings: When placed on the six-sphere cusp torus, the Mystic tiles form six fibre classes organized as a single orbit under the torsion dictionary $R^6 = 1$.
 The Boundary in Closed Form: the perimeter is $2F_{3k+5}+4$ for every $k$, proved in Lean, and its edges split into direction classes with Fibonacci totals that are counted through $k=6$.
-The Three-Dimensional Control: the einstein tile Chair44 has an ordinary surface as its boundary, of dimension exactly $2$, a semisimple orientation spectrum with rational frequencies, and a chirality forced by its contacts. The first two say that the fractal boundary and the Pisot mechanism for a pure-point spectrum belong to the planar tile, the chair's own being $2$-adic; the third qualifies Conjecture~\ref{conj:chirality}, since a tile that fills three-dimensional space does not recover parity merely by living there.
+The Three-Dimensional Control: the Einstein monotile Chair44 by Ioannis Tsiokos (2026) has an ordinary surface as its boundary, of dimension exactly $2$, a semi-simple orientation spectrum with rational frequencies, and a chirality forced by its contacts. The first two say that the fractal boundary and the Pisot mechanism for a pure-point spectrum belong to the planar tile, the chair's own being $2$-adic; the third qualifies Conjecture~\ref{conj:chirality}, since a tile that fills three-dimensional space does not recover parity merely by living there.
 
-Ultimately, the Spectre substitution bridges exact quadratic field arithmetic, boundary fractal scaling, and topological constraints, offering a fully computable substrate for physical and geometric analysis.
+Ultimately, the Spectre substitution by David Smith (2023) bridges exact quadratic field arithmetic, boundary fractal scaling, and topological constraints, offering a fully computable substrate for physical and geometric analysis.
 
-\subsection*{What the Facts do not reach}
+\appendix
+\section{Methodological Scope and Limitations}
+\footnotesize
 
 Four things are outside the Facts, and they are collected here because they carry different
 obligations.  First, the substitution matrix transcribes the published rule.  Every Fact is
@@ -1618,7 +1617,7 @@ the matrix and agreeing at every depth, and an audit is not a proof.  The three 
 the perimeter recurrence are in the same position, counted from placed tiles and not derived,
 and the second count in exact $\mathbb{Q}(\sqrt3)$ arithmetic removes the rounding key from the
 boundary results without removing the transcription.  Second, the Chair44's einstein property
-and aperiodicity are its author's claimed proof, quoted and not checked, and the forced
+and aperiodicity are its author's (Tsiokos2026) claimed proof \cite{Tsiokos1}, quoted here and not checked, and the forced
 chirality of Section~\ref{sec:chair} is tested over the six substitutions of one construction family and not beyond it.  Third,
 the modelling steps are modelling steps: Conjecture~\ref{conj:chirality} is a selection
 statement and not a dynamics, and the unit postulate of Section~\ref{sec:data} is the whole
@@ -1823,6 +1822,7 @@ contains both $3$ and $4$), while the substrate's symmetry is Euclidean; and the
 threefold carries no holomorphic $3$-form, so it supports no four-dimensional
 $\mathcal N=1$ compactification, and nothing here connects it to the screen or
 to the Weyl-curvature conjecture above.
+
 """
 
     tors = r"""
@@ -1867,7 +1867,7 @@ would support it, and lists what it does not claim, because the question it
 touches --- what the substrate has to do with gravity --- is the one a reader
 will ask next.
 
-\subsection{What is known, from outside this paper}
+\subsection{External Background and Context}
 
 Penrose's Weyl curvature hypothesis asks that the Weyl tensor vanish at the
 initial boundary of the universe, so that the gravitational field carries no
@@ -1953,7 +1953,7 @@ chirality of any gravitational sector.  Neither has been attempted.
 
 def data_section():
     return r"""
-\section{Results: A modelling step}
+\section{Observational Constraints: Cosmic Birefringence and Parity Violations}
 \label{sec:data}
 
 Isotropic cosmic birefringence is measured nonzero: the 2026 joint
@@ -1978,12 +1978,9 @@ $\mathbb{Q}(\sqrt{15})$ knows about them.  A closed form landing near a
 measurement is what one should expect occasionally from a theory with several
 dimensionless constants and a free choice of units.  The substrate supplies a
 number, the identification is a guess, and the guess is unrefuted.
-
-It is recorded rather than deleted because it is scheduled: at the
-$0.05^{\circ}$ calibration class it separates from zero at $%.1f\sigma$, and at
-$0.01^{\circ}$ from the WMAP$+$Planck value $0.342^{\circ}$ at $%.1f\sigma$.  A
-guess with a date on it beats a guess without one and loses to a derivation ---
-and Section~\ref{sec:phases} now offers a test that needs no postulate at all.
+At the $0.05^{\circ}$ calibration class it separates from zero at $%.1f\sigma$, and at
+$0.01^{\circ}$ from the WMAP$+$Planck value $0.342^{\circ}$ at $%.1f\sigma$. 
+Section~\ref{sec:phases} now offers a test that needs no postulate at all.
 """ % (tex(F.BETA), F.get('beta').decimal, F.get('beta_tension').value,
        float(sp.N(F.BETA / sp.Rational(5, 100))),
        float(sp.N(abs(sp.Rational(342, 1000) - F.BETA) / sp.Rational(1, 100))))
@@ -2035,41 +2032,53 @@ Key & Claim & How & Lean \\
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
 
-\bibitem{SmithEtAl} Smith, D., Myers, J.S., Kaplan, C.S. and
-Goodman-Strauss, C. (2024). An aperiodic monotile.
-\emph{Combinatorial Theory}, 4(1).
+\bibitem{hartshorn2026} B.~Hartshorn
+\emph{Gravity from Relative Entropy: Jackiw–Teitelboim Dynamics on the Nariai Horizon}
+[preprint]
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
 
-\bibitem{SmithEtAl2} Smith, D., Myers, J.S., Kaplan, C.S. and
-Goodman-Strauss, C. (2024). A chiral aperiodic monotile.
-\emph{Combinatorial Theory}, 4(2).
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\url{https://doi.org/10.1103/lmq8-nsty}
+
+
+\bibitem{SmithEtAl} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024). 
+\emph{An aperiodic monotile}
+Combinatorial Theory, 4(1).
+
+\bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
+\emph{A chiral aperiodic monotile}
+Combinatorial Theory, 4(2).
+
+\bibitem{Kraus2013} Y.E.~Kraus, Z.~Ringel, and O.~Zilberberg (2013)
+\emph{Four-Dimensional Quantum Hall Effect in a Two-Dimensional Quasicrystal}
+\url{https://doi.org/10.1103/PhysRevLett.111.226401}
 
 \bibitem{bullmore}
 E.~Bullmore, M.~Brammer, I.~Harvey, R.~Persaud, R.~Murray, M.~Ron (1994)
 Fractal analysis of the boundary between white matter and cerebral cortex in magnetic resonance images: a controlled study of schizophrenic and manic-depressive patients
 \url{https://doi.org/10.1017/s0033291700027926}
 
-\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
-\url{https://doi.org/10.1103/lmq8-nsty}
-
-
-
-
-\bibitem{Moritake2026} Moritake, Y., Takiguchi, M., Aihara, T. and
-Notomi, M. (2026). Chiral diffraction from aperiodic monotile structure.
+\bibitem{Moritake2026} Y.~Moritake, M.~Takiguchi, T.~Aihara and M.~Notomi (2026).
+Chiral diffraction from aperiodic monotile structure.
 \emph{Nature Communications} \textbf{17}, 6085.
 \url{https://doi.org/10.1038/s41467-026-75023-7}
+
 \bibitem{BH} M.~Brittenham and S.~Hermiller (2025). Unknotting number is not
 additive under connected sum. arXiv:2506.24088v2 (15 September 2025).
 \url{https://arxiv.org/abs/2506.24088}
 Cited in its corrected version; see~\cite{WZ} and the discussion in
 Section~\ref{sec:mass}.
+
 \bibitem{WZ} C.~Wang and Y.~Zhang (2025). A remark on the counterexample to
 the unknotting number conjecture. arXiv:2507.14265.
 \url{https://arxiv.org/abs/2507.14265}
+
 \bibitem{Tsiokos1} I.~Tsiokos (2026). The Chair44 three-dimensional einstein tile.
+\emph{A Strongly Aperiodic Monotile in Three Dimensions}
 arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
-\url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).  The titles of the two
-preprints are not reproduced here.
+\url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).  
+\newline
+\url{https://doi.org/10.48550/arXiv.2609.19214}
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
 sets. \emph{Discrete Comput. Geom.} 25, 173--201.
@@ -2118,6 +2127,11 @@ Planck PR4 constraints on cosmic birefringence.
 manuscripts in 372 families, some with Lean formalizations.  Described by its authors
 as produced by an internal OpenAI model and at differing stages of verification.
 \url{https://github.com/openai/math} (consulted 15 October 2026).
+
+\bibitem{Kuhne2026}
+T.~D.~Kühne, V.~Efremkin, E~.Prodan (2026)
+\emph{From Bellissard's gap labeling to atomistic quasiperiodic bilayers}
+\url{https://doi.org/10.48550/arXiv.2609.36981}
 
 \end{thebibliography}
 
