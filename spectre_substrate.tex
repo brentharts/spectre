@@ -120,6 +120,9 @@ The interface law carries over and the form of the exponents carries over, but t
 boundary does not (its surface has dimension exactly $2$), the Pisot route to a pure-point
 spectrum is replaced by a $2$-adic one (its inflation is the integer $2$), and its chirality, forced by its
 contacts, qualifies the conjecture that embedding in a third dimension restores parity.
+Section~\ref{sec:unfold} then brings the Chair44 down to two dimensions, by unfolding its surface and by slicing and projecting its
+hierarchy: its supertile has no twist, its orientation sum grows by exactly the linear inflation, as the Spectre's does to four digits, and
+the two tilings differ in the intensity of that sum through the dimension alone.
 
 The remainder places the Spectre next to the Hat.  Its one-parameter family
 $\mathrm{Tile}(a,b)$ contains the Hat at $(1,\sqrt3)$ and the Turtle at $(\sqrt3,1)$, and
@@ -1227,7 +1230,7 @@ is $c(M)/8^{M}\sim28\cdot4^{-M}$, and the transfer matrix on the non-singleton s
 spectral radius exactly $2$, so the set of addresses not yet determined, which is where the
 window boundaries lie, has box dimension $\log_{2}2=1$ in the internal space $\mathbb{Z}_{2}^{3}$
 of dimension $3$.  The two $2$'s are the same number as the linear inflation and the
-subdominant orientation eigenvalue, and no link between them is claimed.  The Spectre rests on
+subdominant orientation eigenvalue, and no link between them is claimed there; Section~\ref{sec:unfold} finds the first-moment sum rule that both obey.  The Spectre rests on
 a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inflation and a $2$-adic one.
 
 \subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
@@ -1275,6 +1278,179 @@ of smoothed variants, in \code{chair44\_rigidity.py}, found no non-lattice conta
 evidence for rigidity and not a proof of it.
 
 
+\section{Unfolding the Chair44 and Comparing It with the Spectre}
+\label{sec:unfold}
+
+Section~\ref{sec:chair} compared the two tilings by their combinatorics.  This section brings
+the three-dimensional tile down to two dimensions in the two ways that are exact, and then asks
+the same questions of both tilings.  One way unfolds the surface of the chair into a flat net;
+the other slices and projects the hierarchy.  To compare the two tilings each tile is reduced to
+a point (the centroid of a Spectre; the centre of the bounding cube of a chair) and an
+orientation vector ($e^{i\theta}$ for a Spectre, the direction $d=g(1,1,1)$ of the missing corner, the
+notch, for a chair).  Every number is a Fact (\code{chair\_twist}, \code{chair\_nets},
+\code{chair\_slices}, \code{orientation\_sums}, \code{power\_slopes}) computed by
+\code{chair44\_unfold.py}, \code{chair44\_slice.py} and \code{chair44\_findings.py}; the Spectre
+sums use the patches of \code{spectre.py} through level $5$, which has $34649$ tiles.  The same
+programs are in the repository of curved-tile tools~\cite{HartshornTools}.
+
+\subsection{The twist of the Chair44 supertile}
+
+Fact~\ref{fact:twist} computed the twist of the Spectre supertile.  The same question for the
+Chair44 has a simpler answer.
+
+\begin{fact}
+\label{fact:chairtwist}
+The eight chairs of the supertile fill the doubled chair cell for cell, so the inflation is a
+scaling by $2$ with no rotation and no mirror: its twist is $0$.  The eight child frames are
+proper rotations through $0, 90, 120, 180$ degrees, two of each, and their mean matrix is exactly
+$I/4$, so the mean frame over the $8^{n}$ chairs of a level-$n$ supertile is $I/4^{n}$.  At depth three all
+$24$ rotations of the cube occur.
+\end{fact}
+
+\noindent
+The Spectre supertile is turned by $\theta_{S}=11.565^{\circ}$ and mirrored at every level
+(Fact~\ref{fact:twist}), and $\theta_{S}$ is irrational as an angle; every child rotation of the
+chair is a rational multiple of $\pi$, so no irrational twist can arise from this substitution.  The mean
+matrix $I/4$ is the statement $\sum_{i}H_{i}=2I$: the eight child rotations add up to the linear
+inflation times the identity.  This is a first-moment sum rule, and it is the only structure found
+here that links the two $2$'s noted at the end of Section~\ref{sec:chair}; whether it is related to
+the repeated eigenvalue $2$ of the orientation matrix is not shown.
+
+\subsection{Unfolding the surface into a net}
+
+The surface of the chair is a sphere made of $24$ unit squares, with $26$ vertices and
+$48$ edges, whose folds are $27$ convex, $18$ flat and $3$ concave.  Cutting it along a
+spanning tree of its face-adjacency graph, $23$ cuts, and folding every face into the plane gives a
+$24$-omino.  There are $261{,}434{,}325{,}600$ spanning trees (the matrix-tree theorem, exact).  Of $3000$
+random trees, $1253$ give a valid net and $1747$ overlap themselves; the valid nets have
+perimeters from $28$ to $50$, and $2$ of them tile the plane by translation.  The smallest
+perimeter found is a sampled value and not a minimum (any $24$-omino has perimeter at least $20$).  The
+control is the same code on a single cube, over all $384$ of its spanning trees: it returns exactly the
+$11$ nets of the cube.  Figure~\ref{fig:chairnets} shows three nets and the perimeters.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{chair44_nets}
+\caption{Unfolding the surface of the chair.  Three nets (colour is the axis of the face normal, strong
+for the outward $+$ side): the smallest perimeter among the sampled valid nets, one of the
+nets that tile the plane by translation, and a median one; and the perimeters of all the valid nets in the sample.}
+\label{fig:chairnets}
+\end{figure}
+
+
+The supertile surface is the chair surface scaled by $2$, so its net is the chair net with each
+square replaced by a $2\times2$ block: the area grows by $4$ and the length by $2$, which is the
+dimension $D_b=2$ already found for the boundary (Section~\ref{sec:chair}).  Unfolding therefore does not
+produce a planar analogue of the Spectre's fractal outline, of dimension $1.3993$.  That is a
+negative result, and the exact boundary count had already implied it.
+
+\subsection{Slices, projections and the notch vector}
+
+A layer $z=c$ of the depth-$n$ patch cuts each chair it meets into a square of $4$ cells or an
+L-tromino of $3$ (the cross-sections found are $3$ and $4$ cells), so a slice is a tiling of a planar region by
+polyominoes.  The projection of the chair centres along $z$ has, by the projection theorem, the
+$k_{z}=0$ plane of the three-dimensional diffraction as its Fourier transform; this was checked
+against a three-dimensional FFT.
+
+\begin{fact}
+\label{fact:chairslices}
+The $8^{n}$ centres of the bounding cubes of the depth-$n$ patch are distinct integer points on two cosets of $2\mathbb{Z}^{3}$
+($7, 56, 448, 3584$ and $1, 8, 64, 512$ points for $n=1,\dots,4$), and the notch vectors sum to $2^{n}(1,1,1)$.  The
+interface length inside the layer $z=0$ is $4^{n+1}-4\cdot2^{n}$ for $n\le4$ ($8, 48, 224, 960$).
+\end{fact}
+
+\noindent
+The sum of the notch vectors in Fact~\ref{fact:chairslices} is the sum rule of Fact~\ref{fact:chairtwist} applied to the vector
+$(1,1,1)$, and it was also counted.  It is far smaller than the sum of $8^{n}$ random signs, which is of order
+$8^{n/2}$: the intensity of the notch-weighted structure factor at the origin per tile is
+$2^{-n}$ instead of order $1$.  The layer interface grows by a factor tending to $4$ per level,
+again dimension $2$.  Figure~\ref{fig:chairslice} shows a slice, the $k_{z}=0$ plane at level $5$, the origin
+values, and the median intensity at random wave vectors.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{chair44_slice}
+\caption{Slices and projection of the hierarchy.  (a) A depth-$3$ layer, coloured by tile.  (b) The $k_{z}=0$ plane
+of the diffraction of the level-$5$ chair centres, which is the Fourier transform of their projection.  (c) The squared structure
+factor at the origin: the centres (Bragg, $8^{n}$), random signs ($3\cdot8^{n}$) and the notch vectors ($3\cdot4^{n}$).  (d) The median of $I/N$ at
+$300$ random wave vectors, unweighted and weighted by a notch component.}
+\label{fig:chairslice}
+\end{figure}
+
+
+\subsection{The same questions asked of the Spectre}
+
+The orientation sum of the Chair44 grows by exactly the linear inflation, $2$ per level.  The same sum for the Spectre
+can be computed on the placed tiles.
+
+\begin{fact}
+\label{fact:orientsum}
+For the Chair44 the notch sum is $2^{n}$ exactly ($4, 8, 16, 32$ at levels $2,\dots,5$).  For the Spectre,
+$|\sum_{j}e^{i\theta_{j}}|/\lambda^{n}=1.4413, 1.4480, 1.4488, 1.4489$ at levels $2,\dots,5$ (patches of $71, 559, 4401, 34649$ tiles), and
+the ratio of the last two sums is $2.8061$ against $\lambda=2.8059$.  The first is exact and
+the second is a measurement over floating-point sums, with no proof.
+\end{fact}
+
+\noindent
+In both tilings the orientation sum grows like the linear inflation.  The tile counts grow
+like $\lambda^{dn}$, so $|S|^{2}/N\propto\lambda^{(2-d)n}$ is constant for the Spectre ($d=2$; the values
+are $1.8136, 1.8303, 1.8324, 1.8327$) and $2^{-n}$ for the Chair44 ($d=3$).  On this evidence the two tilings differ in that
+quantity through the dimension alone, and not through the details of the tile.  This is an observation about
+one choice of orientation weight; it is not a theorem for the Spectre, whose inflation reverses orientation, so
+that a sum rule of the form $\sum H_{i}=\lambda I$ is not available to it in the same way.
+
+Where the power goes is asked with a deliberately loose statistic: the median of
+$I(k)/N$ over $300$ fixed random wave vectors, with $k$ in the box $[0,2\pi/\ell]^{d}$ for the tile
+size $\ell$, against the number of tiles.  It falls in both: as $N^{-0.34}$ for the Spectre centroids and
+$N^{-0.72}$ for the Chair44 centres, and as $N^{-0.26}$ and $N^{-0.39}$ when each point carries its orientation
+vector.  A falling median with a fixed number of random wave vectors says that the intensity is
+concentrated on few wave vectors, as in a Bragg spectrum, and it says that the concentration is
+faster for the Chair44 centres, which lie on a lattice with defects.  Figure~\ref{fig:chaircompare}
+and Table~\ref{tab:unfold} gather the comparison.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{chair44_compare}
+\caption{The same questions for both tilings.  (a) The orientation sum over the linear inflation to the $n$: constant for both.
+(b) $|S|^{2}/N$, the intensity at the origin per tile of the orientation weights: constant for the Spectre, $2^{-n}$ for the chair.
+(c) The median of $I(k)/N$ at $300$ random wave vectors against the number of tiles, unweighted and weighted.}
+\label{fig:chaircompare}
+\end{figure}
+
+
+\begin{table}[h]
+\centering
+\footnotesize
+\caption{The two tilings under the same questions (Facts~\ref{fact:chairtwist} and~\ref{fact:orientsum}).  The first four rows are exact; the sum and the
+slopes of the Spectre are measurements on placed patches.}
+\label{tab:unfold}
+\begin{tabular}{lll}
+\toprule
+ & Spectre & Chair44 \\
+\midrule
+supertile twist & $11.565^{\circ}$, mirrored each level & $0$, no mirror \\
+orientations & $12$ (steps of $30^{\circ}$) & $24$ rotations \\
+supertile outline, dimension & $1.3993$ & $2$ \\
+tile count per level & $\lambda^{2}\approx7.87$ & $8$ \\
+orientation sum & $\approx1.4489\,\lambda^{n}$ & $2^{n}$ exactly \\
+$|S|^{2}/N$ & constant, $\approx1.83$ & $2^{-n}$ \\
+median $I/N$, slope in $N$ & $-0.34$ (weighted $-0.26$) & $-0.72$ (weighted $-0.39$) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What this does and does not show}
+
+The nets are a sample of a space of $261{,}434{,}325{,}600$ trees, and nothing is claimed about the best
+net.  The point and the orientation vector of each tile are choices: another decoration of the same
+tiles would weight the sums differently, and the sum rule is a statement about the notch vector, not about
+every function of the orientation.  The Spectre patches of \code{spectre.py} are mirror-type placements, and the
+sum is unchanged by the global mirror, but the random wave vectors are drawn in a fixed box and so see the mirror
+image of the set seen elsewhere.  The median statistic compares two different dimensions at one
+scaling of $k$ and is noisy.  None of this decides whether the diffraction measure of either tiling is pure
+point: for the Chair44 that rests on the cited $2$-adic argument of Section~\ref{sec:chair}, and for the Spectre it is open here.
+
+
 \section{Formal Verification: Machine-Checked Proofs in Lean 4}
 \label{sec:lean}
 
@@ -1312,7 +1488,7 @@ The Facts do not all rest on the same kind of evidence, and the Lean file covers
 some.  \texttt{spectre\_ledger.py} classifies every Fact, by hand-written table that a
 selftest forces to be complete, as derived from the quoted matrix, counted on the placed
 tiling, re-derived by a second implementation, quoted from the literature, or carrying a
-modelling premise or an open parameter (Figure~\ref{fig:ledger}).  Of the 78 Facts, 51 are
+modelling premise or an open parameter (Figure~\ref{fig:ledger}).  Of the 83 Facts, 52 are
 derived only and 18 of those are also in the kernel; 6 are quoted; the rest are counted,
 premised or both.  The generated Lean file has 67 theorems, 27 of them linked to a Fact and
 the others auxiliary.  Where a Lean-linked Fact depends on a count, the kernel certifies the
@@ -1762,6 +1938,10 @@ Section~\ref{sec:mass}.
 the unknotting number conjecture. arXiv:2507.14265.
 \url{https://arxiv.org/abs/2507.14265}
 
+\bibitem{HartshornTools} B.~S. Hartshorn (2026). \emph{spectre-monotile-py}: Python tools for the curved Spectre
+monotile, with the Chair44 unfolding, slice and comparison programs of Section~\ref{sec:unfold}.
+\url{https://github.com/brentharts/spectre-monotile-py}.
+\newline
 \bibitem{Tsiokos1} I.~Tsiokos (2026). The Chair44 three-dimensional einstein tile.
 \emph{A Strongly Aperiodic Monotile in Three Dimensions}
 arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
