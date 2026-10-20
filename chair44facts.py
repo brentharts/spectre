@@ -131,7 +131,7 @@ KIND = {
     'chair_screen': 'C', 'chair_atlas': 'DX', 'chair_equations': 'DX',
     'chair_chiral': 'D', 'chair_forced_chirality': 'D', 'chair_orientation': 'D',
     'chair_surface': 'CX', 'chair_exponents': 'D', 'chair_coincidence': 'DX',
-    'chair_twist': 'D', 'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
+    'chair_twist': 'D', 'chair_nets': 'CX', 'chair_slices': 'CX', 'orientation_sums': 'C', 'power_slopes': 'P', 'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
 }
 _REGISTERED = False
 
@@ -289,6 +289,62 @@ def register():
                 '(rational multiples of pi) whose mean matrix is exactly I/4, so the mean frame at '
                 'depth n is I/4^n. Contrast Fact 11: the Spectre supertile is turned by 11.565 '
                 'degrees (irrational) and mirrored at every level')
+
+    import chair44_findings as FD
+    nd = FD.nets_data()
+    fact(key='chair_nets',
+         claim=r'\text{surface}=24\text{ squares},\ (V,E,F)=(26,48,24),\ 261{,}434{,}325{,}600\text{ spanning trees}',
+         value=dict(faces=nd['faces'], edges=nd['edges'], vertices=nd['vertices'], euler=nd['euler'],
+                    folds=nd['folds'], trees=nd['trees'], samples=nd['samples'], valid=nd['valid'],
+                    overlapping=nd['overlapping'], distinct=nd['distinct'], tilers=nd['tilers'],
+                    min_perimeter=nd['min_perimeter'], cube_trees=nd['cube_trees'], cube_nets=nd['cube_nets']),
+         method='the exposed unit faces of the seven-cube chair, their edge-adjacency graph (every edge '
+                'shared by exactly two faces), the tree count by the matrix-tree theorem over Q, and '
+                'unfoldings along random spanning trees (3000, seed 1) rejected when two faces land on one '
+                'cell; the same code run on one cube over all 384 spanning trees gives the 11 cube nets, '
+                'which is the independent check; the sampled counts are counts and not exhaustive')
+
+    sd2 = FD.slice_data()
+    fact(key='chair_slices',
+         claim=r'\textstyle\sum_j d_j=2^{n}(1,1,1),\ \ \text{layer interface}=4^{n+1}-4\cdot2^{n}',
+         value=dict(depths=list(sd2['depths']), distinct=all(sd2['distinct']), coset_even=sd2['coset_even'],
+                    coset_odd=sd2['coset_odd'], notch_sum=sd2['notch_sum'], interface=sd2['interface'],
+                    interface_formula=sd2['interface_formula'], cross_sections=sd2['cross_sections'],
+                    projection_theorem=sd2['proj_ok']),
+         method='the 8^n chairs of the depth-n patch, n<=4, each reduced to the '
+                'centre g(1,1,1)+t of its bounding cube and its notch vector g(1,1,1): the centres are '
+                'distinct integer points on two cosets of 2Z^3, the notch vectors sum to 2^n(1,1,1), which '
+                'follows from the mean child matrix I/4 (Fact chair_twist) and is also counted; a z-layer '
+                'cuts chairs into squares of 4 cells and L-trominoes of 3; the interface length of the '
+                'z=0 layer matches the closed form for n<=4; the projection theorem is checked '
+                'against a 3D FFT')
+
+    ot = FD.orientation_table()
+    fact(key='orientation_sums',
+         claim=r'S_{n}^{\mathrm{chair}}=2^{n}\ \text{exactly};\ \ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489',
+         value=dict(levels=[r['n'] for r in ot['chair']],
+                    chair_sum=[r['S'] for r in ot['chair']],
+                    chair_i0=[r['i0'] for r in ot['chair']],
+                    spectre_N=[r['N'] for r in ot['spectre']],
+                    spectre_ratio=[round(float(r['ratio']), 4) for r in ot['spectre']],
+                    spectre_i0=[round(float(r['i0']), 4) for r in ot['spectre']],
+                    step=round(float(ot['spectre'][-1]['S'] / ot['spectre'][-2]['S']), 4)),
+         method='the sum of the orientation vectors over the depth-n patch: for the chair the z component '
+                'of the notch vectors, an integer; for the Spectre |sum exp(i theta)| over the placed '
+                'tiles of spectre.py up to level 5 (34649 tiles), a floating-point sum whose ratio to '
+                'lambda^n is constant to four digits from level 3 on. The chair value is exact and '
+                'explained by the mean child matrix; the Spectre value is a measurement and no proof '
+                'is claimed')
+
+    pt = FD.power_table()
+    fact(key='power_slopes',
+         claim=r'\text{median }I(k)/N\ \text{falls as }N^{-0.34}\ (\text{Spectre})\text{ and }N^{-0.72}\ (\text{chair})',
+         value={k: dict(N=v['N'], slope=round(v['slope'], 2)) for k, v in pt.items()},
+         method='the median over 300 fixed random wave vectors (seed 1) in the box [0, 2 pi / l]^d, with l '
+                'the tile size (area^(1/2), volume^(1/3)), of |sum_j w_j exp(i k.r_j)|^2 / N for the '
+                'centroid or bounding-cube centre of every tile, levels 2 to 5, unweighted and weighted '
+                'by the orientation vector; a loose sampled statistic across two dimensions that says '
+                'the power sits in sparse peaks and does not decide whether the measure is pure point')
 
     import chair44_twoadic as TA
     tw = TA.report()
