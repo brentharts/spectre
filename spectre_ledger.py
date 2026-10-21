@@ -84,6 +84,9 @@ KIND = {
 import chair44facts as _C44                # noqa: E402
 _C44.register()
 KIND.update(_C44.KIND)
+import monotilefacts as _MF               # noqa: E402
+_MF.register()
+KIND.update(_MF.KIND)
 
 
 def proof_style(text):

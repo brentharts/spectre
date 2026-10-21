@@ -46,6 +46,7 @@ install_cicy:
 	cd .. && git clone https://github.com/brentharts/CICY.git
 facts:
 	PYTHONPATH=../CICY $(PYTHON) spectrefacts.py --selftest
+	$(PYTHON) monotilefacts.py --selftest
 
 atlas:
 	$(PYTHON) spectreatlas.py --selftest

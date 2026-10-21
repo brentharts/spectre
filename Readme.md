@@ -90,7 +90,7 @@ process 0.467. No computed set falls below the floor beyond the estimated noise.
 
 ![What kind of evidence stands behind each Fact](paper/figures/spectre_ledger.png)
 
-Each of the 83 Facts is classified as derived from the quoted matrix, counted on the
+Each of the 90 Facts is classified as derived from the quoted matrix, counted on the
 tiling, re-derived by a second implementation, quoted from the literature, or carrying
 a premise. The generated Lean file has 67 theorems, 27 linked to a Fact; where a
 linked Fact depends on a count, the kernel certifies the arithmetic on the counted
@@ -105,7 +105,7 @@ The windowed structure factor of the level-5 vertex sets: the Hat and Turtle hav
 
 ## Paper: The Spectre and the Hat
 
-*Exact Spectral Theory of the Spectre Substrate, with a Lean 4 Checked Fact Layer.*
+*Inflation With and Without an Internal Space: Exact Arithmetic of the Spectre Monotile and the Chair44.*
 
 Build it with `make paper`; check everything with `make check`. The document is
 **generated** — every number in it is a call into `spectrefacts.py` at build
@@ -115,12 +115,13 @@ is editing a build artefact.
 | | |
 |---|---|
 | `spectrefacts.py` | 62 Facts, computed exactly in sympy. `--selftest` checks all of them |
-| `chair44facts.py` | 21 more Facts (83 in all once registered): the Chair44 atlas, orientation spectrum, zero twist, nets, slices, orientation sums and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
+| `monotilefacts.py` | 7 more Facts (90 in all once registered): the exact diffraction of the Chair44 centre set, the Spectre orientation recursion and the orientation channels of both tilings, the face-contact matrices, and the four-dimensional lift of the Spectre (integer lift, integer inflation matrix, exact internal plane). The computations are in `chair44_diffraction.py`, `spectre_orient.py`, `orientation_spectra.py`, `contact_operators.py`, `lift4d.py`, `lift4d_matrix.py`, `spectre_patch.py` and `spectre_operator.py`, copied from [spectre-monotile-py](https://github.com/brentharts/spectre-monotile-py). `--selftest` recomputes them |
+| `chair44facts.py` | 21 more Facts (83 before the monotile Facts): the Chair44 atlas, orientation spectrum, zero twist, nets, slices, orientation sums and chirality, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
 | `chair44_core.py`, `chair44_unfold.py`, `chair44_slice.py`, `chair44_findings.py` | the Chair44 unfolded and compared with the Spectre: exact geometry, nets of the surface (261 434 325 600 spanning trees, 11 cube nets as control), slices and projections of the hierarchy, the numbers and the three figures of the section on unfolding; the first three are also in [spectre-monotile-py](https://github.com/brentharts/spectre-monotile-py). `--tests-only` / `--check` |
 | `chair44_twist.py` | the Chair44 inflation geometry: supertile = 2 x chair exactly (twist 0, no mirror), mean child matrix I/4. `--verify` |
 | `spectreatlas.py` | the contact atlas and X-charges, built from the placed tiling |
 | `spectrelean.py`  | emits the Fact layer as Lean 4 and runs the kernel over it |
-| `spectrepaper.py` | 16 sections, generated |
+| `spectrepaper.py` | the refocused paper (introduction, Spectre arithmetic, four-dimensional lift, Chair44 control and unfolding, exact comparisons, a short labelled conjecture, conclusion), generated |
 
 The Lean file is in the wiki: **[Spectre-Lean](https://github.com/brentharts/spectre/wiki/Spectre-Lean)**
 — 67 theorems, Mathlib-free, no admitted proofs, and a *measured* axiom audit that
