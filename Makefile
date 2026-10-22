@@ -85,6 +85,8 @@ check: facts atlas lean readme
 	$(PYTHON) spectre_figures.py --check
 	$(PYTHON) spectre_mystic_fibres.py --check
 	$(PYTHON) spectre_torsion.py --check
+	$(PYTHON) spectre_pancake.py --check
+	$(PYTHON) spectre_bkl.py --check
 	$(PYTHON) spectre_energy.py --check
 	$(PYTHON) spectre_diffraction.py --check
 	$(PYTHON) spectre_ledger.py --check
