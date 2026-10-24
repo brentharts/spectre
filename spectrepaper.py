@@ -162,6 +162,8 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \newtheorem{fact}{Fact}
 \newtheorem{prop}{Proposition}
 \newtheorem{conj}{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
 \newcommand{\lam}{\lambda}
 \newcommand{\code}[1]{\texttt{#1}}
 \emergencystretch=2em
@@ -169,8 +171,8 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 
 \title{@TITLE@}
 
-\author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
-        (\url{brenthartshorn@proton.me})}
+\author{Brent Hartshorn \orcidlink{0009-0004-2853-655X}
+        and Tristan Romanov}
 
 \begin{document}
 \maketitle
@@ -324,19 +326,13 @@ def chair_section():
 \section{From Plane to Bulk: Tsiokos's Chair44}
 \label{sec:chair}
 
-Everything above is two-dimensional, and the question this section asks is which of it
-depends on that.  Tsiokos's Chair44~\cite{Tsiokos1} is a candidate three-dimensional
-einstein: a single tile that fills $\mathbb{R}^{3}$, claimed to do so only
-aperiodically.  The tile is the seven-cube chair (a $2\times2\times2$ block less one corner) with
-each of its $24$ unit faces carrying eight small pyramids whose heights are signed.
-Its einstein property and its strong aperiodicity are the author's claimed proof and are
-quoted here, not checked: they are \emph{quoted} in the supplement, and nothing below
-bears on them.  What is recomputed is the combinatorial atlas, and it is recomputed from
-nothing: \code{symchair44.py} generates the tile in exact rational arithmetic from the cell
-set and the pyramid grid, with no external data, and its output agrees vertex for vertex with
-the published solid (\code{symchair44\_tests.py}).  Nine tests and ten more in
-\code{chair44\_tests.py} carry the comparison; the Facts of this section are in
-\code{chair44facts.py} and are listed with the others in the supplement.
+Everything above is two-dimensional; this section asks which of it depends on that.  Tsiokos's
+Chair44~\cite{Tsiokos1} is a candidate three-dimensional einstein, claimed to fill $\mathbb{R}^{3}$ only aperiodically.  The
+tile is the seven-cube chair (a $2\times2\times2$ block less one corner) with each of its $24$ unit faces carrying eight
+small pyramids of signed heights.  Its einstein property and strong aperiodicity are Tsiokos's claimed proof, quoted and
+not checked, and nothing below bears on them.  What is recomputed is the combinatorial atlas: \code{symchair44.py} generates
+the tile in exact rational arithmetic with no external data and agrees vertex for vertex with the published solid
+(\code{symchair44\_tests.py}, \code{chair44\_tests.py}); the Facts are in \code{chair44facts.py} and the supplement.
 
 \subsection{Combinatorial Reconstruction of the Chair44 Tile}
 
@@ -449,7 +445,7 @@ a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inf
 \subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
 
 A reading of the hypothesis of Section~\ref{sec:thesis} as a statement about parity would rest on a sentence: a planar
-patch embedded in a three-dimensional bulk has its reflection realised as an ambient rotation, so parity that is
+patch embedded in a three-dimensional bulk has its reflection realized as an ambient rotation, so parity that is
 forbidden on the surface is restored by embedding.  The Chair44 does not touch that sentence.
 It does touch the suggestion that three dimensions are what restores parity.
 
@@ -463,30 +459,19 @@ anywhere in the hierarchy.
 \end{fact}
 
 \noindent
-The chirality is forced twice over: by the labels, which break the three mirror planes of the
-seed, and by the contacts, which admit no mirror pair.  In three dimensions the strict
-chirality of the Spectre does not go away.  The escape that the sentence
-offers a planar leaf, turn it over in the bulk, is not available to a tile that already fills
-the bulk.  The qualification is therefore this.  Parity is restored, if it is, by the
-\emph{codimension} of the leaf and not by the \emph{dimension} of the space, so the
-sentence should be read as a statement about leaves embedded in a bulk and not about
-three-dimensional order.
+The chirality is forced twice over: by the labels, which break the three mirror planes of the seed, and by the contacts, which
+admit no mirror pair.  A tile that already fills the bulk cannot be turned over in it, so parity is restored, if it is, by the
+\emph{codimension} of the leaf and not by the \emph{dimension} of the space.
 
-This is a qualification and not a refutation.  The conjecture says nothing about tiles of
-the bulk, the Chair44 is not proposed as a substrate, and three caveats attach.  The einstein
-property is Tsiokos's claim.  The forced chirality was tested on all six substitutions
-that leave twelve height classes, not only the published one: none has a legal mirror contact,
-so it does not depend on the selection rule, but a decoration outside that family is not
-excluded.  And one example is one
-example: a three-dimensional aperiodic tile whose legal contacts include a mirror image
-would show that forced chirality is not a feature of dimension three, and
-\code{symchair44.legal\_contacts} will test any labelled candidate for it.
-
-This section does not show that the Chair44 is an einstein monotile, or aperiodic, or that the pyramid
-decoration is the only one that works.  It re-derives its atlas and finds it self-consistent
-and equal to the published one.  A numerical scan of sliding and tilted placements
-of smoothed variants, in \code{chair44\_rigidity.py}, found no non-lattice contact, which is
-evidence for rigidity and not a proof of it.
+This is a qualification and not a refutation: the conjecture says nothing about tiles of the bulk, and the Chair44 is not
+proposed as a substrate.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
+all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
+family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
+image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
+candidate).  This section does not show that the Chair44 is an einstein monotile, or aperiodic, or that the pyramid decoration
+is the only one that works; it re-derives its atlas and finds it equal to the published one.  A numerical scan of sliding and
+tilted placements of smoothed variants (\code{chair44\_rigidity.py}) found no non-lattice contact, which is evidence for rigidity
+and not a proof of it.
 """, V=g('chair_mesh').value[0], E=g('chair_mesh').value[1], T=g('chair_mesh').value[2],
         tilings=g('chair_tilings').value, raw=A['raw'], mirror=A['mirror'], legal=A['legal'],
         realized=A['realized'], neq=g('chair_equations').value[0], orank=orient['rank'], eqrank=g('chair_equations').value[1],
@@ -512,22 +497,17 @@ def unfolding_section():
     sp_ratio = ', '.join('%.4f' % x for x in osum['spectre_ratio'])
     commas = lambda n: '{:,}'.format(n).replace(',', '{,}')
     return fill(r"""
-\section{Unfolding the Chair44 and Comparing It with the Spectre}
+\section{Unfolding the Chair44 and Comparing it with the Spectre}
 \label{sec:unfold}
 
-Section~\ref{sec:chair} compared the two tilings by their combinatorics.  This section brings
-the three-dimensional tile down to two dimensions in the two ways that are exact, and then asks
-the same questions of both tilings.  One way unfolds the surface of the chair into a flat net;
-the other slices and projects the hierarchy.  To compare the two tilings each tile is reduced to
-a point (the centroid of a Spectre; the centre of the bounding cube of a chair) and an
-orientation vector ($e^{i\theta}$ for a Spectre, the direction $d=g(1,1,1)$ of the missing corner, the
-notch, for a chair).  Every number is a Fact (\code{chair\_twist}, \code{chair\_nets},
-\code{chair\_slices}, \code{orientation\_sums}, \code{power\_slopes}) computed by
-\code{chair44\_unfold.py}, \code{chair44\_slice.py} and \code{chair44\_findings.py}; the Spectre
-sums use the patches of \code{spectre.py} through level $5$, which has $@N5@$ tiles.  The same
-programs are in the repository of curved-tile tools~\cite{HartshornTools}.
+Section~\ref{sec:chair} compared the two tilings by their combinatorics.  This section brings the three-dimensional tile down
+to two dimensions in the two exact ways, unfolding its surface into a net and slicing and projecting the hierarchy, and then
+asks the same questions of both tilings.  Each tile is reduced to a point (the centroid of a Spectre, the centre of the bounding
+cube of a chair) and an orientation vector ($e^{i\theta}$ for a Spectre, the direction $d=g(1,1,1)$ of the missing corner, the
+notch, for a chair).  Every number is a Fact computed by \code{chair44\_unfold.py}, \code{chair44\_slice.py} and
+\code{chair44\_findings.py}, with the Spectre sums on the patches of \code{spectre.py} through level $5$, which has $@N5@$ tiles.
 
-\subsection{The twist of the Chair44 supertile}
+\subsection{The twist of the Tsiokos Chair44 supertile}
 
 Fact~\ref{fact:twist} computed the twist of the Spectre supertile.  The same question for the
 Chair44 has a simpler answer.
@@ -550,7 +530,7 @@ inflation times the identity.  This is a first-moment sum rule, and it is the on
 here that links the two $2$'s noted at the end of Section~\ref{sec:chair}; whether it is related to
 the repeated eigenvalue $2$ of the orientation matrix is not shown.
 
-\subsection{Unfolding the surface into a net}
+\subsection{Polyhedral Unfolding and Surface Net Construction}
 
 The surface of the chair is a sphere made of $@F@$ unit squares, with $@V@$ vertices and
 $@E@$ edges, whose folds are $@convex@$ convex, $@flat@$ flat and $@concave@$ concave.  Cutting it along a
@@ -569,7 +549,7 @@ dimension $D_b=2$ already found for the boundary (Section~\ref{sec:chair}).  Unf
 produce a planar analogue of the Spectre's fractal outline, of dimension $@Db@$.  That is a
 negative result, and the exact boundary count had already implied it.
 
-\subsection{Slices, projections and the notch vector}
+\subsection{Chair44: Slices, projections and the notch vector}
 
 A layer $z=c$ of the depth-$n$ patch cuts each chair it meets into a square of $4$ cells or an
 L-tromino of $3$ (the cross-sections found are @xs@ cells), so a slice is a tiling of a planar region by
@@ -614,14 +594,11 @@ quantity through the dimension alone, and not through the details of the tile.  
 one choice of orientation weight; it is not a theorem for the Spectre, whose inflation reverses orientation, so
 that a sum rule of the form $\sum H_{i}=\lambda I$ is not available to it in the same way.
 
-Where the power goes is asked with a deliberately loose statistic: the median of
-$I(k)/N$ over $300$ fixed random wave vectors, with $k$ in the box $[0,2\pi/\ell]^{d}$ for the tile
-size $\ell$, against the number of tiles.  It falls in both: as $N^{@s_s@}$ for the Spectre centroids and
-$N^{@s_c@}$ for the Chair44 centres, and as $N^{@s_sw@}$ and $N^{@s_cw@}$ when each point carries its orientation
-vector.  A falling median with a fixed number of random wave vectors says that the intensity is
-concentrated on few wave vectors, as in a Bragg spectrum, and it says that the concentration is
-faster for the Chair44 centres, which lie on a lattice with defects.  Figure~\ref{fig:chaircompare}
-and Table~\ref{tab:unfold} gather the comparison.
+Where the power goes is asked with a deliberately loose statistic: the median of $I(k)/N$ over $300$ fixed random wave
+vectors, with $k$ in the box $[0,2\pi/\ell]^{d}$, against the number of tiles.  It falls in both, as $N^{@s_s@}$ for the Spectre
+centroids and $N^{@s_c@}$ for the Chair44 centres, and as $N^{@s_sw@}$ and $N^{@s_cw@}$ with orientation weights: the intensity
+is concentrated on few wave vectors, as in a Bragg spectrum, and faster for the chair, whose centres lie on a lattice with
+defects.  Figure~\ref{fig:chaircompare} and Table~\ref{tab:unfold} gather the comparison.
 @FIGCOMPARE@
 
 \begin{table}[h]
@@ -645,16 +622,14 @@ median $I/N$, slope in $N$ & $@s_s@$ (weighted $@s_sw@$) & $@s_c@$ (weighted $@s
 \end{tabular}
 \end{table}
 
-\subsection{What this does and does not show}
+\subsection{Scope, Limitations, and Epistemic Scope}
 
-The nets are a sample of a space of $@trees@$ trees, and nothing is claimed about the best
-net.  The point and the orientation vector of each tile are choices: another decoration of the same
-tiles would weight the sums differently, and the sum rule is a statement about the notch vector, not about
-every function of the orientation.  The Spectre patches of \code{spectre.py} are mirror-type placements, and the
-sum is unchanged by the global mirror, but the random wave vectors are drawn in a fixed box and so see the mirror
-image of the set seen elsewhere.  The median statistic compares two different dimensions at one
-scaling of $k$ and is noisy.  None of this decides whether the diffraction measure of either tiling is pure
-point: for the Spectre that is a published theorem~\cite{BaakeHat,BaakeSpectre}, and the exact analysis of the Chair44 centre set is in Section~\ref{sec:exact}.
+The nets are a sample of a space of $@trees@$ trees, and nothing is claimed about the best net.  The point and the orientation
+vector of each tile are choices, and the sum rule is a statement about the notch vector, not about every function of the
+orientation.  The Spectre patches of \code{spectre.py} are mirror-type placements; the sum is unchanged by the mirror, but the
+fixed random wave vectors are not.  The median statistic compares two dimensions at one scaling of $k$ and is noisy.  None of
+this decides whether the diffraction measure of either tiling is pure point: for the Spectre that is a published
+theorem~\cite{BaakeHat,BaakeSpectre}, and the exact analysis of the Chair44 centre set is in Section~\ref{sec:exact}.
 """, N5=F.GEOMETRIC_TOTALS[5],
         angles=', '.join('%g' % a for a in sorted(set(tw['angles']))),
         group=tw['group'],
@@ -698,7 +673,7 @@ $300$ random wave vectors, unweighted and weighted by a notch component."""),
 
 def spectral_section():
     return r"""
-\section{Exact spectral theory of the substitution}
+\section{Exact Spectral Theory of the Spectre Monotile Substitution}
 \label{sec:spectral}
 
 The substitution acts on %s species %s, with $\Gamma$ carrying the Mystic pair
@@ -1062,25 +1037,23 @@ def write(path=OUTPUT):
     return path
 
 
-TITLE = 'Inflation With and Without an Internal Space: Exact Arithmetic of the Spectre Monotile and the Chair44'
+#TITLE = 'Inflation, Internal Space and the Absent Clock: Exact Arithmetic of the Spectre and the Chair44'
+TITLE = "The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings"
 
 
 def abstract():
     return fill(r"""
 \begin{abstract}
 Two monotiles that tile only by inflation are compared by exact computation: the planar Spectre and Tsiokos's
-three-dimensional Chair44.  The Spectre inflates by the fundamental unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$,
-while the perimeter of its supertiles grows by a unit of $\mathbb{Q}(\sqrt5)$, so its boundary is fractal.
-Lifting its vertices to $\mathbb{Z}[\zeta_{12}]=\mathbb{Z}^{4}$ makes one level an integer matrix whose characteristic
-polynomial contains $x^{4}-8x^{2}+1$: two expanding and two contracting directions, and an internal plane, exact
-over $\mathbb{Q}(\sqrt{15})$, whose window has a fractal boundary.  The Chair44 inflates by the integer $2$ on
-$\mathbb{Z}^{3}$, with no contracting direction and no internal space; its centre set has an exactly computed
-pure-point diffraction measure whose Bragg mass equals the density, and its supertile has no twist.  The orientation
-sums are $2^{n}$ exactly for the chair and $c\lam^{n}$ for the Spectre by an orientation-reversing recursion, and the
-face-contact matrices differ in rank, bipartiteness and connectivity.  A speculative reading, that a flat
-two-dimensional initial surface is a Spectre-type phase and that emergent three-dimensional space is organised by a
-Chair44-type inflation, is stated as a conjecture; nothing computed here tests it.  Every number is a Fact computed once
-and classified by the evidence behind it.
+three-dimensional Chair44.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$, its supertile
+perimeter by a unit of $\mathbb{Q}(\sqrt5)$, so its boundary is fractal, and its lift to $\mathbb{Z}^{4}$ has two
+expanding and two contracting directions: an exact internal plane whose window has a fractal boundary.  The Chair44
+inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no internal space and no twist, and its centre set has an exactly
+computed pure-point diffraction measure.  Orientation sums and contact matrices separate the two.  Four finite-patch
+computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
+arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
+law is shared with a quadtree, and the parity flip of the construction shows in the outlines of supertiles and not in the
+tiles.
 \end{abstract}
 """, perron=tex(F.get('perron').value))
 
@@ -1091,47 +1064,29 @@ def introduction():
 \label{sec:intro}
 
 A tiling that exists only by inflation carries an arithmetic: the number by which it inflates, the field that number
-generates, and what that field leaves behind.  The Spectre of Smith, Myers, Kaplan and
-Goodman-Strauss~\cite{SmithEtAl,SmithEtAl2} inflates by a unit of a real quadratic field, and the Chair44
-of Tsiokos~\cite{Tsiokos1} by the integer $2$.  The two cases are different in kind.  A unit of norm one has a conjugate
-that contracts, so the vertices of the tiling lie in a module of rank greater than the dimension of space, and the extra
-directions form an internal space in which the vertices fill a bounded window; an integer inflation $m>1$ has no
+generates, and what that field leaves behind.  The Spectre of Smith, Myers, Kaplan and Goodman-Strauss~\cite{SmithEtAl,SmithEtAl2}
+inflates by a unit of a real quadratic field, and the Chair44 of Tsiokos~\cite{Tsiokos1} by the integer $2$.  A unit of
+norm one has a conjugate that contracts, so the vertices lie in a module of rank greater than the dimension of space and
+the extra directions form an internal space in which they fill a bounded window; an integer inflation $m>1$ has no
 conjugate, nothing contracts, and the structure is $m$-adic.  This paper computes that difference exactly.
 
-The motivation is a hypothesis about the initial state of the universe, which is stated as a conjecture in
-Section~\ref{sec:thesis} and on which nothing else depends: that the Big Bang was not a point-like singularity but a flat
-two-dimensional one, that the flat surface is connected to the Spectre, and that the emergence of three-dimensional
-space is connected to the Chair44.  What can be done without it is to find out what the two tilings do.
+The motivation is a hypothesis about the initial state of the universe, a conjecture (Section~\ref{sec:thesis}) on which
+nothing else depends: the Big Bang was a flat two-dimensional singularity connected to the Spectre, and the emergence of
+three-dimensional space is connected to the Chair44.  Statements are stratified: \emph{Facts} are computations or theorems,
+each classified by the evidence behind it (the table is in the supplement); \emph{Propositions} are computations with a
+modelling step; \emph{Conjectures} are sharp claims not yet proved; results labelled \emph{computation, not Fact} are
+numerical, on finite patches, and enter no ledger.  A reader who rejects every conjecture keeps every Fact.
 
-Statements are stratified by epistemic weight.  \emph{Facts} are computations or theorems, \emph{Propositions} are
-computations with a modelling step, and \emph{Conjectures} are sharp claims not yet proved.  A reader who rejects every
-conjecture keeps every Fact.  Each Fact is classified by the kind of evidence behind it (derived from the quoted
-substitution, counted on a placed tiling, recomputed by a second route, quoted, or carrying a premise) and the whole
-table is in the supplement.
+The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
+\ref{sec:bdyop} (fractal perimeter) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
+and~\ref{sec:unfold}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests the Spectre's
+substitution hierarchy as a clock, which is what the conjecture would need, and Section~\ref{sec:thesis} states the
+speculative reading with a labelled proposal about the Weyl tensor.
 
-\emph{The Spectre.}  Its substitution matrix has a Perron unit $\lam^{2}=@perron@$, a zero sector that is not
-semisimple, and two marginal integer charges (Sections~\ref{sec:spectral}--\ref{sec:charges}).  The perimeter of a
-supertile obeys a recurrence of its own, with growth $\varphi^{3}=2+\sqrt5$ in a different field, so one tile carries two
-units and the boundary is fractal (Section~\ref{sec:bdyop}).  Lifted to four dimensions in the manner of
-Ch\'eritat and Ma~\cite{CheritatMa}, one level of the inflation is an integer matrix with characteristic polynomial
-$(x-1)^{4}(x+1)^{4}(x^{4}-8x^{2}+1)^{2}$, and the internal plane is exact over $\mathbb{Q}(\sqrt{15})$
-(Section~\ref{sec:lift}).
-
-\emph{The Chair44.}  Its inflation is $2$ on $\mathbb{Z}^{3}$: no contracting direction and no internal space
-(Section~\ref{sec:chair}).  Its supertile has no twist, its surface unfolds into nets, and its centre set has an exact
-pure-point diffraction measure (Sections~\ref{sec:unfold} and~\ref{sec:exact}).
-
-\emph{The comparison.}  The orientation sums of the two tilings, $2^{n}$ and $c\lam^{n}$, follow from a recursion
-that is linear for the chair and antilinear for the Spectre; split by representation they give the growth exponents of the
-two tilings, and the matrices of which faces meet which differ in rank, bipartiteness and connectivity
-(Section~\ref{sec:exact}).
-
-What the paper does not claim is as much a part of it as what it does.  The substitution matrix is a transcription of the
-published rule and is the one quoted input.  The einstein property and aperiodicity of the Chair44 are its author's
-claimed proof, quoted and not checked.  That the diffraction of the Spectre is pure point is a published theorem of Baake,
-G\"ahler, Mazá\v{c} and Sadun~\cite{BaakeHat,BaakeSpectre} and is not re-proved here.  The window dimension, the closed form
-of the orientation constant and the cosmological reading are, respectively, an estimate, an identification and a hypothesis.
-""", perron=tex(F.get('perron').value))
+What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
+input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; that the Spectre diffraction is pure
+point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here.  Section~\ref{sec:conclusion} lists the rest.
+""")
 
 
 def twist_subsection():
@@ -1170,7 +1125,7 @@ def lift_section():
     li, im, ip = g('lift_integer').value, g('inflation_matrix').value, g('internal_plane').value
     be = ip['boundary_exponents']
     return fill(r"""
-\section{The Spectre in four dimensions}
+\section{The Spectre monotile in four dimensions}
 \label{sec:lift}
 
 Every edge of the Spectre tiling is a unit vector at a multiple of $30^{\circ}$.  Following Ch\'eritat and
@@ -1288,11 +1243,11 @@ def exact_section():
     se = ch['spectre_exponents']
     sp_, cc = ct['spectre'], ct['chair']
     return fill(r"""
-\section{Diffraction, orientation and contacts}
+\section{Scattering Diffraction, Orientations, and Adjacency Relations}
 \label{sec:exact}
 
 This section asks four exact questions of both tilings.  The tools are in the repository of curved-tile
-programs~\cite{HartshornTools}; each Fact is computed there and in \code{monotilefacts.py}.
+programs~\url{https://github.com/brentharts/spectre-monotile-py}; each Fact is computed there and in \code{monotilefacts.py}.
 
 \subsection{The diffraction of the Chair44 centres}
 
@@ -1395,9 +1350,121 @@ intensity converging to it."""),
         HATTURTLE=hat_turtle_paragraph())
 
 
+def hier_numbers():
+    """The numbers of Section 'What the hierarchy supplies', computed once at build time (light settings)."""
+    if _HIER_CACHE:
+        return _HIER_CACHE
+    import contextlib
+    import io
+    import hierarchy_cache as HC
+    import barbour_complexity as BC
+    import records_recognizability as RR
+    import lookback_lca as LB
+    import parity_clock as PC
+    import outline_chirality as OC
+    import numpy as np
+    with contextlib.redirect_stdout(io.StringIO()):
+        rows = BC.table(range(1, 5))
+        rec = RR.run(5, 8000, radii=(2, 3, 4, 8), levels=(1, 2))
+        _, _, sl, rat = LB.report('S', HC.load(6), 600, HC.LAMBDA, LB.PRED)
+        _, _, slq, ratq = LB.report('Q', HC.quadtree(6), 600, 2.0, 0.5, margin=12.0, dmax=10.0)
+        pair = {d: PC.pair_means(HC.load(d), 800, margin=20.0)[0] for d in (5, 6)}
+        sw = PC.swirl(HC.load(6))
+        ctrl, orows = OC.report(6)
+    near = 'near [1,3) ell'
+    one = [(p, m) for (_, _, dk, p, m) in orows if dk == 1]
+    two = [(p, m) for (_, _, dk, p, m) in orows if dk == 2]
+    k3 = [(p, m) for (_, k, dk, p, m) in orows if dk == 2 and k == 3]
+    _HIER_CACHE.update(
+        rows=rows, rec=rec, slope=sl, ratios=rat, slope_q=slq, ratios_q=ratq, pair=pair, near=near, swirl=sw,
+        n1=len(one), f1=sum(m < p for p, m in one), n2=len(two), f2=sum(p < m for p, m in two),
+        p35=float(np.mean([p for p, _ in k3])), m35=float(np.mean([m for _, m in k3])),
+        dim=math.log(HC.NU) / math.log(HC.LAMBDA), pred=HC.NU / HC.LAMBDA ** 2)
+    return _HIER_CACHE
+
+
+_HIER_CACHE = {}
+
+
+def hierarchy_section():
+    H = hier_numbers()
+    c = [r[2] for r in H['rows']]
+    ex = [r[2] - r[3] for r in H['rows']]
+    near = H['near']
+    P6 = H['pair'][6][near]
+    sw = H['swirl']
+    rec = H['rec']
+    r, q = H['ratios'], H['ratios_q']
+    fmt3 = lambda x: '$%.3f$' % x
+    fmt2 = lambda x: '$%.2f$' % x
+    return fill(r"""
+\section{What the substitution hierarchy supplies}
+\label{sec:hier}
+
+\textbf{Computation, not Fact.}  A physical quantity computed from the tile data would support
+Conjecture~\ref{conj:bang}, and the level index of the substitution is the obvious candidate: read as an arrow, a record,
+a look-back or a clock.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
+repository, built on \code{hierarchy\_cache.py}, which walks the substitution tree and keeps each tile's address; the
+numbers are those they print at build time, and distances are in tile scales $\ell$.
+
+\paragraph{Clustering.}  Barbour, Koslowski and Mercati~\cite{BKM} use a scale-invariant clustering measure of equal-mass
+points, $C_S=\ell_{\rm rms}/\ell_{\rm mhl}$, to identify an arrow of time in the gravitational $N$-body problem.  For the tile
+centroids of the level-$n$ patch $C_S$ is @c1@, @c2@, @c3@, @c4@ for $n=1,\dots,4$, but the rise is the footprint: against a
+triangular lattice cut to the same outline the excess is @e1@ at $n=1$ and at most @emax@ for $n=2,3,4$.  Positional clustering
+carries no arrow.
+
+\paragraph{Records.}  How large a neighbourhood must a tile see to name its level-$k$ ancestor?  By leave-one-out
+prediction from the radius-$r$ neighbourhood, the level-$1$ ancestor is determined at $3\ell$ (error @a13@, against @a12@ at
+$2\ell$), while the level-$2$ ancestor is still wrong in @a24@ of cases at $4\ell$ and @a28@ at $8\ell$; at full size the
+radius grows by about a factor of three per level.  Finer levels are free and coarser ones cost a patch three times larger,
+an asymmetry that is an arrow only if an observer's patch grows in one direction, which the tiling does not supply.
+
+\paragraph{Look-back.}  Let $h$ be the level of the lowest common ancestor of two tiles at distance $d$
+(Figure~\ref{fig:hlook}).  If depth were look-back time, $\langle h\rangle$ would grow as $\log_\lam d$; it does, with slope
+@sl@ (@slq@ for a quadtree with $\lam=2$ through the same code), below $1$ because $h$ is capped.  For tiles $1$ to $2\ell$
+apart, $P(h\ge k+1)/P(h\ge k)$ is @r2@, @r3@ for $k=2,3$ in the Spectre and @q3@, @q4@ for $k=3,4$ in the quadtree.  The
+outline dimension $\ln\nu/\ln\lam=@dim@$ would give $\nu/\lam^{2}=@pred@$ and the quadtree $1/2$; the data do not separate them.
+The dictionary holds on average and is shared by any self-similar hierarchy, and spatial neighbours can be several levels
+apart in it.
+
+\paragraph{Parity.}  The common determinant of the placements in a depth-$n$ patch alternates in sign with $n$
+(Proposition~\ref{prop:parity}), so the construction mirrors at every level.  Were that a clock, reflection-odd statistics
+would alternate with level (Figure~\ref{fig:hpar}).  For tile pairs they do not: the mean of
+$\sin(\theta_o+\theta_t-2\phi)$, verified to change sign under a mirror image, for pairs $1$ to $3\ell$ apart is @p1@ when
+the common ancestor is the level-$1$ supertile and @p2@, @p3@, @p4@ for levels $2,3,4$, and the swirl
+$\langle\sin(\theta-\phi)\rangle$ about a level-$k$ supertile centre is negative at every level (@s1@, @s2@, @s3@ for
+$k=1,2,3$).  In outlines the flip is visible: a level-$k$ supertile outline is nearer to the mirror image of the same-type
+level-$(k+1)$ one than to a rotation in @f1@ of @n1@ comparisons, and nearer to a rotation of the level-$(k+2)$ one in
+@f2@ of @n2@, clearly only for $k=3$ (@p35@ by rotation against @m35@ with reflection).  The alternation lives in the
+shapes of supertiles and not in the tiles; the mirror image of a Spectre tiling is a Spectre tiling, so it belongs to the
+substitution as written and is not a dynamics.
+
+\paragraph{What follows.}  Clustering carries \emph{no arrow of time}; the record asymmetry and the look-back dictionary are real but
+generic; the parity alternation comes from the rule and not from the tile data.  None supplies a rule for what propagates, so
+the tiling \emph{has no light cone}, and none tests Conjecture~\ref{conj:bang}.  The missing step is a dynamics.  (Figures for the
+clustering and record computations are in \code{paper/figures/spectre\_hier\_clustering} and \code{spectre\_hier\_records}.)
+""" + HIER_FIGS, c1=fmt3(c[0]), c2=fmt3(c[1]), c3=fmt3(c[2]), c4=fmt3(c[3]), e1=fmt3(ex[0]), emax=fmt3(max(abs(x) for x in ex[1:])),
+        a13=fmt3(rec[3][1][0][0]), a12=fmt3(rec[2][1][0][0]), a24=fmt3(rec[4][1][1][0]), a28=fmt3(rec[8][1][1][0]),
+        sl=fmt2(H['slope']), slq=fmt2(H['slope_q']), r2=fmt3(r[1]), r3=fmt3(r[2]), q3=fmt3(q[2]), q4=fmt3(q[3]),
+        dim='%.4f' % H['dim'], pred='%.3f' % H['pred'],
+        p1=fmt2(P6[1][1][0]), p2=fmt2(P6[2][1][0]), p3=fmt2(P6[3][1][0]), p4=fmt2(P6[4][1][0]),
+        s1=fmt2(sw[1][1]), s2=fmt2(sw[2][1]), s3=fmt2(sw[3][1]),
+        f1=H['f1'], n1=H['n1'], f2=H['f2'], n2=H['n2'], p35=fmt2(H['p35']), m35=fmt2(H['m35']))
+
+
+HIER_FIGS = figure_block(
+    'spectre_hier_lookback', 'fig:hlook',
+    r"""Left: mean common-ancestor level against $\log_\lam d/\ell$ (with standard deviation), Spectre and quadtree control.
+Right: the tail $P(h\ge k)$ for pairs $1$ to $2\ell$ apart, with $0.538^{k-1}$ and $0.5^{k-1}$.""", width=r'0.9\textwidth') + figure_block(
+    'spectre_hier_parity', 'fig:hpar',
+    r"""(a) The reflection-odd pair statistic by common-ancestor level, depths $5$ to $7$.  (b) The swirl of tile orientations
+about supertile centres.  (c) Outline-signature distance between same-type supertiles one and two levels apart, by
+rotation only and with reflection.""")
+
+
 def thesis_section():
     return r"""
-\section{A speculative reading}
+\section{Discussion: a speculative reading}
 \label{sec:thesis}
 
 Nothing in the earlier sections depends on this one, and nothing computed in them tests it.  The hypothesis that
@@ -1427,37 +1494,53 @@ inflation, here the Spectre, has an internal space of dimension two and a window
 Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
 second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
 result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
-passage between the two kinds of inflation is not constructed.  It would be supported by a physical quantity computed from the
-tile data that distinguishes the two cases, and retired by showing that the dichotomy is an artefact of the two examples, for
-instance by a planar tile with an integer inflation and a pure-point diffraction measure, or by a three-dimensional tile with
-a unimodular one.
+passage between the two kinds of inflation is not constructed.  Section~\ref{sec:hier} tried the substitution hierarchy as that quantity, and it does not supply the map.  The reading would
+be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
+that the dichotomy is an artefact of the two examples, for instance by a planar tile with an integer inflation and a
+pure-point diffraction measure, or by a three-dimensional tile with a unimodular one.
+
+\begin{remark}[A proposal on the Weyl tensor]
+\label{rem:weyl}
+In three spacetime dimensions the Weyl tensor vanishes identically, the Riemann tensor is fixed by the Ricci tensor, and
+vacuum general relativity has no local gravitational degrees of freedom: gravitational waves need a third spatial
+dimension.  That is classical.  The \emph{proposal}, the author's and not a derived result, is that this is the form in which
+a flat two-dimensional initial surface would have vanishing Weyl curvature (compare Penrose's Weyl curvature hypothesis, that
+the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
+degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
+Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
+$3{+}1$ Weyl degrees of freedom as space emerges; and Section~\ref{sec:hier} leaves open what the hierarchy depth is: if the
+third spatial dimension, a separate time is needed, and if look-back time, gravitational waves need a propagation rule that
+the tiling does not supply.
+\end{remark}
 """
 
 
 def conclusion_section():
     return r"""
-\section{Conclusion and scope}
+\section{Conclusion}
 \label{sec:conclusion}
 
-The two tilings separate cleanly in the quantities computed.  The Spectre inflates by a unit of $\mathbb{Z}[\sqrt{15}]$, its
-perimeter by a unit of $\mathbb{Q}(\sqrt5)$, its lift to $\mathbb{Z}^{4}$ has an integer inflation matrix with an expanding
-plane and a contracting plane, and the contracting plane is an internal space with a window of fractal boundary.  The Chair44
-inflates by $2$ on $\mathbb{Z}^{3}$, has no contracting direction, no twist, an exactly computable pure-point centre set,
-orientation sums equal to $2^{n}$, and face contacts that are not bipartite.
+The two tilings separate cleanly in the quantities computed: the Spectre by a unit of $\mathbb{Z}[\sqrt{15}]$, a perimeter
+unit of $\mathbb{Q}(\sqrt5)$ and an internal plane with a window of fractal boundary; the Chair44 by inflation $2$ on
+$\mathbb{Z}^{3}$, no contracting direction, no twist, an exactly computable pure-point centre set, orientation sums $2^{n}$
+and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic, so the
+conjecture of Section~\ref{sec:thesis}, with its proposal on the Weyl tensor, remains untested.
 
 What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
-on trust.  The einstein property and aperiodicity of the Chair44 are its author's claimed proof, quoted and not checked.
+on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.
 That the Spectre diffraction is pure point is a published theorem and is quoted.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
 The boundary operator governs the perimeter in the aggregate; resolved by species and edge index a handful of components obey
 neither it nor its obvious extensions, while their ratios still approach $\nu$, so the extra spectrum is subdominant and cannot move
 the Perron root.  The aggregate operator is claimed; the full fine operator is not claimed.  The boundary sequences are
-read from $k=1$, where assembly begins, which is a convention made explicit rather than a gap.
-The cosmological reading of Section~\ref{sec:thesis} is a hypothesis.  Three computations would extend the work: the window
-of the Spectre as the attractor of the contracting maps, which would give its dimension exactly; a four-dimensional
-analogue of the chair, which is the open problem of Kamenetsky~\cite{Kamenetsky}; and a physical quantity computed from the
-tile data, without which Conjecture~\ref{conj:bang} cannot be tested.
+read from $k=1$, where assembly begins, which is a convention made explicit rather than a gap.  The hierarchy results are
+numerics on finite patches, with controls, and are not Facts.
+
+Four computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
+its dimension exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; an exact
+count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; and a rule for what
+propagates on the tiling, without which neither a light cone nor a test of Conjecture~\ref{conj:bang} can be formulated.
 """
 
 
@@ -1469,7 +1552,7 @@ def supplement_pointer():
 \section*{Declarations}
 
 \subsection*{Funding and Competing Interests}
-The author received no specific funding for this work, and declares no competing interests.
+The authors received no specific funding for this work, and declare no competing interests.
 
 \subsection*{Code and Data Availability}
 \label{sec:supp}
@@ -1482,21 +1565,6 @@ All source code and data supporting this study are available at
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
 
-\bibitem{hartshorn2026} B.~Hartshorn
-\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
-[preprint]
-\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
-
-\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
-\url{https://doi.org/10.1103/lmq8-nsty}
-
-\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
-J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
-
-\bibitem{PreGeometric} \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
-(ScienceDirect article S0370269326008397); authors and details not verified.
-\url{https://www.sciencedirect.com/science/article/pii/S0370269326008397}
-
 \bibitem{SmithEtAl} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
 \emph{An aperiodic monotile}
 Combinatorial Theory, 4(1).
@@ -1505,9 +1573,11 @@ Combinatorial Theory, 4(1).
 \emph{A chiral aperiodic monotile}
 Combinatorial Theory, 4(2).
 
-\bibitem{CheritatMa} A.~Ch\'eritat and N.~Ma (initial idea N.~Ma; contributions P.~Mostert),
-\emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile}, web page.
-\url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
+
+\bibitem{Tsiokos1} I.~Tsiokos (2026). The Chair44 three-dimensional einstein tile.
+\emph{A Strongly Aperiodic Monotile in Three Dimensions}
+arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
+\url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.
@@ -1515,22 +1585,18 @@ and some of their relatives}, arXiv:2502.03268.
 \bibitem{BaakeSpectre} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and L.~Sadun, \emph{On the long-range order of the Spectre
 tilings}, arXiv:2411.15503.
 
-\bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions}, arXiv:2610.00916.
-The contribution statement of that note says that an AI agent carried out the derivations, software and writing and that
-the author verified the manuscript.
+\bibitem{CheritatMa} A.~Ch\'eritat and N.~Ma (initial idea N.~Ma; contributions P.~Mostert),
+\emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023).
+\url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
+
 
 \bibitem{Kraus2013} Y.E.~Kraus, Z.~Ringel, and O.~Zilberberg (2013)
 \emph{Four-Dimensional Quantum Hall Effect in a Two-Dimensional Quasicrystal}
 \url{https://doi.org/10.1103/PhysRevLett.111.226401}
 
-\bibitem{HartshornTools} B.~S. Hartshorn (2026). \emph{spectre-monotile-py}: Python tools for the curved Spectre
-monotile, with the Chair44 unfolding, slice, diffraction, orientation, contact and lift programs.
-\url{https://github.com/brentharts/spectre-monotile-py}.
-
-\bibitem{Tsiokos1} I.~Tsiokos (2026). The Chair44 three-dimensional einstein tile.
-\emph{A Strongly Aperiodic Monotile in Three Dimensions}
-arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
-\url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).
+\bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions}, arXiv:2610.00916.
+The contribution statement of that note says that an AI agent carried out the derivations, software and writing and that
+the author verified the manuscript.
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
 sets. \emph{Discrete Comput. Geom.} 25, 173--201.
@@ -1540,6 +1606,25 @@ In \emph{Directions in Mathematical Quasicrystals}, CRM Monograph Series 13, AMS
 
 \bibitem{LMS} J.-Y.~Lee, R.~V.~Moody and B.~Solomyak (2003). Consequences of pure point
 diffraction spectra for multiset substitution systems. \emph{Discrete Comput. Geom.} 29, 525--560.
+
+\bibitem{BKM} J.~Barbour, T.~Koslowski and F.~Mercati, \emph{Identification of a gravitational arrow of time},
+Phys.\ Rev.\ Lett.\ \textbf{113}, 181101 (2014); arXiv:1409.0917. \url{https://doi.org/10.1103/PhysRevLett.113.181101}
+
+\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
+J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
+
+\bibitem{PreGeometric} \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+(ScienceDirect article S0370269326008397); authors and details not verified.
+\url{https://www.sciencedirect.com/science/article/pii/S0370269326008397}
+
+\bibitem{hartshorn2026} B.~Hartshorn
+\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
+[preprint]
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
+
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\url{https://doi.org/10.1103/lmq8-nsty}
+
 
 \end{thebibliography}
 
@@ -1552,7 +1637,7 @@ def document():
         PREAMBLE.replace('@TITLE@', TITLE), abstract(), introduction(),
         spectral_section(), census_section(), charges_section(), twist_subsection(),
         boundary_operator_section(), lift_section(),
-        chair_section(), unfolding_section(), exact_section(),
+        chair_section(), unfolding_section(), exact_section(), hierarchy_section(),
         thesis_section(), conclusion_section(),
         supplement_pointer(), BIBLIOGRAPHY,
     ])
@@ -1704,9 +1789,9 @@ def selftest():
         mod.run_tests(verbose=False) for mod in (D, O, OS, CO, L4, LM)))
     check('the lift section precedes the Chair44 and the thesis comes last but one',
           text.index(r'\label{sec:lift}') < text.index(r'\label{sec:chair}') < text.index(r'\label{sec:exact}')
-          < text.index(r'\label{sec:thesis}') < text.index(r'\label{sec:conclusion}'))
+          < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:thesis}') < text.index(r'\label{sec:conclusion}'))
     check('every new section is referenced from the introduction',
-          all(('\\ref{%s}' % k) in introduction() for k in ('sec:lift', 'sec:exact', 'sec:thesis', 'sec:chair', 'sec:unfold')))
+          all(('\\ref{%s}' % k) in introduction() for k in ('sec:lift', 'sec:exact', 'sec:thesis', 'sec:chair', 'sec:unfold', 'sec:hier')))
     check('the integer inflation matrix and its polynomial appear',
           r'(x^{4}-8x^{2}+1)^{2}' in text and sp.latex(sp.Matrix(im['block'])) in text and im['expected']
           and im['det'] == 1 and im['trace'] == 0)
@@ -1743,6 +1828,42 @@ def selftest():
                          'lift4d', 'chair44_bragg')))
     check('the README quotes the live Fact count',
           ('%d Facts' % len(F.FACTS)) in open(os.path.join(HERE, 'Readme.md'), encoding='utf-8').read())
+
+    print('the hierarchy section, the Weyl remark and the new framing')
+    H = hier_numbers()
+    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{A speculative reading}')[0]
+    near, P6, sw = H['near'], H['pair'][6][H['near']], H['swirl']
+    rec = H['rec']
+    check('the hierarchy section is labelled computation, not Fact and says it tests nothing about the conjecture',
+          'Computation, not Fact' in hs[:300] and 'none tests Conjecture' in ' '.join(hs.split()))
+    check('the hierarchy section sits between the exact comparisons and the speculative reading',
+          text.index(r'\label{sec:exact}') < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:thesis}'))
+    check('the quoted hierarchy numbers are the live ones',
+          all(('%.3f' % r_[2]) in hs for r_ in H['rows']) and ('%.2f' % H['slope']) in hs and ('%.4f' % H['dim']) in hs
+          and ('%.3f' % H['pred']) in hs and ('%d of %d' % (H['f1'], H['n1'])) in hs)
+    check('clustering: no excess over the footprint control beyond level 1 (below 0.005)',
+          max(abs(r_[2] - r_[3]) for r_ in H['rows'][1:]) < 0.005)
+    check('records: level 1 determined at 3 ell, level 2 not at 4 ell',
+          rec[3][1][0][0] < 0.01 and rec[4][1][1][0] > 0.3)
+    check('look-back: slope near 1 and tail ratios 0.45 to 0.60, for the Spectre and the quadtree',
+          0.85 < H['slope'] < 1.05 and 0.8 < H['slope_q'] < 1.05
+          and all(0.45 < x < 0.60 for x in (H['ratios'][1], H['ratios'][2], H['ratios_q'][2], H['ratios_q'][3])))
+    check('parity: one sign change of the pair statistic, negative swirl, no alternation',
+          P6[1][1][0] > 0 and all(P6[k][1][0] < 0 for k in (2, 3, 4)) and all(sw[k][1] < 0 for k in (1, 2, 3, 4)))
+    check('parity: the outline alternation holds in most comparisons and is clear at 3 -> 5',
+          H['f1'] / H['n1'] > 0.7 and H['f2'] / H['n2'] > 0.7 and H['p35'] < 0.8 * H['m35'])
+    check('the hierarchy figures are included and exist',
+          all(os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf'))
+              for nm in ('spectre_hier_clustering', 'spectre_hier_records', 'spectre_hier_lookback', 'spectre_hier_parity'))
+          and r'\includegraphics[width=0.9\textwidth]{spectre_hier_lookback}' in text
+          and r'\includegraphics[width=\textwidth]{spectre_hier_parity}' in text)
+    check('Barbour et al. is cited and listed', r'\cite{BKM}' in text and r'\bibitem{BKM}' in text and 'arXiv:1409.0917' in text)
+    wk = text.split(r'\label{rem:weyl}')[1].split(r'\end{remark}')[0]
+    check('the Weyl remark is in the speculative section and is called a proposal, not a result',
+          text.index(r'\label{sec:thesis}') < text.index(r'\label{rem:weyl}') < text.index(r'\label{sec:conclusion}')
+          and 'proposal' in wk and 'not a derived result' in wk and 'Nothing here derives it' in wk)
+    check('the old title is gone', 'Inflation With and Without' not in text)
+    check('the abstract mentions the hierarchy test', 'hierarchy' in abstract() and 'quadtree' in abstract())
 
     print()
     if failures:
