@@ -51,9 +51,14 @@ lattice (the Hat 8 kites, the Mystic or Turtle 10). Rolling that lattice up on
 the torus that is the cusp fibre of Alpöge's complex six-sphere, the Mystics of
 the full levels fall into **six translate classes**: 6 at levels 3, 4 and 5
 (63, 496 and 3905 Mystics), one for each first-edge angle 30°+60°k, anchored on
-the three double curves. At level 5 the class sizes are 629 to 674. The
-six-class claim for all n ≥ 3 is a conjecture, and it is a floating-point
-computation with asserted lattice-site checks, not a Fact. The Spectre itself
+the three double curves. At level 5 the class sizes are 629 to 674. Six is
+forced: the kite tiling has symmetry group p6m and every kite axis is a mirror
+line, so each Mystic is a p6m image of the first, all Mystics of a level have
+one handedness, and the classes are in bijection with the rotations that occur
+(at most six; all six from level 3 on, since a Δ supertile contains a Δ
+supertile). What remains for all n ≥ 3 is that the level-n patch lies on the
+kite lattice, which is asserted through n = 5 (floating point with asserted
+lattice checks, not a Fact). The Spectre itself
 is not on this lattice: its area is 3+√3 kites. (`spectre_mystic_fibres.py`)
 
 ### The torsion dictionary
