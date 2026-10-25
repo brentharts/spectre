@@ -147,7 +147,8 @@ A patch can be counted two ways and the difference matters, so it is settled
 here before anything uses it.
 
 The \emph{matrix census} is what iterating~\eqref{eq:M} produces: nine species,
-one $\Gamma$ entry.  The \emph{geometric census} is what a placed patch
+one $\Gamma$ entry, seeded with a single $\Delta$ (the seed of Table~\ref{tab:census}; seeding with $\Gamma$ gives 7, 55,
+433, \dots).  The \emph{geometric census} is what a placed patch
 contains, and a placed patch carries the Mystic as well, so it is larger.  The
 two are not interchangeable.
 
@@ -179,6 +180,7 @@ depth & matrix census & geometric census & Mystic \\
 and is also the second column one row up --- which is Fact~\ref{fact:mystic}.
 Charges are linear forms on the nine-species vector and are evaluated against
 the matrix column.}
+\label{tab:census}
 \end{table}
 
 
@@ -730,10 +732,11 @@ disjoint and every face-adjacent pair has a relative pose among the $44$ legal c
 Two inputs are taken from the literature~\cite{Tsiokos1,GoodmanStrauss} and are not re-derived here.
 
 \begin{description}
-\item[(R)] Every tiling by $Q$ is registered, and all its face contacts are legal contacts.  Hence all its blocks are
-admissible.
+\item[(R)] Every tiling by $Q$ is registered, and every pair of tiles sharing a feature is in a relative pose among the
+legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}.  Every shared unit face carries features, so all blocks of a tiling by
+$Q$ are admissible.
 \item[(H)] Every tiling $T$ by $Q$ has a unique parent tiling $D(T)$, again a tiling by $Q$, registered on a lattice of
-spacing $2$, and $T=\sigma(D(T))$.
+spacing $2$, and $T=\sigma(D(T))$~\cite[Thms~6.4, 6.5]{Tsiokos1}.
 \end{description}
 
 \begin{lem}[computation]
@@ -743,8 +746,11 @@ $4\times4\times4$ block, are legal.
 \end{lem}
 
 \noindent
-This is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}) and is quoted
-here; the build of this paper does not repeat it.  The theorem is its consequence.
+This is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}, on the atlas
+published with~\cite{Tsiokos1}).  It has been repeated from our own data: \code{chair44\_hull\_admissible.py} takes the
+$44$ legal contacts that \code{symchair44.py} derives from its own labels and finds the same 360{,}189 admissible blocks,
+all of whose child windows are legal.  It runs for about ten minutes, so the build of this paper does not repeat it.  The
+theorem is its consequence.
 
 \begin{thm}
 \label{thm:hull}
@@ -760,7 +766,8 @@ legal by Lemma~\ref{lem:blocks}.  Hence $P$ is legal.
 \begin{cor}
 \label{cor:hull}
 The space of Chair44 tilings is minimal and uniquely ergodic, with pure-point dynamical spectrum.  Every Chair44 tiling is
-pure-point diffractive and limit-periodic, with internal space $\mathbb{Z}_{2}^{3}$.
+pure-point diffractive, and the space is the hull of a regular model set with internal space $\mathbb{Z}_{2}^{3}$, so its
+structure is limit-periodic.
 \end{cor}
 
 \begin{proof}
@@ -787,27 +794,61 @@ For every tiling $T$ by $Q$, $\mathrm{Sym}(T)$ is conjugate to one of $1$, $C_{2
 face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.
 \end{thm}
 
-\begin{proof}[Outline]
+\begin{lem}[position of symmetry axes]
+\label{lem:axes}
+Let $T$ be a tiling by $Q$ and $L_{n}=2^{n}\mathbb{Z}^{3}+o_{n}$ the vertex lattice of its level-$n$ supertiles, so that
+$o_{n+1}\equiv o_{n}\pmod{2^{n}}$.  Let $g\in\mathrm{Sym}(T)$ have linear part $R\neq I$.
+(1) If $R$ is a half-turn or quarter-turn about a coordinate axis, the axis of $g$ is a lattice line of every $L_{n}$.
+(2) If $R$ is a half-turn about a face diagonal, the axis of $g$ lies in a coordinate plane through vertices of every
+$L_{n}$ and meets every $L_{n}$.
+(3) If $\mathrm{Sym}(T)$ is not cyclic, its fixed point is a vertex of every $L_{n}$.
+\end{lem}
+
+\begin{proof}
+The hierarchy is unique~\cite[Thm~6.6]{Tsiokos1}, so $g$ preserves every $L_{n}$.  Write $g(x)=R(x-c)+c$ with $c$ on the
+axis; since $R$ preserves $2^{n}\mathbb{Z}^{3}$, $g$ preserves $L_{n}$ if and only if $(I-R)(c-o_{n})\in2^{n}\mathbb{Z}^{3}$.
+(1) Take the axis along $e_{3}$.  For a half-turn $I-R=\mathrm{diag}(2,2,0)$; for a quarter-turn $I-R$ acts on the
+$(e_{1},e_{2})$-plane with determinant $2$.  Either way each $\delta^{(i)}_{n}=(c_{i}-o_{n,i})\bmod2^{n}$, $i=1,2$, is $0$ or
+$2^{n-1}$ (for $n=0$: $0$ or $\tfrac12$).  If $\delta^{(i)}_{n}=2^{n-1}$ then, since $o_{n+1}\equiv o_{n}\pmod{2^{n}}$,
+$c_{i}-o_{n+1,i}\equiv2^{n-1}$ or $3\cdot2^{n-1}\pmod{2^{n+1}}$, neither $0$ nor $2^{n}$, against the condition at level
+$n+1$.  So every $\delta^{(i)}_{n}=0$.
+(2) For $R(x,y,z)=(y,x,-z)$ the condition reads $(c_{1}-o_{n,1})-(c_{2}-o_{n,2})\in2^{n}\mathbb{Z}$ and
+$2(c_{3}-o_{n,3})\in2^{n}\mathbb{Z}$.  The second gives $c_{3}\equiv o_{n,3}$ as in~(1); by the first, $c+s(1,1,0)$ lies in
+$L_{n}$ for $s\equiv o_{n,1}-c_{1}$.
+(3) A non-cyclic subgroup of $D_{4}$ contains two half-turns about perpendicular coordinate axes, or one about a coordinate
+axis and one about a perpendicular face diagonal; its fixed point is the intersection of the two axes, and by (1) and (2)
+each of its coordinates is $\equiv o_{n}\pmod{2^{n}}$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:sym}]
 \emph{No element of order three.}  Such an element is a rotation about a line in direction $(1,\pm1,\pm1)$.  The line meets
 the interior of a tile, which the rotation would have to fix; that is impossible because $Q$ has no self-isometry
-(Fact~\ref{fact:chairchiral}).  So $\mathrm{Sym}(T)$ is a $2$-group, contained in a copy of $D_{4}$.
+(Fact~\ref{fact:chairchiral}).  So $\mathrm{Sym}(T)$ is a $2$-group, contained in a copy of $D_{4}$.  By
+Theorem~\ref{thm:hull} every block below is legal.
 
-\emph{Supertile lattices.}  The hierarchy is unique, so symmetries preserve each supertile lattice $L_{n}$, and
-$L_{n+1}\subset L_{n}$.  A $2$-adic digit argument shows that a non-cyclic symmetry group fixes a vertex of every $L_{n}$,
-and that a cyclic one has an axis meeting vertices of every $L_{n}$.
+\emph{Vertex-centred groups.}  Let $\mathrm{Sym}(T)$ be non-cyclic, with fixed point $x$, a vertex of every $L_{n}$ by
+Lemma~\ref{lem:axes}(3), and let $w_{n}$ be the block of $D^{n}(T)$ at $x$.  Then $w_{n}=\Phi(w_{n+1})$.  The substitution
+commutes with $O$, so $\mathrm{Stab}(w_{n+1})\le\mathrm{Stab}(w_{n})$, and since the $w_{n}$ cover balls of radius $2^{n}$
+about $x$, $\mathrm{Sym}(T)=\bigcap_{n}\mathrm{Stab}(w_{n})$.  The sequence repeats, $w_{a}=w_{b}$ with $a<b$, so $w_{b}$ is
+$\Phi$-periodic and $\mathrm{Sym}(T)=\mathrm{Stab}(w_{b})$.  The $\Phi$-periodic legal blocks are the 27 fixed seeds,
+with stabilisers $1$ and $D_{4}$; this is the count recomputed above.
 
-\emph{Vertex-centred groups.}  The blocks $w_{n}$ of $D^{n}(T)$ at the fixed vertex satisfy $w_{n}=\Phi(w_{n+1})$.  Their
-stabilisers decrease along the sequence, and the blocks eventually cycle.  The $\Phi$-periodic legal blocks are exactly the
-27 fixed seeds, with stabilisers $1$ and $D_{4}$; this is the count recomputed above.
-
-\emph{Axial groups.}  Along the axis, $w_{n}=W_{j}(w_{n+1})$ for an axial window shift $j\in\{-1,0,1\}$.  If the shift
-sequence is eventually constant, some point of the axis is a vertex of every $L_{n}$ and we are in the previous case.
-Hence a cyclic group $K$ occurs if and only if the graph of legal blocks with stabiliser exactly $K$ has a strongly
-connected component carrying two distinct shifts.  A computation finds such components for $C_{2}^{\mathrm{diag}}$ and
-$C_{4}$.  For a half-turn about a coordinate axis it finds only components of constant shift.  For each group found,
-explicit patches confirm the group.
-
-By Theorem~\ref{thm:hull}, legal blocks suffice.
+\emph{Axial groups.}  Let $\mathrm{Sym}(T)=K$ be cyclic and non-trivial, with axis $A$ in direction $e$, and let $O_{e}$ be
+the rotations about $e$.  By Lemma~\ref{lem:axes}, $A\cap L_{n}=v_{n}+2^{n}\mathbb{Z}e$; take $v_{n}$ nearest to a fixed
+point of $A$.  Then $v_{n}-v_{n+1}=j_{n}2^{n}e$ with $j_{n}\in\{-1,0,1\}$, and the blocks $w_{n}$ of $D^{n}(T)$ at $v_{n}$
+satisfy $w_{n}=W_{j_{n}}(w_{n+1})$, where $W_{j}$ is the window of $\sigma(\cdot)$ centred at $je$.  The elements of $O_{e}$
+commute with every $W_{j}$, so $\mathrm{Stab}(w_{n})\cap O_{e}$ decreases to $K$; the full stabilisers may be larger, since
+an element outside $O_{e}$ acts about the moving point $v_{n}$.  If $j_{n}=j$ for all $n\ge N$, then $y=v_{N}+j2^{N}e$
+satisfies $y-v_{n}=j2^{n}e$ for $n\ge N$, so $y$ is a vertex of every $L_{n}$ and $\mathrm{Sym}(T)$ is $1$ or $D_{4}$ by the
+previous case, not $K$.  So the shifts are not eventually constant, and their tail lies in a strongly connected component
+carrying two distinct shifts of the graph $G_{K}$ whose vertices are the legal blocks $w$ with
+$\mathrm{Stab}(w)\cap O_{e}=K$ and whose edges $w\to W_{j}(w)$ are labelled $j$.  Conversely, a cycle in $G_{K}$ whose
+labels $j_{0},\dots,j_{p-1}$ are not all equal unrolls to a tiling in the hull whose axis position
+$-\sum_{m}j_{m}2^{m}=J/(1-2^{p})$, $J=\sum_{m<p}j_{m}2^{m}$, is not an integer since $0<|J|<2^{p}-1$; by
+Lemma~\ref{lem:axes}(3) its symmetry group is then cyclic about $A$, hence $K$.  A computation finds such components for
+$C_{2}^{\mathrm{diag}}$ (14 blocks on each face-diagonal axis) and $C_{4}$ (4 blocks).  For a half-turn about a coordinate
+axis the 18 blocks of $G_{K}$, among them blocks whose full stabiliser is $D_{4}$ or a Klein group, form only components of
+constant shift.  For each group found, explicit patches of 3{,}800 to 20{,}000 tiles have exactly that symmetry group.
 \end{proof}
 
 \begin{remark}
@@ -825,9 +866,10 @@ at most a third of the $24$ rotations.
 
 \textbf{Scope.}  Theorem~\ref{thm:hull}, Corollary~\ref{cor:hull} and Theorem~\ref{thm:sym} are conditional on~(R)
 and~(H), and the corollary on the theorem of Lee, Moody and Solomyak; all three inputs are quoted.  The count in
-Lemma~\ref{lem:blocks}, the axial-group analysis and the explicit patches are the second author's computations, quoted
-and not recomputed in the build of this paper.  What the build recomputes is the language of legal blocks, its closure,
-the fixed seeds and their stabilisers.  None of this bears on the einstein property or on strong aperiodicity of the
+Lemma~\ref{lem:blocks} was made on the upstream atlas and again on our own (\code{chair44\_hull\_admissible.py}); the
+axial-group analysis and the explicit patches are the second author's computations.  These are not recomputed in the build
+of this paper.  What the build recomputes is the language of legal blocks, its closure, the fixed seeds and their
+stabilisers.  None of this bears on the einstein property or on strong aperiodicity of the
 Chair44, which remain Tsiokos's claim.
 
 \subsection{Uniform frequencies hold in boxes, not along lines}
@@ -1361,9 +1403,9 @@ the Perron root.  The aggregate operator is claimed; the full fine operator is n
 read from $k=1$, where assembly begins, which is a convention made explicit rather than a gap.  The hierarchy results are
 numerics on finite patches, with controls, and are not Facts.
 
-Five computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
+Four computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
 its dimension exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; an exact
-count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; a count of the admissible blocks of Section~\ref{sec:hull} from our own contact atlas, which would make the finite part of the hull theorem a second route here as well; and a rule for what
+count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; and a rule for what
 propagates on the tiling, without which neither a light cone nor a test of Conjecture~\ref{conj:bang} can be formulated.
 
 
@@ -1429,8 +1471,6 @@ tilings}, arXiv:2411.15503.
 \url{https://doi.org/10.1103/PhysRevLett.111.226401}
 
 \bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions}, arXiv:2610.00916.
-The contribution statement of that note says that an AI agent carried out the derivations, software and writing and that
-the author verified the manuscript.
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
 sets. \emph{Discrete Comput. Geom.} 25, 173--201.
@@ -1447,9 +1487,8 @@ Phys.\ Rev.\ Lett.\ \textbf{113}, 181101 (2014); arXiv:1409.0917. \url{https://d
 \bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
 J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
 
-\bibitem{PreGeometric} \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
-(ScienceDirect article S0370269326008397); authors and details not verified.
-\url{https://www.sciencedirect.com/science/article/pii/S0370269326008397}
+\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
 
 \bibitem{hartshorn2026} B.~Hartshorn
 \emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
