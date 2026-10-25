@@ -628,6 +628,107 @@ Chair44, which remain Tsiokos's claim.
         legal=hu['legal'], fixed=hu['fixed'], s1=hu['stabilisers_fixed'][1], s8=hu['stabilisers_fixed'][8])
 
 
+def lines_subsection():
+    """Uniform frequencies hold in boxes, not along lines.  Every number is a Fact of chair44facts.py
+    (chair_lines, computed by chair44_lines.py)."""
+    ln = F.get('chair_lines').value
+    hu = F.get('chair_legal_blocks').value
+    tup = lambda t: '(' + ','.join('%d' % x for x in t) + ')'
+    rows = []
+    for b, cls in ln['corner'].items():
+        if b == (1, 1, 1):
+            vals = sorted({(k['means']['notch_x'], k['means']['notch_y'], k['means']['notch_z']) for k in cls})
+            rows.append(r'$%s$ & %d fixed letters & $%s$' % (tup(b), len(cls), r'$ and $'.join(tup(v) for v in vals)))
+        else:
+            k = cls[0]
+            rows.append(r'$%s$ & one class of %d & $%s$' % (tup(b), k['size'],
+                        tup((k['means']['notch_x'], k['means']['notch_y'], k['means']['notch_z']))))
+    return fill(r"""
+\subsection{Uniform frequencies hold in boxes, not along lines}
+\label{sec:lines}
+
+Corollary~\ref{cor:hull} says that every finite patch has a frequency, reached uniformly by boxes of side $L$ in every
+tiling.  It is tempting to read this as a statement about any scan of a tiling, for instance the sum of an observable
+along a line of cells.  It is not, and this subsection says what is true.  Everything below is an exact finite computation
+(\code{chair44\_lines.py}) except the last proposition, which is conditional on the internal space of
+Corollary~\ref{cor:hull}.
+
+\paragraph{Box means.}  The matrix of the cell substitution on the @labels@ labels is primitive with every row and column
+sum $8$, so each label has frequency $1/@labels@$ in every tiling, and the box mean of a cell observable is its mean over
+the labels.  We use two observables of a cell.  The \emph{height} $p$ is the sum of the signed heights of the pyramids on the
+faces of the cell; it vanishes on five of the seven cells of the chair and is $-36$ and $+36$ on the other two, since the $192$
+heights sum to zero.  The \emph{notch vector} $d=g(1,1,1)\in\{\pm1\}^{3}$ belongs to the chair that covers the cell.  Both have box
+mean exactly $0$, in each component.
+
+\begin{prop}[chair stacks]
+\label{prop:stack}
+Six of the @labels@ labels, namely cell $0$ of the chairs whose notch points along $\pm(1,1,1)$ (three along each sign), satisfy
+$\sigma(j)_{000}=\sigma(j)_{111}=j$.  For each of them and every $n$, the chairs of $\sigma^{n}(j)$ form a stack in which each
+chair fills the notch of the next, and each of the seven cells of the chair gives a line of identical labels, of length
+$2^{n}-2$, in direction $(1,1,1)$.  Along such a line $p$ is constant, $-36$ on one cell type and $+36$ on another, and
+each component of $d$ is $\pm1$.
+\end{prop}
+
+\begin{proof}
+Label the cells $(x,y,z)$ of the stack by the difference $e=(x-z,\,y-z)$.  The lines of the stack are exactly the cells whose
+difference lies in a set $T$ of seven values, and a cell of difference $e$ has a label $\Lambda(e)$.  We show that every cell of
+$\sigma^{n}(j)$ with difference in $T$ has the label $\Lambda(e)$, by induction on $n$.  For $n=0$ the single cell has difference
+$(0,0)$ and label $j=\Lambda(0,0)$.  A cell of $\sigma^{n+1}(j)$ is the child $(a,b,c)\in\{0,1\}^{3}$ of a cell of
+$\sigma^{n}(j)$ whose difference is $e'=\bigl((e_{0}-a+c)/2,(e_{1}-b+c)/2\bigr)$.  So it suffices that, for every $e\in T$ and
+every child position compatible with $e$, the difference $e'$ lies in $T$ and $\sigma[\Lambda(e'),(a,b,c)]=\Lambda(e)$.  That
+is $@cases@$ cases for each of the six labels, and they all hold (\code{chair44\_lines.py}).  The main diagonal is the case $e=(0,0)$.
+\end{proof}
+
+\noindent
+The stack lies in every tiling.  It occurs in $\sigma^{n}(j)$ for every $n$, and by Theorem~\ref{thm:hull} and minimality every
+legal patch occurs in every tiling.  So in every Chair44 tiling and for every $L$ there are $L$ consecutive cells on a line
+in direction $(1,1,1)$ on which the mean of $p$ is exactly $-36$ (and others on which it is $+36$) and the mean of each
+component of $d$ is $\pm1$, while the box means are $0$.  Averages along these lines do not converge to the box mean, and
+no uniformity in $L$ can hold for them.
+
+\paragraph{Corner lines.}  For $b\in\{0,1\}^{3}$ the cells $tb$ of $\sigma^{n}(j)$, $0\le t<2^{n}$, are the $n$-th iterate of the
+constant-length-$2$ substitution $\tau_{b}(j)=\sigma[j,0]\,\sigma[j,b]$ on the same labels, since the child positions along
+the line are always $0$ and $b$.  Its closed strongly connected classes, each primitive and each reached from every label, carry
+exact letter frequencies and so exact limits of the mean of each cell observable along the line, for each starting label.  Table~\ref{tab:corner} gives the
+mean of the notch vector; the mean of $p$ is $0$ on all of them.  The seven lines are the lines through the corner of the
+cube in the seven directions in $\{0,1\}^{3}$; they are also read off the label cube, with agreement.
+
+\begin{table}[ht]
+\centering
+\caption{Corner lines of $\sigma^{n}(j)$: closed classes of $\tau_{b}$ and the exact limit of the mean of the notch vector.  The
+box mean is $(0,0,0)$.}
+\label{tab:corner}
+\begin{tabular}{lll}
+direction $b$ & closed classes of $\tau_{b}$ & mean of $d$ \\ \hline
+@rows@
+\end{tabular}
+\end{table}
+
+\begin{prop}
+\label{prop:lineaction}
+Assume that the hull $\Omega$ has maximal equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\nu$ the Haar measure
+(Corollary~\ref{cor:hull}).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $T^{v}$ on $\Omega$ is
+not uniquely ergodic.  There are a function $f$ of a finite window of labels and a tiling $T$ such that the averages
+$\frac1L\sum_{t<L}f(T^{tv}T)$ along the line through $0$ in direction $v$ converge to a number different from $\int f\,d\nu$.
+\end{prop}
+
+\begin{proof}
+The closure of $\{tv:t\in\mathbb{Z}\}$ in $\mathbb{Z}_{2}^{3}$ is $H=\mathbb{Z}_{2}v$, a closed subgroup of infinite index, so its
+Haar measure is $0$.  For $x\in\Omega$ the set $K=\pi^{-1}(\pi(x)+H)$ is compact, non-empty and $T^{v}$-invariant, so it carries a
+$T^{v}$-ergodic probability measure $\mu$.  Since $\nu(K)=0$, $\mu\neq\nu$, and functions of a finite window of labels are dense
+in $C(\Omega)$, so some such $f$ has $\int f\,d\mu\ne\int f\,d\nu$.  By Birkhoff's theorem the averages along the line converge to
+$\int f\,d\mu$ for $\mu$-almost every tiling.
+\end{proof}
+
+\noindent
+Proposition~\ref{prop:stack} and Table~\ref{tab:corner} are explicit instances for the directions $(1,1,1)$ and the others in
+$\{0,1\}^{3}$.  The failure depends on the observable and on the line: the corner lines all have $p$-mean $0$, and a
+coordinate-axis line can have bounded sums of $d_{z}$ while another has sums of $d_{z}$ growing like $L$.  Nothing here
+concerns directions that are not lattice directions: the cells met by a line of irrational slope are not an orbit of a
+subgroup of $\mathbb{Z}^{3}$, and the argument does not apply.
+""", labels=hu['labels'], cases=ln['tube']['cases'][0], rows=' \\\\\n'.join(rows) + ' \\\\')
+
+
 def unfolding_section():
     """Unfolding the Chair44 and comparing it with the Spectre.  Every number is a Fact of
     chair44facts.py: chair_twist, chair_nets, chair_slices, orientation_sums, power_slopes."""
@@ -1800,7 +1901,7 @@ def document():
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
     text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
     text = inject_before(text, '\\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}',
-                         hull_subsection())
+                         hull_subsection() + lines_subsection())
     return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
 
 
@@ -2062,6 +2163,30 @@ def selftest():
                   for k in ('GoodmanStrauss', 'Flicker', 'Romanov')))
     check('the Chair44 table has the symmetry-group row', 'symmetry groups of a tiling' in text)
     check('chair44_hull recomputes the legal blocks, their closure and the fixed seeds', HU.run_tests(verbose=False))
+
+    print('lines through a tiling: box means against line means')
+    import chair44_lines as LN
+    ln = F.get('chair_lines').value
+    lines = ' '.join(text.split(r'\label{sec:lines}')[1].split(r'\subsection{Why Three Dimensions')[0].split())
+    check('the lines subsection follows the hull subsection and precedes the chirality subsection',
+          text.index(r'\label{sec:hull}') < text.index(r'\label{sec:lines}')
+          < text.index(r'\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}'))
+    check('its propositions and table are labelled and referenced',
+          all(('\\label{%s}' % k) in text for k in ('prop:stack', 'prop:lineaction', 'tab:corner'))
+          and r'Proposition~\ref{prop:stack}' in lines and r'Table~\ref{tab:corner}' in lines)
+    check('the live counts are in the text: six stack labels, 168 labels, 14 cases, heights -36 and +36',
+          len(ln['stack_labels']) == 6 and 'Six of the %d labels' % F.get('chair_legal_blocks').value['labels'] in lines
+          and ('That is $%d$ cases' % ln['tube']['cases'][0]) in lines and ln['tube']['cases'][0] == 14
+          and '$-36$ and $+36$' in lines)
+    check('every row of the corner-line table is the Fact',
+          all(('$%s$ & ' % ('(' + ','.join(str(x) for x in b) + ')')) in lines for b in ln['corner'])
+          and '(0,1,1)' in lines and '(-1,-1,-1)' in lines)
+    check('the conditional proposition names its assumption and excludes irrational directions',
+          'Assume that the hull' in lines and 'not uniquely ergodic' in lines and 'irrational slope' in lines
+          and 'conditional on the internal space' in lines)
+    check('the paper does not claim that all lines fail or that the sums are bounded or ballistic for every line',
+          'every line' not in lines.lower() and 'depends on the observable and on the line' in lines)
+    check('chair44_lines recomputes the box means, the stacks and the corner classes', LN.run_tests(verbose=False))
 
     print()
     if failures:
