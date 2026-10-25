@@ -381,7 +381,8 @@ def register():
                 'periodic blocks, all fixed; their stabilisers in the 24 rotations have order 1 (24 seeds) or '
                 '8 (3 seeds). Agrees with Romanov (1410 legal blocks, 27 fixed seeds, stabilisers 1 and D4); '
                 'shares no data with the upstream atlas. His count of 360,189 admissible blocks needs the '
-                'contact atlas and is not recomputed here')
+                'contact atlas; chair44_hull_admissible.py reproduces it from the atlas of symchair44 '
+                '(about ten minutes), and it is not recomputed in this fast check')
 
     fact(key='chair_hull_theorem',
          claim=r'\text{every Chair44 tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',

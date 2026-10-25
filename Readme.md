@@ -90,7 +90,7 @@ process 0.467. No computed set falls below the floor beyond the estimated noise.
 
 ![What kind of evidence stands behind each Fact](paper/figures/spectre_ledger.png)
 
-Each of the 92 Facts is classified as derived from the quoted matrix, counted on the
+Each of the 93 Facts is classified as derived from the quoted matrix, counted on the
 tiling, re-derived by a second implementation, quoted from the literature, or carrying
 a premise. The generated Lean file has 67 theorems, 27 linked to a Fact; where a
 linked Fact depends on a count, the kernel certifies the arithmetic on the counted
