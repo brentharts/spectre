@@ -162,6 +162,11 @@ PREAMBLE = r"""\documentclass[11pt]{article}
 \newtheorem{fact}{Fact}
 \newtheorem{prop}{Proposition}
 \newtheorem{conj}{Conjecture}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
 \newcommand{\lam}{\lambda}
@@ -377,8 +382,9 @@ area and perimeter fields & $\mathbb{Q}(\sqrt{15})$, $\mathbb{Q}(\sqrt5)$ & both
 orientation species & $9$ tiles & $24$ rotations \\
 zero sector & not semisimple & semisimple \\
 frequencies & irrational (Pisot) & rational, $1/24$ \\
+symmetry groups of a tiling & not computed & $1$, $C_{2}$, $C_{4}$, $D_{4}$ (Theorem~\ref{thm:sym}) \\
 strict chirality & yes, by the tile & yes, by the contacts \\
-spectrum of the tiling & Pisot, pure point & 2-adic, pure point (cited theorem) \\
+spectrum of the tiling & Pisot, pure point & 2-adic, pure point, every tiling (Corollary~\ref{cor:hull}) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -428,8 +434,8 @@ all $168$ labels expand to the same label.  By the theorem of Lee and Moody (200
 Schlottmann (2000) \cite{LeeMoody,Schlottmann,LMS}, a primitive lattice substitution with a modular
 coincidence has fixed-point label classes that are regular model sets with a $2$-adic internal
 space, so its diffraction is pure point and the fixed point is limit-periodic.  That implication
-is a cited theorem and is not re-proved, and whether every tiling lies in the substitution hull
-is left open upstream.  What is added here is a recomputation of the finite part from our own
+is a cited theorem and is not re-proved, and it concerns the fixed point; that every tiling lies in the
+substitution hull, which was left open upstream, is Theorem~\ref{thm:hull} below.  What is added here is a recomputation of the finite part from our own
 generator, which agrees on the depth and the address, and a rate.  A subset automaton on the label
 sets (only @reach@ are reachable, @nons@ of them with more than one label) counts the digit words
 of length $M$ that have not yet fixed the label:
@@ -483,6 +489,143 @@ and not a proof of it.
         nons=g('chair_coincidence').value['non_singleton'])
 
 
+
+
+def hull_subsection():
+    """Every Chair44 tiling lies in the hull, and the symmetry groups of tilings (Romanov).  The counts
+    of legal blocks and fixed seeds are Facts of chair44facts.py (chair44_hull.py); the admissible-block
+    count and the theorem statements are quoted Facts."""
+    hu = F.get('chair_legal_blocks').value
+    commas = lambda n: '{:,}'.format(n).replace(',', '{,}')
+    return fill(r"""
+\subsection{Every tiling lies in the hull, and the symmetry groups of tilings}
+\label{sec:hull}
+
+The $2$-adic route above is stated for the fixed point of the substitution.  Tsiokos left two questions open~\cite{Tsiokos1}:
+whether \emph{every} tiling by the Chair44 lies in the hull of the substitution, and which symmetry groups its tilings
+have.  The decorations force every tiling to be hierarchical: a short Berger-style proof is due to
+Goodman-Strauss~\cite{GoodmanStrauss}, simpler equivalent matching rules to Flicker~\cite{Flicker}, and a finite
+certificate in every dimension to Kamenetsky~\cite{Kamenetsky}.  This subsection answers the two questions.  The proofs are due to the second
+author~\cite{Romanov}; they combine one level of the hierarchy with a finite computation on the eight unit cells around a
+lattice vertex.
+
+\paragraph{Set-up.}  A tiling by the tile $Q$ is \emph{registered}: up to an isometry every tile is a chair
+$x\mapsto gx+t$ with $g$ one of the $24$ proper rotations $O$ and $t\in\mathbb{Z}^{3}$.  Label each unit cell by the frame of
+the chair that covers it and by which of its seven cells it is; there are @labels@ labels, the $24\times7$ of
+Section~\ref{sec:chair}.  Write $\sigma$ for the substitution, of inflation $2$.
+
+\begin{defn}
+\label{def:block}
+A \emph{block} is the labelling of the eight unit cells around a lattice vertex.  It is \emph{legal} if it occurs in
+$\sigma^{n}(j)$ for some label $j$ and some $n$, and \emph{admissible} if the chairs it names are consistent and pairwise
+disjoint and every face-adjacent pair has a relative pose among the $44$ legal contacts of Section~\ref{sec:chair}.
+\end{defn}
+
+\noindent
+Two inputs are taken from the literature~\cite{Tsiokos1,GoodmanStrauss} and are not re-derived here.
+
+\begin{description}
+\item[(R)] Every tiling by $Q$ is registered, and all its face contacts are legal contacts.  Hence all its blocks are
+admissible.
+\item[(H)] Every tiling $T$ by $Q$ has a unique parent tiling $D(T)$, again a tiling by $Q$, registered on a lattice of
+spacing $2$, and $T=\sigma(D(T))$.
+\end{description}
+
+\begin{lem}[computation]
+\label{lem:blocks}
+There are @adm@ admissible blocks.  For each of them, all $27$ windows of size $2\times2\times2$ in its substitution, a
+$4\times4\times4$ block, are legal.
+\end{lem}
+
+\noindent
+This is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}) and is quoted
+here; the build of this paper does not repeat it.  The theorem is its consequence.
+
+\begin{thm}
+\label{thm:hull}
+Every tiling by $Q$ lies, up to an isometry, in the hull $\Omega_{\sigma}$ of the substitution.
+\end{thm}
+
+\begin{proof}
+Let $P$ be a finite patch of $T$.  For $n$ large, $P$ lies in $\sigma^{n}(\beta)$ for a block $\beta$ of $D^{n}(T)$.  By~(H),
+$\beta$ is a window of $\sigma(\beta')$ for a block $\beta'$ of $D^{n+1}(T)$.  By~(R), $\beta'$ is admissible, so $\beta$ is
+legal by Lemma~\ref{lem:blocks}.  Hence $P$ is legal.
+\end{proof}
+
+\begin{cor}
+\label{cor:hull}
+The space of Chair44 tilings is minimal and uniquely ergodic, with pure-point dynamical spectrum.  Every Chair44 tiling is
+pure-point diffractive and limit-periodic, with internal space $\mathbb{Z}_{2}^{3}$.
+\end{cor}
+
+\begin{proof}
+The substitution is primitive, so its hull is minimal and uniquely ergodic.  The modular coincidence of~\cite[Thm~8.1]{Tsiokos1},
+recomputed above, and the theorem of Lee and Moody~\cite{LeeMoody} give pure-point spectrum of the hull~\cite{LMS}.  Theorem~\ref{thm:hull} identifies the hull with the space of all tilings.
+\end{proof}
+
+\paragraph{A second route to the finite part.}  The legal blocks depend only on the substitution, so they can be recomputed
+from the cell substitution of Section~\ref{sec:chair}, which our generator builds from nothing
+(\code{chair44\_hull.py}).  The distinct $2\times2\times2$ windows of $\sigma^{n}(j)$ over all @labels@ labels number
+@pd@ for $n=1,\dots,6$, so @legal@ blocks are legal.  The set is closed, in that all $27$ child windows of every one of
+its members lie in it, and it contains the windows of $\sigma(j)$; so it is the whole language and not merely the place
+where a count stopped.  The central window $\Phi(w)$ of $\sigma(w)$ maps the legal blocks to themselves and has exactly
+@fixed@ periodic blocks, all of them fixed.  These are the @fixed@ fixed seeds of~\cite{Tsiokos1}, and their stabilisers in
+$O$ have order $1$ for @s1@ of them and $8$ for @s8@.  Both counts agree with the second author's.  Registration~(R), the
+parent tiling~(H) and the count of admissible blocks are not part of this recomputation.
+
+\paragraph{Symmetry.}  Write $\mathrm{Sym}(T)$ for the group of isometries that map $T$ to itself.  Tsiokos showed that it
+embeds in $O$, so $|\mathrm{Sym}(T)|\le24$, and exhibited orders $1$ and $8$~\cite{Tsiokos1}.
+
+\begin{thm}
+\label{thm:sym}
+For every tiling $T$ by $Q$, $\mathrm{Sym}(T)$ is conjugate to one of $1$, $C_{2}^{\mathrm{diag}}$ (a half-turn about a
+face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.
+\end{thm}
+
+\begin{proof}[Outline]
+\emph{No element of order three.}  Such an element is a rotation about a line in direction $(1,\pm1,\pm1)$.  The line meets
+the interior of a tile, which the rotation would have to fix; that is impossible because $Q$ has no self-isometry
+(Fact~\ref{fact:chairchiral}).  So $\mathrm{Sym}(T)$ is a $2$-group, contained in a copy of $D_{4}$.
+
+\emph{Supertile lattices.}  The hierarchy is unique, so symmetries preserve each supertile lattice $L_{n}$, and
+$L_{n+1}\subset L_{n}$.  A $2$-adic digit argument shows that a non-cyclic symmetry group fixes a vertex of every $L_{n}$,
+and that a cyclic one has an axis meeting vertices of every $L_{n}$.
+
+\emph{Vertex-centred groups.}  The blocks $w_{n}$ of $D^{n}(T)$ at the fixed vertex satisfy $w_{n}=\Phi(w_{n+1})$.  Their
+stabilisers decrease along the sequence, and the blocks eventually cycle.  The $\Phi$-periodic legal blocks are exactly the
+@fixed@ fixed seeds, with stabilisers $1$ and $D_{4}$; this is the count recomputed above.
+
+\emph{Axial groups.}  Along the axis, $w_{n}=W_{j}(w_{n+1})$ for an axial window shift $j\in\{-1,0,1\}$.  If the shift
+sequence is eventually constant, some point of the axis is a vertex of every $L_{n}$ and we are in the previous case.
+Hence a cyclic group $K$ occurs if and only if the graph of legal blocks with stabiliser exactly $K$ has a strongly
+connected component carrying two distinct shifts.  A computation finds such components for $C_{2}^{\mathrm{diag}}$ and
+$C_{4}$.  For a half-turn about a coordinate axis it finds only components of constant shift.  For each group found,
+explicit patches confirm the group.
+
+By Theorem~\ref{thm:hull}, legal blocks suffice.
+\end{proof}
+
+\begin{remark}
+\label{rem:order8}
+In particular $|\mathrm{Sym}(T)|\le8$, and the bound is attained.  No Chair44 tiling has a $3$-fold axis, a Klein
+four-group of symmetries, or exactly a $2$-fold coordinate axis.
+\end{remark}
+
+\noindent
+The theorem is about tilings and does not conflict with Fact~\ref{fact:chairchiral}, which is about the tile: the
+decorated chair has only the identity, and a tiling by it can still be invariant under a rotation of its whole pattern.
+Nor does the bound of $8$ conflict with the $24$ orientations that occur in a depth-three supertile
+(Fact~\ref{fact:chairtwist}): by Theorem~\ref{thm:hull} every tiling contains all of them, and it is symmetric under
+at most a third of the $24$ rotations.
+
+\textbf{Scope.}  Theorem~\ref{thm:hull}, Corollary~\ref{cor:hull} and Theorem~\ref{thm:sym} are conditional on~(R)
+and~(H), and the corollary on the theorem of Lee, Moody and Solomyak; all three inputs are quoted.  The count in
+Lemma~\ref{lem:blocks}, the axial-group analysis and the explicit patches are the second author's computations, quoted
+and not recomputed in the build of this paper.  What the build recomputes is the language of legal blocks, its closure,
+the fixed seeds and their stabilisers.  None of this bears on the einstein property or on strong aperiodicity of the
+Chair44, which remain Tsiokos's claim.
+""", labels=hu['labels'], adm=commas(hu['romanov']['admissible']), pd=', '.join(str(x) for x in hu['per_depth']),
+        legal=hu['legal'], fixed=hu['fixed'], s1=hu['stabilisers_fixed'][1], s8=hu['stabilisers_fixed'][8])
 
 
 def unfolding_section():
@@ -1049,7 +1192,9 @@ three-dimensional Chair44.  The Spectre inflates by the unit $\lam^{2}=@perron@$
 perimeter by a unit of $\mathbb{Q}(\sqrt5)$, so its boundary is fractal, and its lift to $\mathbb{Z}^{4}$ has two
 expanding and two contracting directions: an exact internal plane whose window has a fractal boundary.  The Chair44
 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no internal space and no twist, and its centre set has an exactly
-computed pure-point diffraction measure.  Orientation sums and contact matrices separate the two.  Four finite-patch
+computed pure-point diffraction measure.  Every tiling by it lies in the substitution hull, so this holds for all of
+them, and the symmetry group of a tiling is one of $1$, $C_{2}$, $C_{4}$, $D_{4}$.  Orientation sums and contact matrices
+separate the two.  Four finite-patch
 computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
 arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
 law is shared with a quadtree, and the parity flip of the construction shows in the outlines of supertiles and not in the
@@ -1079,12 +1224,14 @@ numerical, on finite patches, and enter no ledger.  A reader who rejects every c
 
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
 \ref{sec:bdyop} (fractal perimeter) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
-and~\ref{sec:unfold}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests the Spectre's
+and~\ref{sec:unfold}, with a proof that every Chair44 tiling lies in the substitution hull and a classification of the
+symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests the Spectre's
 substitution hierarchy as a clock, which is what the conjecture would need, and Section~\ref{sec:thesis} states the
 speculative reading with a labelled proposal about the Weyl tensor.
 
 What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
-input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; that the Spectre diffraction is pure
+input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; the hull theorem of
+Section~\ref{sec:hull} takes registration and the unique parent tiling from~\cite{Tsiokos1,GoodmanStrauss}, quoted; that the Spectre diffraction is pure
 point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here.  Section~\ref{sec:conclusion} lists the rest.
 """)
 
@@ -1527,7 +1674,7 @@ and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{s
 conjecture of Section~\ref{sec:thesis}, with its proposal on the Weyl tensor, remains untested.
 
 What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
-on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.
+on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved from the registration and parent-tiling facts of~\cite{Tsiokos1,GoodmanStrauss}, which are quoted, and from a count of admissible blocks that this paper does not repeat; the counts of legal blocks and fixed seeds are recomputed.
 That the Spectre diffraction is pure point is a published theorem and is quoted.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
@@ -1537,9 +1684,9 @@ the Perron root.  The aggregate operator is claimed; the full fine operator is n
 read from $k=1$, where assembly begins, which is a convention made explicit rather than a gap.  The hierarchy results are
 numerics on finite patches, with controls, and are not Facts.
 
-Four computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
+Five computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
 its dimension exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; an exact
-count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; and a rule for what
+count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; a count of the admissible blocks of Section~\ref{sec:hull} from our own contact atlas, which would make the finite part of the hull theorem a second route here as well; and a rule for what
 propagates on the tiling, without which neither a light cone nor a test of Conjecture~\ref{conj:bang} can be formulated.
 """
 
@@ -1574,10 +1721,19 @@ Combinatorial Theory, 4(1).
 Combinatorial Theory, 4(2).
 
 
-\bibitem{Tsiokos1} I.~Tsiokos (2026). The Chair44 three-dimensional einstein tile.
-\emph{A Strongly Aperiodic Monotile in Three Dimensions}
-arXiv:2609.19214 and arXiv:2609.23783.  Code and data:
+\bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
+arXiv:2609.19214.  Code and data:
 \url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).
+
+\bibitem{GoodmanStrauss} C.~Goodman-Strauss (2026). \emph{Notes on a strongly aperiodic monotile in $E^{3}$},
+arXiv:2609.24779.
+
+\bibitem{Flicker} F.~Flicker (2026). \emph{Matching rules for a three-dimensional strongly aperiodic monotile},
+arXiv:2609.23783.
+
+\bibitem{Romanov} T.~Romanov (2026). \emph{Every Chair44 tiling is a substitution tiling, and its symmetry
+groups}.  Draft of 24 October 2026; the computations are \code{chair44\_vertex\_blocks.py},
+\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}.
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.
@@ -1643,6 +1799,8 @@ def document():
     ])
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
     text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
+    text = inject_before(text, '\\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}',
+                         hull_subsection())
     return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
 
 
@@ -1662,7 +1820,8 @@ def selftest():
     check('and closes it', r'\end{document}' in text)
     grouping = text.replace(r'\{', '').replace(r'\}', '')
     check('braces balance', grouping.count('{') == grouping.count('}'))
-    for env in ('abstract', 'longtable', 'thebibliography', 'fact', 'figure'):
+    for env in ('abstract', 'longtable', 'thebibliography', 'fact', 'figure',
+                'thm', 'lem', 'cor', 'defn', 'proof', 'description', 'remark'):
         check('%s is closed' % env, text.count(r'\begin{%s}' % env) == text.count(r'\end{%s}' % env))
     check('no section is empty', r'\section{}' not in text)
     labels = set(re.findall(r'\\label\{([^}]*)\}', text))
@@ -1819,8 +1978,8 @@ def selftest():
           and r'g=2\pi G\sigma' in text)
     check('the bimetric references are cited and listed',
           r'\cite{HassanRosen}' in text and r'\cite{PreGeometric}' in text and 'authors and details not verified' in text)
-    check('the abstract says nothing computed tests the conjecture',
-          'nothing computed here tests it' in abstract().replace('\n', ' ') )
+    check('the abstract makes no cosmological claim',
+          not any(w in abstract() for w in ('Big Bang', 'universe', 'cosmolog', 'Weyl')))
     check('the figures are included and exist',
           all((r'\includegraphics[width=\textwidth]{%s}' % nm) in text
               and os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf'))
@@ -1831,7 +1990,8 @@ def selftest():
 
     print('the hierarchy section, the Weyl remark and the new framing')
     H = hier_numbers()
-    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{A speculative reading}')[0]
+    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{Discussion: a speculative reading}')[0]
+    assert len(hs) < len(text.split(r'\label{sec:hier}')[1]), 'the section marker no longer splits the text'
     near, P6, sw = H['near'], H['pair'][6][H['near']], H['swirl']
     rec = H['rec']
     check('the hierarchy section is labelled computation, not Fact and says it tests nothing about the conjecture',
@@ -1853,7 +2013,7 @@ def selftest():
     check('parity: the outline alternation holds in most comparisons and is clear at 3 -> 5',
           H['f1'] / H['n1'] > 0.7 and H['f2'] / H['n2'] > 0.7 and H['p35'] < 0.8 * H['m35'])
     check('the hierarchy figures are included and exist',
-          all(os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf'))
+          all(any(os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + ext)) for ext in ('.pdf', '.png'))
               for nm in ('spectre_hier_clustering', 'spectre_hier_records', 'spectre_hier_lookback', 'spectre_hier_parity'))
           and r'\includegraphics[width=0.9\textwidth]{spectre_hier_lookback}' in text
           and r'\includegraphics[width=\textwidth]{spectre_hier_parity}' in text)
@@ -1864,6 +2024,44 @@ def selftest():
           and 'proposal' in wk and 'not a derived result' in wk and 'Nothing here derives it' in wk)
     check('the old title is gone', 'Inflation With and Without' not in text)
     check('the abstract mentions the hierarchy test', 'hierarchy' in abstract() and 'quadtree' in abstract())
+
+    print('the hull and the symmetry groups of Chair44 tilings')
+    import chair44_hull as HU
+    hu = F.get('chair_legal_blocks').value
+    ht = F.get('chair_hull_theorem').value
+    hull = ' '.join(text.split(r'\label{sec:hull}')[1].split(r'\subsection{Why Three Dimensions')[0].split())
+    check('the hull subsection sits after the 2-adic route and before the chirality subsection',
+          text.index(r'\subsection{The orientation spectrum, and the 2-adic route}') < text.index(r'\label{sec:hull}')
+          < text.index(r'\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}'))
+    check('it is referenced from the introduction, the conclusion and the abstract',
+          r'\ref{sec:hull}' in introduction() and r'\ref{sec:hull}' in conclusion_section()
+          and 'substitution hull' in abstract())
+    check('its theorems, lemma, corollary, definition and remark are labelled',
+          all(('\\label{%s}' % k) in text for k in ('thm:hull', 'thm:sym', 'cor:hull', 'lem:blocks', 'def:block',
+                                                    'rem:order8')))
+    check('the 2-adic subsection points to the theorem and no longer calls the hull open',
+          'is left open upstream' not in text and r'Theorem~\ref{thm:hull} below' in text)
+    check('the quoted and recomputed counts are the live ones',
+          hu['legal'] == 1410 and hu['romanov']['admissible'] == 360189 and ht['max_order'] == 8
+          and '360{,}189' in hull and ('so %d blocks are legal' % hu['legal']) in hull
+          and ('exactly %d periodic blocks' % hu['fixed']) in hull
+          and ('order $1$ for %d of them and $8$ for %d' % (hu['stabilisers_fixed'][1], hu['stabilisers_fixed'][8])) in hull
+          and ', '.join(str(x) for x in hu['per_depth']) in hull)
+    check('the inputs (R) and (H) are named as quoted and the admissible count as not repeated',
+          '(R)' in hull and '(H)' in hull and 'are not re-derived here' in hull
+          and 'does not repeat it' in hull and 'conditional on' in hull)
+    check('the statements match the quoted Fact',
+          ht['hull'] and set(ht['groups']) >= {'1', 'C4', 'D4'} and r'$1$, $C_{2}^{\mathrm{diag}}$' in hull
+          and r'|\mathrm{Sym}(T)|\le8' in hull and 'does not conflict with Fact' in hull)
+    check('the einstein property is still called Tsiokos\'s claim',
+          'which remain Tsiokos\'s claim' in hull)
+    tsio = text.split(r'\bibitem{Tsiokos1}')[1].split(r'\bibitem{')[0]
+    check('2609.23783 is no longer credited to Tsiokos; the three new references are listed and cited',
+          '2609.23783' not in tsio and 'arXiv:2609.19214' in tsio
+          and all((r'\bibitem{%s}' % k) in text and (r'\cite{%s' % k in text or (',%s}' % k) in text)
+                  for k in ('GoodmanStrauss', 'Flicker', 'Romanov')))
+    check('the Chair44 table has the symmetry-group row', 'symmetry groups of a tiling' in text)
+    check('chair44_hull recomputes the legal blocks, their closure and the fixed seeds', HU.run_tests(verbose=False))
 
     print()
     if failures:
