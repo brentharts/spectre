@@ -450,7 +450,7 @@ a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inf
 
 \subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
 
-A reading of the hypothesis of Section~\ref{sec:thesis} as a statement about parity would rest on a sentence: a planar
+A common heuristic about parity rests on a sentence: a planar
 patch embedded in a three-dimensional bulk has its reflection realized as an ambient rotation, so parity that is
 forbidden on the surface is restored by embedding.  The Chair44 does not touch that sentence.
 It does touch the suggestion that three dimensions are what restores parity.
@@ -469,8 +469,7 @@ The chirality is forced twice over: by the labels, which break the three mirror 
 admit no mirror pair.  A tile that already fills the bulk cannot be turned over in it, so parity is restored, if it is, by the
 \emph{codimension} of the leaf and not by the \emph{dimension} of the space.
 
-This is a qualification and not a refutation: the conjecture says nothing about tiles of the bulk, and the Chair44 is not
-proposed as a substrate.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
+This is a qualification of the heuristic and not a refutation of it.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
 all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
 family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
 image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
@@ -1316,11 +1315,49 @@ Key & Claim & How & Lean \\
 
 
 
-def write(path=OUTPUT):
+NOTE_OUTPUT = os.path.join(HERE, 'spectre_bigbang_note.tex')
+NOTE_TITLE = 'A Flat Initial Surface? A Speculative Reading of the Spectre and Chair44 Tilings'
+
+
+def note_document():
+    """The companion physics note: the conjecture, its background and the Weyl remark, split out of the paper."""
+    abstract_ = r'''
+\begin{abstract}
+A conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
+two-dimensional singularity, connected to the planar Spectre monotile, and the emergence of three-dimensional space is
+connected to Tsiokos's Chair44.  Two classical background facts, a reading through the inflation arithmetic of the two
+tilings, and a proposal on the Weyl tensor are given.  Nothing is derived; what would support or retire the reading is
+stated.
+\end{abstract}
+'''
+    bib = (r'''
+\begin{thebibliography}{9}
+
+\bibitem{HartshornRomanov} B.~Hartshorn and T.~Romanov, \emph{''' + TITLE + r'''}, preprint (2026),
+\url{https://github.com/brentharts/spectre}.
+
+\bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
+\emph{A chiral aperiodic monotile}
+Combinatorial Theory, 4(2).
+
+\bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
+arXiv:2609.19214.
+
+''' + NOTE_MOVED_BIB + r'''
+\end{thebibliography}
+
+\end{document}
+''')
+    return '\n'.join([PREAMBLE.replace('@TITLE@', NOTE_TITLE), abstract_, thesis_section(), bib])
+
+
+def write(path=OUTPUT, note_path=NOTE_OUTPUT):
     text = document()
     with open(path, 'w') as handle:
         handle.write(text)
-    return path
+    with open(note_path, 'w') as handle:
+        handle.write(note_document())
+    return path + ' and ' + note_path
 
 
 #TITLE = 'Inflation, Internal Space and the Absent Clock: Exact Arithmetic of the Spectre and the Chair44'
@@ -1358,19 +1395,16 @@ norm one has a conjugate that contracts, so the vertices lie in a module of rank
 the extra directions form an internal space in which they fill a bounded window; an integer inflation $m>1$ has no
 conjugate, nothing contracts, and the structure is $m$-adic.  This paper computes that difference exactly.
 
-The motivation is a hypothesis about the initial state of the universe, a conjecture (Section~\ref{sec:thesis}) on which
-nothing else depends: the Big Bang was a flat two-dimensional singularity connected to the Spectre, and the emergence of
-three-dimensional space is connected to the Chair44.  Statements are stratified: \emph{Facts} are computations or theorems,
-each classified by the evidence behind it (the table is in the supplement); \emph{Propositions} are computations with a
-modelling step; \emph{Conjectures} are sharp claims not yet proved; results labelled \emph{computation, not Fact} are
-numerical, on finite patches, and enter no ledger.  A reader who rejects every conjecture keeps every Fact.
+A companion note~\cite{BangNote} states the physical hypothesis that motivated this work; nothing here depends on it.
+Statements are stratified: \emph{Facts} are computations or theorems, each classified by the evidence behind it (the table
+is in the supplement); \emph{Propositions} are computations with a modelling step; results labelled \emph{computation, not
+Fact} are numerical, on finite patches, and enter no ledger.
 
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
 \ref{sec:bdyop} (fractal perimeter) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
 and~\ref{sec:unfold}, with a proof that every Chair44 tiling lies in the substitution hull and a classification of the
-symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests the Spectre's
-substitution hierarchy as a clock, which is what the conjecture would need, and Section~\ref{sec:thesis} states the
-speculative reading with a labelled proposal about the Weyl tensor.
+symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests whether the
+Spectre's substitution hierarchy can serve as a clock.
 
 What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
 input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; the hull theorem of
@@ -1691,9 +1725,8 @@ def hierarchy_section():
 \section{What the substitution hierarchy supplies}
 \label{sec:hier}
 
-\textbf{Computation, not Fact.}  A physical quantity computed from the tile data would support
-Conjecture~\ref{conj:bang}, and the level index of the substitution is the obvious candidate: read as an arrow, a record,
-a look-back or a clock.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
+\textbf{Computation, not Fact.}  Whether the level index of a substitution can be read as an arrow, a record, a look-back
+or a clock is a question that any physical reading of these tilings would need answered~\cite{BangNote}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
 repository, built on \code{hierarchy\_cache.py}, which walks the substitution tree and keeps each tile's address; the
 numbers are those they print at build time, and distances are in tile scales $\ell$.
 
@@ -1731,7 +1764,7 @@ substitution as written and is not a dynamics.
 
 \paragraph{What follows.}  Clustering carries \emph{no arrow of time}; the record asymmetry and the look-back dictionary are real but
 generic; the parity alternation comes from the rule and not from the tile data.  None supplies a rule for what propagates, so
-the tiling \emph{has no light cone}, and none tests Conjecture~\ref{conj:bang}.  The missing step is a dynamics.  (Figures for the
+the tiling \emph{has no light cone}, and none supplies a physical clock.  The missing step is a dynamics.  (Figures for the
 clustering and record computations are in \code{paper/figures/spectre\_hier\_clustering} and \code{spectre\_hier\_records}.)
 """ + HIER_FIGS, c1=fmt3(c[0]), c2=fmt3(c[1]), c3=fmt3(c[2]), c4=fmt3(c[3]), e1=fmt3(ex[0]), emax=fmt3(max(abs(x) for x in ex[1:])),
         a13=fmt3(rec[3][1][0][0]), a12=fmt3(rec[2][1][0][0]), a24=fmt3(rec[4][1][1][0]), a28=fmt3(rec[8][1][1][0]),
@@ -1754,11 +1787,12 @@ rotation only and with reflection.""")
 
 def thesis_section():
     return r"""
-\section{Discussion: a speculative reading}
+\section{The conjecture}
 \label{sec:thesis}
 
-Nothing in the earlier sections depends on this one, and nothing computed in them tests it.  The hypothesis that
-motivates the work is stated here so that it can be argued with.
+This note states the hypothesis that motivated the companion paper~\cite{HartshornRomanov}, which compares the Spectre
+monotile~\cite{SmithEtAl2} and Tsiokos's Chair44~\cite{Tsiokos1} by exact computation.  Nothing computed there depends
+on it, and nothing computed there tests it.  It is stated here so that it can be argued with.
 
 \begin{conj}[The initial surface]
 \label{conj:bang}
@@ -1779,12 +1813,13 @@ is made about the dual-sheet cosmologies themselves.  The earlier observation th
 $S_{\rm rel}=\delta A/4G$ is consistent with the $s$-wave dynamics of the Nariai horizon~\cite{hartshorn2026}, the converse
 of the result of Dorau and Much~\cite{DorauMuch}, is the setting in which the question arose.
 
-What the computations offer is a precise form of the contrast the conjecture needs.  A planar tile with a unimodular
+What the computations of~\cite{HartshornRomanov} offer is a precise form of the contrast the conjecture needs.  A planar tile with a unimodular
 inflation, here the Spectre, has an internal space of dimension two and a window; a tile with an integer inflation, here the
 Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
 second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
 result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
-passage between the two kinds of inflation is not constructed.  Section~\ref{sec:hier} tried the substitution hierarchy as that quantity, and it does not supply the map.  The reading would
+passage between the two kinds of inflation is not constructed.  The hierarchy section of~\cite{HartshornRomanov} tried the substitution hierarchy as that quantity, and it does not
+supply the map.  The reading would
 be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
 that the dichotomy is an artefact of the two examples, for instance by a planar tile with an integer inflation and a
 pure-point diffraction measure, or by a three-dimensional tile with a unimodular one.
@@ -1793,12 +1828,13 @@ pure-point diffraction measure, or by a three-dimensional tile with a unimodular
 \label{rem:weyl}
 In three spacetime dimensions the Weyl tensor vanishes identically, the Riemann tensor is fixed by the Ricci tensor, and
 vacuum general relativity has no local gravitational degrees of freedom: gravitational waves need a third spatial
-dimension.  That is classical.  The \emph{proposal}, the author's and not a derived result, is that this is the form in which
+dimension.  That is classical.  The \emph{proposal}, the first author's and not a derived result, is that this is the form in which
 a flat two-dimensional initial surface would have vanishing Weyl curvature (compare Penrose's Weyl curvature hypothesis, that
 the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
 degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
 Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
-$3{+}1$ Weyl degrees of freedom as space emerges; and Section~\ref{sec:hier} leaves open what the hierarchy depth is: if the
+$3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of~\cite{HartshornRomanov} leaves open what
+the hierarchy depth is: if the
 third spatial dimension, a separate time is needed, and if look-back time, gravitational waves need a propagation rule that
 the tiling does not supply.
 \end{remark}
@@ -1813,8 +1849,7 @@ def conclusion_section():
 The two tilings separate cleanly in the quantities computed: the Spectre by a unit of $\mathbb{Z}[\sqrt{15}]$, a perimeter
 unit of $\mathbb{Q}(\sqrt5)$ and an internal plane with a window of fractal boundary; the Chair44 by inflation $2$ on
 $\mathbb{Z}^{3}$, no contracting direction, no twist, an exactly computable pure-point centre set, orientation sums $2^{n}$
-and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic, so the
-conjecture of Section~\ref{sec:thesis}, with its proposal on the Weyl tensor, remains untested.
+and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic.
 
 What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
 on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved from the registration and parent-tiling facts of~\cite{Tsiokos1,GoodmanStrauss}, which are quoted, and from a count of admissible blocks that this paper does not repeat; the counts of legal blocks and fixed seeds are recomputed.
@@ -1830,7 +1865,7 @@ numerics on finite patches, with controls, and are not Facts.
 Four computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
 its dimension exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; an exact
 count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; and a rule for what
-propagates on the tiling, without which neither a light cone nor a test of Conjecture~\ref{conj:bang} can be formulated.
+propagates on the tiling, without which no light cone can be formulated.
 """
 
 
@@ -1858,6 +1893,25 @@ All source code and data supporting this study are available at:
 """
 
 
+NOTE_MOVED_BIB = r"""
+\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
+J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
+
+\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
+
+\bibitem{hartshorn2026} B.~Hartshorn
+\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
+[preprint]
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
+
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\url{https://doi.org/10.1103/lmq8-nsty}
+
+
+"""
+
+
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
 
@@ -1869,6 +1923,9 @@ Combinatorial Theory, 4(1).
 \emph{A chiral aperiodic monotile}
 Combinatorial Theory, 4(2).
 
+
+\bibitem{BangNote} B.~Hartshorn and T.~Romanov, \emph{A flat initial surface? A speculative reading of the Spectre and
+Chair44 tilings}, companion note (2026), \code{spectre\_bigbang\_note.tex} in~\url{https://github.com/brentharts/spectre}.
 
 \bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
 arXiv:2609.19214.  Code and data:
@@ -1913,21 +1970,6 @@ diffraction spectra for multiset substitution systems. \emph{Discrete Comput. Ge
 \bibitem{BKM} J.~Barbour, T.~Koslowski and F.~Mercati, \emph{Identification of a gravitational arrow of time},
 Phys.\ Rev.\ Lett.\ \textbf{113}, 181101 (2014); arXiv:1409.0917. \url{https://doi.org/10.1103/PhysRevLett.113.181101}
 
-\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
-J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
-
-\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
-\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
-
-\bibitem{hartshorn2026} B.~Hartshorn
-\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
-[preprint]
-\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
-
-\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
-\url{https://doi.org/10.1103/lmq8-nsty}
-
-
 \end{thebibliography}
 
 \end{document}
@@ -1940,7 +1982,7 @@ def document():
         spectral_section(), census_section(), charges_section(), twist_subsection(),
         boundary_operator_section(), lift_section(),
         chair_section(), unfolding_section(), exact_section(), hierarchy_section(),
-        thesis_section(), conclusion_section(),
+        conclusion_section(),
         supplement_pointer(), BIBLIOGRAPHY,
     ])
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
@@ -2092,11 +2134,11 @@ def selftest():
                                             'orientation_channels', 'contact_matrices'))
     check('the monotile modules pass their own tests', MFT.selftest() > 0 and all(
         mod.run_tests(verbose=False) for mod in (D, O, OS, CO, L4, LM)))
-    check('the lift section precedes the Chair44 and the thesis comes last but one',
+    check('the lift section precedes the Chair44 and the hierarchy section comes last but one',
           text.index(r'\label{sec:lift}') < text.index(r'\label{sec:chair}') < text.index(r'\label{sec:exact}')
-          < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:thesis}') < text.index(r'\label{sec:conclusion}'))
+          < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:conclusion}'))
     check('every new section is referenced from the introduction',
-          all(('\\ref{%s}' % k) in introduction() for k in ('sec:lift', 'sec:exact', 'sec:thesis', 'sec:chair', 'sec:unfold', 'sec:hier')))
+          all(('\\ref{%s}' % k) in introduction() for k in ('sec:lift', 'sec:exact', 'sec:chair', 'sec:unfold', 'sec:hier')))
     check('the integer inflation matrix and its polynomial appear',
           r'(x^{4}-8x^{2}+1)^{2}' in text and sp.latex(sp.Matrix(im['block'])) in text and im['expected']
           and im['det'] == 1 and im['trace'] == 0)
@@ -2119,11 +2161,17 @@ def selftest():
     check('the contact counts are the live ones',
           ct['spectre']['rank'] == 14 and ct['chair']['rank'] == 24 and not ct['chair']['bipartite']
           and ('%d$ nonzero' % ct['chair']['support']) in text.replace('$@', '$') or str(ct['chair']['support']) in text)
-    check('the thesis is a labelled conjecture and nothing computed is said to test it',
-          r'\label{conj:bang}' in text and 'nothing computed' in flat and 'does not' in flat
-          and r'g=2\pi G\sigma' in text)
-    check('the bimetric references are cited and listed',
-          r'\cite{HassanRosen}' in text and r'\cite{PreGeometric}' in text and '10.1016/j.physletb.2026.140989' in text)
+    note = note_document()
+    nflat = ' '.join(note.split())
+    check('the paper is purely mathematical: the conjecture and the Weyl remark are in the companion note',
+          not any(w in text for w in ('Big Bang', 'Weyl', r'\label{conj:bang}', r'\label{sec:thesis}', 'bimetric'))
+          and r'\cite{BangNote}' in text and r'\bibitem{BangNote}' in text)
+    check('the note states the thesis as a labelled conjecture that nothing computed tests',
+          r'\label{conj:bang}' in note and 'Nothing computed there depends' in nflat and 'does not' in nflat
+          and r'g=2\pi G\sigma' in note and r'\cite{HartshornRomanov}' in note)
+    check('the bimetric references are cited and listed in the note',
+          r'\cite{HassanRosen}' in note and r'\cite{PreGeometric}' in note and '10.1016/j.physletb.2026.140989' in note
+          and all(('\\bibitem{%s}' % k) in note for k in ('HassanRosen', 'PreGeometric', 'hartshorn2026', 'DorauMuch')))
     check('the abstract makes no cosmological claim',
           not any(w in abstract() for w in ('Big Bang', 'universe', 'cosmolog', 'Weyl')))
     check('the figures are included and exist',
@@ -2136,14 +2184,14 @@ def selftest():
 
     print('the hierarchy section, the Weyl remark and the new framing')
     H = hier_numbers()
-    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{Discussion: a speculative reading}')[0]
+    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{Conclusion}')[0]
     assert len(hs) < len(text.split(r'\label{sec:hier}')[1]), 'the section marker no longer splits the text'
     near, P6, sw = H['near'], H['pair'][6][H['near']], H['swirl']
     rec = H['rec']
-    check('the hierarchy section is labelled computation, not Fact and says it tests nothing about the conjecture',
-          'Computation, not Fact' in hs[:300] and 'none tests Conjecture' in ' '.join(hs.split()))
-    check('the hierarchy section sits between the exact comparisons and the speculative reading',
-          text.index(r'\label{sec:exact}') < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:thesis}'))
+    check('the hierarchy section is labelled computation, not Fact and says it supplies no clock',
+          'Computation, not Fact' in hs[:300] and 'none supplies a physical clock' in ' '.join(hs.split()))
+    check('the hierarchy section sits between the exact comparisons and the conclusion',
+          text.index(r'\label{sec:exact}') < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:conclusion}'))
     check('the quoted hierarchy numbers are the live ones',
           all(('%.3f' % r_[2]) in hs for r_ in H['rows']) and ('%.2f' % H['slope']) in hs and ('%.4f' % H['dim']) in hs
           and ('%.3f' % H['pred']) in hs and ('%d of %d' % (H['f1'], H['n1'])) in hs)
@@ -2164,9 +2212,9 @@ def selftest():
           and r'\includegraphics[width=0.9\textwidth]{spectre_hier_lookback}' in text
           and r'\includegraphics[width=\textwidth]{spectre_hier_parity}' in text)
     check('Barbour et al. is cited and listed', r'\cite{BKM}' in text and r'\bibitem{BKM}' in text and 'arXiv:1409.0917' in text)
-    wk = text.split(r'\label{rem:weyl}')[1].split(r'\end{remark}')[0]
-    check('the Weyl remark is in the speculative section and is called a proposal, not a result',
-          text.index(r'\label{sec:thesis}') < text.index(r'\label{rem:weyl}') < text.index(r'\label{sec:conclusion}')
+    wk = note.split(r'\label{rem:weyl}')[1].split(r'\end{remark}')[0]
+    check('the Weyl remark is in the note and is called a proposal, not a result',
+          note.index(r'\label{sec:thesis}') < note.index(r'\label{rem:weyl}')
           and 'proposal' in wk and 'not a derived result' in wk and 'Nothing here derives it' in wk)
     check('the old title is gone', 'Inflation With and Without' not in text)
     check('the abstract mentions the hierarchy test', 'hierarchy' in abstract() and 'quadtree' in abstract())
