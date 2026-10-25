@@ -1,0 +1,126 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,xcolor,array}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{orcidlink}
+\usepackage{graphicx}
+\graphicspath{{paper/figures/}}
+
+\newtheorem{fact}{Fact}
+\newtheorem{prop}{Proposition}
+\newtheorem{conj}{Conjecture}
+\newtheorem{thm}{Theorem}
+\newtheorem{lem}{Lemma}
+\newtheorem{cor}{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+\newcommand{\lam}{\lambda}
+\newcommand{\code}[1]{\texttt{#1}}
+\emergencystretch=2em
+\hyphenation{re-flec-tion-ad-mit-ting quasi-crys-tal-line}
+
+\title{A Flat Initial Surface? A Speculative Reading of the Spectre and Chair44 Tilings}
+
+\author{Brent Hartshorn \orcidlink{0009-0004-2853-655X}
+        and Tristan Romanov}
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+A conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
+two-dimensional singularity, connected to the planar Spectre monotile, and the emergence of three-dimensional space is
+connected to Tsiokos's Chair44.  Two classical background facts, a reading through the inflation arithmetic of the two
+tilings, and a proposal on the Weyl tensor are given.  Nothing is derived; what would support or retire the reading is
+stated.
+\end{abstract}
+
+
+\section{The conjecture}
+\label{sec:thesis}
+
+This note states the hypothesis that motivated the companion paper~\cite{HartshornRomanov}, which compares the Spectre
+monotile~\cite{SmithEtAl2} and Tsiokos's Chair44~\cite{Tsiokos1} by exact computation.  Nothing computed there depends
+on it, and nothing computed there tests it.  It is stated here so that it can be argued with.
+
+\begin{conj}[The initial surface]
+\label{conj:bang}
+The Big Bang was not a point-like singularity but a flat two-dimensional one.  That flat surface is connected to the
+Spectre monotile, and the emergence of three-dimensional space from it is connected to the Chair44.
+\end{conj}
+
+\noindent
+Two background facts are kept apart from the conjecture.  The first is classical and exact.  An infinite uniform flat sheet
+of surface density $\sigma$ produces a gravitational field $g=2\pi G\sigma$ that does not depend on the distance from the
+sheet, because the mass in view grows as $r^{2}$ exactly as the force per unit mass falls as $r^{-2}$ (equivalently, by
+Gauss's law on a pillbox).  Fields of parallel sheets are uniform and superpose, so sheets of equal and opposite density
+cancel outside, and two equal sheets cancel between them.  The second concerns the setting.  Ghost-free bimetric gravity
+of Hassan and Rosen~\cite{HassanRosen} gives dynamics to a second metric, and a pre-geometric origin for it has been
+proposed~\cite{PreGeometric}; a picture in which the initial state consists of two sheets, one for each metric, and the Big
+Bang is their separation is the kind of reading that such a setting invites.  No such model is built here, and no claim
+is made about the dual-sheet cosmologies themselves.  The earlier observation that the area law
+$S_{\rm rel}=\delta A/4G$ is consistent with the $s$-wave dynamics of the Nariai horizon~\cite{hartshorn2026}, the converse
+of the result of Dorau and Much~\cite{DorauMuch}, is the setting in which the question arose.
+
+What the computations of~\cite{HartshornRomanov} offer is a precise form of the contrast the conjecture needs.  A planar tile with a unimodular
+inflation, here the Spectre, has an internal space of dimension two and a window; a tile with an integer inflation, here the
+Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
+second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
+result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
+passage between the two kinds of inflation is not constructed.  The hierarchy section of~\cite{HartshornRomanov} tried the substitution hierarchy as that quantity, and it does not
+supply the map.  The reading would
+be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
+that the dichotomy is an artefact of the two examples, for instance by a planar tile with an integer inflation and a
+pure-point diffraction measure, or by a three-dimensional tile with a unimodular one.
+
+\begin{remark}[A proposal on the Weyl tensor]
+\label{rem:weyl}
+In three spacetime dimensions the Weyl tensor vanishes identically, the Riemann tensor is fixed by the Ricci tensor, and
+vacuum general relativity has no local gravitational degrees of freedom: gravitational waves need a third spatial
+dimension.  That is classical.  The \emph{proposal}, the first author's and not a derived result, is that this is the form in which
+a flat two-dimensional initial surface would have vanishing Weyl curvature (compare Penrose's Weyl curvature hypothesis, that
+the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
+degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
+Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
+$3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of~\cite{HartshornRomanov} leaves open what
+the hierarchy depth is: if the
+third spatial dimension, a separate time is needed, and if look-back time, gravitational waves need a propagation rule that
+the tiling does not supply.
+\end{remark}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{HartshornRomanov} B.~Hartshorn and T.~Romanov, \emph{The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings}, preprint (2026),
+\url{https://github.com/brentharts/spectre}.
+
+\bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
+\emph{A chiral aperiodic monotile}
+Combinatorial Theory, 4(2).
+
+\bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
+arXiv:2609.19214.
+
+
+\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
+J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
+
+\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
+
+\bibitem{hartshorn2026} B.~Hartshorn
+\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
+[preprint]
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
+
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\url{https://doi.org/10.1103/lmq8-nsty}
+
+
+
+\end{thebibliography}
+
+\end{document}

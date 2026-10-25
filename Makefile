@@ -5,7 +5,7 @@
 #
 #   make check        facts, atlas, Lean kernel, and the generated document
 #   make figures      rebuild paper/figures/*.pdf and *.png
-#   make paper        rebuild spectre_substrate.pdf
+#   make paper        rebuild spectre_substrate.pdf and the companion note spectre_bigbang_note.pdf
 #   make lean         emit SpectreFacts.lean and check it
 #   make install_lean install a Lean 4 toolchain (Ubuntu/Debian, macOS)
 #
@@ -74,6 +74,7 @@ paper: facts figures
 	$(PYTHON) spectrepaper.py
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_bigbang_note.tex >/dev/null
 
 paperfast:
 	$(PYTHON) spectrepaper.py
@@ -96,7 +97,7 @@ check: facts atlas lean readme
 	$(PYTHON) spectrepaper.py --selftest
 
 paper-clean:
-	rm -f spectre_substrate.tex spectre_substrate.pdf *.aux *.log *.out
+	rm -f spectre_substrate.tex spectre_substrate.pdf spectre_bigbang_note.tex spectre_bigbang_note.pdf *.aux *.log *.out
 	rm -rf __pycache__
 
 # ------------------------------------------------------------- installing it
