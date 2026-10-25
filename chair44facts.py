@@ -385,17 +385,21 @@ def register():
                 '(about ten minutes), and it is not recomputed in this fast check')
 
     fact(key='chair_hull_theorem',
-         claim=r'\text{every Chair44 tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
+         claim=r'\text{every atlas tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
          value=dict(hull=True, groups=['1', 'C2 (face-diagonal axis)', 'C4', 'D4'], max_order=8,
                     three_fold_axis=False, klein_four=False, c2_coordinate_axis=False,
-                    pure_point=True, limit_periodic=True, internal_space='Z_2^3',
-                    inputs=['registration (R)', 'unique parent tiling (H)']),
+                    pure_point=True, limit_periodic_hull=True, internal_space='Z_2^3',
+                    scope='atlas tilings (registered, all face contacts in the 44-contact atlas); for tilings by '
+                          'the solid Q conditional on registration (R)',
+                    inputs=['registration (R), for the solid only', 'unique hierarchy (H), Kamenetsky Prop. 7.1']),
          method='Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells '
-                'around a lattice vertex (360,189 admissible blocks, each with all 27 child windows legal). '
+                'around a lattice vertex (360,189 admissible blocks in 15,214 O-orbits, each with all 27 child '
+                'windows legal), repeated by an independent implementation and published as an orbit certificate. '
                 'Quoted and not recomputed here, except the legal-block and fixed-seed counts of '
-                'chair_legal_blocks. It takes as inputs, unchecked, that every tiling is registered with all '
-                'contacts in the 44-contact atlas and has a unique parent tiling (Tsiokos; Goodman-Strauss); '
-                'the pure-point and limit-periodic conclusions then use the cited Lee-Moody theorem')
+                'chair_legal_blocks. (H) is Kamenetsky Prop. 7.1, whose finite conditions were reproduced; (R), '
+                'that every tiling by Q is an atlas tiling, is Tsiokos Thm 5.6 and is unchecked. The spectral '
+                'conclusions are for the hull Omega_sigma (minimal, uniquely ergodic, pure point, hull of a '
+                'regular model set) and use the cited Lee-Moody theorem')
 
     import chair44_lines as LN
     lr = LN.report()

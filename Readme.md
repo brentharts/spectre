@@ -52,13 +52,12 @@ the torus that is the cusp fibre of Alpöge's complex six-sphere, the Mystics of
 the full levels fall into **six translate classes**: 6 at levels 3, 4 and 5
 (63, 496 and 3905 Mystics), one for each first-edge angle 30°+60°k, anchored on
 the three double curves. At level 5 the class sizes are 629 to 674. Six is
-forced: the kite tiling has symmetry group p6m and every kite axis is a mirror
-line, so each Mystic is a p6m image of the first, all Mystics of a level have
-one handedness, and the classes are in bijection with the rotations that occur
-(at most six; all six from level 3 on, since a Δ supertile contains a Δ
-supertile). What remains for all n ≥ 3 is that the level-n patch lies on the
-kite lattice, which is asserted through n = 5 (floating point with asserted
-lattice checks, not a Fact). The Spectre itself
+forced for every level: every tile lies on the kite lattice (a finite-state
+induction proved in exact arithmetic, `mystic_exact/`), each level has one
+handedness, so the classes are in bijection with the rotations that occur (at
+most six), and all six occur from level 3 on, since a Δ supertile contains a Δ
+supertile. Here "Mystic" is Γ2 alone; the Spectre papers use the word for the
+pair Γ1 ∪ Γ2. A routine fact about p6m, not a Fact of the ledger. The Spectre itself
 is not on this lattice: its area is 3+√3 kites. (`spectre_mystic_fibres.py`)
 
 ### The torsion dictionary
@@ -122,7 +121,7 @@ is editing a build artefact.
 | `spectrefacts.py` | 62 Facts, computed exactly in sympy. `--selftest` checks all of them |
 | `monotilefacts.py` | 7 more Facts (93 in all once registered): the exact diffraction of the Chair44 centre set, the Spectre orientation recursion and the orientation channels of both tilings, the face-contact matrices, and the four-dimensional lift of the Spectre (integer lift, integer inflation matrix, exact internal plane). The computations are in `chair44_diffraction.py`, `spectre_orient.py`, `orientation_spectra.py`, `contact_operators.py`, `lift4d.py`, `lift4d_matrix.py`, `spectre_patch.py` and `spectre_operator.py`, copied from [spectre-monotile-py](https://github.com/brentharts/spectre-monotile-py). `--selftest` recomputes them |
 | `chair44facts.py` | 24 more Facts (86 before the monotile Facts): the Chair44 atlas, orientation spectrum, zero twist, nets, slices, orientation sums and chirality, the legal vertex blocks, the quoted hull and symmetry theorem, the box and line means, and the Fibonacci form of the Spectre boundary. `--selftest` recomputes them |
-| `chair44_hull.py` | the 1410 legal vertex blocks of the Chair44 substitution (closed under the 27 child windows), the 27 fixed seeds of Phi and their stabilisers, recomputed from `symchair44` with no upstream data; Romanov's 360,189 admissible blocks are not recomputed here. `--tests` |
+| `chair44_hull.py` | the 1410 legal vertex blocks of the Chair44 substitution (closed under the 27 child windows), the 27 fixed seeds of Phi and their stabilisers, recomputed from `symchair44` with no upstream data (independent code; the eight children are Tsiokos's, and they define the tile). The 360,189 admissible blocks are counted by `chair44_hull_admissible.py` (about 10 minutes). `--tests` |
 | `chair44_lines.py` | box means against line means for Chair44: the exact box means (0) of the height and notch observables, the six chair stacks (diagonal lines of identical labels in every sigma^n(j), with an all-n induction of 14 finite cases), and the exact limits of line means along the seven corner lines from the constant-length-2 substitutions tau_b. It shows that uniform box averages do not transfer to lines; irrational directions are not covered. `--tests` |
 | `chair44_core.py`, `chair44_unfold.py`, `chair44_slice.py`, `chair44_findings.py` | the Chair44 unfolded and compared with the Spectre: exact geometry, nets of the surface (261 434 325 600 spanning trees, 11 cube nets as control), slices and projections of the hierarchy, the numbers and the three figures of the section on unfolding; the first three are also in [spectre-monotile-py](https://github.com/brentharts/spectre-monotile-py). `--tests-only` / `--check` |
 | `chair44_twist.py` | the Chair44 inflation geometry: supertile = 2 x chair exactly (twist 0, no mirror), mean child matrix I/4. `--verify` |

@@ -36,8 +36,9 @@ three-dimensional Chair44.  The Spectre inflates by the unit $\lam^{2}=\sqrt{15}
 perimeter by a unit of $\mathbb{Q}(\sqrt5)$, so its boundary is fractal, and its lift to $\mathbb{Z}^{4}$ has two
 expanding and two contracting directions: an exact internal plane whose window has a fractal boundary.  The Chair44
 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no internal space and no twist, and its centre set has an exactly
-computed pure-point diffraction measure.  Every tiling by it lies in the substitution hull, so this holds for all of
-them, and the symmetry group of a tiling is one of $1$, $C_{2}$, $C_{4}$, $D_{4}$.  Orientation sums and contact matrices
+computed pure-point diffraction measure.  Every lattice-registered tiling obeying its $44$ contact rules lies in the
+substitution hull, so this holds for all of them, and the symmetry group of such a tiling is one of $1$, $C_{2}$, $C_{4}$,
+$D_{4}$; for tilings by the Chair44 solid this is conditional on its registration theorem.  Orientation sums and contact matrices
 separate the two.  Four finite-patch
 computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
 arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
@@ -69,7 +70,8 @@ Spectre's substitution hierarchy can serve as a clock.
 
 What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
 input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; the hull theorem of
-Section~\ref{sec:hull} takes registration and the unique parent tiling from~\cite{Tsiokos1,GoodmanStrauss}, quoted; that the Spectre diffraction is pure
+Section~\ref{sec:hull} is proved for tilings obeying the contact rules and, for the solid, is conditional on Tsiokos's
+registration theorem~\cite{Tsiokos1}, quoted; that the Spectre diffraction is pure
 point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here.  Section~\ref{sec:conclusion} lists the rest.
 
 
@@ -637,7 +639,7 @@ zero sector & not semisimple & semisimple \\
 frequencies & irrational (Pisot) & rational, $1/24$ \\
 symmetry groups of a tiling & not computed & $1$, $C_{2}$, $C_{4}$, $D_{4}$ (Theorem~\ref{thm:sym}) \\
 strict chirality & yes, by the tile & yes, by the contacts \\
-spectrum of the tiling & Pisot, pure point & 2-adic, pure point, every tiling (Corollary~\ref{cor:hull}) \\
+spectrum of the tiling & Pisot, pure point & 2-adic, pure point, every atlas tiling (Corollary~\ref{cor:hull}) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -707,70 +709,99 @@ a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inf
 
 The $2$-adic route above is stated for the fixed point of the substitution.  Tsiokos left two questions open~\cite{Tsiokos1}:
 whether \emph{every} tiling by the Chair44 lies in the hull of the substitution, and which symmetry groups its tilings
-have.  The decorations force every tiling to be hierarchical: a short Berger-style proof is due to
+have.  The decorations force every tiling to be hierarchical: a short Berger-style account is due to
 Goodman-Strauss~\cite{GoodmanStrauss}, simpler equivalent matching rules to Flicker~\cite{Flicker}, and a finite
-certificate in every dimension to Kamenetsky~\cite{Kamenetsky}.  This subsection answers the two questions.  The proofs are due to the second
-author~\cite{Romanov}; they combine one level of the hierarchy with a finite computation on the eight unit cells around a
-lattice vertex.
+certificate for the unique hierarchy to Kamenetsky~\cite{Kamenetsky}.  Flicker argues informally that no slide plane is
+possible and states that only $30$ of the $44$ contacts appear in an infinite tiling; Theorem~\ref{thm:hull} and
+Corollary~\ref{cor:contacts} are the rigorous form.  This subsection answers the two questions.  The proofs are due to the
+second author~\cite{Romanov}; they combine one level of the hierarchy with a finite computation on the eight unit cells
+around a lattice vertex.
 
-\paragraph{Set-up.}  A tiling by the tile $Q$ is \emph{registered}: up to an isometry every tile is a chair
-$x\mapsto gx+t$ with $g$ one of the $24$ proper rotations $O$ and $t\in\mathbb{Z}^{3}$.  Label each unit cell by the frame of
-the chair that covers it and by which of its seven cells it is; there are 168 labels, the $24\times7$ of
+\paragraph{Set-up.}  A chair \emph{pose} is $x\mapsto gx+t$ with $g$ one of the $24$ proper rotations $O$ and
+$t\in\mathbb{Z}^{3}$.  An \emph{atlas tiling} is a tiling of $\mathbb{R}^{3}$ by chairs in poses in which every face-adjacent
+pair has a relative pose among the $44$ legal contacts of Section~\ref{sec:chair}.  Label each unit cell by the frame of the
+chair that covers it and by which of its seven cells it is; there are 168 labels, the $24\times7$ of
 Section~\ref{sec:chair}.  Write $\sigma$ for the substitution, of inflation $2$.
 
 \begin{defn}
 \label{def:block}
 A \emph{block} is the labelling of the eight unit cells around a lattice vertex.  It is \emph{legal} if it occurs in
 $\sigma^{n}(j)$ for some label $j$ and some $n$, and \emph{admissible} if the chairs it names are consistent and pairwise
-disjoint and every face-adjacent pair has a relative pose among the $44$ legal contacts of Section~\ref{sec:chair}.
+disjoint and every face-adjacent pair has a relative pose among the $44$ legal contacts.  Every block of an atlas tiling is
+admissible.
 \end{defn}
 
 \noindent
-Two inputs are taken from the literature~\cite{Tsiokos1,GoodmanStrauss} and are not re-derived here.
+Two inputs are taken from the literature and are not re-derived here.
 
 \begin{description}
-\item[(R)] Every tiling by $Q$ is registered, and every pair of tiles sharing a feature is in a relative pose among the
-legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}.  Every shared unit face carries features, so all blocks of a tiling by
-$Q$ are admissible.
-\item[(H)] Every tiling $T$ by $Q$ has a unique parent tiling $D(T)$, again a tiling by $Q$, registered on a lattice of
-spacing $2$, and $T=\sigma(D(T))$~\cite[Thms~6.4, 6.5]{Tsiokos1}.
+\item[(R)] Every tiling by $Q$ is, up to an isometry, an atlas tiling: it is registered, and every pair of tiles sharing a
+feature is in a relative pose among the legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}; every shared unit face carries
+features.  This is the geometric half of~\cite{Tsiokos1}; its written proof has not been independently refereed.
+\item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
+with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky}, a short argument from three finite
+conditions (coarsening closure $30\to44$ with $\Sigma(P^{*})=2P^{*}$, tight facet rules, and unique parents for the $33$
+first-shell enclosures), all reproduced independently in~\cite{Romanov}; Tsiokos proves it for tilings by
+$Q$~\cite[Thms~6.4, 6.5]{Tsiokos1}.
 \end{description}
 
 \begin{lem}[computation]
 \label{lem:blocks}
-There are 360{,}189 admissible blocks.  For each of them, all $27$ windows of size $2\times2\times2$ in its substitution, a
-$4\times4\times4$ block, are legal.
+There are 360{,}189 admissible blocks, in $15{,}214$ orbits under $O$.  For each of them, all $27$ windows of size $2\times2\times2$
+in its substitution, a $4\times4\times4$ block, are legal.
 \end{lem}
 
 \noindent
 This is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}, on the atlas
-published with~\cite{Tsiokos1}).  It has been repeated from our own data: \code{chair44\_hull\_admissible.py} takes the
-$44$ legal contacts that \code{symchair44.py} derives from its own labels and finds the same 360{,}189 admissible blocks,
-all of whose child windows are legal.  It runs for about ten minutes, so the build of this paper does not repeat it.  The
-theorem is its consequence.
+published with~\cite{Tsiokos1}), repeated by an independent implementation that derives the atlas from the pyramid
+geometry and, separately, from the eight children alone, and published as a certificate of $O$-orbit representatives with a
+stand-alone verifier~\cite{Romanov}.  \code{chair44\_hull\_admissible.py} repeats the count with the $44$ contacts that
+\code{symchair44.py} derives from its own labels; this is independent code on the same eight children, which define the
+tile.  The lemma is not vacuous: enlarging the atlas by the five non-atlas contacts of a single violating block yields
+$360{,}213$ admissible blocks and $24$ failures.  The count runs for minutes, so the build of this paper does not repeat it.
 
 \begin{thm}
 \label{thm:hull}
-Every tiling by $Q$ lies, up to an isometry, in the hull $\Omega_{\sigma}$ of the substitution.
+Every atlas tiling lies in the hull $\Omega_{\sigma}$ of the substitution.  Hence, conditional on~(R), every tiling by $Q$
+lies, up to an isometry, in $\Omega_{\sigma}$.
 \end{thm}
 
 \begin{proof}
-Let $P$ be a finite patch of $T$.  For $n$ large, $P$ lies in $\sigma^{n}(\beta)$ for a block $\beta$ of $D^{n}(T)$.  By~(H),
-$\beta$ is a window of $\sigma(\beta')$ for a block $\beta'$ of $D^{n+1}(T)$.  By~(R), $\beta'$ is admissible, so $\beta$ is
-legal by Lemma~\ref{lem:blocks}.  Hence $P$ is legal.
+Let $P$ be a finite patch of an atlas tiling $T$.  By~(H) every $D^{m}(T)$ is an atlas tiling on a lattice
+$L_{m}=2^{m}\mathbb{Z}^{3}+o_{m}$, $L_{m+1}\subset L_{m}$.  For $2^{n-1}$ larger than the diameter of $P$, $P$ lies in
+$\sigma^{n}(\beta)$ for the block $\beta$ of $D^{n}(T)$ at the vertex $v$ of $L_{n}$ nearest to $P$, and $\beta$ is the window at
+offset $v-v'+(1,1,1)$ of $\sigma(\beta')$ for the block $\beta'$ of $D^{n+1}(T)$ at the vertex $v'$ of $L_{n+1}$ nearest to
+$v$.  As $\beta'$ is admissible, $\beta$ is legal by Lemma~\ref{lem:blocks}, and so is $P$.  No exhaustion of space by one
+supertile is used, so tilings with fault planes are covered.
+\end{proof}
+
+\begin{cor}
+\label{cor:contacts}
+Only the $30$ contacts that occur in supertiles appear in an atlas tiling; the other $14$ legal contacts occur in none.
+\end{cor}
+
+\begin{proof}
+The block at a corner of a shared unit face contains both cells across it, and the face-adjacent pairs in legal blocks
+realise exactly the $30$ supertile contacts.
 \end{proof}
 
 \begin{cor}
 \label{cor:hull}
-The space of Chair44 tilings is minimal and uniquely ergodic, with pure-point dynamical spectrum.  Every Chair44 tiling is
-pure-point diffractive, and the space is the hull of a regular model set with internal space $\mathbb{Z}_{2}^{3}$, so its
-structure is limit-periodic.
+$\Omega_{\sigma}$, under translations of $\mathbb{R}^{3}$, is minimal and uniquely ergodic with pure-point dynamical spectrum,
+and it is the hull of a regular model set with internal space $\mathbb{Z}_{2}^{3}$.  Every atlas tiling is pure-point
+diffractive; conditional on~(R), so is every tiling by $Q$.
 \end{cor}
 
 \begin{proof}
-The substitution is primitive, so its hull is minimal and uniquely ergodic.  The modular coincidence of~\cite[Thm~8.1]{Tsiokos1},
-recomputed above, and the theorem of Lee and Moody~\cite{LeeMoody} give pure-point spectrum of the hull~\cite{LMS}.  Theorem~\ref{thm:hull} identifies the hull with the space of all tilings.
+The substitution is primitive, so $\Omega_{\sigma}$ is minimal and uniquely ergodic.  The modular coincidence
+of~\cite[Thm~8.1]{Tsiokos1}, recomputed above, and the theorem of Lee and Moody~\cite{LeeMoody} give pure-point spectrum of
+the hull~\cite{LMS}.  In a uniquely ergodic hull every element has the same diffraction, and Theorem~\ref{thm:hull} places
+every atlas tiling in $\Omega_{\sigma}$.
 \end{proof}
+
+\noindent
+The space of all tilings by $Q$ is not minimal: it is the union of the translates $g\Omega_{\sigma}$ over the isometries $g$.
+Nor is every element of $\Omega_{\sigma}$ a model set or limit-periodic; singular elements of a model-set hull need not be.
 
 \paragraph{A second route to the finite part.}  The legal blocks depend only on the substitution, so they can be recomputed
 from the cell substitution of Section~\ref{sec:chair}, which our generator builds from nothing
@@ -779,30 +810,35 @@ from the cell substitution of Section~\ref{sec:chair}, which our generator build
 its members lie in it, and it contains the windows of $\sigma(j)$; so it is the whole language and not merely the place
 where a count stopped.  The central window $\Phi(w)$ of $\sigma(w)$ maps the legal blocks to themselves and has exactly
 27 periodic blocks, all of them fixed.  These are the 27 fixed seeds of~\cite{Tsiokos1}, and their stabilisers in
-$O$ have order $1$ for 24 of them and $8$ for 3.  Both counts agree with the second author's.  Registration~(R), the
-parent tiling~(H) and the count of admissible blocks are not part of this recomputation.
+$O$ have order $1$ for 24 of them and $8$ for 3.  Both counts agree with the second author's.
 
-\paragraph{Symmetry.}  Write $\mathrm{Sym}(T)$ for the group of isometries that map $T$ to itself.  Tsiokos showed that it
-embeds in $O$, so $|\mathrm{Sym}(T)|\le24$, and exhibited orders $1$ and $8$~\cite{Tsiokos1}.
+\paragraph{Symmetry.}  Write $\mathrm{Sym}(T)$ for the group of isometries that map an atlas tiling $T$ to itself, chairs
+with their frames; for a tiling by $Q$ this is its geometric symmetry group, since $Q$ has no self-isometry
+(Fact~\ref{fact:chairchiral}).  A symmetry maps poses to poses, so its linear part is a quotient of two proper frames: it is
+proper, with integer translation part, and its kernel consists of periods, which vanish by~(H).  So $\mathrm{Sym}(T)$
+embeds in $O$, as Tsiokos showed for tilings by $Q$, with $|\mathrm{Sym}(T)|\le24$; he exhibited orders $1$ and
+$8$~\cite{Tsiokos1}.
 
 \begin{thm}
 \label{thm:sym}
-For every tiling $T$ by $Q$, $\mathrm{Sym}(T)$ is conjugate to one of $1$, $C_{2}^{\mathrm{diag}}$ (a half-turn about a
-face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.
+For every atlas tiling $T$, $\mathrm{Sym}(T)$ is conjugate in $O$ to exactly one of $1$, $C_{2}^{\mathrm{diag}}$ (a half-turn
+about a face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.  Conditional on~(R), the same holds for every tiling
+by $Q$.
 \end{thm}
 
 \begin{lem}[position of symmetry axes]
 \label{lem:axes}
-Let $T$ be a tiling by $Q$ and $L_{n}=2^{n}\mathbb{Z}^{3}+o_{n}$ the vertex lattice of its level-$n$ supertiles, so that
-$o_{n+1}\equiv o_{n}\pmod{2^{n}}$.  Let $g\in\mathrm{Sym}(T)$ have linear part $R\neq I$.
+Let $L_{n}=2^{n}\mathbb{Z}^{3}+o_{n}$ be the vertex lattice of the level-$n$ supertiles of an atlas tiling $T$, so that
+$o_{n+1}\equiv o_{n}\pmod{2^{n}}$, and let $g\in\mathrm{Sym}(T)$ have linear part $R\neq I$.
 (1) If $R$ is a half-turn or quarter-turn about a coordinate axis, the axis of $g$ is a lattice line of every $L_{n}$.
 (2) If $R$ is a half-turn about a face diagonal, the axis of $g$ lies in a coordinate plane through vertices of every
 $L_{n}$ and meets every $L_{n}$.
 (3) If $\mathrm{Sym}(T)$ is not cyclic, its fixed point is a vertex of every $L_{n}$.
+In cases (1) and (2) no single point of the axis need be a vertex of every $L_{n}$.
 \end{lem}
 
 \begin{proof}
-The hierarchy is unique~\cite[Thm~6.6]{Tsiokos1}, so $g$ preserves every $L_{n}$.  Write $g(x)=R(x-c)+c$ with $c$ on the
+The hierarchy is unique by~(H), so $g$ preserves every $L_{n}$.  Write $g(x)=R(x-c)+c$ with $c$ on the
 axis; since $R$ preserves $2^{n}\mathbb{Z}^{3}$, $g$ preserves $L_{n}$ if and only if $(I-R)(c-o_{n})\in2^{n}\mathbb{Z}^{3}$.
 (1) Take the axis along $e_{3}$.  For a half-turn $I-R=\mathrm{diag}(2,2,0)$; for a quarter-turn $I-R$ acts on the
 $(e_{1},e_{2})$-plane with determinant $2$.  Either way each $\delta^{(i)}_{n}=(c_{i}-o_{n,i})\bmod2^{n}$, $i=1,2$, is $0$ or
@@ -818,39 +854,52 @@ each of its coordinates is $\equiv o_{n}\pmod{2^{n}}$.
 \end{proof}
 
 \begin{proof}[Proof of Theorem~\ref{thm:sym}]
-\emph{No element of order three.}  Such an element is a rotation about a line in direction $(1,\pm1,\pm1)$.  The line meets
-the interior of a tile, which the rotation would have to fix; that is impossible because $Q$ has no self-isometry
-(Fact~\ref{fact:chairchiral}).  So $\mathrm{Sym}(T)$ is a $2$-group, contained in a copy of $D_{4}$.  By
-Theorem~\ref{thm:hull} every block below is legal.
+\emph{No element of order three.}  Such an element is a rotation about a line in direction $(1,\pm1,\pm1)$.  Along the line
+the three coordinates change at the same rate, so at some point all three lie in $(\frac1{100},\frac{99}{100})$ modulo $1$.
+That point is interior to a unit cell, hence to the chair covering it (for $Q$: farther from every cell face than the
+pyramid height $12\cdot10^{-4}$), so the rotation fixes that chair with its frame and is the identity.  So
+$\mathrm{Sym}(T)$ is a $2$-group, contained in a copy of $D_{4}$; up to conjugacy in $O$ its candidates are $1$, $C_{2}$
+(coordinate axis), $C_{2}^{\mathrm{diag}}$, $C_{4}$, the two Klein groups and $D_{4}$.  By Theorem~\ref{thm:hull} every
+block below is legal.
 
 \emph{Vertex-centred groups.}  Let $\mathrm{Sym}(T)$ be non-cyclic, with fixed point $x$, a vertex of every $L_{n}$ by
 Lemma~\ref{lem:axes}(3), and let $w_{n}$ be the block of $D^{n}(T)$ at $x$.  Then $w_{n}=\Phi(w_{n+1})$.  The substitution
 commutes with $O$, so $\mathrm{Stab}(w_{n+1})\le\mathrm{Stab}(w_{n})$, and since the $w_{n}$ cover balls of radius $2^{n}$
-about $x$, $\mathrm{Sym}(T)=\bigcap_{n}\mathrm{Stab}(w_{n})$.  The sequence repeats, $w_{a}=w_{b}$ with $a<b$, so $w_{b}$ is
-$\Phi$-periodic and $\mathrm{Sym}(T)=\mathrm{Stab}(w_{b})$.  The $\Phi$-periodic legal blocks are the 27 fixed seeds,
-with stabilisers $1$ and $D_{4}$; this is the count recomputed above.
+about $x$, $\mathrm{Sym}(T)=\bigcap_{n}\mathrm{Stab}(w_{n})$; the stabilisers are constant from some $N_{0}$ on.  A block
+$\beta$ that occurs infinitely often among $w_{N_{0}},w_{N_{0}+1},\dots$ satisfies $\beta=w_{a}=w_{b}$ with $N_{0}\le a<b$, so it
+is $\Phi$-periodic and $\mathrm{Stab}(\beta)=\mathrm{Sym}(T)$.  The $\Phi$-periodic legal blocks are the 27 fixed seeds,
+with stabilisers $1$ and $D_{4}$; this is the count recomputed above.  So a non-cyclic group is $D_{4}$, and the Klein groups
+do not occur.
 
 \emph{Axial groups.}  Let $\mathrm{Sym}(T)=K$ be cyclic and non-trivial, with axis $A$ in direction $e$, and let $O_{e}$ be
 the rotations about $e$.  By Lemma~\ref{lem:axes}, $A\cap L_{n}=v_{n}+2^{n}\mathbb{Z}e$; take $v_{n}$ nearest to a fixed
-point of $A$.  Then $v_{n}-v_{n+1}=j_{n}2^{n}e$ with $j_{n}\in\{-1,0,1\}$, and the blocks $w_{n}$ of $D^{n}(T)$ at $v_{n}$
+point $p$ of $A$.  Then $v_{n}-v_{n+1}=j_{n}2^{n}e$ with $j_{n}\in\{-1,0,1\}$, and the blocks $w_{n}$ of $D^{n}(T)$ at $v_{n}$
 satisfy $w_{n}=W_{j_{n}}(w_{n+1})$, where $W_{j}$ is the window of $\sigma(\cdot)$ centred at $je$.  The elements of $O_{e}$
 commute with every $W_{j}$, so $\mathrm{Stab}(w_{n})\cap O_{e}$ decreases to $K$; the full stabilisers may be larger, since
 an element outside $O_{e}$ acts about the moving point $v_{n}$.  If $j_{n}=j$ for all $n\ge N$, then $y=v_{N}+j2^{N}e$
 satisfies $y-v_{n}=j2^{n}e$ for $n\ge N$, so $y$ is a vertex of every $L_{n}$ and $\mathrm{Sym}(T)$ is $1$ or $D_{4}$ by the
 previous case, not $K$.  So the shifts are not eventually constant, and their tail lies in a strongly connected component
 carrying two distinct shifts of the graph $G_{K}$ whose vertices are the legal blocks $w$ with
-$\mathrm{Stab}(w)\cap O_{e}=K$ and whose edges $w\to W_{j}(w)$ are labelled $j$.  Conversely, a cycle in $G_{K}$ whose
-labels $j_{0},\dots,j_{p-1}$ are not all equal unrolls to a tiling in the hull whose axis position
-$-\sum_{m}j_{m}2^{m}=J/(1-2^{p})$, $J=\sum_{m<p}j_{m}2^{m}$, is not an integer since $0<|J|<2^{p}-1$; by
-Lemma~\ref{lem:axes}(3) its symmetry group is then cyclic about $A$, hence $K$.  A computation finds such components for
-$C_{2}^{\mathrm{diag}}$ (14 blocks on each face-diagonal axis) and $C_{4}$ (4 blocks).  For a half-turn about a coordinate
-axis the 18 blocks of $G_{K}$, among them blocks whose full stabiliser is $D_{4}$ or a Klein group, form only components of
-constant shift.  For each group found, explicit patches of 3{,}800 to 20{,}000 tiles have exactly that symmetry group.
+$\mathrm{Stab}(w)\cap O_{e}=K$ and whose edges $w\to W_{j}(w)$ are labelled $j$.
+
+Conversely, take a cycle in $G_{K}$ whose labels $j_{0},\dots,j_{p-1}$ are not all equal and unroll it periodically:
+$v_{n}=p-x_{n}e$ with $x_{n}=\sum_{m<n}j_{m}2^{m}$.  With $J_{i}=\sum_{m<p}j_{i+m}2^{m}$ (indices mod $p$) and
+$y_{i}=J_{i}/(1-2^{p})$, induction gives $x_{n}=y_{0}-2^{n}y_{n\bmod p}$; since $0<|J_{i}|<2^{p}-1$, $|x_{n}|\le\mu2^{n}+1$ with
+$\mu=\max_{i}|J_{i}|/(2^{p}-1)<1$, so the blocks cover cubes of half-width $(1-\mu)2^{n}-1$ about $p$ and define a tiling in
+the hull.  Every element of $K$ fixes $A$ and stabilises every $w_{n}$ about $v_{n}\in A$, so $K\le\mathrm{Sym}(T)$.  A point
+$p+ze$ lies in every $L_{n}$ only if $z$ is the $2$-adic number $-y_{0}$, which is not an integer; by
+Lemma~\ref{lem:axes}(3) the symmetry group is cyclic about $A$, hence $K$.
+
+A computation finds such components for $C_{2}^{\mathrm{diag}}$ (14 blocks on each face-diagonal axis) and $C_{4}$
+(4 blocks).  For a half-turn about a coordinate axis the 18 blocks of $G_{K}$, among them blocks whose full stabiliser is
+$D_{4}$ or a Klein group, form only components of constant shift.  Explicit tilings built from such cycles show exactly the
+predicted group on large central regions; that is a consistency check, and the exclusion of further symmetries rests on the
+argument above.
 \end{proof}
 
 \begin{remark}
 \label{rem:order8}
-In particular $|\mathrm{Sym}(T)|\le8$, and the bound is attained.  No Chair44 tiling has a $3$-fold axis, a Klein
+In particular $|\mathrm{Sym}(T)|\le8$, and the bound is attained.  No atlas tiling has a $3$-fold axis, a Klein
 four-group of symmetries, or exactly a $2$-fold coordinate axis.
 \end{remark}
 
@@ -861,13 +910,12 @@ Nor does the bound of $8$ conflict with the $24$ orientations that occur in a de
 (Fact~\ref{fact:chairtwist}): by Theorem~\ref{thm:hull} every tiling contains all of them, and it is symmetric under
 at most a third of the $24$ rotations.
 
-\textbf{Scope.}  Theorem~\ref{thm:hull}, Corollary~\ref{cor:hull} and Theorem~\ref{thm:sym} are conditional on~(R)
-and~(H), and the corollary on the theorem of Lee, Moody and Solomyak; all three inputs are quoted.  The count in
-Lemma~\ref{lem:blocks} was made on the upstream atlas and again on our own (\code{chair44\_hull\_admissible.py}); the
-axial-group analysis and the explicit patches are the second author's computations.  These are not recomputed in the build
-of this paper.  What the build recomputes is the language of legal blocks, its closure, the fixed seeds and their
-stabilisers.  None of this bears on the einstein property or on strong aperiodicity of the
-Chair44, which remain Tsiokos's claim.
+\textbf{Scope.}  For atlas tilings, Theorem~\ref{thm:hull}, Corollaries~\ref{cor:contacts} and~\ref{cor:hull} and
+Theorem~\ref{thm:sym} rest on~(H), whose finite conditions are reproduced, on Lemma~\ref{lem:blocks}, and, for the
+corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they are conditional on~(R).  The admissible-block
+count, the axial-group analysis and the explicit patches are the second author's computations, repeated independently; the
+build of this paper recomputes the language of legal blocks, its closure, the fixed seeds and their stabilisers.  None of
+this bears on the einstein property or on strong aperiodicity of the Chair44, which remain Tsiokos's claim.
 
 \subsection{Uniform frequencies hold in boxes, not along lines}
 \label{sec:lines}
@@ -1337,7 +1385,7 @@ $\mathbb{Z}^{3}$, no contracting direction, no twist, an exactly computable pure
 and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic.
 
 What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
-on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved from the registration and parent-tiling facts of~\cite{Tsiokos1,GoodmanStrauss}, which are quoted, and from a count of admissible blocks that this paper does not repeat; the counts of legal blocks and fixed seeds are recomputed.
+on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's unique-hierarchy argument (whose finite conditions are reproduced) and from a count of admissible blocks that this paper does not repeat; for tilings by the solid they are conditional on Tsiokos's registration theorem, quoted.  The counts of legal blocks and fixed seeds are recomputed.
 That the Spectre diffraction is pure point is a published theorem and is quoted.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
@@ -1398,9 +1446,13 @@ arXiv:2609.24779.
 \bibitem{Flicker} F.~Flicker (2026). \emph{Matching rules for a three-dimensional strongly aperiodic monotile},
 arXiv:2609.23783.
 
-\bibitem{Romanov} T.~Romanov (2026). \emph{Every Chair44 tiling is a substitution tiling, and its symmetry
-groups}.  Draft of 24 October 2026; the computations are \code{chair44\_vertex\_blocks.py},
-\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}, and merged into \href{https://github.com/brentharts/six-birds-tiles/commit/ae6ecff1a32fc195f031f131a23c52243dfa9fb1}{commit ae6ecff}
+\bibitem{Romanov} T.~Romanov (2026). \emph{The hull and the symmetry groups of Chair44 tilings}, draft.  The
+computations are \code{chair44\_vertex\_blocks.py}, \code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py},
+run on commit \code{d53d224} of~\cite{Tsiokos1} and merged into
+\href{https://github.com/brentharts/six-birds-tiles/tree/main/verify/hull}{six-birds-tiles, \code{verify/hull}}; an independent
+implementation, the reproduction of Kamenetsky's finite conditions and the $O$-orbit certificate of the lemma
+(\code{c44lemma\_cert.py}, \code{lemmaA\_orbits.json}) are in
+\url{https://github.com/romanov360/big-bang-monotile/tree/independent-review/research/independent}.
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.

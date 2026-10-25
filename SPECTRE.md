@@ -99,18 +99,17 @@ midpoints are the three non-zero points of E[2], and the two hexagon vertices ar
 non-zero points of E[√−3]. R cycles the 2-torsion points and swaps the vertices; the six
 Mystic classes are one orbit of ℤ/6 = ℤ/3 × ℤ/2. **The group structure is exact.**
 
-Why there are six and no more. The kite tiling is isohedral with symmetry group p6m = Λ ⋊ D₆,
-and every kite's axis lies on a mirror line of p6m. So the isometry carrying one Mystic onto
-another (both unions of lattice kites) carries a lattice kite onto a lattice kite and lies in
-p6m. The Mystic has no symmetry, and all placements of one level have one handedness (each
-level composes every placement with one of the substitution's eight reflections). Hence the
-fibre classes are in bijection with the rotations by multiples of 60° that occur: **at most
-six, with the anchor fixed by the angle** (the bound of 72 = 12 angles × 6 sites treated angle
-and anchor as independent). A level-n Δ supertile contains a level-(n−1) Δ supertile, so all
-six rotations occur at every n ≥ 3, because they occur at n = 3. **The six-class statement
-for all n ≥ 3 therefore reduces to one input: that the level-n patch lies on the kite
-lattice.** That is asserted for every level built (through n = 5), where every Mystic is
-checked to be a p6m image of the first; a proof for all n is open.
+Why there are six and no more (here "Mystic" is Γ2 alone; in the Spectre papers it is the pair Γ1 ∪ Γ2, with the
+same classes). Every tile of every level lies on the kite lattice K. The child placement maps of each level lie in
+p6m(K): a finite-state induction on the classes mod Λ of the supertile quad points, proved for all levels in exact
+arithmetic (`mystic_exact/c3_alln.py`). All placements of one level have one handedness, because each level composes
+every placement with one of the substitution's eight reflections. The Mystic has no symmetry. So the fibre classes are in
+bijection with the rotations by multiples of 60° that occur: **at most six, with the anchor fixed by the angle**. (The
+bound of 72 = 12 angles × 6 sites treated angle and anchor as independent.) A level-n Δ supertile contains a
+level-(n−1) Δ supertile, so all six rotations occur at every n ≥ 3. **So "six classes for every n ≥ 3" is proved.** It is
+checked in floating point through n = 4 (`spectre_mystic_fibres.py --check`) and exactly through n = 5
+(`mystic_exact/run_c3.py`). It is a routine fact about p6m rather than a deep one, and the Hat-point patch is a
+hat-and-turtle tiling, not a hat tiling.
 The Spectre itself is not on this lattice (its area is 3 + √3 kites).
 ([`spectre_mystic_fibres.py`](spectre_mystic_fibres.py), [`spectre_torsion.py`](spectre_torsion.py).)
 

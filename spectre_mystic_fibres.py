@@ -24,20 +24,16 @@ level n of the Delta-seeded substitution,
       every g is a symmetry of the kite lattice, all Mystics of a level share one handedness,
       and the fibre class of a Mystic is fixed by the rotation part of g alone.
 
-Why the classes are at most six.  The [3.4.6.4] kite tiling is isohedral with symmetry group
-p6m = Lambda x| D6 (D6 the point group at a hexagon centre), and the axis of every kite lies
-on a mirror line of p6m.  If two Mystics M_0 and M are both unions of lattice kites, the
-isometry g carrying M_0 to M carries a lattice kite onto a lattice kite, and both isometries
-that do so (one and its composite with the kite's mirror) are in p6m; so g lies in p6m.
-M_0 has no symmetry, so the placements of Mystics modulo Lambda are elements of
-p6m / Lambda = D6, and all placements of one level have one determinant (each level composes
-every placement with one of the eight reflections of the substitution).  Hence the fibre
-classes of a level are in bijection with the rotations by multiples of 60 degrees that occur:
-there are at most six, and the anchor of a class is fixed by its angle.  A level-n Delta
-supertile contains a level-(n-1) Delta supertile (row Delta of the substitution matrix is all
-ones), so all six rotations occur at every level n >= 3 because they occur at level 3.  The
-remaining input is that the level-n patch lies on the kite lattice, which the selftest
-asserts for every level it builds.
+Why the classes are at most six.  Here "Mystic" is Gamma2 = Tile(sqrt3, 1) alone (in the Spectre papers the Mystic is
+the pair Gamma1 + Gamma2; either gives the same classes).  Every tile of every level lies on the [3.4.6.4] kite lattice K:
+the child placement maps of each level lie in p6m(K), which is a finite-state induction on the classes mod Lambda of the
+supertile quad points, proved for all levels in exact arithmetic by mystic_exact/c3_alln.py.  All placements of a level have
+one determinant (each level composes every placement with one of the eight reflections of the substitution), and the
+Mystic has no symmetry.  So two Mystics of one level differ by a rotation in 60 degree steps composed with a translation in
+Lambda, and the fibre classes are in bijection with the rotations that occur: at most six, the anchor fixed by the angle.
+A level-n Delta supertile contains a level-(n-1) Delta supertile (row Delta of the substitution matrix is all ones), so
+all six occur at every level n >= 3.  The selftest below checks this in floating point through level 4; mystic_exact/
+checks it exactly through level 5 and proves registration for every level.
 
 Everything is done in double precision on coordinates in Z[sqrt3]; keys are
 rounded at 1e-6, and the selftest asserts that every vertex of every tile is a
@@ -247,7 +243,9 @@ def placements(polys):
         dets[det] += 1
         angs[ang] += 1
         q = MI @ b
-        in_p6m &= (det == -1 or ang % 60 == 0) and np.allclose(q, np.round(q), atol=1e-6)
+        # proper: a rotation by a multiple of 60 degrees; improper: a reflection in a line at a multiple of 30 degrees,
+        # i.e. atan2 of its first column a multiple of 60 degrees.  Either way ang % 60 == 0.
+        in_p6m &= ang % 60 == 0 and np.allclose(q, np.round(q), atol=1e-6)
     return dets, angs, in_p6m, len(classes_of(polys))
 
 
@@ -271,7 +269,7 @@ def selftest(depths=(1, 2, 3, 4)):
             for p in P:
                 assert site_kind(p, np.zeros(2)), "vertex off the lattice"
         # area: Hat = 8 kites, Mystic = 10 kites (kite area sqrt3)
-        for P, l in polys[:200]:
+        for P, l in polys:
             x, y = P[:, 0], P[:, 1]
             A = 0.5 * abs(np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1)))
             assert abs(A / S3 - (10 if l == "Gamma2" else 8)) < 1e-6, (l, A / S3)
