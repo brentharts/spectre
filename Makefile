@@ -47,6 +47,8 @@ install_cicy:
 facts:
 	PYTHONPATH=../CICY $(PYTHON) spectrefacts.py --selftest
 	$(PYTHON) monotilefacts.py --selftest
+	$(PYTHON) chair44facts.py --selftest
+	$(PYTHON) chair44_hull.py --tests
 
 atlas:
 	$(PYTHON) spectreatlas.py --selftest
