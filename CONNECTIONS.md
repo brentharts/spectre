@@ -28,12 +28,12 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md),
 | 3 | Kasner denominator 1+u+u² is an Eisenstein norm, so lives on the same ℤ[ζ₃] lattice as the cusp torus; equals 7λ² at u* | **Exact** | `spectre_bkl.py` |
 | 4 | The "44" of Chair44 is the era length of the perimeter BKL orbit | **Numerology** (flagged in the module; the sentence should read as coincidence) | `spectre_bkl.py` |
 | 5 | 60° rotation of the Spectre lift acts as diag(ω,ω) on two complex planes; ℤ/6 ⊂ the Hopf circle; 30° swaps the planes | **Exact**, **Elementary** | `lift4d.py`, [`HOPF.md`](HOPF.md) §5 |
-| 6 | The six Mystic classes form one ℤ/6 = ℤ/3 × ℤ/2 orbit on the torsion points of the hexagonal torus | **Exact** (group), **Counted** (that all six occur; "for all n ≥ 3" is a conjecture) | `spectre_torsion.py`, `spectre_mystic_fibres.py` |
+| 6 | The six Mystic classes form one ℤ/6 = ℤ/3 × ℤ/2 orbit on the torsion points of the hexagonal torus | **Exact** (group; classes = rotations that occur, ≤ 6; six for every n ≥ 3, with registration at every level proved by an exact finite-state induction in `mystic_exact/`) | `spectre_torsion.py`, `spectre_mystic_fibres.py` |
 | 7 | The ℤ/6 of direction mod 180° (boundary-edge histogram) is the same group as in 6 | **Exact** as a group; not shown to be the same *action* | `chair44_spectre_link.py` |
 | 8 | Pancake cosmology: fibre clock gives N = 6.0900… levels per turn, "≈ 6 = |ℤ/6|" | **Numerology** (1.5 % off; a₀ is free) | `spectre_pancake.py` |
 | 9 | Spectre pure-point diffraction via the internal contracting plane | **Exact** for the integer lift and bounded contracting plane; diffraction plots are computation, not Facts | `lift4d.py`, `spectre_diffraction.py` |
 | 10 | Chair44 pure-point, limit-periodic, internal space ℤ₂³ | **Quoted** (Lee–Moody/Schlottmann) + **Exact** finite part (primitivity, coincidence at M = 3) | `chair44_twoadic.py` |
-| 11 | Chair44 hull theorem: every tiling is in the hull; Sym ∈ {1, C₂, C₄, D₄} | **Conditional** on (R) and (H) | Romanov; `chair44_hull*.py` |
+| 11 | Chair44 hull theorem: every atlas tiling is in the hull; Sym ∈ {1, C₂(diag), C₄, D₄}; only 30 of 44 contacts occur | **Exact** (computer-assisted, independently repeated) for atlas tilings; for the solid, via Tsiokos's registration theorem (R), **Quoted** and independently audited (`chair44_independent/`) | Romanov; `chair44_hull*.py` |
 | 12 | Box averages are uniform (1/168), line averages are not: 6 chair stacks give ballistic sums along the body diagonal | **Exact** | `chair44_lines.py` |
 | 13 | No lattice direction is uniquely ergodic | **Conditional** (hull picture; irrational directions not covered) | `chair44_lines.py` |
 | 14 | Spectre and Chair44 as the "same kind of object" (both have an inflation) | **Elementary** — the difference is the point: Pisot unit + real internal space versus integer inflation + 2-adic internal space | `chair44_vs_spectre.py` |

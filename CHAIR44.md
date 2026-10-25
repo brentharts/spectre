@@ -77,14 +77,22 @@ somewhere in it. A tiling is **uniform** if every patch appears with a well-defi
 frequency, with convergence uniform in position. The question: is *every* Chair44
 tiling of space — however you build it — in the substitution hull?
 
-Tristan Romanov's theorem, written up in the joint paper (§ "Every tiling lies in the
-hull"): **yes, conditional on two quoted facts**, the registration lemma **(R)**
-(Tsiokos) and the unique-parent-tiling property **(H)** (Goodman-Strauss). Given
-those, every tiling is in the hull, and its symmetry group is one of
-**1, C₂ (about a face-diagonal axis), C₄, D₄**, with at most 8 elements. The space of
-tilings is the hull of a regular model set with internal space ℤ₂³. *(Quoted/Conditional;
-the finite computations behind it are Exact, and the two hypotheses are not
-re-derived here.)*
+Tristan Romanov's theorem is written up in the joint paper (§ "Every tiling lies in the hull").
+- **For atlas tilings** (registered chair tilings whose face contacts all lie in the 44-contact atlas): **yes**.
+  - Every such tiling is in the hull.
+  - Its symmetry group is one of **1, C₂ (about a face-diagonal axis), C₄, D₄**, so it has at most 8 elements.
+  - Only 30 of the 44 contacts ever occur.
+  - The unique hierarchy **(H)** is Kamenetsky's Prop. 7.1, whose finite conditions were reproduced independently.
+- **For tilings by the solid**, the same holds **by Tsiokos's registration theorem (R)**: every tiling by the solid is
+  an atlas tiling.
+  - (R) is quoted. Its proof has been audited independently: every written step checked, every finite input recomputed
+    in exact arithmetic, and all 5,273 collision witnesses checked. See
+    [`chair44_independent/REGISTRATION_AUDIT.md`](chair44_independent/REGISTRATION_AUDIT.md).
+  - It has not been refereed.
+- **The hull** Ω_σ is minimal, uniquely ergodic, pure point, and the hull of a regular model set with internal space ℤ₂³.
+  The set of *all* tilings by the solid is the union of the translates gΩ_σ, one for each isometry g, and is not minimal.
+- *(Exact finite computations, repeated by an independent implementation with an O-orbit certificate, in
+  [`chair44_independent/`](chair44_independent/). (R) is quoted and audited.)*
 
 Consequence worth knowing: because the hull is uniquely ergodic on *boxes*, every
 fixed-size cube drawn anywhere contains each of the 168 labels with the same limiting
@@ -140,8 +148,8 @@ same four lines are where determination is slowest and where line averages fail.
 
 ## 6. What is not established
 
-* The hull theorem is conditional on (R) and (H); we recompute only their finite
-  consequences.
+* For tilings by the solid, the hull theorem rests on Tsiokos's registration theorem (R). It is independently audited,
+  but not refereed. (H) is Kamenetsky's Prop. 7.1, with its finite conditions reproduced.
 * No proof for irrational directions; no claim for 2D slices or planes beyond the
   [`chair44_slice.py`](chair44_slice.py) computations.
 * "Chair44 behaves like a quasicrystal in gravity / cosmology" is **not** claimed anywhere.

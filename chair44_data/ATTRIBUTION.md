@@ -1,6 +1,7 @@
 # Attribution
 
-`r44_solid.json`, `native_panels.csv` and the extracts in `r44_atlas.json`
+`r44_solid.json`, `native_panels.csv`, `companion_collision_certificate.json` (the 5,273
+collision witnesses of the registration census) and the extracts in `r44_atlas.json`
 (substitution children and the 44-contact atlas) are taken from
 https://github.com/ioannist/six-birds-tiles (Chair44 / R44) by Ioannis Tsiokos,
 (c) 2026, licensed CC BY 4.0. See arXiv:2609.19214 and arXiv:2609.23783.
