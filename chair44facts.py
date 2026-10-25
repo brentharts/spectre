@@ -390,7 +390,7 @@ def register():
                     three_fold_axis=False, klein_four=False, c2_coordinate_axis=False,
                     pure_point=True, limit_periodic_hull=True, internal_space='Z_2^3',
                     scope='atlas tilings (registered, all face contacts in the 44-contact atlas); for tilings by '
-                          'the solid Q conditional on registration (R)',
+                          'the solid Q via registration (R), quoted and independently audited',
                     inputs=['registration (R), for the solid only', 'unique hierarchy (H), Kamenetsky Prop. 7.1']),
          method='Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells '
                 'around a lattice vertex (360,189 admissible blocks in 15,214 O-orbits, each with all 27 child '

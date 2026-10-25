@@ -530,7 +530,10 @@ Two inputs are taken from the literature and are not re-derived here.
 \begin{description}
 \item[(R)] Every tiling by $Q$ is, up to an isometry, an atlas tiling: it is registered, and every pair of tiles sharing a
 feature is in a relative pose among the legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}; every shared unit face carries
-features.  This is the geometric half of~\cite{Tsiokos1}; its written proof has not been independently refereed.
+features.  This is the geometric half of~\cite{Tsiokos1}.  Its written proof has been independently audited step by step,
+and all of its finite inputs recomputed in exact arithmetic, including each of the $5{,}273$ collision witnesses
+(\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md})~\cite{Romanov}; no gap was found.
+It has not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky}, a short argument from three finite
 conditions (coarsening closure $30\to44$ with $\Sigma(P^{*})=2P^{*}$, tight facet rules, and unique parents for the $33$
@@ -555,7 +558,7 @@ $360{,}213$ admissible blocks and $24$ failures.  The count runs for minutes, so
 
 \begin{thm}
 \label{thm:hull}
-Every atlas tiling lies in the hull $\Omega_{\sigma}$ of the substitution.  Hence, conditional on~(R), every tiling by $Q$
+Every atlas tiling lies in the hull $\Omega_{\sigma}$ of the substitution.  Hence, by~(R), every tiling by $Q$
 lies, up to an isometry, in $\Omega_{\sigma}$.
 \end{thm}
 
@@ -582,7 +585,7 @@ realise exactly the $30$ supertile contacts.
 \label{cor:hull}
 $\Omega_{\sigma}$, under translations of $\mathbb{R}^{3}$, is minimal and uniquely ergodic with pure-point dynamical spectrum,
 and it is the hull of a regular model set with internal space $\mathbb{Z}_{2}^{3}$.  Every atlas tiling is pure-point
-diffractive; conditional on~(R), so is every tiling by $Q$.
+diffractive; by~(R), so is every tiling by $Q$.
 \end{cor}
 
 \begin{proof}
@@ -615,7 +618,7 @@ $8$~\cite{Tsiokos1}.
 \begin{thm}
 \label{thm:sym}
 For every atlas tiling $T$, $\mathrm{Sym}(T)$ is conjugate in $O$ to exactly one of $1$, $C_{2}^{\mathrm{diag}}$ (a half-turn
-about a face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.  Conditional on~(R), the same holds for every tiling
+about a face-diagonal axis), $C_{4}$ and $D_{4}$, and each occurs.  By~(R), the same holds for every tiling
 by $Q$.
 \end{thm}
 
@@ -705,7 +708,7 @@ at most a third of the $24$ rotations.
 
 \textbf{Scope.}  For atlas tilings, Theorem~\ref{thm:hull}, Corollaries~\ref{cor:contacts} and~\ref{cor:hull} and
 Theorem~\ref{thm:sym} rest on~(H), whose finite conditions are reproduced, on Lemma~\ref{lem:blocks}, and, for the
-corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they are conditional on~(R).  The admissible-block
+corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they also rest on~(R), quoted and independently audited but not refereed.  The admissible-block
 count, the axial-group analysis and the explicit patches are the second author's computations, repeated independently; the
 build of this paper recomputes the language of legal blocks, its closure, the fixed seeds and their stabilisers.  None of
 this bears on the einstein property or on strong aperiodicity of the Chair44, which remain Tsiokos's claim.
@@ -1420,7 +1423,8 @@ expanding and two contracting directions: an exact internal plane whose window h
 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no internal space and no twist, and its centre set has an exactly
 computed pure-point diffraction measure.  Every lattice-registered tiling obeying its $44$ contact rules lies in the
 substitution hull, so this holds for all of them, and the symmetry group of such a tiling is one of $1$, $C_{2}$, $C_{4}$,
-$D_{4}$; for tilings by the Chair44 solid this is conditional on its registration theorem.  Orientation sums and contact matrices
+$D_{4}$; by Tsiokos's registration theorem, whose proof is independently audited, the same holds for every tiling by the
+Chair44 solid.  Orientation sums and contact matrices
 separate the two.  Four finite-patch
 computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
 arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
@@ -1455,8 +1459,8 @@ Spectre's substitution hierarchy can serve as a clock.
 
 What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
 input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; the hull theorem of
-Section~\ref{sec:hull} is proved for tilings obeying the contact rules and, for the solid, is conditional on Tsiokos's
-registration theorem~\cite{Tsiokos1}, quoted; that the Spectre diffraction is pure
+Section~\ref{sec:hull} is proved for tilings obeying the contact rules and, for the solid, rests on Tsiokos's
+registration theorem~\cite{Tsiokos1}, quoted and independently audited; that the Spectre diffraction is pure
 point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here.  Section~\ref{sec:conclusion} lists the rest.
 """)
 
@@ -1900,7 +1904,7 @@ $\mathbb{Z}^{3}$, no contracting direction, no twist, an exactly computable pure
 and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic.
 
 What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
-on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's unique-hierarchy argument (whose finite conditions are reproduced) and from a count of admissible blocks that this paper does not repeat; for tilings by the solid they are conditional on Tsiokos's registration theorem, quoted.  The counts of legal blocks and fixed seeds are recomputed.
+on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's unique-hierarchy argument (whose finite conditions are reproduced) and from a count of admissible blocks that this paper does not repeat; for tilings by the solid they rest on Tsiokos's registration theorem, quoted and independently audited (its written steps checked, all of its finite inputs recomputed), though not refereed.  The counts of legal blocks and fixed seeds are recomputed.
 That the Spectre diffraction is pure point is a published theorem and is quoted.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
@@ -1989,9 +1993,10 @@ arXiv:2609.23783.
 computations are \code{chair44\_vertex\_blocks.py}, \code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py},
 run on commit \code{d53d224} of~\cite{Tsiokos1} and merged into
 \href{https://github.com/brentharts/six-birds-tiles/tree/main/verify/hull}{six-birds-tiles, \code{verify/hull}}; an independent
-implementation, the reproduction of Kamenetsky's finite conditions and the $O$-orbit certificate of the lemma
-(\code{c44lemma\_cert.py}, \code{lemmaA\_orbits.json}) are in
-\url{https://github.com/romanov360/big-bang-monotile/tree/independent-review/research/independent}.
+implementation, the reproduction of Kamenetsky's finite conditions, the $O$-orbit certificate of the lemma
+(\code{c44lemma\_cert.py}, \code{lemmaA\_orbits.json}) and the audit of Tsiokos's registration theorem
+(\code{registration\_audit.py}, \code{REGISTRATION\_AUDIT.md}) are in the directory \code{chair44\_independent} of this
+repository.
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.
@@ -2295,7 +2300,7 @@ def selftest():
           and ', '.join(str(x) for x in hu['per_depth']) in hull)
     check('the inputs (R) and (H) are named as quoted and the admissible count as not repeated',
           '(R)' in hull and '(H)' in hull and 'are not re-derived here' in hull
-          and 'does not repeat it' in hull and 'conditional on' in hull)
+          and 'does not repeat it' in hull and 'independently audited' in hull)
     check('the statements match the quoted Fact',
           ht['hull'] and set(ht['groups']) >= {'1', 'C4', 'D4'} and r'$1$, $C_{2}^{\mathrm{diag}}$' in hull
           and r'|\mathrm{Sym}(T)|\le8' in hull and 'does not conflict with Fact' in hull)
