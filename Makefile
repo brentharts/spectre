@@ -49,6 +49,7 @@ facts:
 	$(PYTHON) monotilefacts.py --selftest
 	$(PYTHON) chair44facts.py --selftest
 	$(PYTHON) chair44_hull.py --tests
+	$(PYTHON) chair44_lines.py --tests
 
 atlas:
 	$(PYTHON) spectreatlas.py --selftest
