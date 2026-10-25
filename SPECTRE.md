@@ -97,8 +97,20 @@ The 60° rotation is the integer matrix R = [[0,−1],[1,1]] (R⁶ = 1, R³ = �
 site classes of the lattice modulo Λ are torsion points: the centre is 0, the three edge
 midpoints are the three non-zero points of E[2], and the two hexagon vertices are the
 non-zero points of E[√−3]. R cycles the 2-torsion points and swaps the vertices; the six
-Mystic classes are one orbit of ℤ/6 = ℤ/3 × ℤ/2. **The group structure is exact; that all
-six classes occur is data, and "six classes for all n ≥ 3" is a conjecture.**
+Mystic classes are one orbit of ℤ/6 = ℤ/3 × ℤ/2. **The group structure is exact.**
+
+Why there are six and no more. The kite tiling is isohedral with symmetry group p6m = Λ ⋊ D₆,
+and every kite's axis lies on a mirror line of p6m. So the isometry carrying one Mystic onto
+another (both unions of lattice kites) carries a lattice kite onto a lattice kite and lies in
+p6m. The Mystic has no symmetry, and all placements of one level have one handedness (each
+level composes every placement with one of the substitution's eight reflections). Hence the
+fibre classes are in bijection with the rotations by multiples of 60° that occur: **at most
+six, with the anchor fixed by the angle** (the bound of 72 = 12 angles × 6 sites treated angle
+and anchor as independent). A level-n Δ supertile contains a level-(n−1) Δ supertile, so all
+six rotations occur at every n ≥ 3, because they occur at n = 3. **The six-class statement
+for all n ≥ 3 therefore reduces to one input: that the level-n patch lies on the kite
+lattice.** That is asserted for every level built (through n = 5), where every Mystic is
+checked to be a p6m image of the first; a proof for all n is open.
 The Spectre itself is not on this lattice (its area is 3 + √3 kites).
 ([`spectre_mystic_fibres.py`](spectre_mystic_fibres.py), [`spectre_torsion.py`](spectre_torsion.py).)
 

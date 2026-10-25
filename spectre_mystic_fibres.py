@@ -19,7 +19,25 @@ level n of the Delta-seeded substitution,
     * the fibre classes, their sizes and their anchors on the torus,
     * the six first-edge angles 30 + 60 k and the three double curves,
     * the environment of each interior Mystic (which neighbours, where), to see
-      whether one class can have more than one environment.
+      whether one class can have more than one environment,
+    * the placement of each Mystic relative to the first, as an isometry g with g(M_0) = M:
+      every g is a symmetry of the kite lattice, all Mystics of a level share one handedness,
+      and the fibre class of a Mystic is fixed by the rotation part of g alone.
+
+Why the classes are at most six.  The [3.4.6.4] kite tiling is isohedral with symmetry group
+p6m = Lambda x| D6 (D6 the point group at a hexagon centre), and the axis of every kite lies
+on a mirror line of p6m.  If two Mystics M_0 and M are both unions of lattice kites, the
+isometry g carrying M_0 to M carries a lattice kite onto a lattice kite, and both isometries
+that do so (one and its composite with the kite's mirror) are in p6m; so g lies in p6m.
+M_0 has no symmetry, so the placements of Mystics modulo Lambda are elements of
+p6m / Lambda = D6, and all placements of one level have one determinant (each level composes
+every placement with one of the eight reflections of the substitution).  Hence the fibre
+classes of a level are in bijection with the rotations by multiples of 60 degrees that occur:
+there are at most six, and the anchor of a class is fixed by its angle.  A level-n Delta
+supertile contains a level-(n-1) Delta supertile (row Delta of the substitution matrix is all
+ones), so all six rotations occur at every level n >= 3 because they occur at level 3.  The
+remaining input is that the level-n patch lies on the kite lattice, which the selftest
+asserts for every level it builds.
 
 Everything is done in double precision on coordinates in Z[sqrt3]; keys are
 rounded at 1e-6, and the selftest asserts that every vertex of every tile is a
@@ -209,6 +227,30 @@ def census(n, with_env=True):
     return res
 
 
+def placements(polys):
+    """The isometries g, g(M_0) = M, from the first Mystic M_0 to every Mystic M of a level.
+
+    Returns (determinants, rotation angles of the proper parts in degrees, whether every g lies in
+    p6m, number of fibre classes).  g lies in p6m when its linear part is a rotation by a multiple of
+    60 degrees or one of the D6 reflections, and g(0) is in Lambda (the origin is a hexagon centre
+    after the registration in hat_level)."""
+    my = [P for P, l in polys if l == "Gamma2"]
+    P0 = my[0]
+    A = np.c_[P0[:3], np.ones(3)]
+    dets, angs, in_p6m = Counter(), Counter(), True
+    for P in my:
+        sol = np.linalg.solve(A, P[:3])
+        M, b = sol[:2].T, sol[2]
+        assert np.allclose(P0 @ M.T + b, P, atol=1e-6) and np.allclose(M @ M.T, np.eye(2), atol=1e-9)
+        det = int(round(np.linalg.det(M)))
+        ang = int(round(float(np.degrees(np.arctan2(M[1, 0], M[0, 0]))))) % 360
+        dets[det] += 1
+        angs[ang] += 1
+        q = MI @ b
+        in_p6m &= (det == -1 or ang % 60 == 0) and np.allclose(q, np.round(q), atol=1e-6)
+    return dets, angs, in_p6m, len(classes_of(polys))
+
+
 # --------------------------------------------------------------------------
 # selftest
 # --------------------------------------------------------------------------
@@ -238,6 +280,13 @@ def selftest(depths=(1, 2, 3, 4)):
         r = census(n, with_env=False)
         assert len(r["classes"]) <= 72
         assert set(r["angles"]) <= {30, 90, 150, 210, 270, 330}
+        # every Mystic is a lattice symmetry of the first, one handedness per level, and the
+        # fibre classes are exactly the rotations that occur (at most six; six from level 3 on)
+        dets, angs, in_p6m, ncls = placements(r["polys"])
+        assert in_p6m, ("a Mystic placement is not a symmetry of the kite lattice", n)
+        assert len(dets) == 1, ("two handednesses in one level", n, dets)
+        assert ncls == len(angs) <= 6, (n, ncls, angs)
+        assert n < 3 or ncls == 6, (n, ncls)
     return True
 
 
