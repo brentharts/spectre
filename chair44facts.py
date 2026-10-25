@@ -133,7 +133,7 @@ KIND = {
     'chair_chiral': 'D', 'chair_forced_chirality': 'D', 'chair_orientation': 'D',
     'chair_surface': 'CX', 'chair_exponents': 'D', 'chair_coincidence': 'DX',
     'chair_twist': 'D', 'chair_nets': 'CX', 'chair_slices': 'CX', 'orientation_sums': 'C', 'power_slopes': 'P', 'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
-    'chair_legal_blocks': 'DX', 'chair_hull_theorem': 'QP',
+    'chair_legal_blocks': 'DX', 'chair_hull_theorem': 'QP', 'chair_lines': 'DX',
 }
 _REGISTERED = False
 
@@ -396,6 +396,38 @@ def register():
                 'contacts in the 44-contact atlas and has a unique parent tiling (Tsiokos; Goodman-Strauss); '
                 'the pure-point and limit-periodic conclusions then use the cited Lee-Moody theorem')
 
+    import chair44_lines as LN
+    lr = LN.report()
+    asint = lambda q: int(q) if q.denominator == 1 else q
+    fact(key='chair_lines',
+         claim=r'\text{box means of the height and notch observables are }0;\ 6\ \text{chair stacks give diagonal lines with means }\mp36,\pm1',
+         value=dict(
+             row_sums=lr['box']['row_sums'], col_sums=lr['box']['col_sums'], primitive=lr['box']['primitive'],
+             box_means={k: asint(v) for k, v in lr['box']['means'].items()},
+             pyramid_native=lr['pyramid_native'],
+             stack_labels=[s_['label'] for s_ in lr['stack']], stack_notches=[s_['notch'] for s_ in lr['stack']],
+             stack_length=lr['stack'][0]['length'],
+             stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['cells_cover_cube']
+                                for s_ in lr['stack']),
+             tube=dict(holds=all(h for h, _, _ in lr['tube'].values()), cases=[c for _, c, _ in lr['tube'].values()],
+                       differences=7),
+             corner={b: [dict(size=k['size'], means={n: asint(v) for n, v in k['means'].items()})
+                         for k in c['classes']] for b, c in lr['corner'].items()}),
+         method='exact, from the cell substitution of chair44_twoadic. (1) The 168 x 168 substitution matrix has all row '
+                'and column sums 8 and is primitive, so every label has frequency 1/168 and the box mean of a cell '
+                'observable is its mean over the labels: 0 for the signed pyramid heights of a cell (the 192 heights '
+                'sum to zero; only two native cells carry height, -36 and +36) and 0 for each notch component. (2) '
+                'Six labels j have sigma[j,0] = sigma[j,7] = j: native cell 0 of chairs with notch along +-(1,1,1). '
+                'They form a stack, each chair filling the notch of the next; each of the 7 cells gives a diagonal '
+                'line of identical labels in sigma^n(j) for every n (the induction needs 14 finite cases, checked) so '
+                'the height sums to -36 L and +36 L on two lines and every notch component to +-L. (3) On the line '
+                'through the corner of sigma^n(j) in direction b in {0,1}^3 the labels are the fixed word of the '
+                'constant-length-2 substitution sigma[j,0] sigma[j,b]; its closed classes (one class of 4 for the '
+                'six axis and face-diagonal directions, six fixed letters for the body diagonal) and exact letter '
+                'frequencies give the exact line means; also read off the label cube. The general statement that no '
+                'lattice direction is uniquely ergodic is an argument in the paper conditional on the Z_2^3 internal '
+                'space, not computed. Irrational directions are not covered.')
+
     # ---- Spectre side
     seq = F.BOUNDARY_SEQ
     closed = [2 * fib(3 * k + 5) + 4 for k in range(len(seq))]
@@ -470,6 +502,15 @@ def selftest(full=False):
        and hb['rotation_closed'], 'fixed seeds and stabilisers')
     ht = get('chair_hull_theorem').value
     ok(ht['hull'] and ht['max_order'] == 8 and not ht['three_fold_axis'] and len(ht['groups']) == 4, 'hull theorem as quoted')
+    ln = get('chair_lines').value
+    ok(ln['row_sums'] == ln['col_sums'] == [8] and ln['primitive'] and all(v == 0 for v in ln['box_means'].values()),
+       'box means are zero')
+    ok(ln['pyramid_native'] == [0, 0, 0, -36, 0, 36, 0] and len(ln['stack_labels']) == 6 and ln['stack_lines_ok']
+       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_length'] == 62, 'chair stacks')
+    ok(sorted(ln['stack_notches']) == [(-1, -1, -1)] * 3 + [(1, 1, 1)] * 3, 'stack notch directions')
+    ok(all(len(ln['corner'][b]) == 1 and ln['corner'][b][0]['size'] == 4 for b in ln['corner'] if b != (1, 1, 1))
+       and len(ln['corner'][(1, 1, 1)]) == 6 and all(k['means']['pyramid'] == 0 for c in ln['corner'].values() for k in c)
+       and ln['corner'][(1, 0, 0)][0]['means'] == dict(pyramid=0, notch_x=0, notch_y=1, notch_z=1), 'corner lines')
     d = get('chair_exponents').value
     ok(d == (2, sp.Rational(1, 3), 2, 0), 'exponents')
     ok(get('boundary_fibonacci').value[1] and len(F.BOUNDARY_SEQ) == 7, 'fibonacci form')
