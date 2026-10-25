@@ -1495,7 +1495,7 @@ def exact_section():
 \label{sec:exact}
 
 This section asks four exact questions of both tilings.  The tools are in the repository of curved-tile
-programs~\url{https://github.com/brentharts/spectre-monotile-py}; each Fact is computed there and in \code{monotilefacts.py}.
+programs~\href{https://github.com/brentharts/spectre-monotile-py}{spectre-monotile-py}; each Fact is computed there and in \code{monotilefacts.py}.
 
 \subsection{The diffraction of the Chair44 centres}
 
@@ -1805,8 +1805,14 @@ The authors received no specific funding for this work, and declare no competing
 \subsection*{Code and Data Availability}
 \label{sec:supp}
 
-All source code and data supporting this study are available at
-\url{https://github.com/brentharts/spectre/} and \url{https://github.com/brentharts/spectre-monotile-py/}.
+All source code and data supporting this study are available at:
+\newline
+\url{https://github.com/brentharts/spectre/}
+\newline
+\url{https://github.com/brentharts/spectre-monotile-py/}
+\newline
+\url{https://github.com/brentharts/six-birds-tiles/}
+
 """
 
 
@@ -1834,7 +1840,7 @@ arXiv:2609.23783.
 
 \bibitem{Romanov} T.~Romanov (2026). \emph{Every Chair44 tiling is a substitution tiling, and its symmetry
 groups}.  Draft of 24 October 2026; the computations are \code{chair44\_vertex\_blocks.py},
-\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}.
+\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}, and merged into \href{https://github.com/brentharts/six-birds-tiles/commit/ae6ecff1a32fc195f031f131a23c52243dfa9fb1}{commit ae6ecff}
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.

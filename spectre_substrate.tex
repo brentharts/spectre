@@ -829,6 +829,95 @@ Lemma~\ref{lem:blocks}, the axial-group analysis and the explicit patches are th
 and not recomputed in the build of this paper.  What the build recomputes is the language of legal blocks, its closure,
 the fixed seeds and their stabilisers.  None of this bears on the einstein property or on strong aperiodicity of the
 Chair44, which remain Tsiokos's claim.
+
+\subsection{Uniform frequencies hold in boxes, not along lines}
+\label{sec:lines}
+
+Corollary~\ref{cor:hull} says that every finite patch has a frequency, reached uniformly by boxes of side $L$ in every
+tiling.  It is tempting to read this as a statement about any scan of a tiling, for instance the sum of an observable
+along a line of cells.  It is not, and this subsection says what is true.  Everything below is an exact finite computation
+(\code{chair44\_lines.py}) except the last proposition, which is conditional on the internal space of
+Corollary~\ref{cor:hull}.
+
+\paragraph{Box means.}  The matrix of the cell substitution on the 168 labels is primitive with every row and column
+sum $8$, so each label has frequency $1/168$ in every tiling, and the box mean of a cell observable is its mean over
+the labels.  We use two observables of a cell.  The \emph{height} $p$ is the sum of the signed heights of the pyramids on the
+faces of the cell; it vanishes on five of the seven cells of the chair and is $-36$ and $+36$ on the other two, since the $192$
+heights sum to zero.  The \emph{notch vector} $d=g(1,1,1)\in\{\pm1\}^{3}$ belongs to the chair that covers the cell.  Both have box
+mean exactly $0$, in each component.
+
+\begin{prop}[chair stacks]
+\label{prop:stack}
+Six of the 168 labels, namely cell $0$ of the chairs whose notch points along $\pm(1,1,1)$ (three along each sign), satisfy
+$\sigma(j)_{000}=\sigma(j)_{111}=j$.  For each of them and every $n$, the chairs of $\sigma^{n}(j)$ form a stack in which each
+chair fills the notch of the next, and each of the seven cells of the chair gives a line of identical labels, of length
+$2^{n}-2$, in direction $(1,1,1)$.  Along such a line $p$ is constant, $-36$ on one cell type and $+36$ on another, and
+each component of $d$ is $\pm1$.
+\end{prop}
+
+\begin{proof}
+Label the cells $(x,y,z)$ of the stack by the difference $e=(x-z,\,y-z)$.  The lines of the stack are exactly the cells whose
+difference lies in a set $T$ of seven values, and a cell of difference $e$ has a label $\Lambda(e)$.  We show that every cell of
+$\sigma^{n}(j)$ with difference in $T$ has the label $\Lambda(e)$, by induction on $n$.  For $n=0$ the single cell has difference
+$(0,0)$ and label $j=\Lambda(0,0)$.  A cell of $\sigma^{n+1}(j)$ is the child $(a,b,c)\in\{0,1\}^{3}$ of a cell of
+$\sigma^{n}(j)$ whose difference is $e'=\bigl((e_{0}-a+c)/2,(e_{1}-b+c)/2\bigr)$.  So it suffices that, for every $e\in T$ and
+every child position compatible with $e$, the difference $e'$ lies in $T$ and $\sigma[\Lambda(e'),(a,b,c)]=\Lambda(e)$.  That
+is $14$ cases for each of the six labels, and they all hold (\code{chair44\_lines.py}).  The main diagonal is the case $e=(0,0)$.
+\end{proof}
+
+\noindent
+The stack lies in every tiling.  It occurs in $\sigma^{n}(j)$ for every $n$, and by Theorem~\ref{thm:hull} and minimality every
+legal patch occurs in every tiling.  So in every Chair44 tiling and for every $L$ there are $L$ consecutive cells on a line
+in direction $(1,1,1)$ on which the mean of $p$ is exactly $-36$ (and others on which it is $+36$) and the mean of each
+component of $d$ is $\pm1$, while the box means are $0$.  Averages along these lines do not converge to the box mean, and
+no uniformity in $L$ can hold for them.
+
+\paragraph{Corner lines.}  For $b\in\{0,1\}^{3}$ the cells $tb$ of $\sigma^{n}(j)$, $0\le t<2^{n}$, are the $n$-th iterate of the
+constant-length-$2$ substitution $\tau_{b}(j)=\sigma[j,0]\,\sigma[j,b]$ on the same labels, since the child positions along
+the line are always $0$ and $b$.  Its closed strongly connected classes, each primitive and each reached from every label, carry
+exact letter frequencies and so exact limits of the mean of each cell observable along the line, for each starting label.  Table~\ref{tab:corner} gives the
+mean of the notch vector; the mean of $p$ is $0$ on all of them.  The seven lines are the lines through the corner of the
+cube in the seven directions in $\{0,1\}^{3}$; they are also read off the label cube, with agreement.
+
+\begin{table}[ht]
+\centering
+\caption{Corner lines of $\sigma^{n}(j)$: closed classes of $\tau_{b}$ and the exact limit of the mean of the notch vector.  The
+box mean is $(0,0,0)$.}
+\label{tab:corner}
+\begin{tabular}{lll}
+direction $b$ & closed classes of $\tau_{b}$ & mean of $d$ \\ \hline
+$(0,0,1)$ & one class of 4 & $(1,1,0)$ \\
+$(0,1,0)$ & one class of 4 & $(1,0,1)$ \\
+$(0,1,1)$ & one class of 4 & $(1,0,0)$ \\
+$(1,0,0)$ & one class of 4 & $(0,1,1)$ \\
+$(1,0,1)$ & one class of 4 & $(0,1,0)$ \\
+$(1,1,0)$ & one class of 4 & $(0,0,1)$ \\
+$(1,1,1)$ & 6 fixed letters & $(-1,-1,-1)$ and $(1,1,1)$ \\
+\end{tabular}
+\end{table}
+
+\begin{prop}
+\label{prop:lineaction}
+Assume that the hull $\Omega$ has maximal equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\nu$ the Haar measure
+(Corollary~\ref{cor:hull}).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $T^{v}$ on $\Omega$ is
+not uniquely ergodic.  There are a function $f$ of a finite window of labels and a tiling $T$ such that the averages
+$\frac1L\sum_{t<L}f(T^{tv}T)$ along the line through $0$ in direction $v$ converge to a number different from $\int f\,d\nu$.
+\end{prop}
+
+\begin{proof}
+The closure of $\{tv:t\in\mathbb{Z}\}$ in $\mathbb{Z}_{2}^{3}$ is $H=\mathbb{Z}_{2}v$, a closed subgroup of infinite index, so its
+Haar measure is $0$.  For $x\in\Omega$ the set $K=\pi^{-1}(\pi(x)+H)$ is compact, non-empty and $T^{v}$-invariant, so it carries a
+$T^{v}$-ergodic probability measure $\mu$.  Since $\nu(K)=0$, $\mu\neq\nu$, and functions of a finite window of labels are dense
+in $C(\Omega)$, so some such $f$ has $\int f\,d\mu\ne\int f\,d\nu$.  By Birkhoff's theorem the averages along the line converge to
+$\int f\,d\mu$ for $\mu$-almost every tiling.
+\end{proof}
+
+\noindent
+Proposition~\ref{prop:stack} and Table~\ref{tab:corner} are explicit instances for the directions $(1,1,1)$ and the others in
+$\{0,1\}^{3}$.  The failure depends on the observable and on the line: the corner lines all have $p$-mean $0$, and a
+coordinate-axis line can have bounded sums of $d_{z}$ while another has sums of $d_{z}$ growing like $L$.  Nothing here
+concerns directions that are not lattice directions: the cells met by a line of irrational slope are not an orbit of a
+subgroup of $\mathbb{Z}^{3}$, and the argument does not apply.
 \subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
 
 A reading of the hypothesis of Section~\ref{sec:thesis} as a statement about parity would rest on a sentence: a planar
@@ -1028,7 +1117,7 @@ theorem~\cite{BaakeHat,BaakeSpectre}, and the exact analysis of the Chair44 cent
 \label{sec:exact}
 
 This section asks four exact questions of both tilings.  The tools are in the repository of curved-tile
-programs~\url{https://github.com/brentharts/spectre-monotile-py}; each Fact is computed there and in \code{monotilefacts.py}.
+programs~\href{https://github.com/brentharts/spectre-monotile-py}{spectre-monotile-py}; each Fact is computed there and in \code{monotilefacts.py}.
 
 \subsection{The diffraction of the Chair44 centres}
 
@@ -1289,8 +1378,14 @@ The authors received no specific funding for this work, and declare no competing
 \subsection*{Code and Data Availability}
 \label{sec:supp}
 
-All source code and data supporting this study are available at
-\url{https://github.com/brentharts/spectre/} and \url{https://github.com/brentharts/spectre-monotile-py/}.
+All source code and data supporting this study are available at:
+\newline
+\url{https://github.com/brentharts/spectre/}
+\newline
+\url{https://github.com/brentharts/spectre-monotile-py/}
+\newline
+\url{https://github.com/brentharts/six-birds-tiles/}
+
 
 
 \begin{thebibliography}{99}
@@ -1316,7 +1411,7 @@ arXiv:2609.23783.
 
 \bibitem{Romanov} T.~Romanov (2026). \emph{Every Chair44 tiling is a substitution tiling, and its symmetry
 groups}.  Draft of 24 October 2026; the computations are \code{chair44\_vertex\_blocks.py},
-\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}.
+\code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py}, run on commit \code{d53d224} of~\cite{Tsiokos1}, and merged into \href{https://github.com/brentharts/six-birds-tiles/commit/ae6ecff1a32fc195f031f131a23c52243dfa9fb1}{commit ae6ecff}
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, arXiv:2502.03268.
