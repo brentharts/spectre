@@ -8,7 +8,8 @@ boundary code for the Spectre side.  They are appended to `spectrefacts.FACTS` b
 which is idempotent; the ledger, the supplement and the paper each call it.
 
 What is and is not claimed.  The einstein property and the strong aperiodicity of the Chair44 are
-Tsiokos's (arXiv 2609.19214, 2609.23783), and the JSON status string calls the proof "claimed".
+Tsiokos's (arXiv 2609.19214; the matching rules of arXiv 2609.23783 and the notes of arXiv 2609.24779
+are by others), and the JSON status string calls the proof "claimed".
 Nothing here proves them.  What is re-derived is the combinatorial atlas: the substitution, the
 height labels that the gluing forces, the contact atlas and its equations.  Facts about the
 Spectre boundary that are new here are the Fibonacci closed form (derived from the recurrence, and
@@ -132,6 +133,7 @@ KIND = {
     'chair_chiral': 'D', 'chair_forced_chirality': 'D', 'chair_orientation': 'D',
     'chair_surface': 'CX', 'chair_exponents': 'D', 'chair_coincidence': 'DX',
     'chair_twist': 'D', 'chair_nets': 'CX', 'chair_slices': 'CX', 'orientation_sums': 'C', 'power_slopes': 'P', 'boundary_fibonacci': 'D', 'boundary_directions': 'C', 'boundary_z3_bounded': 'C',
+    'chair_legal_blocks': 'DX', 'chair_hull_theorem': 'QP',
 }
 _REGISTERED = False
 
@@ -366,6 +368,34 @@ def register():
                 'Lee-Moody / Schlottmann theorem, which is not re-proved here',
          lean='coincidence_closed')
 
+    import chair44_hull as HU
+    hr = HU.report()
+    fact(key='chair_legal_blocks',
+         claim=r'1410\ \text{legal vertex blocks, closed under }\sigma;\ 27\ \Phi\text{-fixed seeds, stabilisers of order }1\text{ and }8',
+         value=dict(hr, romanov=dict(legal=1410, fixed_seeds=27, admissible=360189,
+                                     admissible_recomputed=False)),
+         method='the 2x2x2 windows of sigma^n(j) over the 168 labels, n = 1..6, from the cell substitution '
+                'of chair44_twoadic: 1410 distinct blocks, and the set is closed (all 27 windows of sigma(w) '
+                'lie in it for every w) and contains the windows of sigma(j), so it is the whole language and '
+                'not merely where a count stopped. Phi, the central window of sigma(w), has exactly 27 '
+                'periodic blocks, all fixed; their stabilisers in the 24 rotations have order 1 (24 seeds) or '
+                '8 (3 seeds). Agrees with Romanov (1410 legal blocks, 27 fixed seeds, stabilisers 1 and D4); '
+                'shares no data with the upstream atlas. His count of 360,189 admissible blocks needs the '
+                'contact atlas and is not recomputed here')
+
+    fact(key='chair_hull_theorem',
+         claim=r'\text{every Chair44 tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
+         value=dict(hull=True, groups=['1', 'C2 (face-diagonal axis)', 'C4', 'D4'], max_order=8,
+                    three_fold_axis=False, klein_four=False, c2_coordinate_axis=False,
+                    pure_point=True, limit_periodic=True, internal_space='Z_2^3',
+                    inputs=['registration (R)', 'unique parent tiling (H)']),
+         method='Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells '
+                'around a lattice vertex (360,189 admissible blocks, each with all 27 child windows legal). '
+                'Quoted and not recomputed here, except the legal-block and fixed-seed counts of '
+                'chair_legal_blocks. It takes as inputs, unchecked, that every tiling is registered with all '
+                'contacts in the 44-contact atlas and has a unique parent tiling (Tsiokos; Goodman-Strauss); '
+                'the pure-point and limit-periodic conclusions then use the cited Lee-Moody theorem')
+
     # ---- Spectre side
     seq = F.BOUNDARY_SEQ
     closed = [2 * fib(3 * k + 5) + 4 for k in range(len(seq))]
@@ -433,6 +463,13 @@ def selftest(full=False):
     w = get('chair_coincidence').value
     ok(w['primitive_exponent'] == 3 and w['depth'] == 3 and w['address_0_0_2'] and w['coincident'] == 336
        and w['counts'] == [1, 8, 64, 176, 400, 848, 1744, 3536, 7120], 'coincidence')
+    hb = get('chair_legal_blocks').value
+    ok(hb['legal'] == hb['romanov']['legal'] == 1410 and hb['closed'] and hb['contains_depth_one']
+       and hb['per_depth'][-2:] == [1410, 1410], 'legal blocks')
+    ok(hb['fixed'] == hb['periodic'] == hb['romanov']['fixed_seeds'] == 27 and hb['stabilisers_fixed'] == {1: 24, 8: 3}
+       and hb['rotation_closed'], 'fixed seeds and stabilisers')
+    ht = get('chair_hull_theorem').value
+    ok(ht['hull'] and ht['max_order'] == 8 and not ht['three_fold_axis'] and len(ht['groups']) == 4, 'hull theorem as quoted')
     d = get('chair_exponents').value
     ok(d == (2, sp.Rational(1, 3), 2, 0), 'exponents')
     ok(get('boundary_fibonacci').value[1] and len(F.BOUNDARY_SEQ) == 7, 'fibonacci form')

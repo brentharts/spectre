@@ -27,7 +27,9 @@ What is computed (exact integers, no floats)
 What this is and is not.  It is a finite exact computation, checked against the upstream T1n/T2
 statements (depth 3, address (0,0,2)).  Pure-point diffraction and limit-periodicity of the
 fixed point follow from it only through the cited theorem (T3); nothing here proves that every
-tiling lies in the substitution hull, which upstream leaves open (possible fault lines).
+tiling lies in the substitution hull, which upstream left open.  Romanov proves it (the paper's
+hull section); `chair44_hull.py` recomputes the part of his finite computation that depends only
+on the substitution.
 That the tiling has no period is the upstream theorem; clopen windows would give a period, and
 the dimension-1 undetermined set computed here is consistent with windows that are not clopen.
 
