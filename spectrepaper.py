@@ -1916,9 +1916,8 @@ Phys.\ Rev.\ Lett.\ \textbf{113}, 181101 (2014); arXiv:1409.0917. \url{https://d
 \bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
 J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
 
-\bibitem{PreGeometric} \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
-(ScienceDirect article S0370269326008397); authors and details not verified.
-\url{https://www.sciencedirect.com/science/article/pii/S0370269326008397}
+\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
 
 \bibitem{hartshorn2026} B.~Hartshorn
 \emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
@@ -2124,7 +2123,7 @@ def selftest():
           r'\label{conj:bang}' in text and 'nothing computed' in flat and 'does not' in flat
           and r'g=2\pi G\sigma' in text)
     check('the bimetric references are cited and listed',
-          r'\cite{HassanRosen}' in text and r'\cite{PreGeometric}' in text and 'authors and details not verified' in text)
+          r'\cite{HassanRosen}' in text and r'\cite{PreGeometric}' in text and '10.1016/j.physletb.2026.140989' in text)
     check('the abstract makes no cosmological claim',
           not any(w in abstract() for w in ('Big Bang', 'universe', 'cosmolog', 'Weyl')))
     check('the figures are included and exist',
