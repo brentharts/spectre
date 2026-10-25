@@ -14,7 +14,7 @@ and Hobson as ported in pyCICY (pancake.py, horizons.py): a collapsing circle fi
    Both are closed forms.  What they do NOT say is that the tiling hierarchy is the pancake's time: that is a choice
    of dictionary, made here only to ask whether anything lands on an integer.
 
-2. NUMEROLOGY, LABELLED.  At a0 = 1 (the pyCICY default) N = 6.0903..., a tempting 6 = |Z/6|.  It is 1.5% off, a0
+2. NUMEROLOGY, LABELLED.  At a0 = 1 (the pyCICY default) N = 6.0900..., a tempting 6 = |Z/6|.  It is 1.5% off, a0
    is initial data and not fixed by anything in the tiling, and N = 6 exactly would need a0 = 3 ln(lambda)/pi, a
    number chosen to give the answer.  The selftest asserts the miss.  This is not a Fact.
 

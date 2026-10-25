@@ -28,9 +28,9 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md),
 | 3 | Kasner denominator 1+u+u² is an Eisenstein norm, so lives on the same ℤ[ζ₃] lattice as the cusp torus; equals 7λ² at u* | **Exact** | `spectre_bkl.py` |
 | 4 | The "44" of Chair44 is the era length of the perimeter BKL orbit | **Numerology** (flagged in the module; the sentence should read as coincidence) | `spectre_bkl.py` |
 | 5 | 60° rotation of the Spectre lift acts as diag(ω,ω) on two complex planes; ℤ/6 ⊂ the Hopf circle; 30° swaps the planes | **Exact**, **Elementary** | `lift4d.py`, [`HOPF.md`](HOPF.md) §5 |
-| 6 | The six Mystic classes form one ℤ/6 = ℤ/3 × ℤ/2 orbit on the torsion points of the hexagonal torus | **Exact** (group, and classes = rotations that occur, ≤ 6, via p6m), **Counted** (lattice registration through n = 5; "six for all n ≥ 3" reduces to registration) | `spectre_torsion.py`, `spectre_mystic_fibres.py` |
+| 6 | The six Mystic classes form one ℤ/6 = ℤ/3 × ℤ/2 orbit on the torsion points of the hexagonal torus | **Exact** (group), **Counted** (that all six occur; "for all n ≥ 3" is a conjecture) | `spectre_torsion.py`, `spectre_mystic_fibres.py` |
 | 7 | The ℤ/6 of direction mod 180° (boundary-edge histogram) is the same group as in 6 | **Exact** as a group; not shown to be the same *action* | `chair44_spectre_link.py` |
-| 8 | Pancake cosmology: fibre clock gives N = 6.0903… levels per turn, "≈ 6 = |ℤ/6|" | **Numerology** (1.5 % off; a₀ is free) | `spectre_pancake.py` |
+| 8 | Pancake cosmology: fibre clock gives N = 6.0900… levels per turn, "≈ 6 = |ℤ/6|" | **Numerology** (1.5 % off; a₀ is free) | `spectre_pancake.py` |
 | 9 | Spectre pure-point diffraction via the internal contracting plane | **Exact** for the integer lift and bounded contracting plane; diffraction plots are computation, not Facts | `lift4d.py`, `spectre_diffraction.py` |
 | 10 | Chair44 pure-point, limit-periodic, internal space ℤ₂³ | **Quoted** (Lee–Moody/Schlottmann) + **Exact** finite part (primitivity, coincidence at M = 3) | `chair44_twoadic.py` |
 | 11 | Chair44 hull theorem: every tiling is in the hull; Sym ∈ {1, C₂, C₄, D₄} | **Conditional** on (R) and (H) | Romanov; `chair44_hull*.py` |

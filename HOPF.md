@@ -167,7 +167,7 @@ fibre collapses while the base stays finite. [`spectre_pancake.py`](spectre_panc
 states what can be proved about pairing this fibre with the Spectre's ℤ/6:
 
 * the fibre clock turns(n) = n·ln λ / (2π a₀) is a closed form (given the horizon law);
-* at the default a₀ = 1 it gives N = 6.0903… levels per turn — a tempting 6 = |ℤ/6| that
+* at the default a₀ = 1 it gives N = 6.0900… levels per turn — a tempting 6 = |ℤ/6| that
   is **1.5 % off**, and exact 6 would need a₀ chosen to give the answer. **Numerology.**
   The script asserts the miss. It is not a Fact in the registry.
 
