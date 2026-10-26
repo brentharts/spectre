@@ -1,0 +1,263 @@
+"""The window of the Spectre (Kaplan's construction) as a graph-directed attractor in internal space, and the
+contact closure of that attractor.
+
+Internal planes.  Write q_k = sum_mu mu^k v_mu (mu = +-lam, +-1/lam, +-1).  On parity p the expanding part of the slot
+translations M_i q_k lies in a 2-dimensional subspace E_p; pi_p projects R^4 = Z[zeta12] (x) R along E_p onto
+F_p = span of the contracting parts.  The slot maps intertwine: A_i E_p = E_{p+1}, A_i F_p = F_{p+1}.  The marginal
+(mu = +-1) parts give constant internal translations m_{i,p}; they are removed by internal origins u_p solving
+m_{i,p} = u_{p+1} - A_i u_p.  What is left is lam^{-k} gamma_{i,p}.
+
+Window as attractor.  The internal coordinate of a tile, expressed in its own frame, is
+    z = sum_{j>=1} (A_{i_j} ... A_{i_1})^{-1} lam^{-(j-1)} gamma_{i_j, j-1+p},
+so Z_p(S) = U_{i : child shape S} A_i^{-1}( gamma_{i,p} + lam^{-1} U_{S' allowed} Z_{p+1}(S') ),
+a graph-directed system of similarities of ratio 1/lam (the dual of the physical one; shape matrix [[7,6],[1,1]]).
+
+All linear algebra in mpmath at 60 digits; checks print their residuals.
+"""
+import io
+import contextlib
+import itertools
+import mpmath as mp
+import numpy as np
+
+mp.mp.dps = 60
+with contextlib.redirect_stdout(io.StringIO()):
+    import check_spectre_boundary_proof as bp
+
+LAM = mp.sqrt(4 + mp.sqrt(15))
+Phi = mp.matrix([[int(x) for x in row] for row in bp.Phi.tolist()])
+q0 = mp.matrix([int(x) for x in bp.q0])
+MUS = {'+lam': LAM, '-lam': -LAM, '+1/lam': 1 / LAM, '-1/lam': -1 / LAM, '+1': mp.mpf(1), '-1': mp.mpf(-1)}
+V = {}
+for k, mu in MUS.items():
+    v = q0
+    for k2, nu in MUS.items():
+        if k2 != k:
+            v = (Phi * v - nu * v) / (mu - nu)
+    V[k] = v
+MI = [mp.matrix([[int(x) for x in row] for row in m.tolist()]) for m in bp.M]
+AI = [mp.matrix([[int(x) for x in row] for row in a.tolist()]) for a in bp.A]
+
+
+def part(kind, p):
+    s = 1 if p == 0 else -1
+    if kind == 'exp':
+        return V['+lam'] + s * V['-lam']
+    if kind == 'mar':
+        return V['+1'] + s * V['-1']
+    return V['+1/lam'] + s * V['-1/lam']
+
+
+def basis(vecs, r=2):
+    A = np.array([[float(v[i]) for v in vecs] for i in range(4)])
+    U, S, _ = np.linalg.svd(A)
+    assert S[r] < 1e-12 * S[0], S
+    # exact-precision basis: Gram-Schmidt in mpmath on the two dominant directions
+    cols = sorted(vecs, key=lambda v: -mp.norm(v))
+    b = [cols[0]]
+    for v in cols[1:]:
+        w = v - sum(((v.T * u)[0] / (u.T * u)[0]) * u for u in b)
+        if mp.norm(w) > mp.mpf(10) ** -30 * mp.norm(v):
+            b.append(w)
+        if len(b) == r:
+            break
+    return b
+
+
+E = [basis([MI[i] * part('exp', p) for i in range(8)]) for p in (0, 1)]
+F = [basis([MI[i] * part('con', p) for i in range(8)]) for p in (0, 1)]
+
+
+def coords(x, p):
+    """x = e-part + f-part; return the F_p coordinates of x (projection along E_p)"""
+    B = mp.matrix(4, 4)
+    for c, v in enumerate(E[p] + F[p]):
+        for r in range(4):
+            B[r, c] = v[r]
+    y = mp.lu_solve(B, x)
+    return mp.matrix([y[2], y[3]])
+
+
+def inplane(x, basisvecs):
+    B = mp.matrix(4, 2)
+    for c, v in enumerate(basisvecs):
+        for r in range(4):
+            B[r, c] = v[r]
+    y = mp.lu_solve(B.T * B, B.T * x)
+    return mp.norm(B * y - x)
+
+
+# intertwining: A_i E_p = E_{p+1}, A_i F_p = F_{p+1}
+res = max(max(inplane(AI[i] * v, E[1 - p]) for v in E[p]) for i in range(8) for p in (0, 1))
+res2 = max(max(inplane(AI[i] * v, F[1 - p]) for v in F[p]) for i in range(8) for p in (0, 1))
+print("intertwining residuals: E %s, F %s" % (mp.nstr(res, 3), mp.nstr(res2, 3)))
+# the internal linear maps Abar_i : F_p -> F_{p+1} in F coordinates
+ABAR = {}
+for i in range(8):
+    for p in (0, 1):
+        cols = [coords(AI[i] * v, 1 - p) for v in F[p]]
+        ABAR[(i, p)] = mp.matrix([[cols[0][0], cols[1][0]], [cols[0][1], cols[1][1]]])
+# marginal translations and the origin shift
+m = {(i, p): coords(MI[i] * part('mar', p), 1 - p) for i in range(8) for p in (0, 1)}
+# m_{i,p} = u_{1-p} - Abar_{i,p} u_p : 32 equations, 4 unknowns (u_0, u_1)
+rows, rhs = [], []
+for i in range(8):
+    for p in (0, 1):
+        for r in range(2):
+            row = [mp.mpf(0)] * 4
+            for c in range(2):
+                row[2 * p + c] -= ABAR[(i, p)][r, c]
+            row[2 * (1 - p) + r] += 1
+            rows.append(row)
+            rhs.append(m[(i, p)][r])
+A_ = mp.matrix(rows)
+b_ = mp.matrix(rhs)
+u = mp.lu_solve(A_.T * A_, A_.T * b_)
+resid = mp.norm(A_ * u - b_)
+print("marginal translations are a coboundary: residual %s" % mp.nstr(resid, 3))
+U = [mp.matrix([u[0], u[1]]), mp.matrix([u[2], u[3]])]
+# contracting translations: pi_{p+1}(M_i q_k) contracting part = lam^{-k} gamma_{i,p} with p = k mod 2
+GAM = {(i, p): coords(MI[i] * part('con', p), 1 - p) for i in range(8) for p in (0, 1)}
+# an invariant metric: average over the finite group H generated by the even products F_0 -> F_0
+gens = [ABAR[(j, 1)] * ABAR[(i, 0)] for i in range(8) for j in range(8)]
+
+
+def key2(Mx):
+    return tuple(int(mp.nint(Mx[r, c] * 10 ** 30)) for r in range(2) for c in range(2))
+
+
+H = {key2(mp.eye(2)): mp.eye(2)}
+frontier = [mp.eye(2)]
+while frontier:
+    new = []
+    for g in frontier:
+        for h in gens:
+            x = h * g
+            k = key2(x)
+            if k not in H:
+                H[k] = x
+                new.append(x)
+    frontier = new
+    assert len(H) <= 48
+G0 = sum((h.T * h for h in H.values()), mp.zeros(2, 2))
+A0inv = mp.inverse(ABAR[(0, 0)])
+G1 = A0inv.T * G0 * A0inv
+iso = max(mp.norm(ABAR[(i, 0)].T * G1 * ABAR[(i, 0)] - G0) for i in range(8)) + \
+    max(mp.norm(ABAR[(i, 1)].T * G0 * ABAR[(i, 1)] - G1) for i in range(8))
+print("finite group H of order %d; every internal map is an isometry: residual %s" % (len(H), mp.nstr(iso, 3)))
+# orthonormal coordinates: x = L_p^T y with G_p = L_p L_p^T
+L = [mp.cholesky(G0), mp.cholesky(G1)]
+T = [L[0].T, L[1].T]                  # F-coords -> orthonormal coords
+Ti = [mp.inverse(T[0]), mp.inverse(T[1])]
+O = {(i, p): T[1 - p] * ABAR[(i, p)] * Ti[p] for i in range(8) for p in (0, 1)}      # orthogonal, F_p -> F_{p+1}
+GA = {(i, p): T[1 - p] * GAM[(i, p)] for i in range(8) for p in (0, 1)}             # gamma in orthonormal coords
+orth = max(mp.norm(O[k].T * O[k] - mp.eye(2)) for k in O)
+print("orthogonality residual", mp.nstr(orth, 3))
+
+# ---- the graph-directed system: Z_p(S) = U_{i: cs(i)=S} O_{i,p}^{-1}(gamma_{i,p} + lam^{-1} U_{S' in allowed(i)} Z_{p+1}(S'))
+CS = {i: ('G' if i == 7 else 'O') for i in range(8)}
+ALLOWED = {i: (('O',) if i == 2 else ('O', 'G')) for i in range(8)}
+MAPS = {(S, p): [(i, S2) for i in range(8) if CS[i] == S for S2 in ALLOWED[i]] for S in 'OG' for p in (0, 1)}
+gmax = max(mp.norm(GA[k]) for k in GA)
+RAD = gmax * LAM / (LAM - 1)          # |z| <= sum_j lam^{-(j-1)} max|gamma|
+print("pieces per set:", {k: len(v) for k, v in MAPS.items()}, " radius bound %s" % mp.nstr(RAD, 6))
+
+
+def tkey(S1, S2, p, B, d):
+    return (S1, S2, p, key2(B), int(mp.nint(d[0] * 10 ** 40)), int(mp.nint(d[1] * 10 ** 40)))
+
+
+def children(S1, S2, p, B, d):
+    """pieces of Z_p(S1) and of B Z_p(S2) + d; relative placement of each child pair, normalised to the first"""
+    out = []
+    for (i, Sa) in MAPS[(S1, p)]:
+        for (j, Sb) in MAPS[(S2, p)]:
+            Oi, Oj = O[(i, p)], O[(j, p)]
+            Bn = Oi * B * Oj.T
+            dn = LAM * (Bn * GA[(j, p)] + Oi * d - GA[(i, p)])
+            out.append((Sa, Sb, 1 - p, Bn, dn))
+    return out
+
+
+def start_types():
+    st = []
+    for S in 'OG':
+        for p in (0, 1):
+            pcs = MAPS[(S, p)]
+            for a in range(len(pcs)):
+                for b in range(a + 1, len(pcs)):
+                    (i, Sa), (j, Sb) = pcs[a], pcs[b]
+                    Oi, Oj = O[(i, p)], O[(j, p)]
+                    Bn = Oi * Oj.T
+                    dn = LAM * (Bn * GA[(j, p)] - GA[(i, p)])
+                    st.append((Sa, Sb, 1 - p, Bn, dn))
+    return st
+
+
+if __name__ == '__main__':
+    import sympy as sp
+    import networkx as nx
+    margin = mp.mpf(10) ** -20
+    live, stack, pruned = {}, start_types(), 0
+    while stack:
+        t = stack.pop()
+        if mp.norm(t[4]) > 2 * RAD + margin:
+            pruned += 1
+            continue
+        k = tkey(*t)
+        if k in live:
+            continue
+        live[k] = t
+        stack.extend(children(*t))
+        assert len(live) < 20000
+    keys = list(live)
+    idx = {k: n for n, k in enumerate(keys)}
+    n = len(keys)
+    print("window contact closure: %d live types (%d pruned visits)" % (n, pruned))
+    # distinct keys must be well separated (exactness check for the rounding keys)
+    ds = sorted(set((k[4], k[5]) for k in keys))
+    Nm = sp.zeros(n, n)
+    for a, k in enumerate(keys):
+        for c in children(*live[k]):
+            if mp.norm(c[4]) > 2 * RAD + margin:
+                continue
+            Nm[a, idx[tkey(*c)]] += 1
+    x = sp.symbols('x')
+    cp = Nm.charpoly(x).as_expr()
+    fl = sp.factor_list(cp)
+    print("charpoly factors:", [(f, m) for f, m in fl[1]])
+    best = 0
+    for f, mlt in fl[1]:
+        for r in sp.Poly(f, x).nroots(n=30, maxsteps=200):
+            best = max(best, abs(complex(r)))
+    print("spectral radius %.12f ; sqrt2+sqrt3 = %.12f" % (best, float(sp.sqrt(2) + sp.sqrt(3))))
+    print("dimension log(rho)/log(lam) = %.12f ; BGMS log(5+2sqrt6)/log(4+sqrt15) = %.12f"
+          % (np.log(best) / float(mp.log(LAM)), float(sp.log(5 + 2 * sp.sqrt(6)) / sp.log(4 + sp.sqrt(15)))))
+    # ---- intersecting types: an infinite path in the live graph gives nested piece pairs at distance <= 2 RAD lam^{-m}
+    G = nx.DiGraph()
+    G.add_nodes_from(range(n))
+    for a in range(n):
+        for b in range(n):
+            if Nm[a, b]:
+                G.add_edge(a, b)
+    cyc = set()
+    for comp in nx.strongly_connected_components(G):
+        comp = list(comp)
+        if len(comp) > 1 or G.has_edge(comp[0], comp[0]):
+            cyc |= set(comp)
+    inter = {a for a in range(n) if any(nx.has_path(G, a, c) for c in [next(iter(cyc))]) or a in cyc}
+    inter = {a for a in range(n) if a in cyc or any(c in cyc for c in nx.descendants(G, a))}
+    dom = None
+    for comp in nx.strongly_connected_components(G):
+        comp = sorted(comp)
+        if len(comp) < 2:
+            continue
+        sub = Nm.extract(comp, comp)
+        if sp.rem(sub.charpoly(x).as_expr(), x ** 4 - 10 * x ** 2 + 1, x) == 0:
+            dom = comp
+            break
+    assert dom is not None
+    st = [idx[tkey(*t)] for t in start_types() if mp.norm(t[4]) <= 2 * RAD + margin]
+    reach = [a for a in st if a in inter and (a in dom or any(d in dom for d in nx.descendants(G, a)))]
+    print("intersecting types: %d; an irreducible block of %d types carries x^4-10x^2+1 (radius sqrt2+sqrt3) and is "
+          "reached from %d sibling types" % (len(inter), len(dom), len(reach)))
