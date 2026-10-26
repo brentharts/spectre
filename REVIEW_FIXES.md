@@ -155,9 +155,11 @@ Checked against the full text of arXiv:2609.23783v2:
   - The paper's earlier box count (about 1.2) is now stated as an estimate against the exact value.
 
 ## Still open
-- **(R)** remains quoted. Its written proof was audited by the second author, and Tsiokos reports a Lean formalisation
-  (`registration_of_tiling`, kernel-checked modulo named `native_decide` hooks). We have not rebuilt that Lean
-  development: in this environment the build was blocked as third-party code execution.
+- **(R)** remains quoted, but Tsiokos's Lean development has now been **rebuilt independently** (`lean_rebuild/`).
+  - The build ran on Modal at `d53d224`: `lake build` succeeds (8638 jobs).
+  - The regenerated axiom log is byte-identical to the committed one.
+  - No `sorryAx`; only `propext`, `Classical.choice`, `Quot.sound` and named `native_decide` hooks.
+  - All controls pass, including the discharge diff audit (67/67) once the delivery archives are restored from `838bca5`.
 - **Four-dimensional chair** (Kamenetsky's Problem 9.1): still open.
   - My own closure test (`chair_nd.py` on the review branch) reproduces Kamenetsky's Theorem B: 3 of 2187 assignments close.
   - It was then run on 12,784 sampled 4D assignments: half extend the 3D marking on the facet v₃ = 0, half are random.
