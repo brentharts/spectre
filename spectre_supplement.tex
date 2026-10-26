@@ -47,8 +47,10 @@ Three things about the table.
   phantom attributions were found and removed when that check was added.  A
   Lean theorem proves the Lean statement, which can be narrower than the
   paper's: the Facts marked $^{*}$ are proved in Lean for the sequence that the
-  Lean file \emph{defines} by the perimeter recurrence, and hold for the
-  counted supertile perimeters only on the orders counted, $k\le6$.
+  Lean file \emph{defines} by the perimeter recurrence.  That this sequence
+  is the supertile perimeter at every order is Theorem~1 of the paper,
+  proved by an exact finite certificate
+  (\code{boundary\_certificate/}), not in Lean.
 
 \item \textbf{The method column is the first sentence.}  A method that runs
   to a paragraph is truncated at its first full stop or semicolon.  The full
@@ -109,11 +111,11 @@ Key & Claim & How & Lean \\
 \code{twist\_two\_levels} & $\chi_{B}(x)=(x-1)^{2}(x^{2}-8x+1)$ ,\  $B\,v=\lambda^{2}v$ & the supertile quadrilateral moves by an exact map, transcribed from the construction &  \\
 \code{spectre\_twist} & $\tan\theta_S=\tfrac{1}{13}(5\sqrt3-6)$ ,\  $\cos2\theta_S=\tfrac1{10}(4+3\sqrt3)$ & in the limit of high level, one level relates the quadrilaterals by ratio lambda and rotation minus... &  \\
 \code{twist\_field} & $\cos2\theta_S\in\mathbb{Q}(\sqrt3)$ ,\  $\notin\mathbb{Q}(\sqrt{15})$ & the angle lies in the field of the hexagonal tile coordinates &  \\
-\code{boundary\_recurrence} & $P(k)=5P(k-1)-3P(k-2)-P(k-3)$ & the perimeter is counted exactly on placed supertiles for k <= 6 and satisfies this recurrence on those orders & \checkmark$^{*}$ \\
+\code{boundary\_recurrence} & $P(k)=5P(k-1)-3P(k-2)-P(k-3)$ & proved for every k by the finite certificate boundary\_certificate/check\_spectre\_boundary\_proof.py (93... & \checkmark$^{*}$ \\
 \code{boundary\_chi} & $\chi_{\partial}(x)=(x-1)(x^{2}-4x-1)$ & characteristic polynomial of the companion matrix of the recurrence &  \\
 \code{boundary\_growth} & $\nu=2+\sqrt{5}=\varphi^{3}$ & Perron root of the boundary operator &  \\
 \code{boundary\_field} & $\nu\in\mathbb{Q}(\sqrt{5})$ ,\  $\lambda^{2}\in\mathbb{Q}(\sqrt{15})$ & area and perimeter of the same tile inflate in different quadratic fields &  \\
-\code{boundary\_dimension} & $\log\nu/\log\lambda\ \text{(conditional)}$ & if the perimeter recurrence holds for every k, this is the growth exponent of the perimeter against the... &  \\
+\code{boundary\_dimension} & $\log\nu/\log\lambda\ \text{(conditional)}$ & the growth exponent of the perimeter against the diameter (the perimeter recurrence is proved for every k) &  \\
 \code{balanced\_exponent} & $s^{*}=1-\log\nu/\log\lambda^{2}$ & the thickness exponent making every substitution level carry comparable volume (a modelling choice) &  \\
 \code{compositum} & $\mu=\lambda^{2}/\nu\ \text{has degree }4$ & the balanced ratio lies in Q(sqrt3, sqrt5) and in neither quadratic field alone &  \\
 \code{golden\_absent} & $(x^{2}-4x-1)\nmid\chi_{M}$ ,\  $\chi_{H}$ & the boundary quadratic divides neither substitution matrix &  \\

@@ -215,15 +215,14 @@ The recurrence has a closed form in Fibonacci numbers.
 
 \begin{fact}
 \label{fact:bdyfib}
-The sequence defined by the recurrence of Fact~\ref{fact:bdyrec} and the seeds $14,46,182$ is
-$P(k)=2F_{3k+5}+4$ for every $k\ge0$, where $F_n$ is the Fibonacci number; in particular the
-counted perimeters satisfy it for $0\le k\le6$.
+The supertile perimeter is $P(k)=2F_{3k+5}+4$ for every $k\ge0$, where $F_n$ is the Fibonacci
+number (Theorem~\ref{thm:bdy}).
 \end{fact}
 
 \noindent
-For the recurrence sequence it is proved for all $k$ by induction, because
+It follows from the recurrence by induction, because
 $F_{n+6}=4F_{n+3}+F_{n}$ makes $2F_{3k+5}+4$ satisfy the same recurrence and the seeds
-agree.  For the perimeters it is exactly as strong as the recurrence.  It says three things
+agree.  It says three things
 that the recurrence did not.  The growth
 $\nu=\varphi^{3}$ is one Spectre level multiplying the Fibonacci index by three,
 which is how the golden unit arises.  The marginal eigenvalue $+1$ is the
@@ -271,8 +270,8 @@ $k$ & $P(k)$ & even & odd & even $-$ odd & $|\hat h|$ \\
 \end{tabular}
 \end{table}
 
-\textbf{Counted, not derived.}  The closed form is exact for the recurrence sequence, and
-the recurrence is verified on the orders counted; the split~\eqref{eq:dirsplit} is a count
+\textbf{Counted, not derived.}  The closed form and the recurrence are proved for every
+order (Theorem~\ref{thm:bdy}); the split~\eqref{eq:dirsplit} is a count
 and is not proved beyond $k=6$.  What is proved is the arithmetic that ties it to the
 closed form: $F_{3k+4}+F_{3k+3}+2=P(k)/2$.  The boundedness of
 the other characters is an observation.  The directions are counted with the
@@ -291,7 +290,8 @@ is a single exponent.
 Interfaces at coarseness $c<N$ in a depth-$N$ patch, that is, unit edges shared by two
 different supertiles of order $N-c$, number
 $\tfrac12\bigl((T(c)-N_{\Gamma}(c))P(N-c)+N_{\Gamma}(c)Q(N-c)-P(N)\bigr)$, with $Q$ the Mystic
-perimeter of~\eqref{eq:bdyid} and $N_{\Gamma}(c)=T(c-1)$; so, if $P$ and $Q$ grow like $\nu^{k}$,
+perimeter of~\eqref{eq:bdyid} and $N_{\Gamma}(c)=T(c-1)$; so, since $P$ and $Q$ grow like $\nu^{k}$
+(Theorem~\ref{thm:bdy}),
 they grow in $c$ by $\mu=\lam^{2}/\nu$.  If
 each such unit edge is thickened to a neighbourhood of width
 $\delta_{c}=\delta_{0}\lam^{-sc}$ and cross-section $\delta_{c}^{2}$, as for a
@@ -313,8 +313,8 @@ population does.  Two cautions attach to~\eqref{eq:sstar}.  It is exact but
 with integers $p,q\ne0$ would put an element of $\mathbb{Q}(\sqrt5)\setminus\mathbb{Q}$ equal to one of
 $\mathbb{Q}(\sqrt{15})\setminus\mathbb{Q}$; and an irrational ratio of logarithms of algebraic numbers is
 transcendental by the Gelfond--Schneider theorem~\cite{Gelfond}.  The thickening that defines
-$s^{*}$ is a modelling choice and not a property of the tiling, and $s^{*}$ inherits the
-conditional status of $\nu$.  And $s^{*}$ had to be derived rather than
+$s^{*}$ is a modelling choice and not a property of the tiling; given it, $s^{*}$ is exact,
+since $\nu$ is (Theorem~\ref{thm:bdy}).  And $s^{*}$ had to be derived rather than
 fitted: because the interface count depends on $T(c)$ and on $P(N-c)$ together,
 a single-exponent fit needs $c$ large and $N-c$ large at once, which no finite
 patch provides.  Fitting one anyway returns values that drift with depth and
@@ -372,8 +372,10 @@ alone.
 \footnotesize
 \caption{The Spectre and the Chair44 side by side.  $d$ is the dimension, $\lam$ the linear
 inflation, $\nu$ the boundary growth per level, $D_b=\log\nu/\log\lam$,
-$s^{*}=1-D_b/d$ and $\mu=\lam^{d}/\nu$.  The Spectre entries for $\nu$, $D_b$, $s^{*}$, $\mu$ and the
-fractal excess assume that the boundary recurrence of Fact~\ref{fact:bdyrec} holds for every $k$.  The
+$s^{*}=1-D_b/d$ and $\mu=\lam^{d}/\nu$.  The Spectre value of $\nu$ is proved
+(Theorem~\ref{thm:bdy}).  $D_b$ is the growth exponent of the perimeter against the diameter; it is a
+box dimension, and the fractal excess a property of a limiting curve, only under the limit argument
+of Section~\ref{sec:bdyop}, which is not supplied.  The
 last two rows are about what is claimed or quoted, not computed.}
 \label{tab:chair}
 \begin{tabular}{lll}
@@ -892,7 +894,7 @@ $@cubenets@$ nets of the cube.  Figure~\ref{fig:chairnets} shows three nets and 
 The supertile surface is the chair surface scaled by $2$, so its net is the chair net with each
 square replaced by a $2\times2$ block: the area grows by $4$ and the length by $2$, which is the
 dimension $D_b=2$ already found for the boundary (Section~\ref{sec:chair}).  Unfolding therefore does not
-produce a planar analogue of the Spectre's outline, whose perimeter grows with exponent $@Db@$ on the orders counted.  That is a
+produce a planar analogue of the Spectre's outline, whose perimeter grows with exponent $@Db@$ at every order.  That is a
 negative result, and the exact boundary count had already implied it.
 
 \subsection{Chair44: Slices, projections and the notch vector}
@@ -1212,22 +1214,46 @@ Q(k{+}1)=6P(k)+Q(k)-2G_{\Gamma}(k{+}1).
 \end{equation}
 %%
 The coefficients are read from the rule, not fitted to counts, and~\eqref{eq:bdyid}
-is exact at every order computed.  Two observations, made on the orders computed
-($k\le6$) and not proved in general, make this small enough to state.  First, all
-eight non-$\Gamma$ species have the \emph{same} boundary sequence, which collapses a
-nine-type problem to two.  Second, the glue decomposes by slot pair into thirteen
-contact sequences, and on the orders computed every one of them satisfies the same
-recurrence as $P$ itself.  If the contact set is closed under the operator at every
-order --- which would follow from a boundary substitution, a finite rule expressing each
-boundary segment of a level-$(k{+}1)$ supertile through boundary segments of level-$k$
-supertiles, and which we have not constructed --- then $P$ obeys the recurrence of
-Fact~\ref{fact:bdyrec} for every $k$.  Without it the recurrence is an exact statement
-about the orders counted and a conjecture beyond them.
+holds at every order (Theorem~\ref{thm:bdy}).  Two facts make it small enough to solve.
+First, all eight non-$\Gamma$ species have the \emph{same} outline at every order, since they
+place the same child outlines in the same slots; this collapses a nine-type problem to two.
+Second, the glue decomposes by slot pair into thirteen contact sequences.  Ten of them satisfy
+the recurrence of $P$ from the first order on; the contacts of slots $1$--$4$, $1$--$7$ and
+$4$--$7$ satisfy it only from $k=5$ on, their first term being exceptional, so their
+characteristic polynomial carries an extra factor $x$.  What closes the system is a boundary
+substitution in the form of a finite set of contact types.
+
+\begin{thm}
+\label{thm:bdy}
+For every $k\ge0$, $P(k+3)=5P(k+2)-3P(k+1)-P(k)$ and $P(k)=2F_{3k+5}+4$, where $F_n$ is the
+Fibonacci number; and $Q(k+3)=5Q(k+2)-3Q(k+1)-Q(k)$ for every $k\ge1$.
+\end{thm}
+
+\begin{proof}
+The slot transforms of the construction are $x\mapsto A_{i}x+M_{i}q_{k}$, with fixed $A_{i}$ and
+fixed integer $4\times16$ matrices $M_{i}$, where $q_{k}\in\mathbb{Z}^{16}$ is the quadrilateral of
+order $k$ and $q_{k+1}=\Phi q_{k}$.  So two placed order-$k$ outlines have a relative placement
+$x\mapsto Ax+Lq_{k}$ with $L$ independent of $k$.  The length $S(k)$ of their common boundary is the
+sum, over the pairs of their children, of the same quantity one order down, provided the two have
+disjoint interiors.  Two placements are identified when $Lq_{k}$ agrees for all $k$; this is decided
+on $q_{0},\dots,\Phi^{5}q_{0}$, because the minimal polynomial of $q_{0}$ is $(x^{2}-1)(x^{4}-8x^{2}+1)$.
+Starting from the sibling pairs, the child pairs close on $93$ types.  Every other child type is
+separated at every order: by a radius bound for $k\le60$, and by the exact eigen-decomposition of
+$q_{k}$ for $k>60$, with a margin of at least $0.097$ in units of the quadrilateral's diagonal.  On
+the $93$ types the interior overlap vanishes at order $0$, hence at every order by the same sum.
+So the supertiles are genuine patches; this is proved here, not assumed.  The state
+$(P,Q,S_{1},\dots,S_{93})$ then obeys $V(k+1)=BV(k)$ with a fixed $95\times95$ integer matrix $B$.
+The sequence $e^{\top}B^{k}p(B)V(0)$, with $p(x)=x^{3}-5x^{2}+3x+1$, vanishes for $k<95$, hence for
+all $k$ by Cayley--Hamilton; the same argument gives the recurrence of $Q$.  The closed form follows
+because $F_{n+6}=4F_{n+3}+F_{n}$ and the seeds agree.  The computation is
+\code{boundary\_certificate/check\_spectre\_boundary\_proof.py}.  It works from an independent exact
+transcription of the construction and does not use the rest of the build.
+\end{proof}
 
 \begin{fact}
 \label{fact:bdyrec}
-For $3\le k\le6$, $P(k)=5P(k-1)-3P(k-2)-P(k-3)$, with $P=%s$ and $P(6)=57318$, all counted
-exactly (Fact~\ref{fact:bdyexact}).  That the recurrence holds for every $k$ is conjectured and not proved.
+For every $k\ge3$, $P(k)=5P(k-1)-3P(k-2)-P(k-3)$ (Theorem~\ref{thm:bdy}), with $P=%s$ and
+$P(6)=57318$ also counted exactly (Fact~\ref{fact:bdyexact}).
 \end{fact}
 
 \noindent
@@ -1249,14 +1275,12 @@ rounding key is therefore not load-bearing for any of the boundary results.
 \noindent
 The factorisation of $\chi_{\partial}$ is not left as a spectral remark.  Its
 quadratic factor applied to the sequence annihilates the growing part and
-leaves behind the constant belonging to the marginal eigenvalue.  For the sequence
-defined by the recurrence and its seed that identity is proved for every $k$; for the
-counted perimeters it holds on the orders counted:
+leaves behind the constant belonging to the marginal eigenvalue.  By
+Theorem~\ref{thm:bdy} the identity holds for the perimeters at every order:
 
 \begin{fact}
 \label{fact:bdyinv}
-For the recurrence sequence, $P(k+2)-4P(k+1)-P(k)=-16$ for all $k\ge0$, by induction;
-for the counted perimeters it holds for $0\le k\le4$.  Together with the seed it is
+$P(k+2)-4P(k+1)-P(k)=-16$ for all $k\ge0$.  Together with the seed it is
 equivalent to the recurrence of Fact~\ref{fact:bdyrec}, and it is the $+1$
 eigenvalue made arithmetic --- the boundary's analogue of $Q_{+}$.
 \end{fact}
@@ -1281,16 +1305,16 @@ divide between area and perimeter of the
 \emph{same} tile.  The supertile
 boundary is golden although the tiling is not.
 
-If the recurrence holds for every $k$, then $P(k)\sim c\,\nu^{k}$ unit edges bound a
+Since $P(k)\sim c\,\nu^{k}$ unit edges bound a
 supertile of diameter of order $\lam^{k}$, and since $\nu>\lam$ the perimeter outgrows the
 linear scale with exponent $\log\nu/\log\lam=%s$.  That would make the boundary fractal
 in the sense of a limiting curve of that box dimension only with two further inputs that
 are not supplied here: convergence of the rescaled outlines $\lam^{-k}\partial S_{k}$, and a
 lower bound on their covering numbers.  The self-similar Spectre-type tilings with fractal
 tiles of~\cite{BaakeSpectre} are the natural setting in which to settle it.  What is
-established is weaker: on the orders counted $P(k{+}1)/P(k)>4>\lam$ for $2\le k\le5$, so a
-perimeter argument assuming $P(k)\sim\lam^{k}$ is wrong there; and for the recurrence
-sequence $P(k+3)\ge4P(k+2)+30$ for every $k$, while $\lam^{2}<16$ hence $\lam<4$.
+established is weaker: $P(k+3)\ge4P(k+2)+30$ for every $k$, while $\lam^{2}<16$ hence
+$\lam<4$, so $P(k{+}1)/P(k)>4>\lam$ for every $k\ge2$ and a perimeter argument assuming
+$P(k)\sim\lam^{k}$ is wrong at every order.
 
 \subsection{What the golden appearance is not}
 
@@ -1348,8 +1372,8 @@ OFF_PAPER = {
     'x_charge', 'atlas', 'phi_drift', 'rho_x_at_half', 'chiral_angle', 'angle_from_kappa', 'spectre_angle_differs',
     'twist_family', 'bh_theorem', 'bh_version', 'bh_gap_was_chirality', 'bh_deficit_bound', 'bh_threshold',
     'beta', 'beta_tension'}
-# Facts whose Lean theorem is about the sequence *defined* by the perimeter recurrence; for the counted
-# perimeters they hold only on the orders counted.
+# Facts whose Lean theorem is about the sequence *defined* by the perimeter recurrence; that this sequence is the
+# perimeter at every order is Theorem thm:bdy, proved by boundary_certificate/ and not in Lean.
 RECURRENCE_DEFINED = {'boundary_recurrence', 'boundary_invariant', 'boundary_growth_bound', 'boundary_fibonacci',
                       'boundary_directions'}
 
@@ -1461,8 +1485,9 @@ def abstract():
 \begin{abstract}
 The planar Spectre and Tsiokos's three-dimensional Chair44 are aperiodic monotiles whose tilings are hierarchical;
 they are compared here by exact computation.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$.
-Counted exactly on placed supertiles up to order six, its supertile perimeter grows by the unit $2+\sqrt5$ of
-$\mathbb{Q}(\sqrt5)$, which would make the supertile boundary fractal if the observed recurrence persists.  The inflation acts
+Its supertile perimeter is $2F_{3k+5}+4$ at every order $k$, proved by a finite exact certificate, so it grows by
+the unit $2+\sqrt5$ of $\mathbb{Q}(\sqrt5)$, faster than the linear inflation; that the limiting boundary is a fractal
+curve is not claimed.  The inflation acts
 on the vertex module $\mathbb{Z}^{4}$ with two expanding and two contracting directions, and the internal plane is given
 exactly.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
 space is $2$-adic) and no twist; its centre set, that of the classical three-dimensional chair, has an explicitly computed
@@ -1971,7 +1996,7 @@ def conclusion_section():
 \label{sec:conclusion}
 
 The two tilings separate cleanly in the quantities computed: the Spectre by a unit of $\mathbb{Z}[\sqrt{15}]$, a perimeter
-growing by a unit of $\mathbb{Q}(\sqrt5)$ on the orders counted, and an exact internal plane; the Chair44 by inflation $2$ on
+growing by a unit of $\mathbb{Q}(\sqrt5)$ at every order, and an exact internal plane; the Chair44 by inflation $2$ on
 $\mathbb{Z}^{3}$, no Euclidean internal space, no twist, an explicit pure-point centre set, orientation sums $2^{n}$
 and face contacts that are not bipartite.  The main new result is the hull theorem and the classification of the symmetry
 groups of Chair44 tilings in Section~\ref{sec:hull}, conditional on two unrefereed inputs.  The hierarchy tests of
@@ -1986,18 +2011,16 @@ Lemma~\ref{lem:blocks}, which the build of this paper does not repeat but which 
 for tilings by the solid they rest in addition on Tsiokos's registration theorem, quoted, audited by the second author (its
 written steps checked, all of its finite inputs recomputed), and not refereed.  The counts of legal blocks and fixed seeds
 are recomputed.  That the Spectre diffraction is pure point is a published theorem and is quoted.  The perimeter recurrence
-of the Spectre is verified exactly for $k\le6$ and not proved beyond; the closed form, the growth bound, the boundary
-exponent and the balanced exponent hold for the recurrence sequence and are conditional for the perimeters, and fractality of
-the boundary would need in addition a limit argument.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
+of the Spectre, its closed form, the growth bound and the boundary exponent are proved for every order by the finite
+certificate of Theorem~\ref{thm:bdy}, which is independent code; fractality of the
+boundary would need in addition a limit argument.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
-On the orders counted the boundary operator governs the perimeter in the aggregate; resolved by species and edge index a
-handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$.  The aggregate
-operator is conjectured beyond $k=6$; the full fine operator is not claimed.  The hierarchy results are numerics on finite
+The boundary operator governs the perimeter in the aggregate at every order; resolved by species and edge index, on the orders counted, a
+handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$, and the full fine operator is not claimed.  The hierarchy results are numerics on finite
 patches, with controls, and are not Facts.
 
-Four computations would extend the work: a boundary substitution for the Spectre supertiles, which would prove the perimeter
-recurrence for every $k$; the window of the Spectre as the attractor of the contracting maps, which would give its dimension
+Three computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give its dimension
 exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; and an exact count of the
 common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$.
 """
@@ -2207,8 +2230,11 @@ def selftest():
     check('the boundary is called fractal only conditionally',
           'would make the boundary fractal in the sense of a limiting curve' in flat
           and 'the boundary is fractal: its box dimension' not in flat)
-    check('the perimeter recurrence is stated as verified, not proved, beyond the orders counted',
-          'conjectured and not proved' in flat and 'proved for all $k$ by induction, not sampled' not in flat)
+    check('the perimeter recurrence is stated as proved for every order, by the named certificate',
+          r'\label{thm:bdy}' in text and 'check\\_spectre\\_boundary\\_proof.py' in text
+          and 'conjectured and not proved' not in flat and 'proved for all $k$ by induction, not sampled' not in flat)
+    check('the three exceptional contact sequences are named',
+          'satisfy it only from $k=5$ on' in flat)
     check('the twist is stated as a limit and the quadrilaterals as not similar',
           'are not similar at any finite level' in flat and 'Successive supertile quadrilaterals are similar' not in flat)
     check('the transcendence of s* cites Gelfond-Schneider', r'\cite{Gelfond}' in text)

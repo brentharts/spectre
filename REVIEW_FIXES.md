@@ -100,7 +100,34 @@ Build dependencies: Python with sympy, numpy, scipy, matplotlib and shapely, plu
 - Checks that asserted the old overclaims ("the boundary is fractal", "read from k = 1", "independently audited") are replaced by checks for the corrected statements.
 - New checks cover the twist, the recurrence status, Gelfond–Schneider, the removed Prop. 3 and the Mystic term.
 
+## All-orders proof of the perimeter recurrence (G1, second round)
+- **New Theorem 1**: for every k, P(k+3) = 5P(k+2) − 3P(k+1) − P(k) and P(k) = 2F(3k+5) + 4. The Mystic
+  perimeter Q obeys the same recurrence from k = 1 on.
+- **The proof is a finite exact certificate**, `boundary_certificate/check_spectre_boundary_proof.py` (`make boundary-proof`, about 2 minutes):
+  - Pairs of placed order-k outlines are tracked by their relative placement, which is linear in the quad vector q_k.
+  - The pair types close on 93 types.
+  - Every other placement is proved separated at every order: radius bounds for k ≤ 60, and the exact
+    eigen-decomposition of Φ on q_0 for k > 60. The smallest margin is 0.097 diagonals.
+  - Non-overlap of the supertiles is proved on the way, not assumed.
+  - Cayley–Hamilton on the 95 × 95 integer state matrix finishes the argument.
+  - It uses the referee's independent transcription of the construction, not the paper's build.
+- **Restated as proved for every order:** the recurrence, the −16 invariant, the growth bound P(k+3) ≥ 4P(k+2) + 30,
+  the closed form, ν, and s* given its model. The abstract, the table caption, the conclusion, the further-work list
+  (now three items), the ledger methods and the supplement's * legend follow.
+- **Still conditional:** fractality of the limiting boundary, which needs convergence of the rescaled outlines and a
+  covering bound.
+- **Correction:** the paper said every one of the thirteen slot-pair contact sequences obeys the recurrence on the orders
+  counted. Three of them (slots 1–4, 1–7, 4–7) fail it at k = 4 and obey it from k = 5. The text now says so.
+
+## Flicker attributions (checked)
+Checked against the full text of arXiv:2609.23783v2:
+- **No slide plane.** Flicker gives a short argument: Superchair rules force slides to be multiples of 2, then 4, and so
+  on, so the only admissible slide is zero. "Argues informally" is a fair description.
+- **30 of the 44 contacts.** This is stated in the main text and in footnote 15, with no proof shown. "States" is
+  accurate.
+- The citation is correct as written.
+
 ## Still open
-- **G1 is not solved.** A proof of the perimeter recurrence for every k needs a boundary substitution for the Spectre supertiles. The paper now says so and lists it as further work.
-- **(R) and (H)** remain unrefereed inputs. The abstract now says so.
-- **The Flicker attributions** in Sec. 7.4 (no slide plane; 30 of 44 contacts) were left as written. They could not be checked against the full text of arXiv:2609.23783.
+- **(R) and (H)** remain unrefereed inputs. The abstract says so.
+- **Upstream open PRs.** Open PRs on brentharts/spectre were not checked: this session has no access to that repository.
+  This branch fast-forwards from upstream master `5d077c8`.

@@ -51,6 +51,10 @@ facts:
 	$(PYTHON) chair44_hull.py --tests
 	$(PYTHON) chair44_lines.py --tests
 
+# the all-orders proof of the Spectre perimeter recurrence (independent code, about 2 minutes)
+boundary-proof:
+	cd boundary_certificate && $(PYTHON) check_spectre_boundary_proof.py
+
 atlas:
 	$(PYTHON) spectreatlas.py --selftest
 
@@ -213,6 +217,6 @@ c:
 d:
 	blender --python einstein_fibration.py -- --iter2 --b=3
 
-.PHONY: facts atlas lean readme figures paper check paper-clean \
+.PHONY: facts boundary-proof atlas lean readme figures paper check paper-clean \
         install_lean install_lean_tarball install_lean_deps \
         lean_env uninstall_lean

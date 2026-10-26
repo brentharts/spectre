@@ -442,7 +442,7 @@ def register():
          method='for the sequence defined by the perimeter recurrence (seeds 14, 46, 182, '
                 'characteristic polynomial (x-1)(x^2-4x-1)), F(n+6) = 4F(n+3) + F(n) makes 2F(3k+5)+4 '
                 'satisfy it with the same seeds, so the closed form holds for every k (proved in Lean); '
-                'for the counted perimeters it holds for k <= 6. '
+                'and that sequence is the perimeter at every order by the boundary certificate. '
                 'It says the boundary growth nu = phi^3 is one Spectre level multiplying the '
                 'Fibonacci index by three, and that the eigenvalue-1 mode is the constant 4',
          lean='boundary_fibonacci')
