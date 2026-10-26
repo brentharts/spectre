@@ -164,5 +164,8 @@ Checked against the full text of arXiv:2609.23783v2:
   - My own closure test (`chair_nd.py` on the review branch) reproduces Kamenetsky's Theorem B: 3 of 2187 assignments close.
   - It was then run on 12,784 sampled 4D assignments: half extend the 3D marking on the facet v₃ = 0, half are random.
   - None closed. Every one exceeded 400 contact poses, with no offsets.
+  - A vectorised version of the test (`chair_nd_fast.py`, also validated on Theorem B) then drove a simulated-annealing
+    search on |Σ(P₀)|: about 12,100 evaluations over four two-hour workers. The best value was 273, against 44 for a
+    closed 3D assignment. None closed.
   - The search space has about 1.5·10¹⁶ assignments, so this rules nothing out in general.
 - **Upstream open PRs**: see the PR.
