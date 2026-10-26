@@ -4,25 +4,15 @@ This branch (`paper-review-fixes`) applies the fixes proposed in the referee rep
 `research/spectre_review/REPORT.md` of github.com/romanov360/big-bang-monotile (branch `spectre-paper-review`).
 The report reviewed commit `5d077c8`. This branch starts from that commit.
 
-**Build status.** The generator `spectrepaper.py` was edited, and `spectre_substrate.tex` was edited by hand to
-match it. The build environment used for these edits could not run the repository's code, so neither
-`python3 spectrepaper.py` nor `--selftest` has been run.
+**Build status (run on this branch).**
+- `python3 spectrepaper.py --selftest`: all checks pass.
+- `python3 spectrepaper.py`: regenerated `spectre_substrate.tex`. The regenerated file is identical to the hand-edited one except one sentence, which the generator now fills from computed values.
+- `python3 spectre_supplement.py --selftest`: all checks pass.
+- `python3 spectre_supplement.py`: regenerated `spectre_supplement.tex`, now 71 Facts, 24 with a Lean mark.
+- `make facts`: spectrefacts (62 facts), monotilefacts (8 checks), chair44facts (43 checks), `chair44_hull --tests` and `chair44_lines --tests` all pass. pyCICY was not installed, so the optional pyCICY cross-check of the perimeter was skipped; the referee's exact recount covers it.
+- `pdflatex` (twice each): `spectre_substrate.pdf` (28 pages) and `spectre_supplement.pdf` (4 pages), with no errors and no undefined references or citations.
 
-Run, in order:
-
-    python3 spectrepaper.py --selftest
-    python3 spectrepaper.py
-    python3 spectre_supplement.py --selftest
-    python3 spectre_supplement.py
-    make            # or the usual LaTeX build of both documents
-
-What has been checked without running the code:
-- All edited Python files parse.
-- Braces and environments balance in the `.tex`.
-- Every `\ref` has a label, and every `\cite` has a bibitem and vice versa.
-- Every line of the edited `.tex` either occurs verbatim in the generator or is a line where the generator fills in a value. The count of such placeholder lines, 165, is unchanged from before the edits.
-
-`spectre_supplement.pdf` is stale (it predates the current title) and must be rebuilt.
+Build dependencies: Python with sympy, numpy, scipy, matplotlib and shapely, plus TeX Live (latex-base, latex-recommended, latex-extra, fonts-recommended, pictures).
 
 ## What changed (report item → fix)
 

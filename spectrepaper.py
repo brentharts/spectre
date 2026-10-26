@@ -1704,7 +1704,7 @@ exact amplitude
 \[
 a(k)=\tfrac78\,8^{1-J}\bigl(\pm1+\tfrac17\bigr),
 \]
-with sign $-$ when $m_{1}+m_{2}+m_{3}$ is odd, so at $J=1$, $a=@aa@$ on an axis and on the body diagonal and $a=1$ on a
+with sign $-$ when $m_{1}+m_{2}+m_{3}$ is odd, so at $J=1$, $a=@aa@$ on an axis, $a=@ad@$ on the body diagonal and $a=1$ on a
 face diagonal; the last says only that every centre has $x+y$ and $y+z$ even.  The squared
 amplitudes at level $J$ sum to $\tfrac{21}{4}8^{1-J}$, and
 \[
