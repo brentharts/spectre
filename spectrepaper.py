@@ -543,7 +543,10 @@ feature is in a relative pose among the legal contacts~\cite[Thm~5.6, Lemma~5.3]
 features.  This is the geometric half of~\cite{Tsiokos1}.  Its written proof has been audited step by step by the second
 author, and all of its finite inputs recomputed in exact arithmetic, including each of the $5{,}273$ collision witnesses
 (\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md})~\cite{Romanov}; no gap was found.
-It has not been refereed.
+Tsiokos's formal proof of it~\cite{Tsiokos1} has also been rebuilt from source in an independent build.  The build
+succeeds, and the dependency report of the theorem lists only the three standard axioms of the proof assistant and named
+decision steps evaluated by its compiler; the report is identical to the published one (\code{lean\_rebuild/}).  It has
+not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky} applied to the Chair44, and Tsiokos
 proves it for tilings by $Q$~\cite[Thms~6.4, 6.5]{Tsiokos1}.  It is proved here as Lemma~\ref{lem:hier}.
