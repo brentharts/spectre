@@ -215,14 +215,16 @@ The recurrence has a closed form in Fibonacci numbers.
 
 \begin{fact}
 \label{fact:bdyfib}
-$P(k)=2F_{3k+5}+4$ for every $k\ge0$, where $F_n$ is the Fibonacci number.
+The sequence defined by the recurrence of Fact~\ref{fact:bdyrec} and the seeds $14,46,182$ is
+$P(k)=2F_{3k+5}+4$ for every $k\ge0$, where $F_n$ is the Fibonacci number; in particular the
+counted perimeters satisfy it for $0\le k\le6$.
 \end{fact}
 
 \noindent
-It follows from the recurrence and the seeds $14,46,182$, because
-$F_{n+6}=4F_{n+3}+F_{n}$ makes $2F_{3k+5}+4$ satisfy the same recurrence, and it
-is proved for all $k$ by induction, not
-sampled.  It says three things that the recurrence did not.  The growth
+For the recurrence sequence it is proved for all $k$ by induction, because
+$F_{n+6}=4F_{n+3}+F_{n}$ makes $2F_{3k+5}+4$ satisfy the same recurrence and the seeds
+agree.  For the perimeters it is exactly as strong as the recurrence.  It says three things
+that the recurrence did not.  The growth
 $\nu=\varphi^{3}$ is one Spectre level multiplying the Fibonacci index by three,
 which is how the golden unit arises.  The marginal eigenvalue $+1$ is the
 constant $4$, so $(P(k)-4)/2$ is every third Fibonacci number.  And the third
@@ -233,10 +235,10 @@ alternating with level parity does so, and this is weak evidence of a link to
 the chirality channel and is not claimed as one.
 
 The boundary edges also have directions.  The fourteen edges of the Spectre
-point along multiples of $30^{\circ}$, so a boundary edge has one of twelve
-oriented directions, and the histogram of an order-$k$ supertile has period six:
-it depends only on the direction modulo $180^{\circ}$.  Splitting those six
-classes by parity gives, counted on the placed tiling through $k=6$,
+point along multiples of $30^{\circ}$.  Let $h_{j}$, $j\in\mathbb{Z}/6$, be half the number of
+boundary edges of an order-$k$ supertile whose direction is $j\cdot30^{\circ}$ modulo
+$180^{\circ}$, so that $\sum_{j}h_{j}=P(k)/2$.  Splitting the six classes by parity gives,
+counted on the placed tiling through $k=6$,
 %
 \begin{equation}
 \label{eq:dirsplit}
@@ -257,7 +259,8 @@ their largest amplitude over $k\le6$ is @peak@.  The group $\mathbb{Z}/6$ is the
 $180^{\circ}$.  Even and odd are the class totals of~\eqref{eq:dirsplit};
 $|\hat h|$ is the largest amplitude of the $\mathbb{Z}/3$ and faithful
 characters of the folded histogram.  Counted on the placed tiling
-(\code{chair44\_spectre\_link.py}); the $k=6$ row took 66\,s.}
+(\code{chair44\_spectre\_link.py}); the $k=6$ row took 66\,s.  The $P(k)$ column is the recurrence sequence and agrees
+with the exact count of Fact~\ref{fact:bdyexact}.}
 \label{tab:dirs}
 \begin{tabular}{rrrrrr}
 \toprule
@@ -268,10 +271,10 @@ $k$ & $P(k)$ & even & odd & even $-$ odd & $|\hat h|$ \\
 \end{tabular}
 \end{table}
 
-\textbf{Counted, not derived.}  The recurrence and the closed form are exact;
-the split~\eqref{eq:dirsplit} is a count and is not proved beyond $k=6$.  What
-is proved is the arithmetic that ties it to the perimeter:
-the two totals add up to $P(k)$.  The boundedness of
+\textbf{Counted, not derived.}  The closed form is exact for the recurrence sequence, and
+the recurrence is verified on the orders counted; the split~\eqref{eq:dirsplit} is a count
+and is not proved beyond $k=6$.  What is proved is the arithmetic that ties it to the
+closed form: $F_{3k+4}+F_{3k+3}+2=P(k)/2$.  The boundedness of
 the other characters is an observation.  The directions are counted with the
 fork's own tile builder, so this is a count and not an independent second
 route.
@@ -285,8 +288,11 @@ is a single exponent.
 
 \begin{prop}
 \label{prop:sstar}
-Interfaces at coarseness $c$ in a depth-$N$ patch number
-$\bigl(T(c)P(N-c)-P(N)\bigr)/2$, so they grow in $c$ by $\mu=\lam^{2}/\nu$.  If
+Interfaces at coarseness $c<N$ in a depth-$N$ patch, that is, unit edges shared by two
+different supertiles of order $N-c$, number
+$\tfrac12\bigl((T(c)-N_{\Gamma}(c))P(N-c)+N_{\Gamma}(c)Q(N-c)-P(N)\bigr)$, with $Q$ the Mystic
+perimeter of~\eqref{eq:bdyid} and $N_{\Gamma}(c)=T(c-1)$; so, if $P$ and $Q$ grow like $\nu^{k}$,
+they grow in $c$ by $\mu=\lam^{2}/\nu$.  If
 each such unit edge is thickened to a neighbourhood of width
 $\delta_{c}=\delta_{0}\lam^{-sc}$ and cross-section $\delta_{c}^{2}$, as for a
 curve in $\mathbb{R}^{3}$, the exponent making every level carry comparable
@@ -303,11 +309,12 @@ The natural guess $s=2$, one factor of the unit per level, is wrong, and
 Section~\ref{sec:bdyop} says why: every interface edge is a \emph{unit} tile edge
 whatever level it sits at, so length does not scale with level and only the
 population does.  Two cautions attach to~\eqref{eq:sstar}.  It is exact but
-\emph{not algebraic}: a ratio of logarithms of algebraic numbers has a closed
-form and arbitrary precision but is not a root of any polynomial.  The
-algebraic object is $\nu$; $s^{*}$ is what remains after taking its logarithm,
-and a reader wanting an element of $\mathbb{Z}[\sqrt{15}]$ should stop at $\nu$
-and accept it in $\mathbb{Q}(\sqrt5)$.  And $s^{*}$ had to be derived rather than
+\emph{not algebraic}.  The ratio $\log\nu/\log\lam^{2}$ is irrational, since $\nu^{p}=\lam^{2q}$
+with integers $p,q\ne0$ would put an element of $\mathbb{Q}(\sqrt5)\setminus\mathbb{Q}$ equal to one of
+$\mathbb{Q}(\sqrt{15})\setminus\mathbb{Q}$; and an irrational ratio of logarithms of algebraic numbers is
+transcendental by the Gelfond--Schneider theorem~\cite{Gelfond}.  The thickening that defines
+$s^{*}$ is a modelling choice and not a property of the tiling, and $s^{*}$ inherits the
+conditional status of $\nu$.  And $s^{*}$ had to be derived rather than
 fitted: because the interface count depends on $T(c)$ and on $P(N-c)$ together,
 a single-exponent fit needs $c$ large and $N-c$ large at once, which no finite
 patch provides.  Fitting one anyway returns values that drift with depth and
@@ -334,7 +341,9 @@ def chair_section():
 Everything above is two-dimensional; this section asks which of it depends on that.  Tsiokos's
 Chair44~\cite{Tsiokos1} is a candidate three-dimensional einstein, claimed to fill $\mathbb{R}^{3}$ only aperiodically.  The
 tile is the seven-cube chair (a $2\times2\times2$ block less one corner) with each of its $24$ unit faces carrying eight
-small pyramids of signed heights.  Its einstein property and strong aperiodicity are Tsiokos's claimed proof, quoted and
+small pyramids of signed heights.  Without the pyramids, the substitution of eight chairs on the doubled chair is the
+classical three-dimensional chair substitution~\cite{Robinson,LeeMoody}; the decorations select the frames of the
+children.  Its einstein property and strong aperiodicity are Tsiokos's claimed proof, quoted and
 not checked, and nothing below bears on them.  What is recomputed is the combinatorial atlas: \code{symchair44.py} generates
 the tile in exact rational arithmetic with no external data and agrees vertex for vertex with the published solid
 (\code{symchair44\_tests.py}, \code{chair44\_tests.py}); the Facts are in \code{chair44facts.py} and the supplement.
@@ -363,8 +372,9 @@ alone.
 \footnotesize
 \caption{The Spectre and the Chair44 side by side.  $d$ is the dimension, $\lam$ the linear
 inflation, $\nu$ the boundary growth per level, $D_b=\log\nu/\log\lam$,
-$s^{*}=1-D_b/d$ and $\mu=\lam^{d}/\nu$.  The last two rows are about what is claimed, not
-computed.}
+$s^{*}=1-D_b/d$ and $\mu=\lam^{d}/\nu$.  The Spectre entries for $\nu$, $D_b$, $s^{*}$, $\mu$ and the
+fractal excess assume that the boundary recurrence of Fact~\ref{fact:bdyrec} holds for every $k$.  The
+last two rows are about what is claimed or quoted, not computed.}
 \label{tab:chair}
 \begin{tabular}{lll}
 \toprule
@@ -379,12 +389,12 @@ $s^{*}$ & $@sstar@$ & $1/3$ \\
 $\mu$ & $1.8586$ & $2$ \\
 fractal excess $D_b-(d-1)$ & $+0.3993$ & $0$ \\
 area and perimeter fields & $\mathbb{Q}(\sqrt{15})$, $\mathbb{Q}(\sqrt5)$ & both $\mathbb{Q}$ \\
-orientation species & $9$ tiles & $24$ rotations \\
+species, orientations & $9$ species, $12$ orientations & $24$ rotations \\
 zero sector & not semisimple & semisimple \\
 frequencies & irrational (Pisot) & rational, $1/24$ \\
-symmetry groups of a tiling & not computed & $1$, $C_{2}$, $C_{4}$, $D_{4}$ (Theorem~\ref{thm:sym}) \\
+symmetry groups of a tiling & not computed & $1$, $C_{2}^{\mathrm{diag}}$, $C_{4}$, $D_{4}$ (Theorem~\ref{thm:sym}) \\
 strict chirality & yes, by the tile & yes, by the contacts \\
-spectrum of the tiling & Pisot, pure point & 2-adic, pure point, every atlas tiling (Corollary~\ref{cor:hull}) \\
+spectrum of the tiling & pure point~\cite{BaakeSpectre} & 2-adic, pure point, every atlas tiling (Corollary~\ref{cor:hull}) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -395,9 +405,9 @@ spectrum of the tiling & Pisot, pure point & 2-adic, pure point, every atlas til
 The Chair44 super-tile of depth $N$ has $24\cdot4^{N}$ boundary faces and
 $12(8^{N}-4^{N})$ shared faces, since $24$ faces on each of $8^{N}$ tiles less two for every
 shared face leaves $24\cdot4^{N}$; the identity holds for all $N$.  The faces point equally in all six axis directions,
-$4^{N+1}$ each, counted through $N=4$, which is the opposite of the Spectre's direction
-histogram with its golden split.  The interface counts obey the law that Proposition~\ref{prop:sstar}
-states for the Spectre,
+$4^{N+1}$ each, since the chair has four unit faces in each of them; this is the opposite of the Spectre's direction
+histogram with its golden split.  The interface counts obey the form that the law of Proposition~\ref{prop:sstar}
+takes when there is no Mystic,
 \[
 B_{c}=\tfrac12\bigl(T(c)P(N-c)-P(N)\bigr)=12\cdot4^{N}(2^{c}-1),
 \qquad T(c)=8^{c},\ P(k)=24\cdot4^{k},
@@ -406,11 +416,8 @@ so the interface law is not an accident of the plane.  What is different is the 
 With $\lam=2$ and $\nu=4$ the boundary grows by exactly $\lam^{2}$, so
 $D_b=2=d-1$: the supertile boundary of Tsiokos's Chair44 is an ordinary surface, with no fractal
 excess, where the Spectre's has $+0.3993$.  Area and perimeter inflate in the same field, so there is no divide
-between them, and the balanced exponent is the rational $s^{*}=1/3$.  The one-tile-two-units
-property of Section~\ref{sec:bdyop} therefore describes the Spectre and not tilings in
-general: it is plausibly a feature of a planar polygon of unit edges grown by a
-non-integer inflation, and it does not survive a passage to an integer inflation in three
-dimensions.
+between them, and the balanced exponent is the rational $s^{*}=1/3$.  The separation of the area
+and perimeter fields observed for the Spectre in Section~\ref{sec:bdyop} does not occur here.
 
 \subsection{The orientation spectrum, and the 2-adic route}
 
@@ -426,8 +433,9 @@ irrational-frequency witness of aperiodicity (Section~\ref{sec:spectral}) both n
 that is a Pisot number and frequencies that are irrational, and an integer inflation $2$ with
 rational frequencies supplies neither.
 
-The replacement is $2$-adic, and it is not new here: Tsiokos's repository records it
-\cite{Tsiokos1}.  The substitution acts on $24\times7=168$ labelled unit cells, is primitive
+The replacement is $2$-adic, and it is classical: the undecorated chair substitution, in any dimension, is a
+standard example of a lattice substitution with a modular coincidence, pure point diffractive with a $2$-adic internal
+space~\cite{LeeMoody,BMS}; for the labels of the Chair44 it is recorded in~\cite[Thm~8.1]{Tsiokos1}.  The substitution acts on $24\times7=168$ labelled unit cells, is primitive
 (every entry of its $168\times168$ matrix is positive at power $3$), and has a modular
 coincidence: at depth $3$ there are @coinc@ of $512$ addresses, among them $(0,0,2)$, at which
 all $168$ labels expand to the same label.  By the theorem of Lee and Moody (2001) with
@@ -440,7 +448,9 @@ generator, which agrees on the depth and the address, and a rate.  A subset auto
 sets (only @reach@ are reachable, @nons@ of them with more than one label) counts the digit words
 of length $M$ that have not yet fixed the label:
 $c(M)=1,8,64,176,400,848,1744,\dots$, that is $c(M+1)=2c(M)+48$ and $c(M)=28\cdot2^{M}-48$
-from $M=3$, proved for all $M$ by induction.  The undetermined fraction
+from $M=3$.  This holds for every $M$: the vectors $v_{M}$ of counts per automaton state satisfy
+$v_{5}=3v_{4}-2v_{3}$ exactly, so applying the linear transfer map gives $v_{M+2}=3v_{M+1}-2v_{M}$ for all
+$M\ge3$, and $c(M)$ obeys the same recurrence.  The undetermined fraction
 is $c(M)/8^{M}\sim28\cdot4^{-M}$, and the transfer matrix on the non-singleton states has
 spectral radius exactly $2$, so the set of addresses not yet determined, which is where the
 window boundaries lie, has box dimension $\log_{2}2=1$ in the internal space $\mathbb{Z}_{2}^{3}$
@@ -466,10 +476,8 @@ anywhere in the hierarchy.
 
 \noindent
 The chirality is forced twice over: by the labels, which break the three mirror planes of the seed, and by the contacts, which
-admit no mirror pair.  A tile that already fills the bulk cannot be turned over in it, so parity is restored, if it is, by the
-\emph{codimension} of the leaf and not by the \emph{dimension} of the space.
-
-This is a qualification of the heuristic and not a refutation of it.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
+admit no mirror pair.  So, for this tile, passing from the plane to three dimensions does not by itself make mirror images
+available.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
 all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
 family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
 image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
@@ -530,14 +538,14 @@ Two inputs are taken from the literature and are not re-derived here.
 \begin{description}
 \item[(R)] Every tiling by $Q$ is, up to an isometry, an atlas tiling: it is registered, and every pair of tiles sharing a
 feature is in a relative pose among the legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}; every shared unit face carries
-features.  This is the geometric half of~\cite{Tsiokos1}.  Its written proof has been independently audited step by step,
-and all of its finite inputs recomputed in exact arithmetic, including each of the $5{,}273$ collision witnesses
+features.  This is the geometric half of~\cite{Tsiokos1}.  Its written proof has been audited step by step by the second
+author, and all of its finite inputs recomputed in exact arithmetic, including each of the $5{,}273$ collision witnesses
 (\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md})~\cite{Romanov}; no gap was found.
 It has not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky}, a short argument from three finite
-conditions (coarsening closure $30\to44$ with $\Sigma(P^{*})=2P^{*}$, tight facet rules, and unique parents for the $33$
-first-shell enclosures), all reproduced independently in~\cite{Romanov}; Tsiokos proves it for tilings by
+conditions (coarsening closure $30\to44$ with $\Sigma(P^{*})=2P^{*}$, tight facet rules, and unique parents for the $15$
+live enclosures among the $33$ first-shell enclosures), all reproduced in~\cite{Romanov}; it has not been refereed, and Tsiokos proves it for tilings by
 $Q$~\cite[Thms~6.4, 6.5]{Tsiokos1}.
 \end{description}
 
@@ -548,7 +556,11 @@ in its substitution, a $4\times4\times4$ block, are legal.
 \end{lem}
 
 \noindent
-This is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}, on the atlas
+A third implementation, written from the definitions for a referee review of this paper and sharing no code with the
+others, derives the $44$ contacts from Tsiokos's pyramid data and reproduces @adm@ admissible blocks, $15{,}214$ orbits and
+no illegal child window, checking every block and not only orbit representatives
+(\url{https://github.com/romanov360/big-bang-monotile}, \code{research/spectre\_review}).
+It is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}, on the atlas
 published with~\cite{Tsiokos1}), repeated by an independent implementation that derives the atlas from the pyramid
 geometry and, separately, from the eight children alone, and published as a certificate of $O$-orbit representatives with a
 stand-alone verifier~\cite{Romanov}.  \code{chair44\_hull\_admissible.py} repeats the count with the $44$ contacts that
@@ -708,7 +720,8 @@ at most a third of the $24$ rotations.
 
 \textbf{Scope.}  For atlas tilings, Theorem~\ref{thm:hull}, Corollaries~\ref{cor:contacts} and~\ref{cor:hull} and
 Theorem~\ref{thm:sym} rest on~(H), whose finite conditions are reproduced, on Lemma~\ref{lem:blocks}, and, for the
-corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they also rest on~(R), quoted and independently audited but not refereed.  The admissible-block
+corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they also rest on~(R), quoted, audited by the
+second author, and not refereed.  The admissible-block
 count, the axial-group analysis and the explicit patches are the second author's computations, repeated independently; the
 build of this paper recomputes the language of legal blocks, its closure, the fixed seeds and their stabilisers.  None of
 this bears on the einstein property or on strong aperiodicity of the Chair44, which remain Tsiokos's claim.
@@ -744,8 +757,8 @@ Corollary~\ref{cor:hull}.
 \paragraph{Box means.}  The matrix of the cell substitution on the @labels@ labels is primitive with every row and column
 sum $8$, so each label has frequency $1/@labels@$ in every tiling, and the box mean of a cell observable is its mean over
 the labels.  We use two observables of a cell.  The \emph{height} $p$ is the sum of the signed heights of the pyramids on the
-faces of the cell; it vanishes on five of the seven cells of the chair and is $-36$ and $+36$ on the other two, since the $192$
-heights sum to zero.  The \emph{notch vector} $d=g(1,1,1)\in\{\pm1\}^{3}$ belongs to the chair that covers the cell.  Both have box
+faces of the cell; it vanishes on five of the seven cells of the chair and is $-36$ and $+36$ on the other two (the two
+values cancel, as they must, since the $192$ heights sum to zero).  The \emph{notch vector} $d=g(1,1,1)\in\{\pm1\}^{3}$ belongs to the chair that covers the cell.  Both have box
 mean exactly $0$, in each component.
 
 \begin{prop}[chair stacks]
@@ -794,8 +807,9 @@ direction $b$ & closed classes of $\tau_{b}$ & mean of $d$ \\ \hline
 
 \begin{prop}
 \label{prop:lineaction}
-Assume that the hull $\Omega$ has maximal equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\nu$ the Haar measure
-(Corollary~\ref{cor:hull}).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $T^{v}$ on $\Omega$ is
+Assume that the hull $\Omega$ of label configurations, under the action of $\mathbb{Z}^{3}$ by translations, has maximal
+equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\nu$ the Haar measure (Corollary~\ref{cor:hull}; for the
+action of $\mathbb{R}^{3}$ on tilings the factor is a solenoid, not $\mathbb{Z}_{2}^{3}$).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $T^{v}$ on $\Omega$ is
 not uniquely ergodic.  There are a function $f$ of a finite window of labels and a tiling $T$ such that the averages
 $\frac1L\sum_{t<L}f(T^{tv}T)$ along the line through $0$ in direction $v$ converge to a number different from $\int f\,d\nu$.
 \end{prop}
@@ -849,8 +863,8 @@ Chair44 has a simpler answer.
 The eight chairs of the supertile fill the doubled chair cell for cell, so the inflation is a
 scaling by $2$ with no rotation and no mirror: its twist is $0$.  The eight child frames are
 proper rotations through $@angles@$ degrees, two of each, and their mean matrix is exactly
-$I/4$, so the mean frame over the $8^{n}$ chairs of a level-$n$ supertile is $I/4^{n}$.  At depth three all
-$@group@$ rotations of the cube occur.
+$I/4$, so the mean frame over the $8^{n}$ chairs of a level-$n$ supertile is $I/4^{n}$.  All
+$@group@$ rotations of the cube occur already at depth two.
 \end{fact}
 
 \noindent
@@ -878,7 +892,7 @@ $@cubenets@$ nets of the cube.  Figure~\ref{fig:chairnets} shows three nets and 
 The supertile surface is the chair surface scaled by $2$, so its net is the chair net with each
 square replaced by a $2\times2$ block: the area grows by $4$ and the length by $2$, which is the
 dimension $D_b=2$ already found for the boundary (Section~\ref{sec:chair}).  Unfolding therefore does not
-produce a planar analogue of the Spectre's fractal outline, of dimension $@Db@$.  That is a
+produce a planar analogue of the Spectre's outline, whose perimeter grows with exponent $@Db@$ on the orders counted.  That is a
 negative result, and the exact boundary count had already implied it.
 
 \subsection{Chair44: Slices, projections and the notch vector}
@@ -900,7 +914,7 @@ interface length inside the layer $z=0$ is $4^{n+1}-4\cdot2^{n}$ for $n\le4$ ($@
 The sum of the notch vectors in Fact~\ref{fact:chairslices} is the sum rule of Fact~\ref{fact:chairtwist} applied to the vector
 $(1,1,1)$, and it was also counted.  It is far smaller than the sum of $8^{n}$ random signs, which is of order
 $8^{n/2}$: the intensity of the notch-weighted structure factor at the origin per tile is
-$2^{-n}$ instead of order $1$.  The layer interface grows by a factor tending to $4$ per level,
+$3\cdot2^{-n}$ instead of order $1$.  The layer interface grows by a factor tending to $4$ per level,
 again dimension $2$.  Figure~\ref{fig:chairslice} shows a slice, the $k_{z}=0$ plane at level $5$, the origin
 values, and the median intensity at random wave vectors.
 @FIGSLICE@
@@ -1009,8 +1023,9 @@ def spectral_section():
 \label{sec:spectral}
 
 The substitution acts on %s species %s, with $\Gamma$ carrying the Mystic pair
-$\Gamma_1+\Gamma_2$, $\Gamma_2=\mathrm{Tile}(b,a)$.  The matrix is the one
-quoted input of this paper; everything else is derived from it.
+$\Gamma_1+\Gamma_2$, $\Gamma_2=\mathrm{Tile}(b,a)$.  The matrix is transcribed from the
+published rule~\cite{SmithEtAl2}; every statement of Sections~\ref{sec:spectral}--\ref{sec:charges} that does not
+mention placed tiles is derived from it alone.
 {\setlength{\arraycolsep}{2.6pt}
 \begin{equation}
 M=%s
@@ -1032,8 +1047,8 @@ The linear inflation factor is
 with minimal polynomial $%s$ and splitting field $\mathbb{Q}(\sqrt6,\sqrt{10})$.
 The two channel identities are proved in $\mathbb{Z}[\sqrt{15}]$ without
 evaluating a square root: each is $\lam^{2}+\lam^{-2}\mp2$, and the
-$\sqrt{15}$ parts cancel.  Inflation therefore acts on all area-graded data by
-multiplication by a fundamental unit.
+$\sqrt{15}$ parts cancel.  Tile counts, and with them supertile areas, therefore
+grow by the factor $\lam^{2}$ per level.
 \end{fact}
 
 \begin{fact}[Transfer spectrum: a Jordan pair among the zero modes]
@@ -1044,14 +1059,16 @@ not show:
 \operatorname{rank}M=%d,\qquad \operatorname{rank}M^{n}=%d\quad(n\ge2).
 \]
 The zero eigenvalue has algebraic multiplicity five and geometric multiplicity
-four, so $M$ is not diagonalizable.  The transient sector is four census
-directions erased in one substitution together with one Jordan pair erased in
-exactly two: a one-step afterimage, the only place where the substitution
-remembers longer than its eigenvalues admit.  The remaining spectrum is the
-Pisot-unit pair $\{\lam^{2},\lam^{-2}\}$ and two marginal eigenvalues $\pm1$.
-Deviations from equilibrium contract by $\lam^{-4}=%s\approx%s$ per step,
-except along the marginal directions, which are exact integer charges, and
-along the Jordan pair, which is gone after two.
+four, so $M$ is not diagonalizable: its Jordan blocks at $0$ have sizes $1,1,1,2$.
+The kernel of $M$ has dimension four and that of $M^{2}$ dimension five, so one
+census direction survives one substitution and is erased by the second.  The
+remaining spectrum is the Pisot-unit pair $\{\lam^{2},\lam^{-2}\}$ and two marginal
+eigenvalues $\pm1$.
+Relative to the Perron growth, the Pisot conjugate decays by $\lam^{-4}=%s\approx%s$
+per step and the marginal modes by $\lam^{-2}$; so species frequencies converge at the
+rate $\lam^{-2}$ whenever a marginal charge of Section~\ref{sec:charges} is nonzero on the
+seed (as it is for the seed $\Delta$), and at the rate $\lam^{-4}$ otherwise.  The zero
+modes are gone after two steps.
 \end{fact}
 """ % (number(len(F.SPECIES)), species_row(F.SPECIES), matrix_tex(F.M),
        tex(F.get('perron').value), F.get('pell').value,
@@ -1088,7 +1105,10 @@ $n-1$; the Mystic is a second copy of it.  Hence
 T_{\rm geom}(n)=T(n)+T(n-1),
 \]
 and both sequences obey $T(n{+}1)=8T(n)-T(n{-}1)$, the recurrence whose
-characteristic polynomial is the quadratic factor of $\chi_M$.
+characteristic polynomial is the quadratic factor of $\chi_M$.  The recurrence holds for
+every seed and every $n$: the row of ones satisfies $\mathbf{1}^{\top}(M^{2}-8M+I)=0$, checked
+entry by entry, so $T(n{+}2)-8T(n{+}1)+T(n)=\mathbf{1}^{\top}M^{n}(M^{2}-8M+I)e=0$ for every seed
+vector $e$.
 \end{fact}
 
 \begin{table}[h]
@@ -1132,15 +1152,17 @@ Q_{+}=%s,\qquad Q_{-}=%s.
 $Q_{+}$ is conserved; $Q_{-}$ alternates.
 \end{fact}
 
-\begin{prop}[$Q_{-}$ is the parity's census avatar]
+\begin{prop}[$Q_{-}$ and the parity of the construction]
 \label{prop:parity}
-The handedness census of the placed tiles gives a chirality order parameter
-$\chi=\pm1$ at every depth --- the tiling is strictly single-handed at every
-scale --- and the sign of $Q_{-}$ alternates in lockstep with it.  Global
-geometric parity is computable from species counts alone.  Transcribing the
-published placement chain into $\mathbb{Q}(\sqrt3)$ affine arithmetic, every
-determinant is exactly $\pm1$ and the common determinant of a depth-$n$ patch
-equals $-Q_{-}(n)$ at every depth computed.
+The construction applies a mirror at every level, so all tiles of a depth-$n$ patch
+have the same handedness and the common determinant of their placements is
+$(-1)^{n}$; transcribing the published placement chain into $\mathbb{Q}(\sqrt3)$ affine
+arithmetic, every determinant is exactly $\pm1$, as it must be.  Since $Q_{-}$ is a left
+eigenvector for $-1$, $Q_{-}(n)=(-1)^{n}Q_{-}(e)$ for a seed $e$.  For the seed $\Delta$,
+$Q_{-}(\Delta)=-1$ and the determinant equals $-Q_{-}(n)$ at every depth.  This is a
+coincidence of two alternating sequences and not a way of reading parity from species
+counts: $Q_{-}$ vanishes on single tiles of the species $\Lambda$, $\Sigma$ and $\Psi$, and
+hence on the supertiles of those species at every depth.
 \end{prop}
 
 \begin{fact}[The generational ledger]
@@ -1150,8 +1172,8 @@ indicator of $\Sigma$, so
 \[
 N_\Theta(n)=N_\Gamma(n-1),\qquad N_\Lambda(n)=N_\Sigma(n-1)
 \]
-hold exactly, not asymptotically.  Two species are a verbatim copy of an
-earlier generation, which gives the modular arrow an integer bookkeeping.
+hold exactly, not asymptotically: two species are a verbatim copy of an
+earlier generation.
 \end{fact}
 """ % (qp, qm,
        ', '.join('%+d' % v for v in F.Q_PLUS_BY_DEPTH),
@@ -1190,17 +1212,22 @@ Q(k{+}1)=6P(k)+Q(k)-2G_{\Gamma}(k{+}1).
 \end{equation}
 %%
 The coefficients are read from the rule, not fitted to counts, and~\eqref{eq:bdyid}
-is exact at every order computed.  Two structural facts make this small enough
-to state.  First, all eight non-$\Gamma$ species have the \emph{same} boundary
-sequence: the outline of a supertile does not depend on its type, which is what
-collapses a nine-type problem to two.  Second, the glue decomposes by slot pair
-into thirteen contact sequences, and every one of them satisfies the same
-recurrence as $P$ itself.  The contact set is closed under the operator, which
-is why $P$ is.
+is exact at every order computed.  Two observations, made on the orders computed
+($k\le6$) and not proved in general, make this small enough to state.  First, all
+eight non-$\Gamma$ species have the \emph{same} boundary sequence, which collapses a
+nine-type problem to two.  Second, the glue decomposes by slot pair into thirteen
+contact sequences, and on the orders computed every one of them satisfies the same
+recurrence as $P$ itself.  If the contact set is closed under the operator at every
+order --- which would follow from a boundary substitution, a finite rule expressing each
+boundary segment of a level-$(k{+}1)$ supertile through boundary segments of level-$k$
+supertiles, and which we have not constructed --- then $P$ obeys the recurrence of
+Fact~\ref{fact:bdyrec} for every $k$.  Without it the recurrence is an exact statement
+about the orders counted and a conjecture beyond them.
 
 \begin{fact}
 \label{fact:bdyrec}
-$P(k)=5P(k-1)-3P(k-2)-P(k-3)$, giving $P=%s$.  The sequence itself is counted twice --- see Fact~\ref{fact:bdyexact}.
+For $3\le k\le6$, $P(k)=5P(k-1)-3P(k-2)-P(k-3)$, with $P=%s$ and $P(6)=57318$, all counted
+exactly (Fact~\ref{fact:bdyexact}).  That the recurrence holds for every $k$ is conjectured and not proved.
 \end{fact}
 
 \noindent
@@ -1215,20 +1242,22 @@ above it, and nothing inside a floating-point computation bounds the failure
 \label{fact:bdyexact}
 The same sequence, recounted with edges identified by \emph{equality} of
 exact $\mathbb{Q}(\sqrt3)$ endpoint coordinates and from an independent
-transcription of the placement chain, agrees at every order computed.  The
+transcription of the placement chain, agrees at every order computed, $0\le k\le6$.  The
 rounding key is therefore not load-bearing for any of the boundary results.
 \end{fact}
 
 \noindent
 The factorisation of $\chi_{\partial}$ is not left as a spectral remark.  Its
 quadratic factor applied to the sequence annihilates the growing part and
-leaves behind the constant belonging to the marginal eigenvalue, and that
-identity is proved for every $k$:
+leaves behind the constant belonging to the marginal eigenvalue.  For the sequence
+defined by the recurrence and its seed that identity is proved for every $k$; for the
+counted perimeters it holds on the orders counted:
 
 \begin{fact}
 \label{fact:bdyinv}
-$P(k+2)-4P(k+1)-P(k)=-16$ for all $k$, by induction.  Together with
-the seed this is equivalent to Fact~\ref{fact:bdyrec}, and it is the $+1$
+For the recurrence sequence, $P(k+2)-4P(k+1)-P(k)=-16$ for all $k\ge0$, by induction;
+for the counted perimeters it holds for $0\le k\le4$.  Together with the seed it is
+equivalent to the recurrence of Fact~\ref{fact:bdyrec}, and it is the $+1$
 eigenvalue made arithmetic --- the boundary's analogue of $Q_{+}$.
 \end{fact}
 
@@ -1246,39 +1275,41 @@ The Perron root is $\nu=%s=\varphi^{3}=%s$.
 \end{fact}
 
 \noindent
-So the area of a supertile inflates by $\lam^{2}=4+\sqrt{15}$ and its perimeter
-by $2+\sqrt5$.  This is a $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$
+So, on the orders computed, the area of a supertile inflates by $\lam^{2}=4+\sqrt{15}$
+and its perimeter by $2+\sqrt5$.  This is a $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$
 divide between area and perimeter of the
 \emph{same} tile.  The supertile
 boundary is golden although the tiling is not.
 
-Since $\nu>\lam$ the boundary is fractal: its box dimension is
-$\log\nu/\log\lam=%s$, so a perimeter argument assuming $P(k)\sim\lam^{k}$ is
-wrong, and wrong by a definite amount.  Both halves of that comparison are
-proved --- $P(k+3)\ge4P(k+2)+30$ for every $k$, and
-$\lam^{2}<16$ hence $\lam<4$ --- and the inference between them is elementary
-arithmetic.
+If the recurrence holds for every $k$, then $P(k)\sim c\,\nu^{k}$ unit edges bound a
+supertile of diameter of order $\lam^{k}$, and since $\nu>\lam$ the perimeter outgrows the
+linear scale with exponent $\log\nu/\log\lam=%s$.  That would make the boundary fractal
+in the sense of a limiting curve of that box dimension only with two further inputs that
+are not supplied here: convergence of the rescaled outlines $\lam^{-k}\partial S_{k}$, and a
+lower bound on their covering numbers.  The self-similar Spectre-type tilings with fractal
+tiles of~\cite{BaakeSpectre} are the natural setting in which to settle it.  What is
+established is weaker: on the orders counted $P(k{+}1)/P(k)>4>\lam$ for $2\le k\le5$, so a
+perimeter argument assuming $P(k)\sim\lam^{k}$ is wrong there; and for the recurrence
+sequence $P(k+3)\ge4P(k+2)+30$ for every $k$, while $\lam^{2}<16$ hence $\lam<4$.
 
 \subsection{What the golden appearance is not}
 
 $\varphi^{3}$ next to the Hat's $\varphi^{4}$ invites the conjecture that the
-Spectre's boundary combinatorics \emph{are} the Hat's.  They are not, and the
-refutation is worth more than the conjecture.
+Spectre's boundary combinatorics \emph{are} the Hat's.  They are not.
 
 \begin{fact}
 \label{fact:goldenabsent}
-$x^{2}-4x-1$ divides neither $\chi_{M}$ nor $\chi_{H}$, and a search over
-integer matrices built from $M$ and $H$ --- sums, differences, powers,
-transposes, adjugates, integer shifts --- finds it in none of them.
+$x^{2}-4x-1$ divides neither $\chi_{M}$ nor $\chi_{H}(x)=(x-1)(x+1)(x^{2}-7x+1)$, the
+characteristic polynomial of the four-metatile substitution of the Hat~\cite{SmithEtAl}.
 \end{fact}
 
 \begin{fact}
 \label{fact:lucas}
 $\varphi^{n}$ has minimal polynomial $x^{2}-L_{n}x+(-1)^{n}$ with $L_{n}$
-Lucas.  So $x^{2}-4x-1$ \emph{is} $\varphi^{3}$ and $x^{2}-7x+1$ \emph{is}
-$\varphi^{4}$: once two quantities are both powers of $\varphi$, their minimal
-polynomials are forced to be adjacent Lucas quadratics and the resemblance
-carries no information beyond $\mathbb{Q}(\sqrt5)$.
+Lucas ($n\ge1$).  So $x^{2}-4x-1$ is the minimal polynomial of $\varphi^{3}$ and
+$x^{2}-7x+1$ that of $\varphi^{4}$: any two powers of $\varphi$ have Lucas quadratics as
+minimal polynomials, and the resemblance carries no information beyond
+$\mathbb{Q}(\sqrt5)$.
 \end{fact}
 
 \noindent
@@ -1288,13 +1319,8 @@ operators sit at traces $8$, $7$ and $4$ with norms $+1$, $+1$ and $-1$.
 
 What survives is weaker and true.  The ratio $\mu=\lam^{2}/\nu$ has minimal
 polynomial $%s$ --- degree four, not two --- so it lies in the compositum
-$\mathbb{Q}(\sqrt3,\sqrt5)$ and in neither quadratic field alone.
-
-\begin{prop}
-\label{prop:compositum}
-The Spectre and the Hat meet in $\mu$ as a compositum, not by either field
-containing the other.
-\end{prop}
+$\mathbb{Q}(\sqrt3,\sqrt5)$ and in neither quadratic field alone.  Both $\lam^{2}$ and $\nu$
+are Spectre quantities; the Hat does not enter $\mu$.
 """ % (', '.join(str(n) for n in F.get('boundary_recurrence').value[:6]),
        tex(F.get('boundary_chi').value),
        tex(F.get('boundary_growth').value),
@@ -1315,10 +1341,27 @@ containing the other.
 
 
 
+# Facts of the shared ledger that belong to other documents (the knot-theory and birefringence notes, the Hat
+# order parameter and the twist family): the supplement of this paper lists only the paper's own Facts.
+OFF_PAPER = {
+    'minors', 'signature', 'area_form', 'area_endpoints', 'mystic_asymmetry', 'order_parameter', 'rho_x',
+    'x_charge', 'atlas', 'phi_drift', 'rho_x_at_half', 'chiral_angle', 'angle_from_kappa', 'spectre_angle_differs',
+    'twist_family', 'bh_theorem', 'bh_version', 'bh_gap_was_chirality', 'bh_deficit_bound', 'bh_threshold',
+    'beta', 'beta_tension'}
+# Facts whose Lean theorem is about the sequence *defined* by the perimeter recurrence; for the counted
+# perimeters they hold only on the orders counted.
+RECURRENCE_DEFINED = {'boundary_recurrence', 'boundary_invariant', 'boundary_growth_bound', 'boundary_fibonacci',
+                      'boundary_directions'}
+
+
+def paper_facts():
+    return [f for f in F.FACTS if f.key not in OFF_PAPER]
+
+
 def facts_appendix():
     rows = []
-    for f in F.FACTS:
-        mark = r'\checkmark' if f.lean else ''
+    for f in paper_facts():
+        mark = (r'\checkmark' + (r'$^{*}$' if f.key in RECURRENCE_DEFINED else '')) if f.lean else ''
         # the table is a finding aid, not a transcript: the first sentence of
         # the method is what identifies the route, and the module carries the
         # rest for anyone who wants it
@@ -1416,16 +1459,18 @@ TITLE = "The Internal Space and Boundary Growth of the Spectre and Tsiokos's Cha
 def abstract():
     return fill(r"""
 \begin{abstract}
-Two monotiles that tile only by inflation are compared by exact computation: the planar Spectre and Tsiokos's
-three-dimensional Chair44.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$, its supertile
-perimeter by a unit of $\mathbb{Q}(\sqrt5)$, so its boundary is fractal, and its lift to $\mathbb{Z}^{4}$ has two
-expanding and two contracting directions: an exact internal plane whose window has a fractal boundary.  The Chair44
-inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no internal space and no twist, and its centre set has an exactly
-computed pure-point diffraction measure.  Every lattice-registered tiling obeying its $44$ contact rules lies in the
-substitution hull, so this holds for all of them, and the symmetry group of such a tiling is one of $1$, $C_{2}$, $C_{4}$,
-$D_{4}$; by Tsiokos's registration theorem, whose proof is independently audited, the same holds for every tiling by the
-Chair44 solid.  Orientation sums and contact matrices
-separate the two.  Four finite-patch
+The planar Spectre and Tsiokos's three-dimensional Chair44 are aperiodic monotiles whose tilings are hierarchical;
+they are compared here by exact computation.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$.
+Counted exactly on placed supertiles up to order six, its supertile perimeter grows by the unit $2+\sqrt5$ of
+$\mathbb{Q}(\sqrt5)$, which would make the supertile boundary fractal if the observed recurrence persists.  The inflation acts
+on the vertex module $\mathbb{Z}^{4}$ with two expanding and two contracting directions, and the internal plane is given
+exactly.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
+space is $2$-adic) and no twist; its centre set, that of the classical three-dimensional chair, has an explicitly computed
+pure-point diffraction measure.  The main result is that every lattice-registered tiling obeying the $44$ contact rules
+lies in the substitution hull, and that its symmetry group is conjugate to one of $1$, $C_{2}$ (a half-turn about a face
+diagonal), $C_{4}$ and $D_{4}$.  Both statements rest on Kamenetsky's unique-hierarchy proposition, and they transfer to
+every tiling by the Chair44 solid through Tsiokos's registration theorem; neither input has been refereed.  Orientation
+sums and contact matrices separate the two tilings.  Four finite-patch
 computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
 arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
 law is shared with a quadtree, and the parity flip of the construction shows in the outlines of supertiles and not in the
@@ -1441,27 +1486,35 @@ def introduction():
 
 A tiling that exists only by inflation carries an arithmetic: the number by which it inflates, the field that number
 generates, and what that field leaves behind.  The Spectre of Smith, Myers, Kaplan and Goodman-Strauss~\cite{SmithEtAl,SmithEtAl2}
-inflates by a unit of a real quadratic field, and the Chair44 of Tsiokos~\cite{Tsiokos1} by the integer $2$.  A unit of
-norm one has a conjugate that contracts, so the vertices lie in a module of rank greater than the dimension of space and
-the extra directions form an internal space in which they fill a bounded window; an integer inflation $m>1$ has no
-conjugate, nothing contracts, and the structure is $m$-adic.  This paper computes that difference exactly.
+inflates by a unit of a real quadratic field, and the Chair44 of Tsiokos~\cite{Tsiokos1} by the integer $2$.  The
+Spectre's vertices lie in $\mathbb{Z}[\zeta_{12}]$, a module of rank four, on which the inflation acts as an integer matrix
+with eigenvalues $\pm\lam$ and $\pm\lam^{-1}$: the two contracting directions form an internal space in which the vertices
+fill a bounded window.  An integer inflation $m>1$ acts as $mI$, nothing contracts, and the internal space is $m$-adic.
+This paper computes that difference exactly.
 
 A companion note~\cite{BangNote} states the physical hypothesis that motivated this work; nothing here depends on it.
-Statements are stratified: \emph{Facts} are computations or theorems, each classified by the evidence behind it (the table
-is in the supplement); \emph{Propositions} are computations with a modelling step; results labelled \emph{computation, not
-Fact} are numerical, on finite patches, and enter no ledger.
+Statements are stratified.  \emph{Facts} are exact statements: each is proved, or verified by an exact finite computation
+and then stated only for the range computed, or quoted, and the text says which; the supplement lists every Fact with
+the method by which it was obtained.  \emph{Propositions} are computations with a modelling step, and \emph{Theorems},
+\emph{Lemmas} and \emph{Corollaries} carry proofs.  Results labelled \emph{computation, not Fact} are numerical, on finite
+patches, and enter no ledger.
 
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
-\ref{sec:bdyop} (fractal perimeter) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
-and~\ref{sec:unfold}, with a proof that every Chair44 tiling lies in the substitution hull and a classification of the
-symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests whether the
+\ref{sec:bdyop} (perimeter growth) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
+and~\ref{sec:unfold}, with a proof, resting on two quoted inputs, that every Chair44 tiling lies in the substitution hull
+and a classification of the symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests whether the
 Spectre's substitution hierarchy can serve as a clock.
 
-What is not claimed matters as much.  The substitution matrix is a transcription of the published rule and is the one quoted
-input; the einstein property of the Chair44 is Tsiokos's (2026) claimed proof \cite{Tsiokos1}, quoted; the hull theorem of
-Section~\ref{sec:hull} is proved for tilings obeying the contact rules and, for the solid, rests on Tsiokos's
-registration theorem~\cite{Tsiokos1}, quoted and independently audited; that the Spectre diffraction is pure
-point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here.  Section~\ref{sec:conclusion} lists the rest.
+What is not claimed matters as much.  The inputs are these.  For the Spectre: the published substitution rule of
+\cite{SmithEtAl2}, that is, the matrix~\eqref{eq:M} together with the placement transforms of the construction, from which
+every placed patch is built.  For the Chair44: Tsiokos's solid and its eight substitution children~\cite{Tsiokos1}.  The
+einstein property of the Chair44 is Tsiokos's claimed proof~\cite{Tsiokos1}, quoted.  The hull theorem of
+Section~\ref{sec:hull} is proved for tilings obeying the contact rules from Kamenetsky's unique-hierarchy
+proposition~\cite{Kamenetsky}, quoted, and for the solid it rests in addition on Tsiokos's registration
+theorem~\cite{Tsiokos1}, quoted; that proof has been audited by the second author~\cite{Romanov} but has not been refereed.
+That the Spectre diffraction is pure point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here, and
+the centre set of the Chair44 is that of the classical three-dimensional chair~\cite{LeeMoody,Robinson}.
+Section~\ref{sec:conclusion} lists the rest.
 """)
 
 
@@ -1472,23 +1525,30 @@ def twist_subsection():
 
 \begin{fact}[The twist of the supertile]
 \label{fact:twist}
-Successive supertile quadrilaterals are similar, with ratio $\lam$ and a rotation of $-\theta_S$ on even levels and
-$+\theta_S$ on odd ones, where
+The four key points of a supertile (its quadrilateral) are moved by one level of the construction by a
+conjugate-linear map $F(w)=D\,\overline{w}$ on $\mathbb{C}^{4}$, and $B=D\overline{D}$ is complex linear.  The
+quadrilaterals are not similar at any finite level: their corners lie in $\mathbb{Q}(\sqrt3,i)$, so squared side
+lengths lie in $\mathbb{Q}(\sqrt3)$, which does not contain $\lam^{2}$.  They become similar in the limit: along the
+dominant eigenline of $B$, consecutive quadrilaterals are related by the ratio $\lam$ and a rotation of $-\theta_S$ on
+even levels and $+\theta_S$ on odd ones, with a relative correction that decays by $\lam^{-2}$ per level, where
 \[
 \tan\theta_S=\frac{5\sqrt3-6}{13},\qquad
 \cos2\theta_S=\frac{4+3\sqrt3}{10},\qquad
 \theta_S=%s\ldots^{\circ}.
 \]
-Applied twice, the map has characteristic polynomial $(x-1)^{2}(x^{2}-8x+1)$, which carries the quadratic factor of
-$\chi_M$, and its dominant eigenvalue is the real number $\lam^{2}$: over two levels the quadrilateral is dilated and not
-rotated.
+The two-level map $B$ has characteristic polynomial $(x-1)^{2}(x^{2}-8x+1)$, which carries the quadratic factor of
+$\chi_M$, and its dominant eigenvalue is the real number $\lam^{2}$: over two levels the limiting quadrilateral is
+dilated and not rotated.
 \end{fact}
 
 \noindent
-The $\sqrt{15}$ enters the one-level factor only through its modulus $\lam$; the phase lies in
-$\mathbb{Q}(\sqrt3,i)$, the field of the hexagonal tile coordinates, and $\cos\theta_S$ has minimal polynomial
-$400x^{4}-560x^{2}+169$ over $\mathbb{Q}$.  The alternation of the sign is the mirror applied at each level.  The twist is
-irrational as an angle, which is the contrast drawn with the Chair44 in Section~\ref{sec:unfold}.
+The $\sqrt{15}$ enters the limiting one-level factor only through its modulus $\lam$: the doubled phase
+$e^{-2i\theta_S}=\tfrac1{10}\bigl(4+3\sqrt3+i(3-4\sqrt3)\bigr)$ lies in $\mathbb{Q}(\sqrt3,i)$, the field of the hexagonal
+tile coordinates, while $e^{i\theta_S}$ itself does not, since $\cos\theta_S$ has minimal polynomial
+$400x^{4}-560x^{2}+169$ over $\mathbb{Q}$, of degree four.  The alternation of the sign is the mirror applied at each
+level.  The twist is irrational as an angle: $\cos2\theta_S$ has minimal polynomial $100x^{2}-80x-11$, so
+$2\cos2\theta_S$ is not an algebraic integer and $e^{2i\theta_S}$ is not a root of unity.  This is the contrast drawn with
+the Chair44 in Section~\ref{sec:unfold}.
 """ % str(F.get('spectre_twist').decimal)
 
 
@@ -1505,19 +1565,19 @@ def lift_section():
 \label{sec:lift}
 
 Every edge of the Spectre tiling is a unit vector at a multiple of $30^{\circ}$.  Following Ch\'eritat and
-Ma~\cite{CheritatMa}, who show that the outlines of the deformable tiles $\mathrm{Tile}(a,b)$ are projections of a single
-path in four dimensions, the even multiples are taken to lie in a first plane and the odd multiples in a second.  Write
+Ma~\cite{CheritatMa}, who lift the tilings by the deformable tiles $\mathrm{Tile}(a,b)$ of the Hat family to four
+dimensions, the even multiples are taken to lie in a first plane and the odd multiples in a second.  Write
 $\omega=e^{i\pi/3}$ and $z=e^{i\pi/6}$.  An even edge is $p+q\omega$ and an odd edge is $z(r+s\omega)$ with integers, so walking
 along edges assigns every vertex a point $(p,q,r,s)$ of $\mathbb{Z}^{4}$, and the projection $(u,v)\mapsto au+bv$ is
-the deformation of the tile.  The higher-dimensional point of view is the one in which a two-dimensional quasicrystal
-carries four-dimensional topology~\cite{Kraus2013}.
+the deformation of the tile.
 
 \begin{fact}[The integer lift]
 \label{fact:lift}
-On the level-$@lvl@$ patch ($@nv@$ vertices) every vertex receives integer coordinates $(p,q,r,s)$; the @chk@ vertex
-identifications made on the way all agree, so the lift is consistent; the vertex differences have rank $@rank@$, and the
+Every vertex of a Spectre patch is a sum of unit vectors at multiples of $30^{\circ}$, so it lies in $\mathbb{Z}[\zeta_{12}]$,
+which has the basis $1,\omega,z,z\omega$; its coordinates $(p,q,r,s)$ in that basis are its lift, which is therefore well
+defined.  On the level-$@lvl@$ patch ($@nv@$ vertices) the vertex differences have rank $@rank@$, and the
 physical position is $a(p+q\omega)+bz(r+s\omega)$, which is the tiling itself at $a=b=1$ and gives a homogeneous quadratic
-form in $(a,b)$ for the area of a tile.  The vertices lie in the rank-four module $\mathbb{Z}[\zeta_{12}]=\mathbb{Z}^{4}$.
+form in $(a,b)$ for the area of a tile.
 \end{fact}
 
 \begin{fact}[The inflation as an integer matrix]
@@ -1525,13 +1585,14 @@ form in $(a,b)$ for the area of a tile.  The vertices lie in the rank-four modul
 The supertile recursion moves four key points of the supertile by rotations through multiples of $60^{\circ}$, a mirror
 and translations built from the points themselves; on $\mathbb{Z}[\zeta_{12}]$ each is an integer map, so one level is a
 $16\times16$ integer matrix $\Phi$ on the four key points.  It reproduces the floating-point recursion of the construction
-for three levels (largest difference @err@), and
+for three levels (largest difference @err@), and an independent integer transcription reproduces it exactly for six
+levels; and
 \[
 \chi_{\Phi}(x)=(x-1)^{4}(x+1)^{4}\,(x^{4}-8x^{2}+1)^{2},\qquad
 x^{4}-8x^{2}+1=\bigl(x^{2}-(4+\sqrt{15})\bigr)\bigl(x^{2}-(4-\sqrt{15})\bigr),
 \]
 with roots $\pm\lam,\ \pm\lam^{-1}$ and $\lam^{2}=@perron@$.  The key-point vector has minimal polynomial
-$(x^{2}-1)(x^{4}-8x^{2}+1)$, and on that block $\Phi$ is the companion matrix
+$(x^{2}-1)(x^{4}-8x^{2}+1)$, and on the part of its cyclic subspace where $x^{4}-8x^{2}+1$ vanishes $\Phi$ acts by the companion matrix
 \[
 @block@ ,
 \]
@@ -1542,8 +1603,8 @@ of determinant $@det@$ and trace $@tr@$.
 The unit $4+\sqrt{15}$ has norm one, which is why the block is unimodular: two eigenvalues expand ($\pm\lam$) and two
 contract ($\pm\lam^{-1}$).  The negative roots come from the mirror applied at every level; over two levels $\Phi^{2}$
 acts on the expanding pair as the real number $\lam^{2}$.  The Chair44, by contrast, inflates by $2\,I_{3}$ on
-$\mathbb{Z}^{3}$, of determinant $8$: every eigenvalue expands and nothing contracts, so there is no internal space and no
-window.
+$\mathbb{Z}^{3}$, of determinant $8$: every eigenvalue expands and nothing contracts, so there is no Euclidean internal
+space; the internal space of the chair is $2$-adic (Section~\ref{sec:chair}).
 
 \begin{fact}[The internal plane]
 \label{fact:plane}
@@ -1554,7 +1615,8 @@ are mirrored first; the expanding parts then span two dimensions and the annihil
 @plane@
 \]
 (rows are functionals on $(p,q,r,s)$), with entries in $\mathbb{Q}(\sqrt{15})$.  It agrees with a plane fitted to the
-lifted vertices to principal cosines above $1-10^{-6}$.  Its extent on the lifted patches is @e3@ at level $3$ and @e4@ at
+lifted vertices to principal cosines above $1-10^{-6}$.  It is bounded on the patches of one parity of level and its mirror
+image on the other.  The extent of the image, each level taken with its bounded plane, is @e3@ at level $3$ and @e4@ at
 level $4$, while the physical extent grows by a factor @gr@ per level (the inflation factor is @lam@).  The Galois
 conjugate $z\mapsto z^{5}$, the obvious candidate for the internal space, is not bounded: its extent is @gal@ at level $3$.
 \end{fact}
@@ -1567,11 +1629,12 @@ successive halvings of the cell size from $0.2$, against $2^{1}$ for a smooth cu
 $2^{@ea@}$.  The boundary is therefore not a smooth curve, with a box-counting dimension of about $1.2$.  That is an
 estimate and not a theorem.  It is not the dimension $\log\nu/\log\lam$ of the supertile outline in the physical plane
 (Section~\ref{sec:bdyop}), and it is consistent with, and does not derive, the windows of Rauzy type that Baake,
-G\"ahler, Mazá\v{c} and Sadun obtain~\cite{BaakeHat,BaakeSpectre}.  Whether anything like this exists for a
+G\"ahler, Mazá\v{c} and Sadun obtain~\cite{BaakeHat,BaakeSpectre}, who prove that Spectre tilings arise from a $4{:}2$
+cut-and-project scheme with such windows; the analogous statement for the Hat family is~\cite{BGS}.  Whether anything like this exists for a
 three-dimensional tile is the question raised by Kamenetsky~\cite{Kamenetsky}, who finds that the obvious
 four-dimensional analogues of the Chair44 fail a closure test; the integer inflation of the chair leaves nothing to project.
 @FIGLIFT@
-""", lvl=li['level'], nv=li['vertices'], chk=li['consistency_checks'], rank=li['rank'],
+""", lvl=li['level'], nv=li['vertices'], rank=li['rank'],
         err='$%s$' % ('%.0e' % im['float_error']).replace('e-', r'\times10^{-') + '}$' if False else '$' + ('%.0e' % im['float_error']).replace('e-', r'\times10^{-').replace('e+', r'\times10^{') + '}$', perron=tex(F.get('perron').value), det=im['det'], tr=im['trace'],
         block=sp.latex(sp.Matrix(im['block'])), plane=sp.latex(sp.Matrix(ip['plane'])),
         e3=_num(ip['internal_extent'][3]), e4=_num(ip['internal_extent'][4]), gr=_num(ip['growth']),
@@ -1605,7 +1668,9 @@ density, with a Gaussian window of width $9$, a fraction @hf@ of the Bragg inten
 $12\%$ of a point of the dual lattice (from @hn@ peaks) and @tf@ for the Turtle (from @tn@ peaks), against @hb@ and @tb@ for
 the same lattice rotated or rescaled.  The Spectre has strong peaks as well, but only a fraction @sf@ of them is on such a
 lattice (control @sb@, @sn@ peaks).  This is the reciprocal-space form of the statement that $\mathrm{Tile}(1,1)$ is not on the
-lattice.  It is one patch and one window, no exponent is claimed, and it does not bear on the pure-point theorem.
+lattice.  It is one patch and one window, no exponent is claimed, and it does not bear on the pure-point theorem.  For the
+Spectre the control fraction exceeds the measured one, so this statistic cannot by itself show the absence of a lattice;
+that statement rests on the vertices spanning the rank-four module $\mathbb{Z}[\zeta_{12}]$ (Fact~\ref{fact:lift}).
 """, hf='$%.2f$' % H['match']['frac'], hn=H['match']['npeaks'], tf='$%.2f$' % T['match']['frac'], tn=T['match']['npeaks'],
         hb='$%.2f$' % H['match']['base'], tb='$%.2f$' % T['match']['base'],
         sf='$%.2f$' % S['match']['frac'], sb='$%.2f$' % S['match']['base'], sn=S['match']['npeaks'])
@@ -1639,7 +1704,8 @@ exact amplitude
 \[
 a(k)=\tfrac78\,8^{1-J}\bigl(\pm1+\tfrac17\bigr),
 \]
-with sign $-$ when $m_{1}+m_{2}+m_{3}$ is odd, so $a=@aa@$ on an axis and $a=@ad@$ on the diagonal at $J=1$.  The squared
+with sign $-$ when $m_{1}+m_{2}+m_{3}$ is odd, so at $J=1$, $a=@aa@$ on an axis and on the body diagonal and $a=1$ on a
+face diagonal; the last says only that every centre has $x+y$ and $y+z$ even.  The squared
 amplitudes at level $J$ sum to $\tfrac{21}{4}8^{1-J}$, and
 \[
 \frac1{49}\Bigl(1+\sum_{J\ge1}\tfrac{21}{4}8^{1-J}\Bigr)=\frac17=\text{density of the centres}.
@@ -1649,7 +1715,9 @@ Wave vectors that are not dyadic carry no amplitude.
 
 \noindent
 The Parseval sum is complete: all the mass of the density is in the Bragg peaks, so the diffraction measure of the
-centre set is pure point, and the $2$-adic route of Section~\ref{sec:chair} is made exact for this set.  The mass
+centre set is pure point, and the $2$-adic route of Section~\ref{sec:chair} is made explicit for this set.  The centre set
+depends only on the undecorated chair substitution, so its pure-point diffraction also follows from~\cite{LeeMoody,BMS};
+what is added is an explicit worked example.  The mass
 of the notch-weighted measure is only numerically consistent with this.  That the diffraction of the Spectre is pure
 point is a published theorem~\cite{BaakeHat,BaakeSpectre} and is not re-proved here; the contrast is only in the
 route, a cut-and-project scheme with an internal space for the Spectre and a dyadic Parseval sum for the chair.
@@ -1666,13 +1734,16 @@ Let $S_{n}$ be the vector over the nine tile labels of the sums of $e^{i\theta}$
 of each label.  Then $S_{n+1}=C\,\overline{S_{n}}$ with $C$ the $9\times9$ matrix of the slot rotations of the construction;
 the conjugate appears because the inflation reverses orientation.  Two levels give $C\overline{C}$ with leading eigenvalue
 $\lam^{2}=@perron@$, and the sums over the placed tiles agree with the recursion (largest relative difference $@mr@$, to
-level $5$).  Hence $|S_{n}|\sim c\,\lam^{n}$ with
+level $5$).  Hence $|S_{n}|\sim c\,\lam^{n}$ for a constant $c>0$.
+\end{fact}
+
+\noindent
+Numerically, from the recursion to eighty digits, $c^{2}$ is the root of $400x^{4}-1200x^{3}+840x^{2}-180x+9$ equal to
 \[
 c^{2}=\frac{15+5\sqrt3+3\sqrt5+3\sqrt{15}}{20}=@c2@,
 \]
-a closed form that is identified, not proved: it is the root of $400x^{4}-1200x^{3}+840x^{2}-180x+9$ found from the
-recursion to eighty digits.
-\end{fact}
+a closed form that is identified, not proved; it is not part of the Fact.  It could be proved exactly from the dominant
+eigenvector of $C\overline{C}$ over $\mathbb{Q}(\sqrt3,\sqrt5,i)$.
 
 \noindent
 The constant is the ratio @c@ measured in Section~\ref{sec:unfold}.  Splitting the orientation sums by the
@@ -1684,8 +1755,8 @@ angle for the Spectre, gives the growth exponent of each channel.
 The $24$-dimensional orientation matrix of the Chair44 has characteristic polynomial $x^{3}(x-8)(x-2)^{20}$: the trivial
 channel has eigenvalue $8$ and every non-trivial channel is exactly $2$ times a projector.  With the exponent
 $h=\ln\mu/\ln\lam_{\rm lin}$ of the leading eigenvalue $\mu$ in the linear inflation $\lam_{\rm lin}$, the trivial channel
-has $h=3$ and all others $h=@hc@$.  For the Spectre the channels are $h=@h0@$ for $m=0,\pm6$, $h=@h1@$ for $m=\pm1$, and
-$h\le0$ for $m=\pm2,3,4$.
+has $h=3$ and all others $h=@hc@$.  For the Spectre the harmonics $m\in\mathbb{Z}/12$ give $h=@h0@$ for $m=0,6$, $h=@h1@$ for
+$m=\pm1$ and $m=\pm5$ (the Galois partners of $\pm1$ under $z\mapsto z^{5}$), and $h\le0$ for $m=\pm2,\pm3,\pm4$.
 \end{fact}
 
 \noindent
@@ -1814,9 +1885,10 @@ level-$(k+1)$ one than to a rotation in @f1@ of @n1@ comparisons, and nearer to 
 shapes of supertiles and not in the tiles; the mirror image of a Spectre tiling is a Spectre tiling, so it belongs to the
 substitution as written and is not a dynamics.
 
-\paragraph{What follows.}  Clustering carries \emph{no arrow of time}; the record asymmetry and the look-back dictionary are real but
-generic; the parity alternation comes from the rule and not from the tile data.  None supplies a rule for what propagates, so
-the tiling \emph{has no light cone}, and none supplies a physical clock.  The missing step is a dynamics.  (Figures for the
+\paragraph{What follows.}  Positional clustering shows no excess over its control beyond the first level; the record
+asymmetry and the look-back dictionary are real but generic; the parity alternation comes from the rule and not from the
+tile data.  None supplies a rule for what propagates, and none supplies a physical clock; what that would mean physically is
+discussed in the companion note~\cite{BangNote}, not here.  (Figures for the
 clustering and record computations are in \code{paper/figures/spectre\_hier\_clustering} and \code{spectre\_hier\_records}.)
 """ + HIER_FIGS, c1=fmt3(c[0]), c2=fmt3(c[1]), c3=fmt3(c[2]), c4=fmt3(c[3]), e1=fmt3(ex[0]), emax=fmt3(max(abs(x) for x in ex[1:])),
         a13=fmt3(rec[3][1][0][0]), a12=fmt3(rec[2][1][0][0]), a24=fmt3(rec[4][1][1][0]), a28=fmt3(rec[8][1][1][0]),
@@ -1899,25 +1971,35 @@ def conclusion_section():
 \label{sec:conclusion}
 
 The two tilings separate cleanly in the quantities computed: the Spectre by a unit of $\mathbb{Z}[\sqrt{15}]$, a perimeter
-unit of $\mathbb{Q}(\sqrt5)$ and an internal plane with a window of fractal boundary; the Chair44 by inflation $2$ on
-$\mathbb{Z}^{3}$, no contracting direction, no twist, an exactly computable pure-point centre set, orientation sums $2^{n}$
-and face contacts that are not bipartite.  The hierarchy tests of Section~\ref{sec:hier} are negative or generic.
+growing by a unit of $\mathbb{Q}(\sqrt5)$ on the orders counted, and an exact internal plane; the Chair44 by inflation $2$ on
+$\mathbb{Z}^{3}$, no Euclidean internal space, no twist, an explicit pure-point centre set, orientation sums $2^{n}$
+and face contacts that are not bipartite.  The main new result is the hull theorem and the classification of the symmetry
+groups of Chair44 tilings in Section~\ref{sec:hull}, conditional on two unrefereed inputs.  The hierarchy tests of
+Section~\ref{sec:hier} are negative or generic.
 
-What the Facts do not reach is as follows.  The substitution matrix is a transcription of the published rule and is taken
-on trust.  The einstein property and aperiodicity of the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's unique-hierarchy argument (whose finite conditions are reproduced) and from a count of admissible blocks that this paper does not repeat; for tilings by the solid they rest on Tsiokos's registration theorem, quoted and independently audited (its written steps checked, all of its finite inputs recomputed), though not refereed.  The counts of legal blocks and fixed seeds are recomputed.
-That the Spectre diffraction is pure point is a published theorem and is quoted.  The closed form of the orientation
+What the Facts do not reach is as follows.  The Spectre results take the published substitution rule (matrix and placement
+transforms) as input, and the Chair44 results Tsiokos's solid and substitution.  The einstein property and aperiodicity of
+the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry
+classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's
+unique-hierarchy proposition (unrefereed; its finite conditions are reproduced) and from the count of admissible blocks of
+Lemma~\ref{lem:blocks}, which the build of this paper does not repeat but which an independent implementation reproduces;
+for tilings by the solid they rest in addition on Tsiokos's registration theorem, quoted, audited by the second author (its
+written steps checked, all of its finite inputs recomputed), and not refereed.  The counts of legal blocks and fixed seeds
+are recomputed.  That the Spectre diffraction is pure point is a published theorem and is quoted.  The perimeter recurrence
+of the Spectre is verified exactly for $k\le6$ and not proved beyond; the closed form, the growth bound, the boundary
+exponent and the balanced exponent hold for the recurrence sequence and are conditional for the perimeters, and fractality of
+the boundary would need in addition a limit argument.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
 constant is identified and not proved, the window dimension is a box-counting estimate, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
-The boundary operator governs the perimeter in the aggregate; resolved by species and edge index a handful of components obey
-neither it nor its obvious extensions, while their ratios still approach $\nu$, so the extra spectrum is subdominant and cannot move
-the Perron root.  The aggregate operator is claimed; the full fine operator is not claimed.  The boundary sequences are
-read from $k=1$, where assembly begins, which is a convention made explicit rather than a gap.  The hierarchy results are
-numerics on finite patches, with controls, and are not Facts.
+On the orders counted the boundary operator governs the perimeter in the aggregate; resolved by species and edge index a
+handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$.  The aggregate
+operator is conjectured beyond $k=6$; the full fine operator is not claimed.  The hierarchy results are numerics on finite
+patches, with controls, and are not Facts.
 
-Four computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give
-its dimension exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; an exact
-count of the common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$; and a rule for what
-propagates on the tiling, without which no light cone can be formulated.
+Four computations would extend the work: a boundary substitution for the Spectre supertiles, which would prove the perimeter
+recurrence for every $k$; the window of the Spectre as the attractor of the contracting maps, which would give its dimension
+exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; and an exact count of the
+common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$.
 """
 
 
@@ -1968,12 +2050,12 @@ BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
 
 \bibitem{SmithEtAl} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
-\emph{An aperiodic monotile}
-Combinatorial Theory, 4(1).
+\emph{An aperiodic monotile}.
+Combinatorial Theory, 4(1); arXiv:2303.10798.
 
 \bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
-\emph{A chiral aperiodic monotile}
-Combinatorial Theory, 4(2).
+\emph{A chiral aperiodic monotile}.
+Combinatorial Theory, 4(2); arXiv:2305.17743.
 
 
 \bibitem{BangNote} B.~Hartshorn and T.~Romanov, \emph{A flat initial surface? A speculative reading of the Spectre and
@@ -2002,21 +2084,29 @@ repository.
 and some of their relatives}, arXiv:2502.03268.
 
 \bibitem{BaakeSpectre} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and L.~Sadun, \emph{On the long-range order of the Spectre
-tilings}, arXiv:2411.15503.
+tilings}, Discrete Comput.\ Geom.\ \textbf{78} (2026) 739--762; arXiv:2411.15503.
+
+\bibitem{BGS} M.~Baake, F.~G\"ahler and L.~Sadun, \emph{Dynamics and topology of the Hat family of tilings}, Israel J.\ Math.\
+\textbf{270} (2025) 449--485; arXiv:2305.05639.
 
 \bibitem{CheritatMa} A.~Ch\'eritat and N.~Ma (initial idea N.~Ma; contributions P.~Mostert),
 \emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023).
 \url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
 
 
-\bibitem{Kraus2013} Y.E.~Kraus, Z.~Ringel, and O.~Zilberberg (2013)
-\emph{Four-Dimensional Quantum Hall Effect in a Two-Dimensional Quasicrystal}
-\url{https://doi.org/10.1103/PhysRevLett.111.226401}
 
 \bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions}, arXiv:2610.00916.
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
 sets. \emph{Discrete Comput. Geom.} 25, 173--201.
+
+\bibitem{BMS} M.~Baake, R.~V.~Moody and M.~Schlottmann (1998). Limit-(quasi)periodic point sets as quasicrystals with
+$p$-adic internal spaces. \emph{J. Phys. A: Math. Gen.} 31, 5755--5765.
+
+\bibitem{Robinson} E.~A.~Robinson, Jr. (1999). On the table and the chair. \emph{Indag. Math. (N.S.)} 10, 581--599.
+
+\bibitem{Gelfond} A.~O.~Gelfond (1934). Sur le septi\`eme probl\`eme de Hilbert. \emph{Izv. Akad. Nauk SSSR} 7, 623--630;
+Th.~Schneider (1935). Transzendenzuntersuchungen periodischer Funktionen I. \emph{J. Reine Angew. Math.} 172, 65--69.
 
 \bibitem{Schlottmann} M.~Schlottmann (2000). Generalized model sets and dynamical systems.
 In \emph{Directions in Mathematical Quasicrystals}, CRM Monograph Series 13, AMS, 143--159.
@@ -2091,7 +2181,9 @@ def selftest():
     import spectre_supplement as SUPP
     supp = SUPP.document()
     check('the table is out of the main paper', r'\begin{longtable}' not in text)
-    check('every fact is in the supplement', all(esc(f.key) in supp for f in F.FACTS))
+    check('every fact of the paper is in the supplement, and no off-paper fact is',
+          all(esc(f.key) in supp for f in paper_facts())
+          and not any((r'\code{%s}' % esc(k)) in supp for k in OFF_PAPER))
     check('the supplement names this paper by its title', TITLE in supp)
     _lean_names = set(L.theorem_names(L.document()))
     check('every Lean attribution names a theorem that exists', all(f.lean in _lean_names for f in F.FACTS if f.lean))
@@ -2112,8 +2204,15 @@ def selftest():
     check('the growth rate is named as phi cubed',
           r'\varphi^{3}' in text and F.get('boundary_growth').decimal
           is not None and str(F.get('boundary_growth').decimal)[:6] in text)
-    check('the boundary is called fractal',
-          'the boundary is fractal' in text)
+    check('the boundary is called fractal only conditionally',
+          'would make the boundary fractal in the sense of a limiting curve' in flat
+          and 'the boundary is fractal: its box dimension' not in flat)
+    check('the perimeter recurrence is stated as verified, not proved, beyond the orders counted',
+          'conjectured and not proved' in flat and 'proved for all $k$ by induction, not sampled' not in flat)
+    check('the twist is stated as a limit and the quadrilaterals as not similar',
+          'are not similar at any finite level' in flat and 'Successive supertile quadrilaterals are similar' not in flat)
+    check('the transcendence of s* cites Gelfond-Schneider', r'\cite{Gelfond}' in text)
+    check('the Spectre-Hat compositum proposition is gone', r'\label{prop:compositum}' not in text)
     check('the derived identity is present and called derived',
           r'\label{eq:bdyid}' in text
           and 'read from the rule, not fitted to counts' in text)
@@ -2132,8 +2231,8 @@ def selftest():
           'not algebraic' in text)
     check('the drifting fit is explained as the estimator',
           'the estimator and not the geometry' in text)
-    check('the seed convention is stated in the boundary section',
-          'read from $k=1$' in text)
+    check('the interface count carries the Mystic perimeter',
+          r'N_{\Gamma}(c)Q(N-c)' in text)
     check('the fine spectrum is left open explicitly',
           'the full fine operator is not claimed' in text)
     print('unfolding the Chair44')
@@ -2300,7 +2399,8 @@ def selftest():
           and ', '.join(str(x) for x in hu['per_depth']) in hull)
     check('the inputs (R) and (H) are named as quoted and the admissible count as not repeated',
           '(R)' in hull and '(H)' in hull and 'are not re-derived here' in hull
-          and 'does not repeat it' in hull and 'independently audited' in hull)
+          and 'does not repeat it' in hull and 'audited step by step by the second' in hull
+          and 'independently audited' not in text)
     check('the statements match the quoted Fact',
           ht['hull'] and set(ht['groups']) >= {'1', 'C4', 'D4'} and r'$1$, $C_{2}^{\mathrm{diag}}$' in hull
           and r'|\mathrm{Sym}(T)|\le8' in hull and 'does not conflict with Fact' in hull)
