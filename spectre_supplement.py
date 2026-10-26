@@ -87,8 +87,10 @@ Three things about the table.
   phantom attributions were found and removed when that check was added.  A
   Lean theorem proves the Lean statement, which can be narrower than the
   paper's: the Facts marked $^{*}$ are proved in Lean for the sequence that the
-  Lean file \emph{defines} by the perimeter recurrence, and hold for the
-  counted supertile perimeters only on the orders counted, $k\le6$.
+  Lean file \emph{defines} by the perimeter recurrence.  That this sequence
+  is the supertile perimeter at every order is Theorem~1 of the paper,
+  proved by an exact finite certificate
+  (\code{boundary\_certificate/}), not in Lean.
 
 \item \textbf{The method column is the first sentence.}  A method that runs
   to a paragraph is truncated at its first full stop or semicolon.  The full

@@ -1396,10 +1396,11 @@ LUCAS = [2, 1, 3, 4, 7, 11, 18, 29, 47]
 fact(key='boundary_recurrence',
      claim=r'P(k)=5P(k-1)-3P(k-2)-P(k-3)',
      value=BOUNDARY_SEQ,
-     method='the perimeter is counted exactly on placed supertiles for k <= 6 and '
-            'satisfies this recurrence on those orders; that it holds for every k is '
-            'conjectured, not proved (the printed sequence is generated from the seed '
-            '14, 46, 182, and the exact count agrees with it through k = 6)',
+     method='proved for every k by the finite certificate boundary_certificate/'
+            'check_spectre_boundary_proof.py (93 contact types closed under the substitution, '
+            'all other placements separated at every order, Cayley-Hamilton on a 95x95 integer '
+            'matrix); the printed sequence is generated from the seed 14, 46, 182, and the exact '
+            'count agrees with it through k = 6',
      lean='boundary_values')
 
 fact(key='boundary_chi',
@@ -1426,11 +1427,11 @@ fact(key='boundary_field',
 BOUNDARY_DIM = sp.log(NU) / sp.log(LAM)
 
 fact(key='boundary_dimension',
-     claim=r'\log\nu/\log\lambda\ \text{(conditional)}',
+     claim=r'\dim_{B}\partial K=\log\nu/\log\lambda',
      value=BOUNDARY_DIM,
-     method='if the perimeter recurrence holds for every k, this is the growth exponent '
-            'of the perimeter against the diameter; a box dimension of a limiting curve '
-            'needs in addition convergence of the rescaled outlines, which is not shown',
+     method='box dimension of the boundary of the limiting supertile, proved by the certificate '
+            'boundary_certificate/check_spectre_fractal.py (contact matrix with simple dominant root nu, '
+            'an interior grandchild, a lower-bound set of 20 contact types)',
      decimal=sp.N(BOUNDARY_DIM, 12))
 
 MU_BALANCE = sp.radsimp(sp.simplify(LAM2 / NU))
@@ -1496,8 +1497,8 @@ fact(key='boundary_invariant',
      method='the quadratic factor of chi applied to the sequence annihilates '
             'the growing part and leaves the constant belonging to the '
             'marginal eigenvalue +1; for the sequence defined by the recurrence and '
-            'its seed it is proved for every k in Lean, and for the counted perimeters '
-            'it holds for k <= 4',
+            'its seed it is proved for every k in Lean, and that sequence is the perimeter '
+            'at every order by the boundary certificate',
      lean='boundary_invariant')
 
 BOUNDARY_GROWTH_OK = all(
@@ -1509,7 +1510,8 @@ fact(key='boundary_growth_bound',
      value=BOUNDARY_GROWTH_OK,
      method='for the sequence defined by the recurrence (proved in Lean) the '
             'perimeter more than quadruples at every step past the seed, while '
-            'lambda < 4; for the counted perimeters this holds through k = 6',
+            'lambda < 4; that sequence is the perimeter at every order by the boundary '
+            'certificate',
      lean='boundary_growth')
 
 fact(key='lam_below_four',
