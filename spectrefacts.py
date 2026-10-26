@@ -838,9 +838,10 @@ fact(key='twist_two_levels',
 fact(key='spectre_twist',
      claim=r'\tan\theta_S=\tfrac{1}{13}(5\sqrt3-6),\ \cos2\theta_S=\tfrac1{10}(4+3\sqrt3)',
      value=(TWIST_TAN, TWIST_COS2),
-     method='one level is a similarity of ratio lambda with rotation minus '
-            'theta_S on even levels and plus theta_S on odd ones, because the '
-            'construction mirrors at every level; theta_S is the phase of '
+     method='in the limit of high level, one level relates the quadrilaterals by '
+            'ratio lambda and rotation minus theta_S on even levels and plus theta_S '
+            'on odd ones (they are not similar at any finite level, since lambda^2 is '
+            'not in Q(sqrt3)); theta_S is the phase of '
             '(conj(s)/s) mu from the dominant eigenvector, computed exactly',
      decimal=sp.N(TWIST_THETA, 8))
 
@@ -1395,9 +1396,10 @@ LUCAS = [2, 1, 3, 4, 7, 11, 18, 29, 47]
 fact(key='boundary_recurrence',
      claim=r'P(k)=5P(k-1)-3P(k-2)-P(k-3)',
      value=BOUNDARY_SEQ,
-     method='exact integer recurrence on the supertile perimeter, derived in '
-            'spectre_boundary_operator.py from the substitution table and '
-            'not fitted to the counts',
+     method='the perimeter is counted exactly on placed supertiles for k <= 6 and '
+            'satisfies this recurrence on those orders; that it holds for every k is '
+            'conjectured, not proved (the printed sequence is generated from the seed '
+            '14, 46, 182, and the exact count agrees with it through k = 6)',
      lean='boundary_values')
 
 fact(key='boundary_chi',
@@ -1424,10 +1426,11 @@ fact(key='boundary_field',
 BOUNDARY_DIM = sp.log(NU) / sp.log(LAM)
 
 fact(key='boundary_dimension',
-     claim=r'\dim_{\mathrm{box}}\partial=\log\nu/\log\lambda',
+     claim=r'\log\nu/\log\lambda\ \text{(conditional)}',
      value=BOUNDARY_DIM,
-     method='nu exceeds lambda, so the supertile boundary is fractal and the '
-            'perimeter does not scale with the linear inflation',
+     method='if the perimeter recurrence holds for every k, this is the growth exponent '
+            'of the perimeter against the diameter; a box dimension of a limiting curve '
+            'needs in addition convergence of the rescaled outlines, which is not shown',
      decimal=sp.N(BOUNDARY_DIM, 12))
 
 MU_BALANCE = sp.radsimp(sp.simplify(LAM2 / NU))
@@ -1438,16 +1441,15 @@ fact(key='balanced_exponent',
      claim=r's^{*}=1-\log\nu/\log\lambda^{2}',
      value=S_STAR,
      method='the thickness exponent making every substitution level carry '
-            'comparable volume; exact but not algebraic, being a ratio of '
-            'logarithms of algebraic numbers',
+            'comparable volume (a modelling choice); transcendental, being an '
+            'irrational ratio of logarithms of algebraic numbers (Gelfond-Schneider)',
      decimal=sp.N(S_STAR, 12))
 
 fact(key='compositum',
      claim=r'\mu=\lambda^{2}/\nu\ \text{has degree }4',
      value=MU_MINPOLY,
      method='the balanced ratio lies in Q(sqrt3, sqrt5) and in neither '
-            'quadratic field alone, so the Spectre and the Hat meet in the '
-            'compositum rather than one containing the other')
+            'quadratic field alone; both lambda^2 and nu are Spectre quantities')
 
 GOLDEN_ABSENT = not any(
     sp.simplify(pp - (x ** 2 - 4 * x - 1)) == 0
@@ -1493,8 +1495,9 @@ fact(key='boundary_invariant',
      value=sorted(BOUNDARY_INVARIANT),
      method='the quadratic factor of chi applied to the sequence annihilates '
             'the growing part and leaves the constant belonging to the '
-            'marginal eigenvalue +1; equivalent to the order-three recurrence '
-            'together with its seed, and proved for every k in Lean',
+            'marginal eigenvalue +1; for the sequence defined by the recurrence and '
+            'its seed it is proved for every k in Lean, and for the counted perimeters '
+            'it holds for k <= 4',
      lean='boundary_invariant')
 
 BOUNDARY_GROWTH_OK = all(
@@ -1504,9 +1507,9 @@ BOUNDARY_GROWTH_OK = all(
 fact(key='boundary_growth_bound',
      claim=r'P(k+3)\ge 4P(k+2)+30',
      value=BOUNDARY_GROWTH_OK,
-     method='the perimeter more than quadruples at every step past the seed, '
-            'while lambda < 4; half of the fractal-boundary statement, and '
-            'the half a kernel can settle',
+     method='for the sequence defined by the recurrence (proved in Lean) the '
+            'perimeter more than quadruples at every step past the seed, while '
+            'lambda < 4; for the counted perimeters this holds through k = 6',
      lean='boundary_growth')
 
 fact(key='lam_below_four',
@@ -1527,7 +1530,7 @@ fact(key='boundary_exact',
      method='the same sequence recounted with edges identified by equality '
             'of exact quadratic-field coordinates rather than by a '
             'four-decimal rounding key, in an independent implementation '
-            '(pyCICY.theories.spectre); agreement removes the rounding key '
+            '(pyCICY.theories.spectre), for 0 <= k <= 6; agreement removes the rounding key '
             'from the boundary results rather than bounding its error')
 
 

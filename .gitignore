@@ -4,3 +4,9 @@ spectre*.png
 spectre*.vs*
 *.xls*
 !spectre_tile7.3-12.7_3-559useRef.svg
+*.aux
+*.out
+spectre_substrate.log
+spectre_supplement.log
+.cache/
+hierarchy_cache/

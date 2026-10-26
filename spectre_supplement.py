@@ -49,7 +49,7 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 {\large for \emph{@TITLE@}}}
 
 \author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
-        (\url{brenthartshorn@proton.me})}
+        (\url{brenthartshorn@proton.me}) and Tristan Romanov}
 
 \begin{document}
 \maketitle
@@ -57,19 +57,21 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 
 def preface():
-    n = len(F.FACTS)
-    nl = sum(1 for f in F.FACTS if f.lean)
+    n = len(P.paper_facts())
+    nl = sum(1 for f in P.paper_facts() if f.lean)
     nt = len(L.theorem_names(L.document()))
     return r"""
 \section*{What this is}
 
-The main paper stratifies its statements by epistemic weight: \emph{Facts}
-are computations or theorems, \emph{Propositions} carry one modelling step,
-\emph{Conjectures} are sharp and unproved.  This document lists every Fact
---- all %d --- with the key under which \code{spectrefacts.py} computes it,
-the claim in the form the paper states it, the first sentence of the method
-by which it was obtained, and a mark on the %d Facts that are also proved by
-the Lean~4 kernel.
+The main paper stratifies its statements: \emph{Facts} are exact statements,
+each proved, verified by an exact finite computation over a stated range, or
+quoted; \emph{Propositions} carry a modelling step.  This document lists every
+Fact of the paper --- all %d --- with the key under which the ledger
+(\code{spectrefacts.py}, \code{chair44facts.py}, \code{monotilefacts.py})
+computes it, the claim, the first sentence of the method by which it was
+obtained, and a mark on the %d Facts whose ledger entry names a theorem of the
+Lean~4 file.  The ledger is shared with other documents; their Facts are not
+listed here.
 
 Three things about the table.
 
@@ -81,10 +83,12 @@ Three things about the table.
 \item \textbf{The Lean column is measured, not asserted.}  A checkmark means
   the Fact's \code{lean} field names a theorem that exists in
   \code{SpectreFacts.lean} --- %d theorems, kernel-accepted, no admitted
-  proofs --- and the paper's build fails if a named theorem is missing.  Six
-  such phantom attributions were found and removed when that check was
-  added; the count of checked Facts fell from twenty-two to eighteen, and
-  eighteen is the honest number.
+  proofs --- and the paper's build fails if a named theorem is missing; six
+  phantom attributions were found and removed when that check was added.  A
+  Lean theorem proves the Lean statement, which can be narrower than the
+  paper's: the Facts marked $^{*}$ are proved in Lean for the sequence that the
+  Lean file \emph{defines} by the perimeter recurrence, and hold for the
+  counted supertile perimeters only on the orders counted, $k\le6$.
 
 \item \textbf{The method column is the first sentence.}  A method that runs
   to a paragraph is truncated at its first full stop or semicolon.  The full
@@ -93,7 +97,8 @@ Three things about the table.
 
 Two of the Facts are inputs rather than results, and the paper says so:
 \code{charpoly} rests on the transcribed substitution matrix, and
-\code{boundary\_recurrence} on a perimeter seed counted from placed tiles.
+\code{boundary\_recurrence} on perimeters counted from placed tiles for
+$k\le6$; beyond $k=6$ the recurrence is a conjecture.
 Both are audited by an independent route --- the matrix against a second
 implementation of the same substitution, the seed against an exact
 $\mathbb{Q}(\sqrt3)$ recount --- and an audit is not a proof.  They are the
@@ -131,11 +136,11 @@ def selftest():
 
     print('the table is complete')
     check('every Fact key appears in the supplement',
-          all(P.esc(f.key) in text for f in F.FACTS))
+          all(P.esc(f.key) in text for f in P.paper_facts()))
     check('the quoted Fact count is the real one',
-          ('all %d' % len(F.FACTS)) in text)
+          ('all %d' % len(P.paper_facts())) in text)
     check('the quoted Lean count is the real one',
-          ('the %d Facts' % sum(1 for f in F.FACTS if f.lean)) in text)
+          ('the %d Facts' % sum(1 for f in P.paper_facts() if f.lean)) in text)
 
     print('the two documents agree')
     check('the main paper no longer carries the table itself',
