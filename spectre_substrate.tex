@@ -38,7 +38,8 @@ the unit $2+\sqrt5$ of $\mathbb{Q}(\sqrt5)$, faster than the linear inflation.  
 is a fractal of box dimension $\log(2+\sqrt5)/\log\lam$, and the tail of the common-ancestor levels of neighbouring
 tiles decays exactly by $\nu/\lam^{2}$.  The inflation acts
 on the vertex module $\mathbb{Z}^{4}$ with two expanding and two contracting directions, and the internal plane is given
-exactly.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
+exactly; the window is the attractor of contracting similarities, with boundary dimension
+$\log(5+2\sqrt6)/\log(4+\sqrt{15})$.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
 space is $2$-adic) and no twist; its centre set, that of the classical three-dimensional chair, has an explicitly computed
 pure-point diffraction measure.  The main result is that every lattice-registered tiling obeying the $44$ contact rules
 lies in the substitution hull, and that its symmetry group is conjugate to one of $1$, $C_{2}$ (a half-turn about a face
@@ -661,20 +662,52 @@ conjugate $z\mapsto z^{5}$, the obvious candidate for the internal space, is not
 
 \noindent
 The plane is bounded for one frame and its image under the mirror for the next, which is why a single fitted plane
-cannot serve every level.  No plane can do better.  The only planes in $\mathbb{Z}[\zeta_{12}]\otimes\mathbb{R}$ that are
-invariant under the $30^{\circ}$ rotation and the mirror are the two complex embeddings.  The image of the supertile key
-points, which are tile vertices, under $z\mapsto z^{5}$ grows like $\lam^{k}$; it reaches $1.6\cdot10^{9}$ at $k=20$.
-So the Spectre's own vertex set is not a model set whose window is the attractor of contracting maps.  It arises from the
-self-similar member CASPr of its family by a change of shape~\cite{BaakeSpectre}, and the window with that property
-belongs to CASPr; Baake, G\"ahler, Mazá\v{c} and Sadun give its boundary dimension as
-$\log(5+2\sqrt6)/\log(4+\sqrt{15})\approx1.111$.  The image in the fitted plane is bounded, and its boundary cell count
+cannot serve every level.  The alternation is exact, and it makes the window the attractor of contracting maps.  The slot
+maps of the construction use only rotations by multiples of $60^{\circ}$ and the mirror.  Under that group,
+$\mathbb{Z}[\zeta_{12}]\otimes\mathbb{R}$ is two copies of one irreducible plane, so it has a one-parameter family of
+invariant planes, not only the two complex embeddings.  The conjugate $z\mapsto z^{5}$ is equivariant for the $30^{\circ}$
+rotation as well, and it is not the internal space: the images of the supertile key points under it grow like $\lam^{k}$.
+
+\begin{thm}
+\label{thm:window}
+On levels of parity $p$, the expanding parts of the eight slot translations span a plane $E_{p}$, and every slot map
+sends $E_{p}$ to $E_{p+1}$.  Projected along $E_{p}$, the marginal ($\pm1$) parts of the translations are removed by a
+fixed shift of the internal origin.  What remains is $\lam^{-k}\gamma_{i,p}$.  The window $W$ of the tile positions,
+read in the frame of each tile, is the attractor of the graph-directed system
+\[
+Z_{p}(S)=\bigcup_{i}\bar A_{i}^{-1}\Bigl(\gamma_{i,p}+\lam^{-1}\bigcup_{S'}Z_{p+1}(S')\Bigr)
+\]
+of similarities of ratio $1/\lam$.  It is dual to the system of Theorem~\ref{thm:frac}, with shape matrix
+$\bigl(\begin{smallmatrix}7&6\\1&1\end{smallmatrix}\bigr)$.  Its contact matrix, on $1192$ types, has characteristic
+polynomial $(x-1)^{35}(x+1)^{35}x^{1114}(x^{4}-10x^{2}+1)^{2}$, and spectral radius $\sqrt2+\sqrt3$.  Hence
+\[
+\dim_{B}\partial W=\frac{\log(\sqrt2+\sqrt3)}{\log\lam}=\frac{\log(5+2\sqrt6)}{\log(4+\sqrt{15})}=1.110977\ldots
+\]
+\end{thm}
+
+\begin{proof}
+The plane, intertwining and coboundary statements are linear algebra on the eigencomponents of $q_{0}$.  They are checked
+to sixty digits, together with a metric in which every internal map is orthogonal (the even products form a group of
+order $6$).  The bottom-up expansion of a tile's internal coordinate is then the stated system.  The upper bound counts
+contact pairs: at depth $m$ there are $O(m(\sqrt2+\sqrt3)^{m})$ of them, since the dominant root is double.  For the lower
+bound, $142$ types lie on infinite paths of the contact graph, so their pieces meet at every depth.  They contain an
+irreducible block carrying $x^{4}-10x^{2}+1$, reached from sibling pairs.  As in Theorem~\ref{thm:frac}, this needs the
+pieces to overlap in measure zero and the window to be the closure of its interior.  Both hold because the Spectre tilings
+have pure point spectrum and regular windows~\cite{BaakeSpectre}.  The computation is
+\code{boundary\_certificate/spectre\_window.py}.
+\end{proof}
+
+\noindent
+Baake, G\"ahler, Mazá\v{c} and Sadun obtain the same value for the self-similar member CASPr of the family, from its
+orbit separation dimension; they note that it deserves a closer analysis~\cite{BaakeSpectre}.  Theorem~\ref{thm:window}
+derives it for the Spectre's own window from the substitution.  The image in the fitted plane is bounded, and its boundary cell count
 (Figure~\ref{fig:lift}; level-$5$ patch, holes from finite sampling filled) grows by $2^{1.26}$ and $2^{1.16}$ at the
 successive halvings of the cell size from $0.2$, against $2^{1}$ for a smooth curve, while the area grows by
-$2^{1.87}$.  The boundary is therefore not a smooth curve, with a box-counting dimension of about $1.2$.  That is an
-estimate and not a theorem.  It is not the dimension $\log\nu/\log\lam$ of the supertile outline in the physical plane
-(Section~\ref{sec:bdyop}), and it is consistent with, and does not derive, the windows of Rauzy type that Baake,
-G\"ahler, Mazá\v{c} and Sadun obtain~\cite{BaakeHat,BaakeSpectre}, who prove that Spectre tilings arise from a $4{:}2$
-cut-and-project scheme with such windows; the analogous statement for the Hat family is~\cite{BGS}.  Whether anything like this exists for a
+$2^{1.87}$.  The boundary is therefore not a smooth curve; a box count at these resolutions gives about $1.2$, against
+the exact $1.111$ of Theorem~\ref{thm:window}.  It is not the dimension $\log\nu/\log\lam$ of the supertile outline in the physical plane
+(Section~\ref{sec:bdyop}).  It agrees with the windows of Rauzy type that Baake, G\"ahler, Mazá\v{c} and Sadun
+obtain~\cite{BaakeHat,BaakeSpectre}, who prove that Spectre tilings arise from a $4{:}2$ cut-and-project scheme with such
+windows; the analogous statement for the Hat family is~\cite{BGS}.  Whether anything like this exists for a
 three-dimensional tile is the question raised by Kamenetsky~\cite{Kamenetsky}, who finds that the obvious
 four-dimensional analogues of the Chair44 fail a closure test; the integer inflation of the chair leaves nothing to project.
 
@@ -1559,18 +1592,17 @@ are recomputed.  That the Spectre diffraction is pure point is a published theor
 of the Spectre, its closed form, the growth bound and the boundary exponent are proved for every order by the finite
 certificate of Theorem~\ref{thm:bdy}, which is independent code.  The box dimension of the limiting boundary,
 Theorem~\ref{thm:frac}, uses in addition the existence of Spectre tilings of the plane~\cite{SmithEtAl}.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
-constant is identified and not proved, the dimension of the window in the fitted plane is a box-counting estimate, the weighted diffraction of the
+constant is identified and not proved, the window dimension (Theorem~\ref{thm:window}) uses the regularity of the windows from~\cite{BaakeSpectre}, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
 The boundary operator governs the perimeter in the aggregate at every order; resolved by species and edge index, on the orders counted, a
 handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$, and the full fine operator is not claimed.  The hierarchy results are numerics on finite
 patches, with controls, and are not Facts.
 
-Two problems remain open.  The first is a four-dimensional analogue of the chair, Kamenetsky's Problem~9.1~\cite{Kamenetsky}.
+One problem remains open: a four-dimensional analogue of the chair, Kamenetsky's Problem~9.1~\cite{Kamenetsky}.
 An independent implementation of his closure test, which reproduces his three-dimensional count (exactly $3$ of the $2187$
 homochiral assignments close, with $30\to44\to44$ contacts), was run on $12{,}784$ further four-dimensional assignments.  Half
 of them extend the three-dimensional marking on a facet, and half are random.  None is coarsening-closed, and every one
-exceeds $400$ contact poses; the question stays open.  The second is an independent computation of the boundary dimension of
-the CASPr window, which~\cite{BaakeSpectre} derive from the orbit separation dimension.
+exceeds $400$ contact poses; the question stays open.
 
 
 \appendix

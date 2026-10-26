@@ -1,0 +1,10 @@
+intertwining residuals: E 1.48e-60, F 1.43e-58
+marginal translations are a coboundary: residual 6.04e-59
+finite group H of order 6; every internal map is an isometry: residual 1.18e-59
+orthogonality residual 4.17e-61
+pieces per set: {('O', 0): 13, ('O', 1): 13, ('G', 0): 2, ('G', 1): 2}  radius bound 4.10034
+window contact closure: 1192 live types (65352 pruned visits)
+charpoly factors: [(x - 1, 35), (x + 1, 35), (x, 1114), (x**4 - 10*x**2 + 1, 2)]
+spectral radius 3.146264369942 ; sqrt2+sqrt3 = 3.146264369942
+dimension log(rho)/log(lam) = 1.110977264157 ; BGMS log(5+2sqrt6)/log(4+sqrt15) = 1.110977264157
+intersecting types: 142; an irreducible block of 14 types carries x^4-10x^2+1 (radius sqrt2+sqrt3) and is reached from 16 sibling types

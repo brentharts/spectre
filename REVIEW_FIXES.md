@@ -142,12 +142,17 @@ Checked against the full text of arXiv:2609.23783v2:
   - It uses in addition the existence of Spectre tilings of the plane (Smith et al.).
 - **Ancestor tail, settled.** For edge-adjacent tiles the ratio P(h≥k+1)/P(h≥k) is exactly 0.394, 0.498, 0.528, 0.536, …
   and tends to ν/λ² = 0.538, not 1/2.
-- **Window.**
-  - The only rotation- and mirror-equivariant internal planes are the complex embeddings. The z ↦ z⁵ image of the
-    supertile key points grows like λᵏ.
-  - So the Spectre's own vertex set has no contracting-map window. That window belongs to the self-similar CASPr, whose
-    boundary dimension BGMS give as log(5+2√6)/log(4+√15) ≈ 1.111.
-  - The fitted-plane box count (about 1.2) stays an estimate.
+- **Window, settled (Theorem `thm:window`).** The previous version of this branch claimed the Spectre has no
+  contracting-map window. That was wrong. The slot maps use only 60° rotations and the mirror, and the planes invariant
+  under those form a family.
+  - On each parity the expanding slot translations span a plane that the slot maps carry to the next parity's plane.
+    The marginal parts are a coboundary.
+  - So the window, read bottom-up, is a graph-directed attractor of similarities of ratio 1/λ, with shape matrix [[7,6],[1,1]].
+  - Its contact matrix (1192 types) has characteristic polynomial (x−1)³⁵(x+1)³⁵x¹¹¹⁴(x⁴−10x²+1)², with spectral radius √2+√3.
+  - Hence dim_B ∂W = log(5+2√6)/log(4+√15) = 1.110977. This is BGMS's CASPr value, now derived independently for the
+    Spectre's own window (`boundary_certificate/spectre_window.py`).
+  - The regularity and measure-disjointness of the windows are cited from BGMS.
+  - The paper's earlier box count (about 1.2) is now stated as an estimate against the exact value.
 
 ## Still open
 - **(R)** remains quoted. Its written proof was audited by the second author, and Tsiokos reports a Lean formalisation
