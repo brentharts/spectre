@@ -1564,7 +1564,7 @@ is checked here independently, and they transfer to every tiling by the Chair44 
 theorem, which has been audited but not refereed.  Orientation
 sums and contact matrices separate the two tilings.  Four finite-patch
 computations then test whether the Spectre's substitution hierarchy can serve as a clock: positional clustering shows no
-arrow, the radius needed to recognise an ancestor grows about threefold per level without making one, the look-back
+arrow, the radius needed to recognize an ancestor grows about threefold per level without making one, the look-back
 law is shared with a quadtree, and the parity flip of the construction shows in the outlines of supertiles and not in the
 tiles.
 \end{abstract}
