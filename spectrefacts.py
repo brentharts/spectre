@@ -1427,11 +1427,11 @@ fact(key='boundary_field',
 BOUNDARY_DIM = sp.log(NU) / sp.log(LAM)
 
 fact(key='boundary_dimension',
-     claim=r'\log\nu/\log\lambda\ \text{(conditional)}',
+     claim=r'\dim_{B}\partial K=\log\nu/\log\lambda',
      value=BOUNDARY_DIM,
-     method='the growth exponent of the perimeter against the diameter (the perimeter '
-            'recurrence is proved for every k); a box dimension of a limiting curve '
-            'needs in addition convergence of the rescaled outlines, which is not shown',
+     method='box dimension of the boundary of the limiting supertile, proved by the certificate '
+            'boundary_certificate/check_spectre_fractal.py (contact matrix with simple dominant root nu, '
+            'an interior grandchild, a lower-bound set of 20 contact types)',
      decimal=sp.N(BOUNDARY_DIM, 12))
 
 MU_BALANCE = sp.radsimp(sp.simplify(LAM2 / NU))

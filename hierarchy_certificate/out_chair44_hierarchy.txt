@@ -1,0 +1,11 @@
+touching lattice-registered poses: 2388  legal: 44
+central child (frame I): (((1, 0, 0), (0, 1, 0), (0, 0, 1)), (1, 1, 1))
+|P1| = 21  |P0| = 30
+C1: |P*| = 44 , no offset pose admissible, Sigma(P*) = 2P*  -- holds
+    P* is exactly the set of 44 legal (pyramid-matching) contacts
+C2: |F*| = 135 facet triples; the touching poses obeying F* are exactly P*  -- holds
+C3: enclosures of a tile: 33
+    dead / live: 18 / 15
+    (U): exactly one compatible supertile for 15 of 15 live enclosures
+    (Pr): 1 central-child cases complete already; 14 other cases complete for every compatible enclosure of the central child
+C1-C3 hold: every lattice-registered P*-tiling (atlas tiling) is uniquely hierarchical (Prop. 7.1)

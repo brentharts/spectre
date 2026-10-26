@@ -127,7 +127,31 @@ Checked against the full text of arXiv:2609.23783v2:
   accurate.
 - The citation is correct as written.
 
+## Third round: the remaining open items
+- **(H) is proved in the paper** as Lemma `lem:hier`: Kamenetsky's Prop. 7.1 argument, written out, including the step
+  that the central child is already in the enclosure.
+  - Its finite conditions are checked by `hierarchy_certificate/check_chair44_hierarchy.py`, written independently of
+    Kamenetsky's `cert6.py` and of `chair44_independent/` (about 1 minute).
+  - Results: P₀ = 30, P* = 44 (exactly the 44 legal contacts), Σ(P*) = 2P*, 135 tight facet triples, 33 enclosures
+    (18 dead, 15 live), (U) 15/15, (Pr) 1 + 14.
+- **G2, fractality, is proved** (Theorem `thm:frac`).
+  - The rescaled supertiles converge on each parity to a compact set K equal to the closure of its interior, and
+    dim_B ∂K = log ν/log λ = 1.39925.
+  - Certificate: `boundary_certificate/check_spectre_fractal.py`. The contact matrix has characteristic polynomial
+    x⁸⁴(x−1)³(x+1)⁴(x²−4x−1); a grandchild is interior with margin 0.267; 20 contact types give the lower bound.
+  - It uses in addition the existence of Spectre tilings of the plane (Smith et al.).
+- **Ancestor tail, settled.** For edge-adjacent tiles the ratio P(h≥k+1)/P(h≥k) is exactly 0.394, 0.498, 0.528, 0.536, …
+  and tends to ν/λ² = 0.538, not 1/2.
+- **Window.**
+  - The only rotation- and mirror-equivariant internal planes are the complex embeddings. The z ↦ z⁵ image of the
+    supertile key points grows like λᵏ.
+  - So the Spectre's own vertex set has no contracting-map window. That window belongs to the self-similar CASPr, whose
+    boundary dimension BGMS give as log(5+2√6)/log(4+√15) ≈ 1.111.
+  - The fitted-plane box count (about 1.2) stays an estimate.
+
 ## Still open
-- **(R) and (H)** remain unrefereed inputs. The abstract says so.
-- **Upstream open PRs.** Open PRs on brentharts/spectre were not checked: this session has no access to that repository.
-  This branch fast-forwards from upstream master `5d077c8`.
+- **(R)** remains quoted. Its written proof was audited by the second author, and Tsiokos reports a Lean formalisation
+  (`registration_of_tiling`, kernel-checked modulo named `native_decide` hooks). We have not rebuilt that Lean
+  development: in this environment the build was blocked as third-party code execution.
+- **Four-dimensional chair** (Kamenetsky's Problem 9.1): open; see the search report below.
+- **Upstream open PRs**: see the PR.
