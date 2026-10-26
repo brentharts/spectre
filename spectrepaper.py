@@ -2097,9 +2097,12 @@ The boundary operator governs the perimeter in the aggregate at every order; res
 handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$, and the full fine operator is not claimed.  The hierarchy results are numerics on finite
 patches, with controls, and are not Facts.
 
-Three computations would extend the work: the window of the Spectre as the attractor of the contracting maps, which would give its dimension
-exactly; a four-dimensional analogue of the chair, the open problem of Kamenetsky~\cite{Kamenetsky}; and an exact count of the
-common-ancestor tail from the substitution, which would settle $\nu/\lam^{2}$ against $1/2$.
+Two problems remain open.  The first is a four-dimensional analogue of the chair, Kamenetsky's Problem~9.1~\cite{Kamenetsky}.
+An independent implementation of his closure test, which reproduces his three-dimensional count (exactly $3$ of the $2187$
+homochiral assignments close, with $30\to44\to44$ contacts), was run on $12{,}784$ further four-dimensional assignments.  Half
+of them extend the three-dimensional marking on a facet, and half are random.  None is coarsening-closed, and every one
+exceeds $400$ contact poses; the question stays open.  The second is an independent computation of the boundary dimension of
+the CASPr window, which~\cite{BaakeSpectre} derive from the orbit separation dimension.
 """
 
 

@@ -153,5 +153,9 @@ Checked against the full text of arXiv:2609.23783v2:
 - **(R)** remains quoted. Its written proof was audited by the second author, and Tsiokos reports a Lean formalisation
   (`registration_of_tiling`, kernel-checked modulo named `native_decide` hooks). We have not rebuilt that Lean
   development: in this environment the build was blocked as third-party code execution.
-- **Four-dimensional chair** (Kamenetsky's Problem 9.1): open; see the search report below.
+- **Four-dimensional chair** (Kamenetsky's Problem 9.1): still open.
+  - My own closure test (`chair_nd.py` on the review branch) reproduces Kamenetsky's Theorem B: 3 of 2187 assignments close.
+  - It was then run on 12,784 sampled 4D assignments: half extend the 3D marking on the facet v₃ = 0, half are random.
+  - None closed. Every one exceeded 400 contact poses, with no offsets.
+  - The search space has about 1.5·10¹⁶ assignments, so this rules nothing out in general.
 - **Upstream open PRs**: see the PR.
