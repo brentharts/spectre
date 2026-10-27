@@ -195,6 +195,10 @@ def exact_exponents(nu):
 
 _MYSTIC = {}
 
+# the naive fit on the measured counts at depths 4 and 5, and the same fit with every perimeter taken as P (no
+# Mystic term), as quoted in the paper and the docstring; the selftest recomputes them
+QUOTED_FITS = {4: ('2.66', '2.62'), 5: ('2.41', '2.38')}
+
 
 def mystic_perimeter(max_order):
     """Q(k) = boundary edges of the order-k Mystic supertile, k = 0..max_order."""
@@ -490,11 +494,18 @@ def selftest(max_order=6):
           abs(float(sp.N(s_star)) - (1 - float(sp.N(dim)) / 2)) < 1e-12)
 
     print('the identity')
-    for N in (3, 4):
-        meas = dict(measured_interfaces(N))
+    for N in (3, 4, 5):
+        meas = measured_interfaces(N)
         pred = predicted_interfaces(N, P)
         check('depth %d interface identity is exact' % N,
-              bool(pred) and all(p == meas[c] for c, p in pred))
+              bool(pred) and all(p == dict(meas)[c] for c, p in pred))
+        if N in QUOTED_FITS:
+            top = max(n for _, n in meas)
+            keep = [c for c, n in meas if n < 0.9 * top]
+            fits = ('%.2f' % naive_fit(meas, keep),
+                    '%.2f' % naive_fit(predicted_interfaces(N, P, mystic=False), keep))
+            check('depth %d fitted growth is %s (%s without the Mystic term)' % ((N,) + QUOTED_FITS[N]),
+                  fits == QUOTED_FITS[N])
 
     print()
     if failures:

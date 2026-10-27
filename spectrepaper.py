@@ -202,10 +202,31 @@ def fill(text, **kw):
 
 
 
+_FINE = {}
+NUMBER_WORDS = {1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five', 6: 'six'}
+
+
+def fine_decomposition(max_order=6):
+    """Boundary edge types by (species, edge index) over 1 <= k <= max_order, audited against the recurrence
+    (spectre_golden); about a minute, so it is computed once per process."""
+    if max_order not in _FINE:
+        import spectre_golden as SG
+        comps = SG.boundary_components(max_order)
+        types, obey, fail, p2 = SG.component_audit(comps)
+        grow = [(t, q) for t, q in fail if (t, q) not in p2]
+        _FINE[max_order] = dict(types=len(types), obey=len(obey), fail=len(fail), period2=len(p2), grow=len(grow),
+                                seqs=dict(grow))
+    return _FINE[max_order]
+
+
 def boundary_additions():
     """Two subsections of the boundary-operator section: the closed form and the directions of
     the boundary edges, and the balanced exponent (moved here from the discussion section)."""
     import chair44facts as C44
+    fd = fine_decomposition()
+    # the growing types come in equal pairs, edges 3 and 4 of Pi and of Psi, as the text says
+    assert sorted(fd['seqs']) == [('Pi', 3), ('Pi', 4), ('Psi', 3), ('Psi', 4)]
+    assert fd['seqs'][('Pi', 3)] == fd['seqs'][('Pi', 4)] and fd['seqs'][('Psi', 3)] == fd['seqs'][('Psi', 4)]
     rows = []
     for k, h in enumerate(C44.DIRECTION_HISTOGRAMS):
         e, o = C44.class_totals(h)
@@ -284,11 +305,12 @@ the other characters is an observation.  The directions are counted with the
 fork's own tile builder, so this is a count and not an independent second
 route.
 
-\textbf{The fine decomposition.}  Resolved by species and edge index, the boundary has $52$ edge types,
-and counted on placed tiles for $1\le k\le6$ (\code{spectre\_golden.py}; the single tile at $k=0$ is dropped) only $34$ of
-them satisfy the recurrence of Theorem~\ref{thm:bdy}.  Of the other $18$, $14$ are bounded and of period two, such as
-$1,2,1,2,1,2$, and the remaining four grow without obeying it or its obvious order-four extension: the edges $3$ and $4$
-of $\Pi$ both give $1,7,22,91,378,1599$ and those of $\Psi$ both give $0,5,31,141,607,2581$, and their ratios still
+\textbf{The fine decomposition.}  Resolved by species and edge index and counted on placed tiles for $1\le k\le6$
+(\code{spectre\_golden.py}; the single tile at $k=0$ is dropped, and with it the edge types that occur only there), the
+boundary has $@ntypes@$ edge types, and only $@nobey@$ of them satisfy the recurrence of Theorem~\ref{thm:bdy}.  Of the
+other $@nfail@$, $@nper@$ are bounded and of period two, such as
+$1,2,1,2,1,2$, and the remaining @ngrow@ grow without obeying it or its obvious order-four extension: the edges $3$ and $4$
+of $\Pi$ both give $@pi@$ and those of $\Psi$ both give $@psi@$, and their ratios still
 approach $\nu$.  The operator of
 Theorem~\ref{thm:bdy} is exact for the aggregates; the operator on the fine types is larger, and its
 spectrum below $\nu$ is not determined by these orders.
@@ -348,6 +370,8 @@ counts exactly at both depths, so it reproduces the same fitted values
 (\code{spectre\_boundary.py}), which is how we know the drift was the estimator
 and not the geometry.
 """, peak='%.2f' % F.get('boundary_z3_bounded').value[0], rows='\n'.join(rows),
+       ntypes=fd['types'], nobey=fd['obey'], nfail=fd['fail'], nper=fd['period2'], ngrow=NUMBER_WORDS[fd['grow']],
+       pi=','.join(map(str, fd['seqs'][('Pi', 3)])), psi=','.join(map(str, fd['seqs'][('Psi', 3)])),
         sstar=F.get('balanced_exponent').decimal)
 
 
@@ -580,7 +604,8 @@ decision steps evaluated by its compiler, whose results are trusted as well as i
 rebuild agree, theorem by theorem and up to a namespace prefix, with the published log, and the log left by the build equals the published one byte
 for byte (\code{lean\_rebuild/}).  The $67$ proof files of the build differ from the externally delivered proofs only in
 marked compile fixes, and no delivered statement is changed beyond notation (\code{lean\_rebuild/discharge\_audit\_indep.py},
-written independently of the project's own audit).  A build shows that the formal statement holds; that the formal statement says what
+our re-implementation of the project's audit rule, which adds a comparison of every declaration's statement; the
+judgement that the statement differences are notation is ours).  A build shows that the formal statement holds; that the formal statement says what
 (R) says is a reading of it, not a computation.  It has not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky} applied to the Chair44, and Tsiokos
@@ -2522,6 +2547,9 @@ def selftest():
           'the estimator and not the geometry' in ' '.join(text.split()))
     check('the interface count carries the Mystic perimeter',
           r'N_{\Gamma}(c)Q(N-c)' in text)
+    import spectre_boundary as SBD
+    check('the quoted fitted growth is the one spectre_boundary.py --selftest recomputes',
+          ('$%s$ per level at depth~4 and $%s$ at depth~5' % (SBD.QUOTED_FITS[4][0], SBD.QUOTED_FITS[5][0])) in text)
     check('the fine spectrum is left open explicitly',
           'the full fine operator is not claimed' in text)
     print('unfolding the Chair44')
@@ -2606,7 +2634,7 @@ def selftest():
           ch['chair_multiplicities'] == {8.0: 1, 2.0: 20, 0.0: 3} and r'x^{3}(x-8)(x-2)^{20}' in text)
     check('the contact counts are the live ones',
           ct['spectre']['rank'] == 14 and ct['chair']['rank'] == 24 and not ct['chair']['bipartite']
-          and ('%d$ nonzero' % ct['chair']['support']) in text.replace('$@', '$') or str(ct['chair']['support']) in text)
+          and ('$%d$ nonzero' % ct['chair']['support']) in text)
     note = note_document()
     nflat = ' '.join(note.split())
     check('the paper is purely mathematical: the conjecture and the Weyl remark are in the companion note',

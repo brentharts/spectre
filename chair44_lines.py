@@ -115,7 +115,9 @@ def stack_labels():
 
 def stack_check(depth=6):
     """For each stack label j: the diagonal of sigma^depth(j) is constant; and for every native cell k of the chair
-    there is a diagonal line of identical labels (frame of j, k), of length at least 2^depth - 2 (exactly 2^depth on the main diagonal and 2^depth - 1 on the others).  Returns a list of dicts."""
+    there is a diagonal line of identical labels (frame of j, k): the whole intersection of a line in direction (1,1,1)
+    with the cube, of difference e = (x-z, y-z).  Each dict records the lengths {e: cells} of those lines, which should
+    be 2^depth on the main diagonal e = (0,0) and 2^depth - 1 on the other six.  Returns a list of dicts."""
     st = _st()
     N = 2 ** depth
     obs = observables()
@@ -127,17 +129,19 @@ def stack_check(depth=6):
         cube = A[0]
         frame = st['labels'][j][0]
         diag = bool(all(cube[t, t, t] == j for t in range(N)))
-        offsets = {}
+        lines = {}
         for k in range(7):
             lab = st['index'][(frame, k)]
-            offsets[k] = [p for p in itertools.product((0, 1), repeat=3)
-                          if all(cube[p[0] + m, p[1] + m, p[2] + m] == lab for m in range(N - 2))]
-        used = sorted(p for ps in offsets.values() for p in ps)
+            for e in itertools.product((-1, 0, 1), repeat=2):
+                cells = [(z + e[0], z + e[1], z) for z in range(N) if 0 <= z + e[0] < N and 0 <= z + e[1] < N]
+                if all(cube[c] == lab for c in cells):
+                    lines.setdefault(k, []).append((e, len(cells)))
+        lengths = {e: n for v in lines.values() for e, n in v}
         out.append(dict(label=j, notch=tuple(int(x) for x in S.frame_apply(frame, (1, 1, 1))), diagonal_constant=diag,
-                        one_line_per_cell=all(len(v) >= 1 for v in offsets.values()),
-                        cells_cover_cube=sorted(set(used)) == sorted(itertools.product((0, 1), repeat=3)),
+                        one_line_per_cell=sorted(lines) == list(range(7)) and all(len(v) == 1 for v in lines.values()),
+                        lines_distinct=len(lengths) == 7,
                         pyramid_per_step={k: obs['pyramid'][st['index'][(frame, k)]] for k in range(7)},
-                        length=N - 2))
+                        lengths=lengths))
     return out
 
 
@@ -269,8 +273,9 @@ def run_tests(verbose=True):
     chk(r['pyramid_native'] == [0, 0, 0, -36, 0, 36, 0] and sum(r['pyramid_native']) == 0, 'pyramid per native cell')
     chk(len(sc) == 6 and sorted(s['label'] for s in sc) == stack_labels(), 'six stack labels')
     chk(sorted(s['notch'] for s in sc) == sorted([(1, 1, 1)] * 3 + [(-1, -1, -1)] * 3), 'notches along the diagonal')
-    chk(all(s['diagonal_constant'] and s['one_line_per_cell'] and s['cells_cover_cube'] and s['length'] == 62
-            for s in sc), 'stack lines')
+    chk(all(s['diagonal_constant'] and s['one_line_per_cell'] and s['lines_distinct'] for s in sc), 'stack lines')
+    chk(all(s['lengths'] == {e: 2 ** 6 if e == (0, 0) else 2 ** 6 - 1 for e in s['lengths']} for s in sc),
+        'stack lines have length 2^n on the main diagonal and 2^n - 1 on the other six')
     chk(all(sorted(s['pyramid_per_step'].values()) == [-36, 0, 0, 0, 0, 0, 36] for s in sc), 'pyramid steps -36 and +36')
     chk(all(h and c == 14 and len(T) == 7 for h, c, T in r['tube'].values()), 'tube invariance (all n by induction)')
     # the stack lines' means are not the box means

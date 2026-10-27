@@ -4,7 +4,12 @@ The rule audited (from lean/R44/scripts/discharge_diff_audit.sh of ioannist/six-
 files in lean/R44/R44/Proved must differ from its text in the latest external delivery archive only inside hunks
 marked `-- [compile-fix ...]`, and every deleted run of delivery lines must sit next to a marked block.
 
-This script does not import or run that script.  It takes two directories:
+This script does not import or run that script, but it applies the same rule in the same way (one marker anywhere in
+a contiguous difflib hunk accepts the whole hunk), so it is a re-implementation and not an independent method.  Its
+limits: the statement comparison cuts a statement at its first `:=` or `where` and at 60 lines, keys declarations by
+bare name, and strips `--` comments only; the RISKY scan also does not strip `/- ... -/` comments, so docstring prose
+that mentions `axiom` or `native_decide` is listed too.  Whether a listed statement difference is notation is a
+human judgement, not computed here.  It takes two directories:
     ARCHIVES  the seven delivery ZIPs under proof/external_lean at commit 838bca5
     PROVED    the 67 files of lean/R44/R44/Proved at commit d53d224
 and, beyond the rule above, reports what each marked hunk touches: declaration headers (theorem, lemma, def,

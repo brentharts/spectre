@@ -221,7 +221,7 @@ def selftest():
     ok(min(p['fitted_cosines']) > 1 - 1e-6 and p['internal_extent'][4] < 1.3 * p['internal_extent'][3]
        and abs(p['growth'] - float(F.LAM)) < 0.1 and p['galois_extent'] > 40
        and all(1.1 < e < 1.4 for e in p['boundary_exponents']), 'internal plane')
-    ok(all(key in KIND for key in KIND) and set(KIND) == {f.key for f in F.FACTS if f.key in KIND}, 'classified')
+    ok(set(KIND) <= {f.key for f in F.FACTS} and all(KIND.values()), 'classified')
     return n
 
 

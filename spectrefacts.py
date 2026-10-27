@@ -23,6 +23,9 @@ assertion, and the one place a float is printed it is marked as a decimal
 expansion of something already known exactly.
 """
 
+import os
+import sys
+
 import sympy as sp
 
 # --------------------------------------------------------------- the matrix
@@ -1087,6 +1090,31 @@ def cross_check_boundary():
 
 
 
+def exact_boundary_recount(kmax=6):
+    """P(k) for k <= kmax, counted on the exact patches of boundary_certificate/spectre_exact.py.
+
+    That module shares no code with this one: it places the tiles with exact coordinates in Z[zeta_12], and two
+    unit edges are the same edge when their integer coordinate vectors are equal, so there is no rounding key.  A
+    boundary edge is an edge of exactly one tile of the order-k Delta supertile.  About a minute.
+    """
+    from collections import Counter
+    cert = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'boundary_certificate')
+    sys.path.insert(0, cert)
+    try:
+        from spectre_exact import build, SPECTRE, apply
+    finally:
+        sys.path.remove(cert)
+    out = []
+    for sys_, _, _ in build(kmax):
+        cnt = Counter()
+        for T, _kind in sys_['Delta']:
+            pts = [tuple(int(c) for c in apply(T, w)) for w in SPECTRE]
+            for i in range(len(pts)):
+                cnt[frozenset((pts[i], pts[(i + 1) % len(pts)]))] += 1
+        out.append(sum(1 for c in cnt.values() if c == 1))
+    return out
+
+
 def _lean_theorem_count():
     """Theorems in the generated Lean file (imported late: spectrelean imports
     this module)."""
@@ -1339,6 +1367,10 @@ def selftest():
     if verdict is not None and not verdict.startswith('matches'):
         fail('the twist disagrees with the tiling code: ' + verdict)
 
+    exact = exact_boundary_recount(len(BOUNDARY_SEQ) - 1)
+    if exact != list(BOUNDARY_SEQ):
+        fail('the exact recount %r differs from the boundary sequence %r' % (exact, BOUNDARY_SEQ))
+
     for msg in problems:
         print('FAIL  ' + msg)
     if problems:
@@ -1352,8 +1384,8 @@ def selftest():
                             'matrix is unconfirmed by a second route'))
         bverdict = cross_check_boundary()
         print('  cross-check: %s'
-              % (bverdict or 'pyCICY not on the path; the exact recount for k <= 6 '
-                             'is boundary_certificate/spectre_exact.py'))
+              % (bverdict or 'pyCICY not on the path; the exact recount by '
+                             'boundary_certificate/spectre_exact.py agrees for k <= 6'))
     return len(problems)
 
 
@@ -1527,13 +1559,13 @@ fact(key='lam_below_four',
 BOUNDARY_EXACT_FIELD = 'Q(sqrt3)'
 
 fact(key='boundary_exact',
-     claim=r'P(k)\ \text{counted exactly in }\mathbb{Q}(\sqrt3)',
+     claim=r'P(k)\ \text{counted exactly in }\mathbb{Z}[\zeta_{12}],\ 0\le k\le6',
      value=BOUNDARY_SEQ,
      method='the same sequence recounted with edges identified by equality '
             'of exact coordinates in Z[zeta_12] rather than by a '
             'four-decimal rounding key, in an independent implementation '
-            '(boundary_certificate/spectre_exact.py, "matches the exact patches for k = 0..6" in '
-            'out_spectre_boundary_proof.txt), for 0 <= k <= 6; agreement removes the rounding key '
+            '(boundary_certificate/spectre_exact.py), for 0 <= k <= 6, and compared with this sequence by '
+            'exact_boundary_recount() in --selftest; agreement removes the rounding key '
             'from the boundary results rather than bounding its error.  A second exact recount '
             '(pyCICY.theories.spectre, in Q(sqrt3)) is run by --selftest only when pyCICY is on the path')
 

@@ -281,3 +281,4 @@ if __name__ == '__main__':
     # the other, of positive area); the pieces are similar copies of Z_{p'}(S'), so the lower bound reaches these types
     wt = sorted(set((live[keys[a]][c], live[keys[a]][2]) for a in reach for c in (0, 1)))
     print("window types (shape, parity) of the pieces in those sibling types:", wt)
+    assert wt == [('G', 0), ('G', 1), ('O', 0), ('O', 1)], "the lower bound must reach all four window types"

@@ -539,9 +539,10 @@ the other characters is an observation.  The directions are counted with the
 fork's own tile builder, so this is a count and not an independent second
 route.
 
-\textbf{The fine decomposition.}  Resolved by species and edge index, the boundary has $52$ edge types,
-and counted on placed tiles for $1\le k\le6$ (\code{spectre\_golden.py}; the single tile at $k=0$ is dropped) only $34$ of
-them satisfy the recurrence of Theorem~\ref{thm:bdy}.  Of the other $18$, $14$ are bounded and of period two, such as
+\textbf{The fine decomposition.}  Resolved by species and edge index and counted on placed tiles for $1\le k\le6$
+(\code{spectre\_golden.py}; the single tile at $k=0$ is dropped, and with it the edge types that occur only there), the
+boundary has $40$ edge types, and only $22$ of them satisfy the recurrence of Theorem~\ref{thm:bdy}.  Of the
+other $18$, $14$ are bounded and of period two, such as
 $1,2,1,2,1,2$, and the remaining four grow without obeying it or its obvious order-four extension: the edges $3$ and $4$
 of $\Pi$ both give $1,7,22,91,378,1599$ and those of $\Psi$ both give $0,5,31,141,607,2581$, and their ratios still
 approach $\nu$.  The operator of
@@ -953,7 +954,8 @@ decision steps evaluated by its compiler, whose results are trusted as well as i
 rebuild agree, theorem by theorem and up to a namespace prefix, with the published log, and the log left by the build equals the published one byte
 for byte (\code{lean\_rebuild/}).  The $67$ proof files of the build differ from the externally delivered proofs only in
 marked compile fixes, and no delivered statement is changed beyond notation (\code{lean\_rebuild/discharge\_audit\_indep.py},
-written independently of the project's own audit).  A build shows that the formal statement holds; that the formal statement says what
+our re-implementation of the project's audit rule, which adds a comparison of every declaration's statement; the
+judgement that the statement differences are notation is ours).  A build shows that the formal statement holds; that the formal statement says what
 (R) says is a reading of it, not a computation.  It has not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky} applied to the Chair44, and Tsiokos

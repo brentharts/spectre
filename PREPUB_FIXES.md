@@ -209,7 +209,8 @@ Every proof and computed claim in the paper was read again against the code. The
 - **Notch mean.** "The chair's is exactly 2ⁿ" now reads "exactly 2ⁿ in each component".
 - **Fine boundary operator.** The conclusion claimed something about the components by species and edge index that the
   body never stated. A paragraph now gives it, rerun with `spectre_golden.py` here:
-  - there are 52 edge types, and 34 of them obey the recurrence after the first term;
+  - there are 40 edge types over 1 ≤ k ≤ 6, and 22 of them obey the recurrence (an earlier count of 52 and 34 included
+    12 types that occur only at k = 0, whose all-zero sequences passed vacuously; corrected after the code review);
   - 14 are bounded and have period 2;
   - (Π,3) and (Π,4) give 1, 7, 22, 91, 378, 1599, which obeys neither the recurrence nor its order-4 extension.
 - **Build.** The selftest passes, pdflatex ×3 gives 32 pages, and there are no overfull boxes and no undefined
@@ -337,3 +338,34 @@ A full re-read of the regenerated paper, checking every number and every proof s
 
 - Checked the repository's other READMEs and the chair44_independent notes for implementation counts or wording
   that rounds 10–12 changed in the paper: none remain. Nothing was found, so the review has converged.
+
+## Code review fixes (branch `code-review-squashed`, `CODE_REVIEW.md`)
+
+- **Fine decomposition (Major).** `spectre_golden.component_audit` took its edge types from every order, k = 0
+  included, then dropped k = 0 from the sequences. The 12 Δ types that occur only at k = 0 had all-zero sequences
+  over 1 ≤ k ≤ 6, which passed the recurrence vacuously. Types are now taken from the audited orders only. On the
+  range the paper states there are 40 edge types, of which 22 obey the recurrence; the counts 18/14/4 and the Π, Ψ
+  sequences are unchanged. The paragraph is now generated from `spectre_golden.py` (`fine_decomposition()`), not
+  typed.
+- **Admissible blocks.** `chair44_blocks_indep.py` now asserts every value it is cited for: 2388/1194/44, the 30
+  hierarchical contacts, primitivity at power 3, coincidence at depth 3 with 336 addresses including (0,0,2),
+  1410 legal blocks, 27 fixed seeds, 360,189 blocks in 15,214 orbits, and no illegal child window. The (0,0,2) test
+  now uses only the repository's digit order (most significant first).
+- **Interface law.** `spectre_boundary.py --selftest` now checks the exact identity at depth 5 as well. It also
+  recomputes the quoted fits 2.66/2.41 and 2.62/2.38 (`QUOTED_FITS`), and the paper's selftest ties the text to them.
+- **Exact perimeter recount.** `spectrefacts.selftest` now runs `exact_boundary_recount()` on
+  `boundary_certificate/spectre_exact.py` and compares it with `BOUNDARY_SEQ`; before, only the printouts agreed. The
+  `boundary_exact` claim says Z[ζ₁₂], to match its method.
+- **Stack lines.** `chair44_lines.stack_check` now measures each line's full intersection with the cube. It checks
+  2ⁿ on the main diagonal and 2ⁿ − 1 on the other six; the ledger had recorded the old 2⁶ − 2 = 62.
+- **Lean discharge audit.** The paper and `lean_rebuild/README.md` now call `discharge_audit_indep.py` a
+  re-implementation of the upstream rule, with a statement comparison added, not an independent audit. The script's
+  docstring states its limits. The delivery archives are not public, so the script was not changed or rerun.
+- **Selftests that could not fail.**
+  - The supplement's count checks now read the quoted numbers back and compare them with the rendered table rows,
+    checkmarks and fact environments.
+  - An `and … or` precedence slip in the paper's contact-count check is fixed.
+  - `all(key in KIND for key in KIND)` is replaced by a real check, in `monotilefacts.py` and `chair44facts.py`.
+- **Window theorem.** `spectre_window.py` now asserts that all four window types are reached.
+- **4D search.** `nd_search/README.md` records the known limits of the annealing objective. None affects the reported
+  numbers, and the code is left as it was run.

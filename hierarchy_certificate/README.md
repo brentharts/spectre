@@ -21,7 +21,7 @@ Tsiokos's solid, `../chair44_data/r44_solid.json`, as data.
 `chair44_blocks_indep.py` was written from the definitions for the prepublication referee review. It shares no code
 with the other implementations (the paper lists all four after the lemma) and reads only Tsiokos's solid as data. It derives the legal contacts from the pyramid geometry,
 then enumerates every admissible block, not only orbit representatives, using a pairwise-compatibility bitset search.
-Its output is `out_chair44_blocks_indep.txt`:
+It asserts every value below, so a different count fails the run. Its output is `out_chair44_blocks_indep.txt`:
 - 2388 / 1194 / 44 contacts and the 30 hierarchical ones;
 - the coincidence at depth 3;
 - 1410 legal blocks and 27 fixed seeds;

@@ -139,18 +139,24 @@ def selftest():
         if not ok:
             failures.append(label)
 
+    import re
     text = document()
     main = P.document()
+    # the counts the preface quotes, read back from the text, against what the rendered table and the main paper
+    # contain (the preface computes them from the ledger, so comparing with the same expressions would prove nothing)
+    table = text.split(r'\endhead', 1)[1].split(r'\end{longtable}', 1)[0]
+    rows = [r for r in table.split('\n') if r.startswith(r'\code{')]
+    quoted = lambda pattern: int(re.search(pattern, text).group(1))
 
     print('the table is complete')
     check('every Fact key appears in the supplement',
           all(P.esc(f.key) in text for f in P.paper_facts()))
-    check('the quoted Fact count is the real one',
-          ('all %d' % len(P.paper_facts())) in text)
-    check('the quoted Lean count is the real one',
-          ('the %d entries' % sum(1 for f in P.paper_facts() if f.lean)) in text)
-    check('the quoted count of numbered Facts is the real one',
-          ('(%d of them)' % main.count(r'\begin{fact}')) in text)
+    check('the quoted entry count is the number of table rows',
+          quoted(r'all (\d+) ---') == len(rows) == len(P.paper_facts()))
+    check('the quoted Lean count is the number of checkmarked rows',
+          quoted(r'the (\d+) entries that name') == sum(1 for r in rows if r.rsplit('&', 1)[1].lstrip().startswith(r'\checkmark')))
+    check('the quoted count of numbered Facts is the number of fact environments in the paper',
+          quoted(r'\((\d+) of them\)') == len(re.findall(r'\\begin\{fact\}', main)))
 
     print('the two documents agree')
     check('the main paper no longer carries the table itself',

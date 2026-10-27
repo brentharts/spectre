@@ -411,8 +411,9 @@ def register():
              box_means={k: asint(v) for k, v in lr['box']['means'].items()},
              pyramid_native=lr['pyramid_native'],
              stack_labels=[s_['label'] for s_ in lr['stack']], stack_notches=[s_['notch'] for s_ in lr['stack']],
-             stack_length=lr['stack'][0]['length'],
-             stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['cells_cover_cube']
+             stack_lengths=sorted(lr['stack'][0]['lengths'].values()),
+             stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['lines_distinct']
+                                and s_['lengths'] == lr['stack'][0]['lengths']
                                 for s_ in lr['stack']),
              tube=dict(holds=all(h for h, _, _ in lr['tube'].values()), cases=[c for _, c, _ in lr['tube'].values()],
                        differences=7),
@@ -512,7 +513,7 @@ def selftest(full=False):
     ok(ln['row_sums'] == ln['col_sums'] == [8] and ln['primitive'] and all(v == 0 for v in ln['box_means'].values()),
        'box means are zero')
     ok(ln['pyramid_native'] == [0, 0, 0, -36, 0, 36, 0] and len(ln['stack_labels']) == 6 and ln['stack_lines_ok']
-       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_length'] == 62, 'chair stacks')
+       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_lengths'] == [63] * 6 + [64], 'chair stacks')
     ok(sorted(ln['stack_notches']) == [(-1, -1, -1)] * 3 + [(1, 1, 1)] * 3, 'stack notch directions')
     ok(all(len(ln['corner'][b]) == 1 and ln['corner'][b][0]['size'] == 4 for b in ln['corner'] if b != (1, 1, 1))
        and len(ln['corner'][(1, 1, 1)]) == 6 and all(k['means']['pyramid'] == 0 for c in ln['corner'].values() for k in c)
@@ -532,7 +533,7 @@ def selftest(full=False):
     for k, h in enumerate(DIRECTION_HISTOGRAMS):
         ok(abs(z6_modes(h)[3] - fib(3 * k + 2)) < 1e-6, 'Z/2 amplitude %d' % k)
     # Fact bookkeeping
-    ok(all(key in KIND for key in KIND) and all(f.key in KIND for f in F.FACTS if f.key.startswith('chair_')),
+    ok(set(KIND) <= {f.key for f in F.FACTS} and all(f.key in KIND for f in F.FACTS if f.key.startswith('chair_')),
        'every chair fact is classified')
     if full:
         chosen, summary = S.screen_tilings(verbose=False)

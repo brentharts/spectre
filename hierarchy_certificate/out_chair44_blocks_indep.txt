@@ -5,7 +5,7 @@ primitive: all entries of M^3 positive
 depth 1: 0 of 8 addresses coincide
 depth 2: 0 of 64 addresses coincide
 depth 3: 336 of 512 addresses coincide
-   (0,0,2) among them: True ; also with reversed digit order: True
+   (0,0,2) among them: True
 distinct windows of sigma^n(j), cumulative n=1..6: [168, 600, 1278, 1398, 1410, 1410]
 closed under child windows: True
 central map: 27 periodic blocks, 27 fixed
@@ -14,7 +14,8 @@ admissible blocks: 360189
 O-orbits: 15214
 admissible blocks with an illegal window in their substitution: 0
 legal blocks that are admissible: 1410 of 1410
+all stated values reproduced
 
-real	14m6.016s
-user	13m50.118s
-sys	0m6.338s
+real	14m31.329s
+user	14m12.675s
+sys	0m9.444s

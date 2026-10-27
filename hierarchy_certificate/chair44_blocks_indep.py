@@ -269,10 +269,12 @@ for j, row in enumerate(SUB):
     for x in row:
         Mx[x, j] += 1
 Pn = np.eye(168, dtype=np.int64)
+PRIM = None
 for n in range(1, 6):
     Pn = (Pn @ Mx > 0).astype(np.int64)
     if Pn.min() > 0:
         print("primitive: all entries of M^%d positive" % n)
+        PRIM = n
         break
 
 
@@ -297,8 +299,9 @@ for m in range(1, 4):
             for b in w:
                 a = [2 * a[i] + b[i] for i in range(3)]
             addrs.add(tuple(a))
-        print("   (0,0,2) among them:", (0, 0, 2) in addrs, "; also with reversed digit order:",
-              any(tuple(sum(w[k][i] << k for k in range(m)) for i in range(3)) == (0, 0, 2) for w in good))
+        # the repository's convention (chair44_twoadic.coincidence): the first digit is the most significant
+        print("   (0,0,2) among them:", (0, 0, 2) in addrs)
+        COINC = (m, len(good), (0, 0, 2) in addrs)
         break
 
 
@@ -431,10 +434,21 @@ for w in admissible:
     orbits.add(min(act(R, w) for R in ROT))
 print("O-orbits:", len(orbits))
 bad = 0
-illegal_adm = 0
 aset = set(admissible)
 for w in admissible:
     if any(c not in LEGALB for c in child_windows(w)):
         bad += 1
 print("admissible blocks with an illegal window in their substitution:", bad)
 print("legal blocks that are admissible:", sum(1 for w in LEGALB if w in aset), "of", len(LEGALB))
+
+# the values the paper states; any difference fails the run
+assert (len(RAW), len(mirror), len(LEGAL)) == (2388, 1194, 44)
+assert sum(1 for k in LEGAL if det(k[0]) == -1) == 0
+assert len(P0) == 30 and P0 <= LEGAL
+assert set(colsum.values()) == {8} and PRIM == 3
+assert COINC == (3, 336, True)
+assert counts == [168, 600, 1278, 1398, 1410, 1410] and closed
+assert len(cyc) == len(per) == 27 and stabs == Counter({1: 24, 8: 3})
+assert len(admissible) == 360189 and len(orbits) == 15214 and bad == 0
+assert all(w in aset for w in LEGALB)
+print("all stated values reproduced")

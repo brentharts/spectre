@@ -61,8 +61,8 @@ What survives, and it is better
 An honest gap
 -------------
 The order-3 recurrence governs the TOTAL perimeter exactly.  Component-wise,
-by (species, edge index), only 34 of 52 boundary edge types obey it once the
-seed transient is dropped; the rest include period-2 components and at least
+by (species, edge index), only 22 of the 40 boundary edge types that occur
+for 1 <= k <= 6 obey it once the seed transient is dropped; the rest include period-2 components and at least
 one sequence (1, 7, 22, 91, 378, 1599) that obeys neither it nor the obvious
 order-4 extension.  So the true boundary transfer operator is LARGER than
 the 3x3 companion matrix, and seven orders of data are not enough to pin its
@@ -217,7 +217,9 @@ def component_audit(comps, drop=1):
     zero forever, which no recurrence of this shape describes and which says
     nothing about the operator.
     """
-    types = sorted(set().union(*[set(c) for c in comps]))
+    # only the types that occur in the audited range: a type seen only at the dropped orders has an all-zero
+    # sequence there, which would satisfy the recurrence vacuously
+    types = sorted(set().union(*[set(c) for c in comps[drop:]]))
     obey, fail, period2 = [], [], []
     for t in types:
         s = [comps[k].get(t, 0) for k in range(drop, len(comps))]
