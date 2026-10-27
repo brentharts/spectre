@@ -1294,8 +1294,13 @@ def selftest():
             fail('%s has no value' % f.key)
 
     # the X-charge, against a live rebuild of the atlas at a cheap depth
+    # (only the import may be missing; an error inside the analysis is a failure, not a skip)
     try:
         import spectreatlas as A
+    except ImportError:
+        A = None
+        print('  X-charge cross-check skipped: spectreatlas is not importable')
+    if A is not None:
         live = A.analyse(3)
         for species, hist in live['charges'].items():
             seen = tuple(sorted(hist)) if len(hist) > 1 else sorted(hist)[0]
@@ -1305,8 +1310,6 @@ def selftest():
         if len(live['atlas']) != ATLAS_CLASSES:
             fail('the atlas has %d classes, not %d'
                  % (len(live['atlas']), ATLAS_CLASSES))
-    except ImportError:
-        pass
 
     # p must be recorded as drifting, not as settled
     values = [float(P_BY_DEPTH[d]) for d in sorted(P_BY_DEPTH)]

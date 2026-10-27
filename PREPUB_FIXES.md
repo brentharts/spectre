@@ -369,3 +369,27 @@ A full re-read of the regenerated paper, checking every number and every proof s
 - **Window theorem.** `spectre_window.py` now asserts that all four window types are reached.
 - **4D search.** `nd_search/README.md` records the known limits of the annealing objective. None affects the reported
   numbers, and the code is left as it was run.
+
+## Code review fixes, round 2 (`CODE_REVIEW_2.md`)
+
+- **Lean axiom audit.** `spectrelean.audit_block` no longer states "Classical.choice appears nowhere … constructive"
+  unconditionally. Every sentence of the header now follows from the `#print axioms` output: when `Classical.choice`
+  is used, the header names the theorems that use it, and a `sorryAx` is reported if it appears. The output is parsed
+  with `parse_axioms`, which also handles lists that Lean wraps over several lines. `check()` now fails if the audit
+  run fails or does not cover exactly the file's theorems. The unused `AUDIT_SENTENCE` is removed. The supplement no
+  longer asserts kernel acceptance from a count of names; it says `make lean` checks the file.
+- **Numbers from certificates.** `spectrepaper.certificate_numbers()` reads them from the committed outputs: 93 live
+  types; 135 facet rules; 33/18/15 enclosures; 1192 types, 1193 pieces and 142 intersecting types; 15,214 orbits;
+  360,189 admissible blocks; 162 Lean reports; 67 files. The selftest checks that the text states each one.
+- **Stack lines.** The test now compares with the paper's set T of seven differences explicitly, and the ledger records
+  the differences together with their lengths.
+- **`chair44_hull`.** The periodic points of Φ are found exactly (each orbit enters its cycle within |L| steps), not
+  up to period 63. The docstring now describes the per-depth counts correctly.
+- **Transfer matrix.** The spectral radius in `chair_coincidence` is computed from the characteristic polynomial and
+  asserted, instead of being written as 2.
+- **`spectrefacts` X-charge cross-check.** Only the import may be skipped, and a skip is printed. Errors inside the
+  analysis now fail.
+- **`hierarchy_certificate/chair44_atlas.py`.** It asserts eight pyramids at distinct feet on each of the 24 faces, on
+  which its one-sided legality test relies. The contact search box is widened from ±4 to ±5 and guarded against
+  contacts on its border: contacts do reach 4, so the old box was exactly at its edge. The output of
+  `check_chair44_hierarchy.py` is unchanged.

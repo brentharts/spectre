@@ -735,36 +735,41 @@ def document(audit=None):
             + limits_section())
 
 
-AUDIT_SENTENCE = (
-    'The axiom audit is measured rather than asserted: \\code{\\#print axioms} is run '
-    'over every theorem and the result written into the file header. No proof '
-    'is admitted, and nothing depends on \\code{Classical.choice}, so every proof '
-    'in the file is constructive.')
-
 AUDIT_PENDING = ('  AXIOM AUDIT: not yet run.  Use spectrelean.py --check.\n')
 
 
+def parse_axioms(output):
+    """(clean, used) from `#print axioms` output: the theorems with no axioms, and {theorem: [axioms]}.
+
+    Lean wraps a long axiom list over several lines, so the list is read up to its closing bracket.
+    """
+    import re
+    clean = re.findall(r"'([^']+)' does not depend on any axioms", output)
+    used = {name: [a.strip() for a in axioms.split(',') if a.strip()]
+            for name, axioms in re.findall(r"'([^']+)' depends on axioms:\s*\[([^\]]*)\]", output)}
+    return clean, used
+
+
 def audit_block(output):
-    """Turn `#print axioms` output into the header block, truthfully."""
-    clean, used = [], {}
-    for line in output.splitlines():
-        if 'does not depend on any axioms' in line:
-            clean.append(line.split("'")[1])
-        elif 'depends on axioms' in line:
-            name = line.split("'")[1]
-            used[name] = line.split('axioms: ')[1].strip()
+    """Turn `#print axioms` output into the header block, truthfully: every sentence is a consequence of the output."""
+    clean, used = parse_axioms(output)
+    every = sorted(set(a for v in used.values() for a in v))
     lines = ['  AXIOM AUDIT (measured by `#print axioms` on every theorem):',
              '',
              '    %d theorems depend on no axioms at all.' % len(clean)]
     if used:
-        every = sorted(set(a for v in used.values() for a in
-                           v.strip('[]').split(', ')))
-        lines.append('    %d depend on %s -- the standard Lean foundation.'
-                     % (len(used), ', '.join(every)))
-        lines.append('    They are the induction proofs; `simp` and `omega`')
-        lines.append('    bring these in. Classical.choice appears nowhere, so')
-        lines.append('    every proof here is constructive.')
-    lines.append('    sorryAx appears nowhere: nothing is admitted.')
+        lines.append('    %d depend on %s.' % (len(used), ', '.join(every)))
+        choice = sorted(n for n, v in used.items() if 'Classical.choice' in v)
+        if choice:
+            lines.append('    Classical.choice is used by %d of them (%s), so those proofs are not'
+                         % (len(choice), ', '.join(n.split('.')[-1] for n in choice)))
+            lines.append('    constructive.')
+        else:
+            lines.append('    Classical.choice appears nowhere, so every proof here is constructive.')
+    if any('sorryAx' in v for v in used.values()):
+        lines.append('    sorryAx APPEARS: a theorem is admitted, not proved.')
+    else:
+        lines.append('    sorryAx appears nowhere: nothing is admitted.')
     lines.append('')
     return '\n'.join(lines) + '\n'
 
@@ -811,6 +816,17 @@ def check(path=OUTPUT, lean='lean'):
     audited = subprocess.run([lean, probe], capture_output=True, text=True,
                              timeout=900)
     os.remove(probe)
+    if audited.returncode != 0:
+        print('the axiom audit did not run cleanly')
+        print(audited.stdout)
+        print(audited.stderr)
+        return 1
+    clean, used = parse_axioms(audited.stdout)
+    seen = [n.split('.')[-1] for n in clean + list(used)]
+    if sorted(seen) != sorted(names):
+        print('the axiom audit does not cover exactly the %d theorems: missing %s, unexpected %s'
+              % (len(names), sorted(set(names) - set(seen)), sorted(set(seen) - set(names))))
+        return 1
     if 'sorryAx' in audited.stdout:
         print('a theorem is admitted rather than proved')
         return 1

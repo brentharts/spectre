@@ -94,6 +94,14 @@ assert sum(c for _, _, c in PYR) == 0
 for foot, out, coef in PYR:
     cell2 = tuple(int(2 * (foot[i] - Fr(out[i], 2))) if out[i] else int(2 * (foot[i] // 1) + 1) for i in range(3))
     assert (cell2, out) in FACES, (foot, out)
+# every face carries eight pyramids at distinct feet, so on a shared face a match of the root's eight pyramids with
+# eight of the other tile's is a match of all of them (contact_type checks the root's side only)
+_per_face = Counter()
+for foot, out, coef in PYR:
+    _per_face[(tuple(int(2 * (foot[i] - Fr(out[i], 2))) if out[i] else int(2 * (foot[i] // 1) + 1) for i in range(3)),
+               out)] += 1
+assert len(_per_face) == 24 and set(_per_face.values()) == {8}
+assert len({foot for foot, _, _ in PYR}) == 192
 
 
 def pose_cells(g, t):
@@ -147,13 +155,16 @@ def contact_type(g, t):
     return ('legal' if ok else 'illegal') + ('' if det(g) == 1 else '-mirror')
 
 
-def all_contacts():
+def all_contacts(R=5):
+    """All touching poses with translation in [-R, R]^3.  The chair lies in [0,2]^3 and a frame turns it about the
+    origin, so touching translations reach 4 in a coordinate; the guard below checks that none lies on the border."""
     res = {}
     for g in ALL48:
-        for t in itertools.product(range(-4, 5), repeat=3):
+        for t in itertools.product(range(-R, R + 1), repeat=3):
             ct = contact_type(g, t)
             if ct not in ('apart', 'overlap', 'same'):
                 res[(g, t)] = ct
+    assert all(max(abs(x) for x in t) < R for g, t in res), 'a contact on the border of the search box'
     return res
 
 

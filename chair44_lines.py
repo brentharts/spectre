@@ -274,8 +274,10 @@ def run_tests(verbose=True):
     chk(len(sc) == 6 and sorted(s['label'] for s in sc) == stack_labels(), 'six stack labels')
     chk(sorted(s['notch'] for s in sc) == sorted([(1, 1, 1)] * 3 + [(-1, -1, -1)] * 3), 'notches along the diagonal')
     chk(all(s['diagonal_constant'] and s['one_line_per_cell'] and s['lines_distinct'] for s in sc), 'stack lines')
-    chk(all(s['lengths'] == {e: 2 ** 6 if e == (0, 0) else 2 ** 6 - 1 for e in s['lengths']} for s in sc),
-        'stack lines have length 2^n on the main diagonal and 2^n - 1 on the other six')
+    # the paper's set T of differences, and the length of each line in the cube [0, 2^6)^3
+    T = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1)]
+    chk(all(s['lengths'] == {e: 2 ** 6 if e == (0, 0) else 2 ** 6 - 1 for e in T} for s in sc),
+        'stack lines are the seven of T, of length 2^n on the main diagonal and 2^n - 1 on the other six')
     chk(all(sorted(s['pyramid_per_step'].values()) == [-36, 0, 0, 0, 0, 0, 36] for s in sc), 'pyramid steps -36 and +36')
     chk(all(h and c == 14 and len(T) == 7 for h, c, T in r['tube'].values()), 'tube invariance (all n by induction)')
     # the stack lines' means are not the box means

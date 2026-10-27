@@ -357,7 +357,8 @@ def register():
                     depth=tw['coincidence_depth'], address_0_0_2=tw['address_0_0_2'],
                     coincident=tw['coincident_addresses'], of=tw['words_at_depth'],
                     counts=c[:9], reachable_sets=sum(tw['subset_sizes'].values()),
-                    non_singleton=tw['transfer_dim'], spectral_radius=2),
+                    non_singleton=tw['transfer_dim'],
+                    spectral_radius=max(abs(complex(r)) for r in sp.Poly(tw['charpoly'], x).all_roots())),
          method='the cell substitution on 24 x 7 = 168 labelled unit cells, rebuilt from the child '
                 'poses: column sum 8, primitive at power 3, least modular-coincidence depth 3 '
                 'with (0,0,2) among the 336 of 512 coincident addresses, matching the depth and '
@@ -411,7 +412,7 @@ def register():
              box_means={k: asint(v) for k, v in lr['box']['means'].items()},
              pyramid_native=lr['pyramid_native'],
              stack_labels=[s_['label'] for s_ in lr['stack']], stack_notches=[s_['notch'] for s_ in lr['stack']],
-             stack_lengths=sorted(lr['stack'][0]['lengths'].values()),
+             stack_lengths=sorted(lr['stack'][0]['lengths'].items()),
              stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['lines_distinct']
                                 and s_['lengths'] == lr['stack'][0]['lengths']
                                 for s_ in lr['stack']),
@@ -502,6 +503,7 @@ def selftest(full=False):
     w = get('chair_coincidence').value
     ok(w['primitive_exponent'] == 3 and w['depth'] == 3 and w['address_0_0_2'] and w['coincident'] == 336
        and w['counts'] == [1, 8, 64, 176, 400, 848, 1744, 3536, 7120], 'coincidence')
+    ok(abs(w['spectral_radius'] - 2) < 1e-12, 'transfer matrix spectral radius 2, from its characteristic polynomial')
     hb = get('chair_legal_blocks').value
     ok(hb['legal'] == hb['romanov']['legal'] == 1410 and hb['closed'] and hb['contains_depth_one']
        and hb['per_depth'][-2:] == [1410, 1410], 'legal blocks')
@@ -513,7 +515,8 @@ def selftest(full=False):
     ok(ln['row_sums'] == ln['col_sums'] == [8] and ln['primitive'] and all(v == 0 for v in ln['box_means'].values()),
        'box means are zero')
     ok(ln['pyramid_native'] == [0, 0, 0, -36, 0, 36, 0] and len(ln['stack_labels']) == 6 and ln['stack_lines_ok']
-       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_lengths'] == [63] * 6 + [64], 'chair stacks')
+       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_lengths'] == sorted({(0, 0): 64, (1, 0): 63, (-1, 0): 63, (0, 1): 63, (0, -1): 63,
+                                             (1, 1): 63, (-1, -1): 63}.items()), 'chair stacks')
     ok(sorted(ln['stack_notches']) == [(-1, -1, -1)] * 3 + [(1, 1, 1)] * 3, 'stack notch directions')
     ok(all(len(ln['corner'][b]) == 1 and ln['corner'][b][0]['size'] == 4 for b in ln['corner'] if b != (1, 1, 1))
        and len(ln['corner'][(1, 1, 1)]) == 6 and all(k['means']['pyramid'] == 0 for c in ln['corner'].values() for k in c)

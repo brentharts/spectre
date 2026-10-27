@@ -2448,6 +2448,36 @@ def document():
     return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
 
 
+def certificate_numbers():
+    """The numbers the paper quotes from certificates that its build does not rerun, read from their committed outputs
+    (boundary_certificate/, hierarchy_certificate/, lean_rebuild/).  The selftest checks the text against these."""
+    import json
+    import re
+
+    def grab(path, pattern):
+        with open(os.path.join(HERE, path)) as handle:
+            m = re.search(pattern, handle.read())
+        assert m, (path, pattern)
+        return int(m.group(1))
+    lean = json.load(open(os.path.join(HERE, 'lean_rebuild', 'r44_build_result.json')))
+    with open(os.path.join(HERE, 'lean_rebuild', 'out_discharge_audit_indep.txt')) as handle:
+        audit = handle.read()
+    return dict(
+        bdy_live=grab('boundary_certificate/out_spectre_boundary_proof.txt', r'live types: (\d+)'),
+        facets=grab('hierarchy_certificate/out_chair44_hierarchy.txt', r'\|F\*\| = (\d+) facet'),
+        enclosures=grab('hierarchy_certificate/out_chair44_hierarchy.txt', r'enclosures of a tile: (\d+)'),
+        dead=grab('hierarchy_certificate/out_chair44_hierarchy.txt', r'dead / live: (\d+) /'),
+        live=grab('hierarchy_certificate/out_chair44_hierarchy.txt', r'dead / live: \d+ / (\d+)'),
+        win_types=grab('boundary_certificate/out_spectre_window.txt', r'window contact closure: (\d+) live types'),
+        win_pieces=grab('boundary_certificate/out_spectre_window.txt', r'at most (\d+) pieces'),
+        win_inter=grab('boundary_certificate/out_spectre_window.txt', r'intersecting types: (\d+)'),
+        admissible=grab('hierarchy_certificate/out_chair44_blocks_indep.txt', r'admissible blocks: (\d+)'),
+        orbits=grab('hierarchy_certificate/out_chair44_blocks_indep.txt', r'O-orbits: (\d+)'),
+        lean_reports=len(re.findall(r'depends on axioms|does not depend on any axioms', lean['fresh_axioms'])),
+        # the audit passes on all of its files, so the file count is the number that passed
+        lean_files=int(re.search(r'audit: (\d+)/\1 files pass', audit).group(1)))
+
+
 def selftest():
     failures = []
 
@@ -2709,6 +2739,21 @@ def selftest():
                                                     'rem:order8')))
     check('the 2-adic subsection points to the theorem and no longer calls the hull open',
           'is left open upstream' not in text and r'Theorem~\ref{thm:hull} below' in text)
+    cn = certificate_numbers()
+    commas = lambda n: '{:,}'.format(n).replace(',', '{,}')
+    check('the numbers quoted from the certificates are their committed outputs',
+          all(frag in flat for frag in (
+              'close on $%d$ types' % cn['bdy_live'], 'contact matrix on the $%d$ types' % cn['bdy_live'],
+              'the $%d$ face-to-face rules' % cn['facets'],
+              'A chair has $%d$ enclosures, $%d$ of them not live. For each of the $%d$ live ones'
+              % (cn['enclosures'], cn['dead'], cn['live']),
+              'Its contact matrix, on $%d$ types' % cn['win_types'], 'one of the $%d$ types' % cn['win_types'],
+              'meets at most $%d$ pieces' % cn['win_pieces'], '$%d$ types lie on infinite paths' % cn['win_inter'],
+              'the $%d$ reports printed by the' % cn['lean_reports'], 'The $%d$ proof files' % cn['lean_files'],
+              'admissible blocks, in $%s$ orbits' % commas(cn['orbits']),
+              'admissible blocks, $%s$ orbits' % commas(cn['orbits'])))
+          and cn['win_pieces'] == cn['win_types'] + 1 and cn['enclosures'] == cn['dead'] + cn['live']
+          and cn['admissible'] == hu['romanov']['admissible'])
     check('the quoted and recomputed counts are the live ones',
           hu['legal'] == 1410 and hu['romanov']['admissible'] == 360189 and ht['max_order'] == 8
           and '360{,}189' in hull and ('so %d blocks are legal' % hu['legal']) in hull

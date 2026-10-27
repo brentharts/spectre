@@ -87,8 +87,10 @@ Three things about the table.
 
 \item \textbf{The Lean column is measured, not asserted.}  A checkmark means
   the Fact's \code{lean} field names a theorem that exists in
-  \code{SpectreFacts.lean} --- %d theorems, kernel-accepted, no admitted
-  proofs --- and the paper's build fails if a named theorem is missing; six
+  \code{SpectreFacts.lean}, the file of %d theorems that \code{make lean}
+  checks in the Lean kernel, with an audit of the axioms each one uses and a
+  failure if any proof is admitted --- and the paper's build fails if a named
+  theorem is missing from that file; six
   phantom attributions were found and removed when that check was added.  A
   Lean theorem proves the Lean statement, which can be narrower than the
   paper's: the entries marked $^{*}$ are proved in Lean for the sequence that the
