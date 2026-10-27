@@ -87,7 +87,7 @@ def mean_frame(depth):
 
 
 def holonomy_group_order():
-    return len({G for G, _ in C.sigma_depth(3)})
+    return len({G for G, _ in C.sigma_depth(2)})
 
 
 def verify():
@@ -107,7 +107,7 @@ def verify():
     for d in (1, 2, 3):
         chk("mean frame at depth %d = I/4^%d" % (d, d),
             mean_frame(d) == [[Fr(1, 4 ** d) if i == j else Fr(0) for j in range(3)] for i in range(3)])
-    chk("frames at depth 3 form all 24 rotations", holonomy_group_order() == 24)
+    chk("frames at depth 2 form all 24 rotations", holonomy_group_order() == 24)
     return ok
 
 

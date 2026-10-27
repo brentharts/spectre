@@ -1,0 +1,6 @@
+seed 1:
+tested 4288 assignments in 3300s: {('F', 'cap'): 2144, ('R', 'cap'): 2144} smallest pose set reaching an offset: None
+seed 2:
+tested 4212 assignments in 3301s: {('F', 'cap'): 2106, ('R', 'cap'): 2106} smallest pose set reaching an offset: None
+seed 3:
+tested 4284 assignments in 3301s: {('F', 'cap'): 2142, ('R', 'cap'): 2142} smallest pose set reaching an offset: None

@@ -17,8 +17,8 @@ What is computed (exact integers, no floats)
   4. the RATE.  Track the set of labels still possible after reading the top digits of a position
      (a subset automaton; only 209 subsets are reachable, 41 of them non-singleton).  The number
      of digit words of length M that have NOT yet coincided is
-            c(M) = 1, 8, 64, 176, 400, 848, 1744, ...      c(M+1) = 2 c(M) + 48  (M >= 3)
-     i.e. c(M) = 28 * 2^M - 48.  The non-coincident fraction c(M)/8^M ~ 28 * 4^(-M) -> 0, which is
+            c(M) = 1, 8, 64, 176, 400, 848, 1744, ...      c(M+1) = 2 c(M) + 48  (M >= 1)
+     i.e. c(M) = 28 * 2^M - 48 for M >= 1.  The non-coincident fraction c(M)/8^M ~ 28 * 4^(-M) -> 0, which is
      the coincidence condition quantitatively, and the transfer matrix on the 41 non-singleton
      states has spectral radius exactly 2.  In the 2-adic internal space Z_2^3 (box dimension 3)
      the set where the label is not yet determined has box dimension log2(2) = 1: the window
@@ -174,8 +174,8 @@ def main():
     print("reachable label sets by size:", dict(sorted(r["subset_sizes"].items())))
     print("non-coincident words c(M), M = 0..14:", r["counts"])
     c = r["counts"]
-    print("c(M+1) = 2 c(M) + 48 for M >= 3:", all(c[m + 1] == 2 * c[m] + 48 for m in range(3, len(c) - 1)),
-          "; c(M) = 28*2^M - 48:", all(c[m] == 28 * 2 ** m - 48 for m in range(3, len(c))))
+    print("c(M+1) = 2 c(M) + 48 for M >= 1:", all(c[m + 1] == 2 * c[m] + 48 for m in range(1, len(c) - 1)),
+          "; c(M) = 28*2^M - 48:", all(c[m] == 28 * 2 ** m - 48 for m in range(1, len(c))))
     print("transfer matrix on the %d non-singleton states, characteristic polynomial:" % r["transfer_dim"], r["charpoly"])
     print("spectral radius 2 -> the undetermined set in Z_2^3 has box dimension log2 2 = 1")
 

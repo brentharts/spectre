@@ -10,7 +10,9 @@ The report reviewed commit `5d077c8`. This branch starts from that commit.
 - `python3 spectre_supplement.py --selftest`: all checks pass.
 - `python3 spectre_supplement.py`: regenerated `spectre_supplement.tex`, now 71 Facts, 24 with a Lean mark.
 - `make facts`: spectrefacts (62 facts), monotilefacts (8 checks), chair44facts (43 checks), `chair44_hull --tests` and `chair44_lines --tests` all pass. pyCICY was not installed, so the optional pyCICY cross-check of the perimeter was skipped; the referee's exact recount covers it.
-- `pdflatex` (twice each): `spectre_substrate.pdf` (28 pages) and `spectre_supplement.pdf` (4 pages), with no errors and no undefined references or citations.
+- `pdflatex`: `spectre_substrate.pdf` and `spectre_supplement.pdf` (4 pages), with no errors and no undefined references
+  or citations. The page count of 28 recorded here was wrong: the build at `989ef7f` gives 30 pages, and two passes
+  still leave "Label(s) may have changed", so three are needed. See `PREPUB_FIXES.md` for the current build.
 
 Build dependencies: Python with sympy, numpy, scipy, matplotlib and shapely, plus TeX Live (latex-base, latex-recommended, latex-extra, fonts-recommended, pictures).
 

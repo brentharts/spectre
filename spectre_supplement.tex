@@ -1,4 +1,6 @@
 \documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[margin=2.2cm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{longtable,booktabs,array}
@@ -14,7 +16,7 @@
 \textbf{Supplementary Material:} \\ Every Fact, and how it was obtained \\
 {\large for \emph{The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings}}}
 
-\author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
+\author{Brent Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me}) and Tristan Romanov}
 
 \begin{document}
@@ -25,46 +27,51 @@
 
 The main paper stratifies its statements: \emph{Facts} are exact statements,
 each proved, verified by an exact finite computation over a stated range, or
-quoted; \emph{Propositions} carry a modelling step.  This document lists every
-Fact of the paper --- all 71 --- with the key under which the ledger
-(\code{spectrefacts.py}, \code{chair44facts.py}, \code{monotilefacts.py})
-computes it, the claim, the first sentence of the method by which it was
-obtained, and a mark on the 24 Facts whose ledger entry names a theorem of the
-Lean~4 file.  The ledger is shared with other documents; their Facts are not
-listed here.
+quoted; \emph{Propositions} are of narrower scope, proved or computed, with their
+modelling steps and hypotheses stated in them.  The numbered Facts of the
+paper (25 of them) are drawn from a ledger of finer entries.  This document
+lists every ledger entry the paper draws on --- all 71 --- with the key under
+which the ledger (\code{spectrefacts.py}, \code{chair44facts.py},
+\code{monotilefacts.py}) computes it, the claim, the first sentence of the
+method by which it was obtained, and a mark on the 24 entries that name a
+theorem of the Lean~4 file.  The ledger is shared with other documents; their
+entries are not listed here.
 
 Three things about the table.
 
 \begin{itemize}
 \item \textbf{It is generated, not written.}  Every row is emitted at build
-  time from \code{spectrefacts.py}, the same module that produces every
+  time from the ledger modules, the same modules that produce every
   number in the main paper.  There is no second copy to drift.
 
 \item \textbf{The Lean column is measured, not asserted.}  A checkmark means
   the Fact's \code{lean} field names a theorem that exists in
-  \code{SpectreFacts.lean} --- 67 theorems, kernel-accepted, no admitted
-  proofs --- and the paper's build fails if a named theorem is missing; six
+  \code{SpectreFacts.lean}, the file of 67 theorems that \code{make lean}
+  checks in the Lean kernel, with an audit of the axioms each one uses and a
+  failure if any proof is admitted --- and the paper's build fails if a named
+  theorem is missing from that file; six
   phantom attributions were found and removed when that check was added.  A
   Lean theorem proves the Lean statement, which can be narrower than the
-  paper's: the Facts marked $^{*}$ are proved in Lean for the sequence that the
+  paper's: the entries marked $^{*}$ are proved in Lean for the sequence that the
   Lean file \emph{defines} by the perimeter recurrence.  That this sequence
   is the supertile perimeter at every order is Theorem~1 of the paper,
   proved by an exact finite certificate
   (\code{boundary\_certificate/}), not in Lean.
 
 \item \textbf{The method column is the first sentence.}  A method that runs
-  to a paragraph is truncated at its first full stop or semicolon.  The full
+  to a paragraph is truncated at its first full stop or semicolon, and
+  then, marked by an ellipsis, at about a hundred characters.  The full
   text is in the module, one lookup by key away.
 \end{itemize}
 
-Two of the Facts are inputs rather than results, and the paper says so:
-\code{charpoly} rests on the transcribed substitution matrix, and
-\code{boundary\_recurrence} on perimeters counted from placed tiles for
-$k\le6$; beyond $k=6$ the recurrence is a conjecture.
-Both are audited by an independent route --- the matrix against a second
-implementation of the same substitution, the seed against an exact
-$\mathbb{Q}(\sqrt3)$ recount --- and an audit is not a proof.  They are the
-two rows a sceptical reader should look at first.
+One entry is an input rather than a result, and the paper says so:
+\code{charpoly} rests on the transcribed substitution matrix (the published
+rule).  It is audited against a second implementation of the same
+substitution, and an audit is not a proof.  The perimeter recurrence,
+\code{boundary\_recurrence}, was once in the same position, counted from
+placed tiles for $k\le6$; it is now proved for every $k$ by the finite
+certificate of Theorem~1 (\code{boundary\_certificate/}), and its row
+says so.
 
 
 
@@ -72,7 +79,7 @@ two rows a sceptical reader should look at first.
 \section*{The table}
 \label{app:facts}
 
-Generated from \code{spectrefacts.py}.  The last column marks the Facts that
+Generated from the ledger modules.  The last column marks the Facts that
 are also proved in Lean, see \url{https://github.com/brentharts/spectre/wiki/Spectre-Lean}; the others are computations.
 
 \setlength{\tabcolsep}{3pt}
@@ -93,69 +100,69 @@ Key & Claim & How & Lean \\
 \code{channel\_hex} & $(\lambda-\lambda^{-1})^{2}=6$ & lambda\textasciicircum{}2 + lambda\textasciicircum{}-2 - 2, in Z[sqrt15], no root evaluated & \checkmark \\
 \code{channel\_pent} & $(\lambda+\lambda^{-1})^{2}=10$ & lambda\textasciicircum{}2 + lambda\textasciicircum{}-2 + 2, in Z[sqrt15], no root evaluated & \checkmark \\
 \code{contraction} & $\lambda^{-4}=31-8\sqrt{15}$ & the square of the conjugate unit & \checkmark \\
-\code{jordan} & $\operatorname{rank}M=5$ ,\  $\operatorname{rank}M^{n}=4\ (n\ge2)$ & exact elimination over Q &  \\
+\code{jordan} & $\operatorname{rank}M=5$,\  $\operatorname{rank}M^{n}=4\ (n\ge2)$ & exact elimination over Q &  \\
 \code{q\_plus\_eigen} & $Q_{+}M=Q_{+}$ & left eigenvector for the marginal eigenvalue +1 & \checkmark \\
 \code{q\_minus\_eigen} & $Q_{-}M=-Q_{-}$ & left eigenvector for the marginal eigenvalue -1 & \checkmark \\
-\code{q\_values} & $Q_{+}\equiv-1,$ \quad $ Q_{-}=+1,-1,+1,-1$ & evaluated on the matrix census at depths one to four & \checkmark \\
-\code{censuses} & $T=1,8,63,496$ ;\  $T_{\rm geom}=1,9,71,559$ & the same patches counted with and without the Mystic &  \\
-\code{mystic\_rule} & $T_{\rm geom}(n)=T(n)+T(n-1)$ & row Gamma of M is all ones, so N\_Gamma(n) is the whole census at n-1 and the Mystic is a second copy of it & \checkmark \\
+\code{q\_values} & $Q_{+}\equiv-1,$\quad $ Q_{-}=+1,-1,+1,-1$ & evaluated on the matrix census at depths one to four & \checkmark \\
+\code{censuses} & $T=1,8,63,496$;\  $T_{\rm geom}=1,9,71,559$ & the same patches counted with and without the Mystic &  \\
+\code{mystic\_rule} & $T_{\rm geom}(n)=T(n)+T(n-1)$ & row Gamma of M is all ones, so N\_\allowbreak{}Gamma(n) is the whole census at n-1 and the Mystic is a second copy of it & \checkmark \\
 \code{ledger} & $N_\Theta(n)=N_\Gamma(n-1)$ & row Theta of M is the indicator of Gamma, so the count is the previous generation of Gamma verbatim &  \\
 \code{ledger\_lambda} & $N_\Lambda(n)=N_\Sigma(n-1)$ & row Lambda of M is the indicator of Sigma &  \\
 \code{hat\_charpoly} & $\chi_H(x)=(x-1)(x+1)(x^{2}-7x+1)$ & characteristic polynomial of the four-metatile Hat substitution &  \\
 \code{hat\_perron} & $\kappa=\tfrac12(7+3\sqrt5)=\varphi^{4}$ & largest root of the Hat quadratic, and the fourth power of the golden ratio &  \\
-\code{phase\_fields} & $\mathbb{Q}(\sqrt{15})\ \text{against}\ \mathbb{Q}(\sqrt5)$ & the two characteristic polynomials differ in a single coefficient, seven against eight, and that... &  \\
-\code{frequencies} & $v\in\mathbb{Z}[\sqrt{15}]^{9}$ ,\  $\textstyle\sum v=1$ & nullspace of M - lambda\textasciicircum{}2 I, normalised & \checkmark \\
-\code{hat\_frequencies} & $f_H=\tfrac13$ ;\  $f_T,f_P,f_F\notin\mathbb{Q}$ & Perron eigenvector of the four-metatile Hat substitution, over Q(sqrt5) &  \\
-\code{aperiodicity\_witness} & $9/9\ \text{vs}\ 3/4\ \text{irrational}$ & a periodic tiling has rational frequencies, so an irrational one refutes periodicity & \checkmark \\
-\code{trace\_accounting} & $\operatorname{tr}=\text{unit}+\text{conjugate}:\ 8$ ,\  $7$ & the marginal pair +1 and -1 cancels and the zero modes contribute nothing, so the trace is the unit plus... & \checkmark \\
-\code{twist\_two\_levels} & $\chi_{B}(x)=(x-1)^{2}(x^{2}-8x+1)$ ,\  $B\,v=\lambda^{2}v$ & the supertile quadrilateral moves by an exact map, transcribed from the construction &  \\
-\code{spectre\_twist} & $\tan\theta_S=\tfrac{1}{13}(5\sqrt3-6)$ ,\  $\cos2\theta_S=\tfrac1{10}(4+3\sqrt3)$ & in the limit of high level, one level relates the quadrilaterals by ratio lambda and rotation minus... &  \\
-\code{twist\_field} & $\cos2\theta_S\in\mathbb{Q}(\sqrt3)$ ,\  $\notin\mathbb{Q}(\sqrt{15})$ & the angle lies in the field of the hexagonal tile coordinates &  \\
-\code{boundary\_recurrence} & $P(k)=5P(k-1)-3P(k-2)-P(k-3)$ & proved for every k by the finite certificate boundary\_certificate/check\_spectre\_boundary\_proof.py (93... & \checkmark$^{*}$ \\
+\code{phase\_fields} & $\mathbb{Q}(\sqrt{15})\ $against$\ \mathbb{Q}(\sqrt5)$ & the two characteristic polynomials differ in a single coefficient, seven against eight, and that... &  \\
+\code{frequencies} & $v\in\mathbb{Z}[\sqrt{15}]^{9}$,\  $\textstyle\sum v=1$ & nullspace of M - lambda\textasciicircum{}2 I, normalised & \checkmark \\
+\code{hat\_frequencies} & $f_H=\tfrac13$;\  $f_T,f_P,f_F\notin\mathbb{Q}$ & Perron eigenvector of the four-metatile Hat substitution, over Q(sqrt5) &  \\
+\code{aperiodicity\_witness} & $9/9\ $vs$\ 3/4\ $irrational & a periodic tiling has rational frequencies, so an irrational one refutes periodicity & \checkmark \\
+\code{trace\_accounting} & $\operatorname{tr}=$unit$+$conjugate$:\ 8$,\  $7$ & the marginal pair +1 and -1 cancels and the zero modes contribute nothing, so the trace is the unit plus... & \checkmark \\
+\code{twist\_two\_levels} & $\chi_{B}(x)=(x-1)^{2}(x^{2}-8x+1)$,\  $B\,v=\lambda^{2}v$ & the supertile quadrilateral moves by an exact map, transcribed from the construction &  \\
+\code{spectre\_twist} & $\tan\theta_S=\tfrac{1}{13}(5\sqrt3-6)$,\  $\cos2\theta_S=\tfrac1{10}(4+3\sqrt3)$ & in the limit of high level, one level relates the quadrilaterals by ratio lambda and rotation minus... &  \\
+\code{twist\_field} & $\cos2\theta_S\in\mathbb{Q}(\sqrt3)$,\  $\notin\mathbb{Q}(\sqrt{15})$ & the angle lies in the field of the hexagonal tile coordinates &  \\
+\code{boundary\_recurrence} & $P(k)=5P(k-1)-3P(k-2)-P(k-3)$ & proved for every k by the finite certificate boundary\_\allowbreak{}certificate/check\_\allowbreak{}spectre\_\allowbreak{}boundary\_\allowbreak{}proof.py (93... & \checkmark$^{*}$ \\
 \code{boundary\_chi} & $\chi_{\partial}(x)=(x-1)(x^{2}-4x-1)$ & characteristic polynomial of the companion matrix of the recurrence &  \\
 \code{boundary\_growth} & $\nu=2+\sqrt{5}=\varphi^{3}$ & Perron root of the boundary operator &  \\
-\code{boundary\_field} & $\nu\in\mathbb{Q}(\sqrt{5})$ ,\  $\lambda^{2}\in\mathbb{Q}(\sqrt{15})$ & area and perimeter of the same tile inflate in different quadratic fields &  \\
+\code{boundary\_field} & $\nu\in\mathbb{Q}(\sqrt{5})$,\  $\lambda^{2}\in\mathbb{Q}(\sqrt{15})$ & area and perimeter of the same tile inflate in different quadratic fields &  \\
 \code{boundary\_dimension} & $\dim_{B}\partial K=\log\nu/\log\lambda$ & box dimension of the boundary of the limiting supertile, proved by the certificate... &  \\
 \code{balanced\_exponent} & $s^{*}=1-\log\nu/\log\lambda^{2}$ & the thickness exponent making every substitution level carry comparable volume (a modelling choice) &  \\
-\code{compositum} & $\mu=\lambda^{2}/\nu\ \text{has degree }4$ & the balanced ratio lies in Q(sqrt3, sqrt5) and in neither quadratic field alone &  \\
-\code{golden\_absent} & $(x^{2}-4x-1)\nmid\chi_{M}$ ,\  $\chi_{H}$ & the boundary quadratic divides neither substitution matrix &  \\
+\code{compositum} & $\mu=\lambda^{2}/\nu\ $has degree $4$ & the balanced ratio lies in Q(sqrt3, sqrt5) and in neither quadratic field alone &  \\
+\code{golden\_absent} & $(x^{2}-4x-1)\nmid\chi_{M}$,\  $\chi_{H}$ & the boundary quadratic divides neither substitution matrix &  \\
 \code{lucas\_deflation} & $\varphi^{n}:\ x^{2}-L_{n}x+(-1)^{n}$ & every power of the golden ratio has a Lucas quadratic for its minimal polynomial, so agreement of two such... &  \\
 \code{spectre\_not\_golden} & $\lambda^{2}\neq\varphi^{n}$ & the trace of the Spectre unit is eight, which is not a Lucas number, so the area inflation is not golden... &  \\
 \code{boundary\_invariant} & $P(k+2)-4P(k+1)-P(k)=-16$ & the quadratic factor of chi applied to the sequence annihilates the growing part and leaves the constant... & \checkmark$^{*}$ \\
 \code{boundary\_growth\_bound} & $P(k+3)\ge 4P(k+2)+30$ & for the sequence defined by the recurrence (proved in Lean) the perimeter more than quadruples at every... & \checkmark$^{*}$ \\
 \code{lam\_below\_four} & $\lambda^{2}<16$ & 16 - lambda\textasciicircum{}2 = 12 - sqrt15, positive since 12\textasciicircum{}2 > 15 & \checkmark \\
-\code{boundary\_exact} & $P(k)\ \text{counted exactly in }\mathbb{Q}(\sqrt3)$ & the same sequence recounted with edges identified by equality of exact quadratic-field coordinates rather... &  \\
-\code{chair\_mesh} & $(V,E,T)=(2138,\,6408,\,4272)$ ,\  $\chi=2$ & the 24 panels of the seven-cube chair, each cut by its 9x9 grid into 73 flat rectangles and 8 four-sided... & \checkmark \\
-\code{chair\_volume} & $\mathrm{vol}=7+\tfrac{4}{3}w^{2}h\sum_{s}\gamma_{s}=7\ \text{for all }w,h$ & the volume of the symbolic solid, for every base width w and height unit h at once: the signed heights sum... & \checkmark \\
-\code{chair\_labels} & $192\ \text{sites}$ ,\  $\gamma_{s}\in\{\pm1,\dots,\pm12\}$ ,\  $\textstyle\sum\gamma_{s}=0$ & height labels forced by exact complementarity on every shared face of the depth-two patch of the recorded... & \checkmark \\
-\code{chair\_tilings} & $3^{8}=6561\ \text{rotation tilings of the doubled chair by 8 chairs}$ & exact cover of the 56 cells of the doubled chair by eight rotated copies, by a bitmask search &  \\
-\code{chair\_screen} & $6555\ \text{tilings leave 4 free classes; 6 leave 12, and 3 of those use all 24 orientations}$ & every one of the 6561 tilings is glued to depth two &  \\
-\code{chair\_atlas} & $2388\ \text{raw contacts}\to44\ \text{legal}\to30\ \text{realized}$ & every face contact of two chairs (48 frames, translations in a box), the legal ones kept by exact site... & \checkmark \\
-\code{chair\_equations} & $372\ \text{site equations}$ ,\  $\operatorname{rank}=180$ ,\  $\dim\ker=12$ & the distinct complement equations c\_A + c\_B = 0 of the 30 realized contacts, ranked exactly over Q & \checkmark \\
-\code{chair\_chiral} & $\mathrm{Sym}(\text{decorated})=\{1\}$ ,\  $\ \text{while}\ |\mathrm{Sym}(\text{chair})|=6=3+3$ & the undecorated seven-cube chair has six symmetries, three of them mirrors, so it is achiral &  \\
-\code{chair\_forced\_chirality} & $\text{no mirror contact is legal: all 44 legal contacts have }\det=+1$ & of the 2388 raw face contacts 1194 place a mirror image against the root &  \\
-\code{chair\_orientation} & $\chi(x)=x^{3}(x-8)(x-2)^{20}\ \text{on the 24 rotation species}$ & the orientation transfer matrix of the substitution on the 24 rotations &  \\
-\code{chair\_surface} & $\text{surface}=24\cdot4^{N}$ ,\  $\text{shared}=12(8^{N}-4^{N})$ ,\  $B_{c}=12\cdot4^{N}(2^{c}-1)$ & counted on the placed patch for N <= 4 with the face-directions exactly flat (4\textasciicircum{}(N+1) per +-x,+-y,+-z) & \checkmark \\
-\code{chair\_exponents} & $D_{b}=2$ ,\  $s^{*}=1/3$ ,\  $\mu=2\ \ (\lambda=2$ ,\  $\nu=4$ ,\  $d=3)$ & the unified exponents D\_b = log nu / log lambda, s* = 1 - D\_b/d, mu = lambda\textasciicircum{}d / nu with the Chair44... &  \\
-\code{chair\_twist} & $\text{supertile}=2\cdot\text{chair}$ ,\  $\text{twist}=0$ ,\  $\tfrac18\textstyle\sum_i H_i=\tfrac14 I$ & the 8 child chairs are laid on the doubled lattice and their cells compared with the doubled chair: equal,... &  \\
-\code{chair\_nets} & $\text{surface}=24\text{ squares}$ ,\  $(V,E,F)=(26,48,24)$ ,\  $261{,}434{,}325{,}600\text{ spanning trees}$ & the exposed unit faces of the seven-cube chair, their edge-adjacency graph (every edge shared by exactly... &  \\
-\code{chair\_slices} & $\textstyle\sum_j d_j=2^{n}(1,1,1)$ ,\  $\ \text{layer interface}=4^{n+1}-4\cdot2^{n}$ & the 8\textasciicircum{}n chairs of the depth-n patch, n<=4, each reduced to the centre g(1,1,1)+t of its bounding cube and... &  \\
-\code{orientation\_sums} & $S_{n}^{\mathrm{chair}}=2^{n}\ \text{exactly}$ ;\  $\ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489$ & the sum of the orientation vectors over the depth-n patch: for the chair the z component of the notch... &  \\
-\code{power\_slopes} & $\text{median }I(k)/N\ \text{falls as }N^{-0.34}\ (\text{Spectre})\text{ and }N^{-0.72}\ (\text{chair})$ & the median over 300 fixed random wave vectors (seed 1) in the box [0, 2 pi / l]\textasciicircum{}d, with l the tile size... &  \\
-\code{chair\_coincidence} & $\text{modular coincidence at depth }3$ ,\  $c(M)=28\cdot2^{M}-48\ (M\ge3)$ & the cell substitution on 24 x 7 = 168 labelled unit cells, rebuilt from the child poses: column sum 8,... & \checkmark \\
-\code{chair\_legal\_blocks} & $1410\ \text{legal vertex blocks, closed under }\sigma$ ;\  $27\ \Phi\text{-fixed seeds, stabilisers of order }1\text{ and }8$ & the 2x2x2 windows of sigma\textasciicircum{}n(j) over the 168 labels, n = 1..6, from the cell substitution of... &  \\
-\code{chair\_hull\_theorem} & $\text{every atlas tiling lies in the hull}$ ;\  $\mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\}$ ,\  $|\mathrm{Sym}(T)|\le8$ & Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells around a lattice... &  \\
-\code{chair\_lines} & $\text{box means of the height and notch observables are }0$ ;\  $6\ \text{chair stacks give diagonal lines with means }\mp36,\pm1$ & exact, from the cell substitution of chair44\_twoadic &  \\
+\code{boundary\_exact} & $P(k)\ $counted exactly in $\mathbb{Z}[\zeta_{12}]$,\  $0\le k\le6$ & the same sequence recounted with edges identified by equality of exact coordinates in Z[zeta\_\allowbreak{}12] rather... &  \\
+\code{chair\_mesh} & $(V,E,T)=(2138,\,6408,\,4272)$,\  $\chi=2$ & the 24 panels of the seven-cube chair, each cut by its 9x9 grid into 73 flat rectangles and 8 four-sided... & \checkmark \\
+\code{chair\_volume} & $\mathrm{vol}=7+\tfrac{4}{3}w^{2}h\sum_{s}\gamma_{s}=7\ $for all $w,h$ & the volume of the symbolic solid, for every base width w and height unit h at once: the signed heights sum... & \checkmark \\
+\code{chair\_labels} & $192\ $sites,\  $\gamma_{s}\in\{\pm1,\dots,\pm12\}$,\  $\textstyle\sum\gamma_{s}=0$ & height labels forced by exact complementarity on every shared face of the depth-two patch of the recorded... & \checkmark \\
+\code{chair\_tilings} & $3^{8}=6561\ $rotation tilings of the doubled chair by 8 chairs & exact cover of the 56 cells of the doubled chair by eight rotated copies, by a bitmask search &  \\
+\code{chair\_screen} & $6555\ $tilings leave 4 free classes; 6 leave 12, and 3 of those use all 24 orientations & every one of the 6561 tilings is glued to depth two &  \\
+\code{chair\_atlas} & $2388\ $raw contacts$\to44\ $legal$\to30\ $realized & every face contact of two chairs (48 frames, translations in a box), the legal ones kept by exact site... & \checkmark \\
+\code{chair\_equations} & $372\ $site equations,\  $\operatorname{rank}=180$,\  $\dim\ker=12$ & the distinct complement equations c\_\allowbreak{}A + c\_\allowbreak{}B = 0 of the 30 realized contacts, ranked exactly over Q & \checkmark \\
+\code{chair\_chiral} & $\mathrm{Sym}($decorated$)=\{1\}$,\  $\ $while$\ |\mathrm{Sym}($chair$)|=6=3+3$ & the undecorated seven-cube chair has six symmetries, three of them mirrors, so it is achiral &  \\
+\code{chair\_forced\_chirality} & no mirror contact is legal: all 44 legal contacts have $\det=+1$ & of the 2388 raw face contacts 1194 place a mirror image against the root &  \\
+\code{chair\_orientation} & $\chi(x)=x^{3}(x-8)(x-2)^{20}\ $on the 24 rotation species & the orientation transfer matrix of the substitution on the 24 rotations &  \\
+\code{chair\_surface} & surface$=24\cdot4^{N}$,\  shared$=12(8^{N}-4^{N})$,\  $B_{c}=12\cdot4^{N}(2^{c}-1)$ & counted on the placed patch for N <= 4 with the face-directions exactly flat (4\textasciicircum{}(N+1) per +-x,+-y,+-z) & \checkmark \\
+\code{chair\_exponents} & $D_{b}=2$,\  $s^{*}=1/3$,\  $\mu=2\ \ (\lambda=2$,\  $\nu=4$,\  $d=3)$ & the unified exponents D\_\allowbreak{}b = log nu / log lambda, s* = 1 - D\_\allowbreak{}b/d, mu = lambda\textasciicircum{}d / nu with the Chair44... &  \\
+\code{chair\_twist} & supertile$=2\cdot$chair,\  twist$=0$,\  $\tfrac18\textstyle\sum_i H_i=\tfrac14 I$ & the 8 child chairs are laid on the doubled lattice and their cells compared with the doubled chair: equal,... &  \\
+\code{chair\_nets} & surface$=24$ squares,\  $(V,E,F)=(26,48,24)$,\  $261{,}434{,}325{,}600$ spanning trees & the exposed unit faces of the seven-cube chair, their edge-adjacency graph (every edge shared by exactly... &  \\
+\code{chair\_slices} & $\textstyle\sum_j d_j=2^{n}(1,1,1)$,\  $\ $layer interface$=4^{n+1}-4\cdot2^{n}$ & the 8\textasciicircum{}n chairs of the depth-n patch, n<=4, each reduced to the centre g(1,1,1)+t of its bounding cube and... &  \\
+\code{orientation\_sums} & $S_{n,z}^{\mathrm{chair}}=2^{n}\ $exactly;\  $\ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489$ & the sum of the orientation vectors over the depth-n patch: for the chair the z component of the notch... &  \\
+\code{power\_slopes} & median $I(k)/N\ $falls as $N^{-0.34}\ ($Spectre$)$ and $N^{-0.72}\ ($chair$)$ & the median over 300 fixed random wave vectors (seed 1) in the box [0, 2 pi / l]\textasciicircum{}d, with l the tile size... &  \\
+\code{chair\_coincidence} & modular coincidence at depth $3$,\  $c(M)=28\cdot2^{M}-48\ (M\ge1)$ & the cell substitution on 24 x 7 = 168 labelled unit cells, rebuilt from the child poses: column sum 8,... & \checkmark \\
+\code{chair\_legal\_blocks} & $1410\ $legal vertex blocks, closed under $\sigma$;\  $27\ \Phi$-fixed seeds, stabilisers of order $1$ and $8$ & the 2x2x2 windows of sigma\textasciicircum{}n(j) over the 168 labels, n = 1..6, from the cell substitution of... &  \\
+\code{chair\_hull\_theorem} & every atlas tiling lies in the hull;\  $\mathrm{Sym}(T)\in\{1,C_{2}^{\mathrm{diag}},C_{4},D_{4}\}$,\  $|\mathrm{Sym}(T)|\le8$ & Romanov (the second author, cited draft): one level of the hierarchy plus a finite computation on the 8... &  \\
+\code{chair\_lines} & box means of the height and notch observables are $0$;\  $6\ $chair stacks give diagonal lines with means $\mp36,\pm1$ & exact, from the cell substitution of chair44\_\allowbreak{}twoadic &  \\
 \code{boundary\_fibonacci} & $P(k)=2F_{3k+5}+4$ & for the sequence defined by the perimeter recurrence (seeds 14, 46, 182, characteristic polynomial... & \checkmark$^{*}$ \\
-\code{boundary\_directions} & $\text{even}=F_{3k+4}+1$ ,\  $\text{odd}=F_{3k+3}+1\ \ (k\le6)$ & boundary edges of an order-k supertile, sorted by direction mod 180 degrees (the 14 edges point in... & \checkmark$^{*}$ \\
-\code{boundary\_z3\_bounded} & $\max|\hat h(j)|\ \text{over the Z/3 and faithful modes}\le\sqrt{13}\ \ (k\le6)$ & the DFT of the folded direction histogram over Z/6 = Z/2 x Z/3 (the split spectre\_torsion uses for the six... &  \\
-\code{centre\_diffraction} & $X_n=2X_{n-1}\cup(\text{odd box}\setminus\text{corner octant})$ ;\  $\ \textstyle\sum_{k}I(k)=\tfrac17=\text{density}$ & the centre of every chair of the depth-n patch obeys the nested recursion above (checked against the... &  \\
-\code{orientation\_recursion} & $S_{n+1}=C\,\overline{S_n}$ ,\  $\ |S_n|\sim c\,\lambda^{n}$ ,\  $\ c^{2}=\tfrac{15+5\sqrt3+3\sqrt5+3\sqrt{15}}{20}$ & the sum of exp(i angle) over the tiles of the depth-n supertile of each label obeys a linear recursion... &  \\
-\code{orientation\_channels} & $\mathrm{charpoly}=x^{3}(x-8)(x-2)^{20}\ \ (\text{chair})$ ;\  $\ h_{m}=2,1,0\ (\text{Spectre})$ & the 24 orientation states of the Chair44 are split by the irreducible representations of the rotation... &  \\
-\code{contact\_matrices} & $\text{Spectre: }14\times14,\text{ rank }14,\text{ bipartite}$ ;\  $\ \text{Chair44: }24\times24,\text{ rank }24,\text{ not bipartite}$ & the number of times native edge a of one tile meets native edge b of a neighbour, counted over the level-4... &  \\
-\code{lift\_integer} & $\text{every vertex has integer coordinates }(p,q,r,s)\in\mathbb{Z}^{4}=\mathbb{Z}[\zeta_{12}]$ ;\  $\ \mathrm{rank}=4$ & every edge of the patch is a unit vector at a multiple of 30 degrees: even multiples are p+qw with w=exp(i... &  \\
-\code{inflation\_matrix} & $\mathrm{charpoly}=(x-1)^{4}(x+1)^{4}(x^{4}-8x^{2}+1)^{2}$ ,\  $\ \lambda^{2}=4+\sqrt{15}$ & the supertile recursion of spectre\_patch moves four key points by rotations through multiples of 60... &  \\
-\code{internal\_plane} & $\text{bounded plane over }\mathbb{Q}(\sqrt{15})$ ;\  $\ \dim_{\partial}\text{ of the window}\approx1.2$ & a linear functional is bounded on the supertile corners exactly when it kills the expanding part... &  \\
+\code{boundary\_directions} & even$=F_{3k+4}+1$,\  odd$=F_{3k+3}+1\ \ (k\le6)$ & boundary edges of an order-k supertile, sorted by direction mod 180 degrees (the 14 edges point in... & \checkmark$^{*}$ \\
+\code{boundary\_z3\_bounded} & $\max|\hat h(j)|\ $over the Z/3 and faithful modes$\le\sqrt{13}\ \ (k\le6)$ & the DFT of the folded direction histogram over Z/6 = Z/2 x Z/3 (the split spectre\_\allowbreak{}torsion uses for the six... &  \\
+\code{centre\_diffraction} & $X_n=2X_{n-1}\cup($odd box$\setminus$corner octant$)$;\  $\ \textstyle\sum_{k}I(k)=\tfrac17=$density & the centre of every chair of the depth-n patch obeys the nested recursion above (checked against the... &  \\
+\code{orientation\_recursion} & $S_{n+1}=C\,\overline{S_n}$,\  $\ |S_n|\sim c\,\lambda^{n}$,\  $\ c^{2}=\tfrac{15+5\sqrt3+3\sqrt5+3\sqrt{15}}{20}$ & the sum of exp(i angle) over the tiles of the depth-n supertile of each label obeys a linear recursion... &  \\
+\code{orientation\_channels} & $\mathrm{charpoly}=x^{3}(x-8)(x-2)^{20}\ \ ($chair$)$;\  $\ h_{m}=2,1,0\ ($Spectre$)$ & the 24 orientation states of the Chair44 are split by the irreducible representations of the rotation... &  \\
+\code{contact\_matrices} & Spectre: $14\times14,$ rank $14,$ bipartite;\  $\ $Chair44: $24\times24,$ rank $24,$ not bipartite & the number of times native edge a of one tile meets native edge b of a neighbour, counted over the level-4... &  \\
+\code{lift\_integer} & every vertex has integer coordinates $(p,q,r,s)\in\mathbb{Z}^{4}=\mathbb{Z}[\zeta_{12}]$;\  $\ \mathrm{rank}=4$ & every edge of the patch is a unit vector at a multiple of 30 degrees: even multiples are p+qw with w=exp(i... &  \\
+\code{inflation\_matrix} & $\mathrm{charpoly}=(x-1)^{4}(x+1)^{4}(x^{4}-8x^{2}+1)^{2}$,\  $\ \lambda^{2}=4+\sqrt{15}$ & the supertile recursion of spectre\_\allowbreak{}patch moves four key points by rotations through multiples of 60... &  \\
+\code{internal\_plane} & bounded plane over $\mathbb{Q}(\sqrt{15})$;\  $\ $window box count$\approx1.2\ $(exact seam dimension $1.111$, by the window theorem) & a linear functional is bounded on the supertile corners exactly when it kills the expanding part... &  \\
 \bottomrule
 \end{longtable}
 

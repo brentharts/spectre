@@ -12,7 +12,7 @@ A BLOCK is the labelling of the 2x2x2 unit cells around a lattice vertex; a labe
 them.  A block is LEGAL if it occurs in some sigma^n(j).  What is computed (exact integers):
 
   1. the legal blocks: every 2x2x2 window of sigma^n(j), n = 1..6, over all 168 labels j:
-        168, 600, 1278, 1398, 1410, 1410 new-or-repeated windows, 1410 distinct in all
+        168, 600, 1278, 1398, 1410, 1410 distinct windows at n = 1, ..., 6, and 1410 distinct over all n
   2. that 1410 is the whole language and not merely where the count stopped: the set L is closed, i.e. all 27
      windows of size 2x2x2 of sigma(w) lie in L for every w in L, and L contains the windows of sigma(j); then
      every window of every sigma^n(j) is in L, because a window of sigma^{n+1}(j) lies in sigma(w) for a
@@ -143,20 +143,30 @@ def stabiliser_order(code):
     return sum(1 for g in _setup()['rots'] if act(g, code) == code)
 
 
+def _cycle(f, y):
+    """The cycle of the map f (a dict) through its periodic point y."""
+    out, z = {y}, f[y]
+    while z != y:
+        out.add(z)
+        z = f[z]
+    return out
+
+
 def report():
     blocks, per_depth = legal_blocks()
     bset = set(blocks)
     n_depth1 = set(_window_codes(_inflate(np.arange(_setup()['n'], dtype=np.int64).reshape(-1, 1, 1, 1))).tolist())
     closed = all(c in bset for b in blocks for c in child_windows(b))
     phi_img = {b: phi(b) for b in blocks}
+    # b is periodic iff it lies on the cycle that every orbit of Phi enters within len(blocks) steps
     periodic = []
     for b in blocks:
         y = b
-        for per in range(1, 64):
+        for _ in range(len(blocks)):
             y = phi_img[y]
-            if y == b:
-                periodic.append((b, per))
-                break
+        cyc = _cycle(phi_img, y)
+        if b in cyc:
+            periodic.append((b, len(cyc)))
     fixed = [b for b, p in periodic if p == 1]
     rot_closed = all(act(g, b) in bset for g in _setup()['rots'] for b in blocks)
     return dict(labels=_setup()['n'], legal=len(blocks), per_depth=per_depth, closed=closed,

@@ -227,7 +227,7 @@ def fig_slice():
                  extent=(-np.pi, np.pi, -np.pi, np.pi))
     ax[1].set_title('(b) $k_z=0$ plane, level 5, $\\log I/N$', fontsize=9)
     n = np.arange(1, 6)
-    ax[2].semilogy(n, 8.0 ** n, color=SF.INK, label='centres, Bragg: $8^{n}$')
+    ax[2].semilogy(n, 64.0 ** n, color=SF.INK, label='centres, Bragg: $64^{n}$')
     ax[2].semilogy(n, 3.0 * 8.0 ** n, ':', color=SF.GREY, label='random signs: $3\\cdot8^{n}$')
     ax[2].semilogy(n, 3.0 * 4.0 ** n, color=SF.ORANGE, label='notch vectors: $3\\cdot4^{n}$')
     ax[2].set_xticks(n)

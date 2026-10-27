@@ -38,7 +38,7 @@ def build():
     run("toolchain", "cat lean-toolchain && lean --version && lake --version", cwd=r44)
     run("cache_get", "lake exe cache get", cwd=r44)
     run("build", "lake build 2>&1 | tail -60", cwd=r44)
-    # fresh axiom dependency lists, compared with the committed log (copied before anything rewrites it)
+    # fresh axiom dependency lists, and the log as it stands after the build (to be compared with the committed file)
     run("save_committed_log", "cp build_axioms.log /tmp/committed_build_axioms.log", cwd=r44)
     ax = run("axioms", "lake env lean R44/Axioms.lean > /tmp/fresh_axioms.txt 2>&1; echo rc=$?; wc -l /tmp/fresh_axioms.txt", cwd=r44)
     out["fresh_axioms"] = open("/tmp/fresh_axioms.txt").read()[-60000:]

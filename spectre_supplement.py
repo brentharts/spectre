@@ -33,6 +33,8 @@ import spectrepaper as P
 OUTPUT = os.path.join(HERE, 'spectre_supplement.tex')
 
 PREAMBLE = r"""\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage[margin=2.2cm]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{longtable,booktabs,array}
@@ -48,7 +50,7 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 \textbf{Supplementary Material:} \\ Every Fact, and how it was obtained \\
 {\large for \emph{@TITLE@}}}
 
-\author{Brent S. Hartshorn \orcidlink{0009-0004-2853-655X}
+\author{Brent Hartshorn \orcidlink{0009-0004-2853-655X}
         (\url{brenthartshorn@proton.me}) and Tristan Romanov}
 
 \begin{document}
@@ -58,6 +60,7 @@ PREAMBLE = r"""\documentclass[10pt]{article}
 
 def preface():
     n = len(P.paper_facts())
+    nf = P.document().count(r'\begin{fact}')
     nl = sum(1 for f in P.paper_facts() if f.lean)
     nt = len(L.theorem_names(L.document()))
     return r"""
@@ -65,47 +68,52 @@ def preface():
 
 The main paper stratifies its statements: \emph{Facts} are exact statements,
 each proved, verified by an exact finite computation over a stated range, or
-quoted; \emph{Propositions} carry a modelling step.  This document lists every
-Fact of the paper --- all %d --- with the key under which the ledger
-(\code{spectrefacts.py}, \code{chair44facts.py}, \code{monotilefacts.py})
-computes it, the claim, the first sentence of the method by which it was
-obtained, and a mark on the %d Facts whose ledger entry names a theorem of the
-Lean~4 file.  The ledger is shared with other documents; their Facts are not
-listed here.
+quoted; \emph{Propositions} are of narrower scope, proved or computed, with their
+modelling steps and hypotheses stated in them.  The numbered Facts of the
+paper (%d of them) are drawn from a ledger of finer entries.  This document
+lists every ledger entry the paper draws on --- all %d --- with the key under
+which the ledger (\code{spectrefacts.py}, \code{chair44facts.py},
+\code{monotilefacts.py}) computes it, the claim, the first sentence of the
+method by which it was obtained, and a mark on the %d entries that name a
+theorem of the Lean~4 file.  The ledger is shared with other documents; their
+entries are not listed here.
 
 Three things about the table.
 
 \begin{itemize}
 \item \textbf{It is generated, not written.}  Every row is emitted at build
-  time from \code{spectrefacts.py}, the same module that produces every
+  time from the ledger modules, the same modules that produce every
   number in the main paper.  There is no second copy to drift.
 
 \item \textbf{The Lean column is measured, not asserted.}  A checkmark means
   the Fact's \code{lean} field names a theorem that exists in
-  \code{SpectreFacts.lean} --- %d theorems, kernel-accepted, no admitted
-  proofs --- and the paper's build fails if a named theorem is missing; six
+  \code{SpectreFacts.lean}, the file of %d theorems that \code{make lean}
+  checks in the Lean kernel, with an audit of the axioms each one uses and a
+  failure if any proof is admitted --- and the paper's build fails if a named
+  theorem is missing from that file; six
   phantom attributions were found and removed when that check was added.  A
   Lean theorem proves the Lean statement, which can be narrower than the
-  paper's: the Facts marked $^{*}$ are proved in Lean for the sequence that the
+  paper's: the entries marked $^{*}$ are proved in Lean for the sequence that the
   Lean file \emph{defines} by the perimeter recurrence.  That this sequence
   is the supertile perimeter at every order is Theorem~1 of the paper,
   proved by an exact finite certificate
   (\code{boundary\_certificate/}), not in Lean.
 
 \item \textbf{The method column is the first sentence.}  A method that runs
-  to a paragraph is truncated at its first full stop or semicolon.  The full
+  to a paragraph is truncated at its first full stop or semicolon, and
+  then, marked by an ellipsis, at about a hundred characters.  The full
   text is in the module, one lookup by key away.
 \end{itemize}
 
-Two of the Facts are inputs rather than results, and the paper says so:
-\code{charpoly} rests on the transcribed substitution matrix, and
-\code{boundary\_recurrence} on perimeters counted from placed tiles for
-$k\le6$; beyond $k=6$ the recurrence is a conjecture.
-Both are audited by an independent route --- the matrix against a second
-implementation of the same substitution, the seed against an exact
-$\mathbb{Q}(\sqrt3)$ recount --- and an audit is not a proof.  They are the
-two rows a sceptical reader should look at first.
-""" % (n, nl, nt)
+One entry is an input rather than a result, and the paper says so:
+\code{charpoly} rests on the transcribed substitution matrix (the published
+rule).  It is audited against a second implementation of the same
+substitution, and an audit is not a proof.  The perimeter recurrence,
+\code{boundary\_recurrence}, was once in the same position, counted from
+placed tiles for $k\le6$; it is now proved for every $k$ by the finite
+certificate of Theorem~1 (\code{boundary\_certificate/}), and its row
+says so.
+""" % (nf, n, nl, nt)
 
 
 def document():
@@ -133,16 +141,24 @@ def selftest():
         if not ok:
             failures.append(label)
 
+    import re
     text = document()
     main = P.document()
+    # the counts the preface quotes, read back from the text, against what the rendered table and the main paper
+    # contain (the preface computes them from the ledger, so comparing with the same expressions would prove nothing)
+    table = text.split(r'\endhead', 1)[1].split(r'\end{longtable}', 1)[0]
+    rows = [r for r in table.split('\n') if r.startswith(r'\code{')]
+    quoted = lambda pattern: int(re.search(pattern, text).group(1))
 
     print('the table is complete')
     check('every Fact key appears in the supplement',
           all(P.esc(f.key) in text for f in P.paper_facts()))
-    check('the quoted Fact count is the real one',
-          ('all %d' % len(P.paper_facts())) in text)
-    check('the quoted Lean count is the real one',
-          ('the %d Facts' % sum(1 for f in P.paper_facts() if f.lean)) in text)
+    check('the quoted entry count is the number of table rows',
+          quoted(r'all (\d+) ---') == len(rows) == len(P.paper_facts()))
+    check('the quoted Lean count is the number of checkmarked rows',
+          quoted(r'the (\d+) entries that name') == sum(1 for r in rows if r.rsplit('&', 1)[1].lstrip().startswith(r'\checkmark')))
+    check('the quoted count of numbered Facts is the number of fact environments in the paper',
+          quoted(r'\((\d+) of them\)') == len(re.findall(r'\\begin\{fact\}', main)))
 
     print('the two documents agree')
     check('the main paper no longer carries the table itself',
@@ -153,8 +169,8 @@ def selftest():
     print('the honesty notes survive')
     check('the phantom attributions are mentioned',
           'phantom attributions' in text)
-    check('the two input Facts are named as inputs',
-          r'\code{charpoly}' in text and r'boundary\_recurrence' in text)
+    check('the input entry is named as an input, and the recurrence as proved',
+          r'\code{charpoly}' in text and r'boundary\_recurrence' in text and 'now proved for every' in text)
     check('an audit is called not a proof',
           'an audit is not a proof' in text)
 

@@ -289,7 +289,7 @@ def register():
                 'the doubled chair: equal, so the inflation is a pure scaling by 2 with no net '
                 'rotation and no mirror; the child frames are rotations by 0, 90, 120, 180 degrees '
                 '(rational multiples of pi) whose mean matrix is exactly I/4, so the mean frame at '
-                'depth n is I/4^n. Contrast Fact 11: the Spectre supertile is turned by 11.565 '
+                'depth n is I/4^n, and the 64 frames at depth two already give all 24 rotations. Contrast the Spectre, whose supertile is turned by 11.565 '
                 'degrees (irrational) and mirrored at every level')
 
     import chair44_findings as FD
@@ -323,7 +323,7 @@ def register():
 
     ot = FD.orientation_table()
     fact(key='orientation_sums',
-         claim=r'S_{n}^{\mathrm{chair}}=2^{n}\ \text{exactly};\ \ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489',
+         claim=r'S_{n,z}^{\mathrm{chair}}=2^{n}\ \text{exactly};\ \ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489',
          value=dict(levels=[r['n'] for r in ot['chair']],
                     chair_sum=[r['S'] for r in ot['chair']],
                     chair_i0=[r['i0'] for r in ot['chair']],
@@ -352,18 +352,19 @@ def register():
     tw = TA.report()
     c = tw['counts']
     fact(key='chair_coincidence',
-         claim=r'\text{modular coincidence at depth }3,\ c(M)=28\cdot2^{M}-48\ (M\ge3)',
+         claim=r'\text{modular coincidence at depth }3,\ c(M)=28\cdot2^{M}-48\ (M\ge1)',
          value=dict(labels=tw['labels'], primitive_exponent=tw['primitive_exponent'],
                     depth=tw['coincidence_depth'], address_0_0_2=tw['address_0_0_2'],
                     coincident=tw['coincident_addresses'], of=tw['words_at_depth'],
                     counts=c[:9], reachable_sets=sum(tw['subset_sizes'].values()),
-                    non_singleton=tw['transfer_dim'], spectral_radius=2),
+                    non_singleton=tw['transfer_dim'],
+                    spectral_radius=max(abs(complex(r)) for r in sp.Poly(tw['charpoly'], x).all_roots())),
          method='the cell substitution on 24 x 7 = 168 labelled unit cells, rebuilt from the child '
                 'poses: column sum 8, primitive at power 3, least modular-coincidence depth 3 '
                 'with (0,0,2) among the 336 of 512 coincident addresses, matching the depth and '
                 'address recorded upstream (substitution_modular_coincidence). A subset automaton '
                 '(209 reachable label sets, 41 non-singleton) counts the words not yet coincided, '
-                'c(M) = 28*2^M - 48, so the undetermined set in Z_2^3 has box dimension 1. '
+                'c(M) = 28*2^M - 48 for M >= 1, so the undetermined set in Z_2^3 has box dimension 1. '
                 'Pure-point diffraction and limit-periodicity follow only through the cited '
                 'Lee-Moody / Schlottmann theorem, which is not re-proved here',
          lean='coincidence_closed')
@@ -385,19 +386,19 @@ def register():
                 '(about ten minutes), and it is not recomputed in this fast check')
 
     fact(key='chair_hull_theorem',
-         claim=r'\text{every atlas tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
+         claim=r'\text{every atlas tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2}^{\mathrm{diag}},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
          value=dict(hull=True, groups=['1', 'C2 (face-diagonal axis)', 'C4', 'D4'], max_order=8,
                     three_fold_axis=False, klein_four=False, c2_coordinate_axis=False,
                     pure_point=True, limit_periodic_hull=True, internal_space='Z_2^3',
                     scope='atlas tilings (registered, all face contacts in the 44-contact atlas); for tilings by '
                           'the solid Q via registration (R), quoted and independently audited',
                     inputs=['registration (R), for the solid only', 'unique hierarchy (H), Kamenetsky Prop. 7.1']),
-         method='Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells '
+         method='Romanov (the second author, cited draft): one level of the hierarchy plus a finite computation on the 8 cells '
                 'around a lattice vertex (360,189 admissible blocks in 15,214 O-orbits, each with all 27 child '
                 'windows legal), repeated by an independent implementation and published as an orbit certificate. '
                 'Quoted and not recomputed here, except the legal-block and fixed-seed counts of '
-                'chair_legal_blocks. (H) is Kamenetsky Prop. 7.1, whose finite conditions were reproduced; (R), '
-                'that every tiling by Q is an atlas tiling, is Tsiokos Thm 5.6 and is unchecked. The spectral '
+                'chair_legal_blocks. (H) is Kamenetsky Prop. 7.1, whose finite conditions are checked by hierarchy_certificate/ (Lemma lem:hier); (R), '
+                'that every tiling by Q is an atlas tiling, is Tsiokos Thm 5.6, audited by the second author and not refereed. The spectral '
                 'conclusions are for the hull Omega_sigma (minimal, uniquely ergodic, pure point, hull of a '
                 'regular model set) and use the cited Lee-Moody theorem')
 
@@ -411,8 +412,9 @@ def register():
              box_means={k: asint(v) for k, v in lr['box']['means'].items()},
              pyramid_native=lr['pyramid_native'],
              stack_labels=[s_['label'] for s_ in lr['stack']], stack_notches=[s_['notch'] for s_ in lr['stack']],
-             stack_length=lr['stack'][0]['length'],
-             stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['cells_cover_cube']
+             stack_lengths=sorted(lr['stack'][0]['lengths'].items()),
+             stack_lines_ok=all(s_['diagonal_constant'] and s_['one_line_per_cell'] and s_['lines_distinct']
+                                and s_['lengths'] == lr['stack'][0]['lengths']
                                 for s_ in lr['stack']),
              tube=dict(holds=all(h for h, _, _ in lr['tube'].values()), cases=[c for _, c, _ in lr['tube'].values()],
                        differences=7),
@@ -501,6 +503,7 @@ def selftest(full=False):
     w = get('chair_coincidence').value
     ok(w['primitive_exponent'] == 3 and w['depth'] == 3 and w['address_0_0_2'] and w['coincident'] == 336
        and w['counts'] == [1, 8, 64, 176, 400, 848, 1744, 3536, 7120], 'coincidence')
+    ok(abs(w['spectral_radius'] - 2) < 1e-12, 'transfer matrix spectral radius 2, from its characteristic polynomial')
     hb = get('chair_legal_blocks').value
     ok(hb['legal'] == hb['romanov']['legal'] == 1410 and hb['closed'] and hb['contains_depth_one']
        and hb['per_depth'][-2:] == [1410, 1410], 'legal blocks')
@@ -512,7 +515,8 @@ def selftest(full=False):
     ok(ln['row_sums'] == ln['col_sums'] == [8] and ln['primitive'] and all(v == 0 for v in ln['box_means'].values()),
        'box means are zero')
     ok(ln['pyramid_native'] == [0, 0, 0, -36, 0, 36, 0] and len(ln['stack_labels']) == 6 and ln['stack_lines_ok']
-       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_length'] == 62, 'chair stacks')
+       and ln['tube']['holds'] and ln['tube']['cases'] == [14] * 6 and ln['stack_lengths'] == sorted({(0, 0): 64, (1, 0): 63, (-1, 0): 63, (0, 1): 63, (0, -1): 63,
+                                             (1, 1): 63, (-1, -1): 63}.items()), 'chair stacks')
     ok(sorted(ln['stack_notches']) == [(-1, -1, -1)] * 3 + [(1, 1, 1)] * 3, 'stack notch directions')
     ok(all(len(ln['corner'][b]) == 1 and ln['corner'][b][0]['size'] == 4 for b in ln['corner'] if b != (1, 1, 1))
        and len(ln['corner'][(1, 1, 1)]) == 6 and all(k['means']['pyramid'] == 0 for c in ln['corner'].values() for k in c)
@@ -532,7 +536,7 @@ def selftest(full=False):
     for k, h in enumerate(DIRECTION_HISTOGRAMS):
         ok(abs(z6_modes(h)[3] - fib(3 * k + 2)) < 1e-6, 'Z/2 amplitude %d' % k)
     # Fact bookkeeping
-    ok(all(key in KIND for key in KIND) and all(f.key in KIND for f in F.FACTS if f.key.startswith('chair_')),
+    ok(set(KIND) <= {f.key for f in F.FACTS} and all(f.key in KIND for f in F.FACTS if f.key.startswith('chair_')),
        'every chair fact is classified')
     if full:
         chosen, summary = S.screen_tilings(verbose=False)

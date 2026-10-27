@@ -4,7 +4,10 @@ finite group H of order 6; every internal map is an isometry: residual 1.18e-59
 orthogonality residual 4.17e-61
 pieces per set: {('O', 0): 13, ('O', 1): 13, ('G', 0): 2, ('G', 1): 2}  radius bound 4.10034
 window contact closure: 1192 live types (65352 pruned visits)
+rounding keys: distinct translations in one class are at least 1.909 apart
+no type is the identity (nearest same-shape, same-frame type at distance 4.114): at most 1193 pieces of a depth meet a disc of radius margin/2 at that depth, so every Z_p(S) has positive area
 charpoly factors: [(x - 1, 35), (x + 1, 35), (x, 1114), (x**4 - 10*x**2 + 1, 2)]
 spectral radius 3.146264369942 ; sqrt2+sqrt3 = 3.146264369942
 dimension log(rho)/log(lam) = 1.110977264157 ; BGMS log(5+2sqrt6)/log(4+sqrt15) = 1.110977264157
 intersecting types: 142; an irreducible block of 14 types carries x^4-10x^2+1 (radius sqrt2+sqrt3) and is reached from 16 sibling types
+window types (shape, parity) of the pieces in those sibling types: [('G', 0), ('G', 1), ('O', 0), ('O', 1)]

@@ -1,0 +1,279 @@
+files in Proved: 67 ; files in some delivery: 67
+PASS AngularMeridianCore.lean                 r44_exchange7_native_interpretation.zip       changed lines 2
+PASS AssemblyCollarData.lean                  r44_exchange6_bridges.zip                     changed lines 11
+PASS AssemblyCollarIncidence.lean             r44_exchange6_bridges.zip                     changed lines 60
+PASS BaselineComponentCoversGrid.lean         r44_F4_exchange5_discharge.zip                changed lines 10
+PASS CanonicalTentStrata.lean                 r44_exchange7_native_interpretation.zip       changed lines 49
+PASS CarrierBoundaryStrata.lean               r44_exchange7_native_interpretation.zip       changed lines 179
+PASS CarrierCoordinateStates.lean             r44_exchange7_native_interpretation.zip       changed lines 753
+PASS CarrierCoreCover.lean                    r44_F4_exchange5_discharge.zip                changed lines 28
+PASS CarrierFeatureFrameReduction.lean        r44_F1_exchange2_discharge.zip                changed lines 19
+PASS CarrierSymmetries.lean                   r44_F1_exchange2_discharge.zip                changed lines 178
+PASS CircularConeSolidAngle.lean              r44_F1_exchange2_discharge.zip                changed lines 35
+PASS CompactCongruent.lean                    r44_F3_exchange4_discharge.zip                changed lines 5
+PASS CompanionCollisionSemantics.lean         r44_F4_exchange5_discharge.zip                changed lines 62
+PASS CompanionPoseDiscrete.lean               r44_F3_exchange4_discharge.zip                changed lines 3
+PASS CompleteDihedralList.lean                r44_F1_complete_dihedral_list_draft.zip       changed lines 32
+PASS ComponentSolidsCover.lean                r44_F4_exchange5_discharge.zip                changed lines 5
+PASS ConcreteCompanions.lean                  r44_F4_exchange5_discharge.zip                changed lines 137
+PASS ConeSectorBudgets.lean                   r44_F3_exchange4_discharge.zip                changed lines 8
+PASS ConnectedFeatureCompanion.lean           r44_F3_exchange4_discharge.zip                changed lines 31
+PASS CubicFrameAlgebra.lean                   r44_F3_exchange4_discharge.zip                changed lines 117
+PASS ElementarySectorGeometry.lean            r44_exchange7_native_interpretation.zip       changed lines 119
+PASS FeatureCircularConeContainment.lean      r44_F2_exchange3_discharge.zip                changed lines 21
+PASS FeatureContainmentRigidity.lean          r44_F3_exchange4_discharge.zip                changed lines 9
+PASS FeatureGraphTopology.lean                r44_F3_exchange4_discharge.zip                changed lines 9
+PASS FeatureLocalCharts.lean                  r44_F2_exchange3_discharge.zip                changed lines 145
+PASS FeatureTubeMapCarriesCarrier.lean        r44_F2_exchange3_discharge.zip                changed lines 3
+PASS FeatureTubeMapsGlue.lean                 r44_F2_exchange3_discharge.zip                changed lines 3
+PASS FiniteEdgeExceptions.lean                r44_exchange6_bridges.zip                     changed lines 71
+PASS GenericBoundaryLabels.lean               r44_exchange6_bridges.zip                     changed lines 8
+PASS GenericFeaturePartner.lean               r44_F4_exchange5_discharge.zip                changed lines 8
+PASS HashListSemantics.lean                   r44_F3_exchange4_discharge.zip                changed lines 3
+PASS MateCensusSemantics.lean                 r44_F3_exchange4_discharge.zip                changed lines 59
+PASS MeshChartIncidence.lean                  r44_exchange7_native_interpretation.zip       changed lines 8
+PASS MeshChartInterpretation.lean             r44_exchange7_native_interpretation.zip       changed lines 63
+PASS MeshSemantics.lean                       r44_F4_exchange5_discharge.zip                changed lines 13
+PASS MetricCarrierRecovery.lean               r44_F2_exchange3_discharge.zip                changed lines 270
+PASS NativeBoundaryLocal.lean                 r44_exchange7_native_interpretation.zip       changed lines 48
+PASS NativeBoundaryStrata.lean                r44_exchange7_native_interpretation.zip       changed lines 15
+PASS NativeDihedralSectors.lean               r44_exchange7_native_interpretation.zip       changed lines 2
+PASS NativeExceptionalVertices.lean           r44_exchange7_native_interpretation.zip       changed lines 32
+PASS NativeFeatureMeridians.lean              r44_exchange7_native_interpretation.zip       changed lines 60
+PASS NativeGeometry.lean                      r44_F1_exchange2_discharge.zip                changed lines 188
+PASS NativeMateGeometry.lean                  r44_F3_exchange4_discharge.zip                changed lines 10
+PASS OnlyRegisteredMates.lean                 r44_F4_exchange5_discharge.zip                changed lines 2
+PASS OrdinaryMeridians.lean                   r44_exchange7_native_interpretation.zip       changed lines 51
+PASS PairedCollarMaps.lean                    r44_exchange6_bridges.zip                     changed lines 110
+PASS PanelIncidence.lean                      r44_exchange6_bridges.zip                     changed lines 275
+PASS PerTubeHomeomorphisms.lean               r44_F2_exchange3_discharge.zip                changed lines 3
+PASS PlanarAreaCarrierRecovery.lean           r44_F2_exchange3_discharge.zip                changed lines 3
+PASS PlanarSectorArea.lean                    r44_exchange6_bridges.zip                     changed lines 21
+PASS PolyhedralConeMeasure.lean               r44_F4_exchange5_discharge.zip                changed lines 105
+PASS PolyhedralGerms.lean                     r44_F3_exchange4_discharge.zip                changed lines 28
+PASS PyramidGeometry.lean                     r44_F3_exchange4_discharge.zip                changed lines 75
+PASS RegisteredCellGeometry.lean              r44_F4_exchange5_discharge.zip                changed lines 132
+PASS RegisteredComponentGeometry.lean         r44_F4_exchange5_discharge.zip                changed lines 52
+PASS RetainedBoxGeometry.lean                 r44_F4_exchange5_discharge.zip                changed lines 43
+PASS RetainedCoreOverlap.lean                 r44_F1_exchange2_discharge.zip                changed lines 30
+PASS SectorArithmetic.lean                    r44_F3_exchange4_discharge.zip                changed lines 22
+PASS SeparatedHomeomorphismGluing.lean        r44_F4_exchange5_discharge.zip                changed lines 17
+PASS SmallCollarRealization.lean              r44_F4_exchange5_discharge.zip                changed lines 13
+PASS TangentIsometry.lean                     r44_exchange6_bridges.zip                     changed lines 4
+PASS TentMeridianReduction.lean               r44_exchange6_bridges.zip                     changed lines 41
+PASS TentTangentCharts.lean                   r44_F3_exchange4_discharge.zip                changed lines 40
+PASS TubeCalculus.lean                        r44_F2_exchange3_discharge.zip                changed lines 3
+PASS TubeSiteGeometry.lean                    r44_F4_exchange5_discharge.zip                changed lines 43
+PASS UnrestrictedAlignment.lean               r44_F4_exchange5_discharge.zip                changed lines 17
+PASS WedgeVolume.lean                         r44_F4_exchange5_discharge.zip                changed lines 33
+
+audit: 67/67 files pass; 4054 changed non-blank lines in all
+
+hunks that touch a declaration header (29):
+  AssemblyCollarIncidence.lean:22 ['private theorem v3_ext {a b : V3} (hx : a.x=b.x) (hy : a.y=b.y)']
+  CarrierCoordinateStates.lean:36 ['private inductive CoordinateConeChart where', 'private def stateCharts : List CoordinateConeChart :=', 'private def stateChart (a b c : Fin 5) : CoordinateConeChart :=', 'private def chartCode : CoordinateConeChart → Nat', 'private def chartValid : CoordinateConeChart → Bool', 'private def signedTest (positive lo hi : Bool) : Bool :=', 'private def stateConeBool (a b c : Fin 5)', 'private def chartBool : CoordinateConeChart → (Fin 3 → Bool) →', 'private def chartSet : CoordinateConeChart → Set E3', 'private def stateLoBit (m : Fin 64) (i : Fin 3) : Bool :=', 'private def stateHiBit (m : Fin 64) (i : Fin 3) : Bool :=', 'private def fin5s : List (Fin 5) := List.ofFn id', 'private def fin64s : List (Fin 64) := List.ofFn id', 'private def boolFunctions : List (Fin 3 → Bool) :=', 'private theorem mem_boolFunctions (f : Fin 3 → Bool) : f ∈ boolFunctions := by', 'private def stateTableEntryCheck (a b c : Fin 5) : Bool :=', 'def carrierCoordinateStatesTableCheck : Bool :=', 'theorem carrier_coordinate_states_table :', 'private theorem state_table_facts (a b c : Fin 5)', 'private theorem state_table_entry (a b c : Fin 5)', 'private theorem state_tag_has_low_coordinate (a b c : Fin 5)', 'private theorem ordinary_chartSet (ch : CoordinateConeChart)', 'private def lowerTests (d : E3) : Fin 3 → Bool := fun i => decide (0 ≤ d i)', 'private def upperTests (d : E3) : Fin 3 → Bool := fun i => decide (d i ≤ 0)', 'private theorem not_decide_eq_true_iff_not (p : Prop) [Decidable p] :', 'private theorem stateConeBool_iff_mem (a b c : Fin 5) (d : E3) :', 'private theorem chartBool_iff_mem (ch : CoordinateConeChart) (d : E3) :']
+  CarrierFeatureFrameReduction.lean:111 ['private theorem transported_role_geometry (p : N3)', 'theorem transported_role_geometry (p : N3) -- [compile-fix]']
+  CompleteDihedralList.lean:395 ['private theorem native_mesh_dihedral_semantics', 'private theorem complete_native_mesh_dihedral_semantics -- [compile-fix]']
+  ConcreteCompanions.lean:10 ['private theorem shell_v3_eq (a b : V3) (hx : a.x = b.x) (hy : a.y = b.y)', 'private theorem nativeFeatureData_mem_shell (r : Role) :', 'private theorem frame_mem_of_registeredShellCellControls_shell', 'private theorem featureMateFormula_center8_shell {m : RigidMotion} {p : Pose}', 'private theorem featureMateFormula_normal_shell {m : RigidMotion} {p : Pose}', 'private theorem featureMateFormula_coefficient_shell {m : RigidMotion} {r s : Role}', 'theorem formula_mate_owns_far_cell']
+  CubicFrameAlgebra.lean:33 ['private def frameAction (f : Frame) (x : E3) : E3 :=', '@[simp] private theorem frameAction_apply (f : Frame) (x : E3) (i : Fin 3) :', 'private theorem frame_mul_sign_get (f g : Frame) (i : Fin 3) :', 'private theorem frame_mul_perm_get (f g : Frame) (i : Fin 3) :', 'private theorem frameAction_mul (f g : Frame)']
+  CubicFrameAlgebra.lean:77 ['private theorem frame_transpose_mul_identity (f : Frame) (hf : f ∈ allFrames) :', 'private theorem frameAction_identity (x : E3) (i : Fin 3) :', 'private theorem frameAction_transpose (f : Frame) (hf : f ∈ allFrames) (x : E3) :']
+  MateCensusSemantics.lean:15 ['theorem mate_records_roles_nonempty :']
+  MeshChartInterpretation.lean:20 ['private theorem v3_eq_of_beq {a b : V3} (h : (a == b) = true) : a = b := by']
+  NativeExceptionalVertices.lean:221 ['private theorem feature_index_bounds :', 'theorem feature_index_bounds : -- [compile-fix: named finite compiler hook]']
+  NativeExceptionalVertices.lean:225 ['private theorem feature_vertex_lookup :', 'theorem feature_vertex_lookup : -- [compile-fix: named finite compiler hook]']
+  NativeExceptionalVertices.lean:331 ['private theorem carrier_vertex_lookup : carrierVertexIndices.map meshPoint=carrierVertices10000 := b', 'theorem carrier_vertex_lookup : -- [compile-fix: named finite compiler hook]']
+  NativeFeatureMeridians.lean:96 ['theorem canonical_base_meridian (a : ℝ) :', 'def canonical_base_meridian (a : ℝ) : -- [compile-fix: structure-valued declaration]']
+  NativeFeatureMeridians.lean:104 ['theorem canonical_ridge_meridian (a sx sy : ℝ)', 'def canonical_ridge_meridian (a sx sy : ℝ) -- [compile-fix: structure-valued declaration]']
+  NativeGeometry.lean:300 ['theorem native_feature_chart_classification :']
+  OrdinaryMeridians.lean:22 ['theorem halfDown_meridian : AngularMeridian halfDown Real.pi := by', 'def halfDown_meridian : AngularMeridian halfDown Real.pi := by -- [compile-fix: structure-valued dec']
+  OrdinaryMeridians.lean:77 ['theorem rightDown_meridian : AngularMeridian rightDown (Real.pi/2) := by', 'def rightDown_meridian : AngularMeridian rightDown (Real.pi/2) := by -- [compile-fix: structure-valu']
+  OrdinaryMeridians.lean:87 ['theorem reentrantDown_meridian : AngularMeridian reentrantDown (3*Real.pi/2) := by', 'def reentrantDown_meridian : AngularMeridian reentrantDown (3*Real.pi/2) := by -- [compile-fix: stru']
+  PairedCollarMaps.lean:35 ['private theorem integral_axis_cases (r : Role) :']
+  PanelIncidence.lean:27 ['private theorem v3_eq (a b : V3) (hx : a.x=b.x) (hy : a.y=b.y)', 'private theorem v3_get_add (a b : V3) (i : Nat) :', 'private theorem v3_add_shuffle {A B C D : V3} (h : A.add C=D) :', 'private theorem cellCenter_injective : Function.Injective cellCenter := by']
+  PanelIncidence.lean:114 ['private theorem frame_act_add (f : Frame) (a b : V3) :', 'private theorem cellLower_add_local (f : Frame) (hf : f∈allFrames)', 'private theorem faceCenter8_image {f : Frame} (hf : f∈allFrames)', 'private def markedTransformCheck : Bool :=', 'private theorem marked_transform {f : Frame} (hf : f∈allFrames)']
+  PanelIncidence.lean:214 ['private def exposedMarkLocatorCheck : Bool := -- [compile-fix begin: kernel locator replaces the una']
+  PanelIncidence.lean:255 ['private abbrev tangentCoordData (r : Role) (i : Nat) : Prop :=', 'private abbrev normalCoordData (r : Role) (i : Nat) : Prop :=', 'private theorem native_coordinate_data : ∀r : Role,']
+  PolyhedralGerms.lean:46 ['@[simp] theorem const_apply (c : ℝ) (x : E3) : const c x = c := by rfl', '@[simp] theorem const_apply (c : ℝ) (x : E3) : const c x = c := by simp [const] -- [compile-fix]']
+  PolyhedralGerms.lean:112 ['def constant (c : ℝ) : AffineCover (fun _ => c) := affine (.const c)', 'def constant (c : ℝ) : AffineCover (fun _ => c) := by -- [compile-fix]']
+  PyramidGeometry.lean:44 ['theorem graph_compact (a : ℝ) : IsCompact (G a) :=', 'theorem graph_compact (a : ℝ) : IsCompact (G a) := by -- [compile-fix]']
+  RegisteredCellGeometry.lean:141 ['theorem body_cellCenter_mem_interior {m : RigidMotion} {p : Pose} {a : V3}']
+  SeparatedHomeomorphismGluing.lean:58 ['private def patch (x:X) : X :=', 'private def patch (x:X) : X := by -- [compile-fix]']
+  WedgeVolume.lean:66 ['def section (W:Set E2) (z:ℝ) : Set E2 :=', 'def «section» (W:Set E2) (z:ℝ) : Set E2 := -- [compile-fix]']
+
+added or changed lines with sorry/admit/axiom/native_decide outside comments (9):
+  CarrierCoordinateStates.lean:130 native_decide
+  CarrierFeatureFrameReduction.lean:117 native_decide +revert -- [compile-fix]
+  ConcreteCompanions.lean:7 There is no new assumption, axiom or admission
+  MateCensusSemantics.lean:26 native_decide
+  MeshChartIncidence.lean:92 native_decide -- [compile-fix R8: identical proposition; delivered `rfl` exceeded budget]
+  NativeExceptionalVertices.lean:223 native_decide -- [compile-fix: kernel simplification exceeded its step budget]
+  NativeExceptionalVertices.lean:228 native_decide -- [compile-fix: delivery's `rfl` is not definitional in this toolchain]
+  NativeExceptionalVertices.lean:333 native_decide -- [compile-fix: delivery's `rfl` is not definitional in this toolchain]
+  RegisteredComponentGeometry.lean:11 from the existing named theorems. No native_decide is introduced; one kernel -- [compile-fix]
+
+declarations whose statement text differs, ignoring comments, whitespace and private/protected (76):
+  AssemblyCollarIncidence.lean v3_ext [added]
+     build:    theorem v3_ext {a b : V3} (hx : a.x=b.x) (hy : a.y=b.y) (hz : a.z=b.z) : a=b 
+  CarrierCoordinateStates.lean CoordinateConeChart [added]
+     build:    inductive CoordinateConeChart 
+  CarrierCoordinateStates.lean boolFunctions [added]
+     build:    def boolFunctions : List (Fin 3 → Bool) 
+  CarrierCoordinateStates.lean carrierCoordinateStatesTableCheck [added]
+     build:    def carrierCoordinateStatesTableCheck : Bool 
+  CarrierCoordinateStates.lean carrier_coordinate_states_table [added]
+     build:    theorem carrier_coordinate_states_table : carrierCoordinateStatesTableCheck = true 
+  CarrierCoordinateStates.lean chartBool [added]
+     build:    def chartBool : CoordinateConeChart → (Fin 3 → Bool) → (Fin 3 → Bool) → Bool | .half i p, lo, hi => signedTest p (lo i) (hi i) | .right i j pi pj, lo, hi => sig
+  CarrierCoordinateStates.lean chartBool_iff_mem [added]
+     build:    theorem chartBool_iff_mem (ch : CoordinateConeChart) (d : E3) : chartBool ch (lowerTests d) (upperTests d) = true ↔ d ∈ chartSet ch 
+  CarrierCoordinateStates.lean chartCode [added]
+     build:    def chartCode : CoordinateConeChart → Nat | .half .. => 1 | .right .. => 0 | .reentrant .. => 2 private def chartValid : CoordinateConeChart → Bool | .half .. =
+  CarrierCoordinateStates.lean chartSet [added]
+     build:    def chartSet : CoordinateConeChart → Set E3 | .half i p => {d | (if p then (1:ℝ) else -1) * d i ≤ 0} | .right i j pi pj => {d | (if pi then (1:ℝ) else -1) * d i
+  CarrierCoordinateStates.lean chartValid [added]
+     build:    def chartValid : CoordinateConeChart → Bool | .half .. => true | .right i j .. => decide (i ≠ j) | .reentrant i j .. => decide (i ≠ j) private def signedTest (p
+  CarrierCoordinateStates.lean fin5s [added]
+     build:    def fin5s : List (Fin 5) 
+  CarrierCoordinateStates.lean fin64s [added]
+     build:    def fin64s : List (Fin 64) 
+  CarrierCoordinateStates.lean lowerTests [added]
+     build:    def lowerTests (d : E3) : Fin 3 → Bool 
+  CarrierCoordinateStates.lean mem_boolFunctions [added]
+     build:    theorem mem_boolFunctions (f : Fin 3 → Bool) : f ∈ boolFunctions 
+  CarrierCoordinateStates.lean not_decide_eq_true_iff_not [added]
+     build:    theorem not_decide_eq_true_iff_not (p : Prop) [Decidable p] : (!decide p) = true ↔ ¬p 
+  CarrierCoordinateStates.lean ordinary_chartSet [added]
+     build:    theorem ordinary_chartSet (ch : CoordinateConeChart) (hv : chartValid ch = true) : ∃ code : Fin 3, code.val = chartCode ch ∧ OrdinaryCone (chartSet ch) code 
+  CarrierCoordinateStates.lean signedTest [added]
+     build:    def signedTest (positive lo hi : Bool) : Bool 
+  CarrierCoordinateStates.lean stateChart [added]
+     build:    def stateChart (a b c : Fin 5) : CoordinateConeChart 
+  CarrierCoordinateStates.lean stateCharts [added]
+     build:    def stateCharts : List CoordinateConeChart 
+  CarrierCoordinateStates.lean stateConeBool [added]
+     build:    def stateConeBool (a b c : Fin 5) (lo hi : Fin 3 → Bool) : Bool 
+  CarrierCoordinateStates.lean stateConeBool_iff_mem [added]
+     build:    theorem stateConeBool_iff_mem (a b c : Fin 5) (d : E3) : (d ∈ coordinateStateCone a b c) ↔ stateConeBool a b c (lowerTests d) (upperTests d) = true 
+  CarrierCoordinateStates.lean stateHiBit [added]
+     build:    def stateHiBit (m : Fin 64) (i : Fin 3) : Bool 
+  CarrierCoordinateStates.lean stateLoBit [added]
+     build:    def stateLoBit (m : Fin 64) (i : Fin 3) : Bool 
+  CarrierCoordinateStates.lean stateTableEntryCheck [added]
+     build:    def stateTableEntryCheck (a b c : Fin 5) : Bool 
+  CarrierCoordinateStates.lean state_table_entry [added]
+     build:    theorem state_table_entry (a b c : Fin 5) (h : stateCode a b c < 3) : stateTableEntryCheck a b c = true 
+  CarrierCoordinateStates.lean state_table_facts [added]
+     build:    theorem state_table_facts (a b c : Fin 5) (h : stateCode a b c < 3) : decide (a.val ≤ 2 ∨ b.val ≤ 2 ∨ c.val ≤ 2) = true ∧ stateTableEntryCheck a b c = true 
+  CarrierCoordinateStates.lean state_tag_has_low_coordinate [added]
+     build:    theorem state_tag_has_low_coordinate (a b c : Fin 5) (h : stateCode a b c < 3) : a.val ≤ 2 ∨ b.val ≤ 2 ∨ c.val ≤ 2 
+  CarrierCoordinateStates.lean upperTests [added]
+     build:    def upperTests (d : E3) : Fin 3 → Bool 
+  CompleteDihedralList.lean native_mesh_dihedral_semantics [removed]
+     delivery: theorem native_mesh_dihedral_semantics (hmesh : solidMeshCheck = true) (haudit : meshAngleAuditCheck = true) (hprofile : profileCanonicalCheck = true) : (∀ r : 
+  CompleteDihedralList.lean complete_native_mesh_dihedral_semantics [added]
+     build:    theorem complete_native_mesh_dihedral_semantics (hmesh : solidMeshCheck = true) (haudit : meshAngleAuditCheck = true) (hprofile : profileCanonicalCheck = true) 
+  ConcreteCompanions.lean featureMateFormula_center8_shell [added]
+     build:    theorem featureMateFormula_center8_shell {m : RigidMotion} {p : Pose} {r s : Role} (hpframe : p.frame ∈ allFrames) (hm : RealizesPose m p) (hf : FeatureMateForm
+  ConcreteCompanions.lean featureMateFormula_coefficient_shell [added]
+     build:    theorem featureMateFormula_coefficient_shell {m : RigidMotion} {r s : Role} (hf : FeatureMateFormula m r s) : (nativeFeatureData s).coefficient = -(nativeFeatur
+  ConcreteCompanions.lean featureMateFormula_normal_shell [added]
+     build:    theorem featureMateFormula_normal_shell {m : RigidMotion} {p : Pose} {r s : Role} (hpframe : p.frame ∈ allFrames) (hm : RealizesPose m p) (hf : FeatureMateFormu
+  ConcreteCompanions.lean formula_mate_owns_far_cell [added]
+     build:    theorem formula_mate_owns_far_cell (hcontrols : registeredShellCellControlsCheck = true) {m : RigidMotion} {p : Pose} {r s : Role} (hp : p ∈ legalContacts) (hm 
+  ConcreteCompanions.lean frame_mem_of_registeredShellCellControls_shell [added]
+     build:    theorem frame_mem_of_registeredShellCellControls_shell (hcontrols : registeredShellCellControlsCheck = true) {p : Pose} (hp : p ∈ legalContacts) : p.frame ∈ all
+  ConcreteCompanions.lean nativeFeatureData_mem_shell [added]
+     build:    theorem nativeFeatureData_mem_shell (r : Role) : nativeFeatureData r ∈ nativeFeatures 
+  ConcreteCompanions.lean shell_v3_eq [added]
+     build:    theorem shell_v3_eq (a b : V3) (hx : a.x = b.x) (hy : a.y = b.y) (hz : a.z = b.z) : a = b 
+  CubicFrameAlgebra.lean frameAction [added]
+     build:    def frameAction (f : Frame) (x : E3) : E3 
+  CubicFrameAlgebra.lean frameAction_apply [added]
+     build:    theorem frameAction_apply (f : Frame) (x : E3) (i : Fin 3) : frameAction f x i = frameActReal f x i 
+  CubicFrameAlgebra.lean frameAction_identity [added]
+     build:    theorem frameAction_identity (x : E3) (i : Fin 3) : frameActReal identityFrame x i = x i 
+  CubicFrameAlgebra.lean frameAction_mul [added]
+     build:    theorem frameAction_mul (f g : Frame) (hf : ∀ i : Fin 3, f.perm.get i < 3) (hg : ∀ i : Fin 3, g.perm.get i < 3) (x : E3) (i : Fin 3) : frameActReal (f.mul g) x 
+  CubicFrameAlgebra.lean frameAction_transpose [added]
+     build:    theorem frameAction_transpose (f : Frame) (hf : f ∈ allFrames) (x : E3) : frameAction f.transpose (frameAction f x) = x 
+  CubicFrameAlgebra.lean frame_mul_perm_get [added]
+     build:    theorem frame_mul_perm_get (f g : Frame) (i : Fin 3) : (f.mul g).perm.get i = g.perm.get (f.perm.get i) 
+  CubicFrameAlgebra.lean frame_mul_sign_get [added]
+     build:    theorem frame_mul_sign_get (f g : Frame) (i : Fin 3) : (f.mul g).sign.get i = f.sign.get i * g.sign.get (f.perm.get i) 
+  CubicFrameAlgebra.lean frame_transpose_mul_identity [added]
+     build:    theorem frame_transpose_mul_identity (f : Frame) (hf : f ∈ allFrames) : f.transpose.mul f = identityFrame 
+  ElementarySectorGeometry.lean le_signed_abs [changed]
+     delivery: theorem le_signed_abs (m u v : ℝ) : v≤m*|u| ↔ if 0≤m then (v≤m*u ∨ v≤-m*u) else (v≤m*u ∧ v≤-m*u) 
+     build:    theorem le_signed_abs (m u v : ℝ) : v ≤ m * |u| ↔ (if 0 ≤ m then (v ≤ m*u ∨ v ≤ -m*u) else (v ≤ m*u ∧ v ≤ -m*u)) 
+  FeatureCircularConeContainment.lean abs_max_radius_sub [changed]
+     delivery: theorem abs_max_radius_sub (u v u' v' : ℝ) : |max |u'| |v'|-max |u| |v|| ≤ max |u'-u| |v'-v| 
+     build:    theorem abs_max_radius_sub (u v u' v' : ℝ) : abs (max |u'| |v'| - max |u| |v|) ≤ max |u'-u| |v'-v| 
+  MateCensusSemantics.lean mate_records_roles_nonempty [added]
+     build:    theorem mate_records_roles_nonempty : (mateRecords.all fun r => !r.roles.isEmpty) = true 
+  MeshChartInterpretation.lean v3_eq_of_beq [added]
+     build:    theorem v3_eq_of_beq {a b : V3} (h : (a == b) = true) : a = b 
+  NativeFeatureMeridians.lean canonical_base_meridian [changed]
+     delivery: theorem canonical_base_meridian (a : ℝ) : AngularMeridian (baseCone a) (Real.pi+Real.arctan (a/eta)) 
+     build:    def canonical_base_meridian (a : ℝ) : AngularMeridian (baseCone a) (Real.pi+Real.arctan (a/eta)) 
+  NativeFeatureMeridians.lean canonical_ridge_meridian [changed]
+     delivery: theorem canonical_ridge_meridian (a sx sy : ℝ) (hx : sx=1 ∨ sx= -1) (hy : sy=1 ∨ sy= -1) : AngularMeridian (ridgeCone a sx sy) (Real.pi-2*Real.arctan ((a/eta)/R
+     build:    def canonical_ridge_meridian (a sx sy : ℝ) (hx : sx=1 ∨ sx= -1) (hy : sy=1 ∨ sy= -1) : AngularMeridian (ridgeCone a sx sy) (Real.pi-2*Real.arctan ((a/eta)/Real.
+  NativeGeometry.lean native_feature_chart_classification [added]
+     build:    theorem native_feature_chart_classification : ∀ s : Role, ∃ i : Fin 3, let c 
+  OrdinaryMeridians.lean halfDown_meridian [changed]
+     delivery: theorem halfDown_meridian : AngularMeridian halfDown Real.pi 
+     build:    def halfDown_meridian : AngularMeridian halfDown Real.pi 
+  OrdinaryMeridians.lean reentrantDown_meridian [changed]
+     delivery: theorem reentrantDown_meridian : AngularMeridian reentrantDown (3*Real.pi/2) 
+     build:    def reentrantDown_meridian : AngularMeridian reentrantDown (3*Real.pi/2) 
+  OrdinaryMeridians.lean rightDown_meridian [changed]
+     delivery: theorem rightDown_meridian : AngularMeridian rightDown (Real.pi/2) 
+     build:    def rightDown_meridian : AngularMeridian rightDown (Real.pi/2) 
+  PairedCollarMaps.lean integral_axis_cases [added]
+     build:    theorem integral_axis_cases (r : Role) : (nativeFeatureData r).normal=v 1 0 0 ∨ (nativeFeatureData r).normal=v (-1) 0 0 ∨ (nativeFeatureData r).normal=v 0 1 0 ∨
+  PanelIncidence.lean cellCenter_injective [added]
+     build:    theorem cellCenter_injective : Function.Injective cellCenter 
+  PanelIncidence.lean cellLower_add_local [added]
+     build:    theorem cellLower_add_local (f : Frame) (hf : f∈allFrames) (t a b : V3) : cellLower f t (a.add b)=(cellLower f t a).add (f.act b) 
+  PanelIncidence.lean exposedMarkLocatorCheck [added]
+     build:    def exposedMarkLocatorCheck : Bool 
+  PanelIncidence.lean faceCenter8_image [added]
+     build:    theorem faceCenter8_image {f : Frame} (hf : f∈allFrames) (t a : V3) (i : Fin 3) (s : Int) (hs : s=1∨s= -1) : (f.act (faceCenter8 a (a.add (unitAxis i s)))).add 
+  PanelIncidence.lean frame_act_add [added]
+     build:    theorem frame_act_add (f : Frame) (a b : V3) : f.act (a.add b)=(f.act a).add (f.act b) 
+  PanelIncidence.lean markedTransformCheck [added]
+     build:    def markedTransformCheck : Bool 
+  PanelIncidence.lean marked_transform [added]
+     build:    theorem marked_transform {f : Frame} (hf : f∈allFrames) (i : Fin 3) (s : Int) (hs : s=1∨s= -1) (o : V3) (ho : o∈offsets8) : ∃ j : Fin 3, ∃ u : Int, (u=1∨u= -1) 
+  PanelIncidence.lean native_coordinate_data [added]
+     build:    theorem native_coordinate_data : ∀r : Role, (normalCoordData r 0 ∧ tangentCoordData r 1 ∧ tangentCoordData r 2) ∨ (tangentCoordData r 0 ∧ normalCoordData r 1 ∧ 
+  PanelIncidence.lean normalCoordData [added]
+     build:    abbrev normalCoordData (r : Role) (i : Nat) : Prop 
+  PanelIncidence.lean tangentCoordData [added]
+     build:    abbrev tangentCoordData (r : Role) (i : Nat) : Prop 
+  PanelIncidence.lean v3_add_shuffle [added]
+     build:    theorem v3_add_shuffle {A B C D : V3} (h : A.add C=D) : (A.add B).add C=D.add B 
+  PanelIncidence.lean v3_eq [added]
+     build:    theorem v3_eq (a b : V3) (hx : a.x=b.x) (hy : a.y=b.y) (hz : a.z=b.z) : a=b 
+  PanelIncidence.lean v3_get_add [added]
+     build:    theorem v3_get_add (a b : V3) (i : Nat) : (a.add b).get i=a.get i+b.get i 
+  PyramidGeometry.lean corner_adjacency [changed]
+     delivery: theorem corner_adjacency {a b : ℝ} (ha : SmallHeight a) (hb : SmallHeight b) (m : RigidMotion) (heq : m '' G a=G b) (p : Fin 4 ≃ Fin 4) (hp : ∀k,m(B k)=B(p k)) 
+     build:    theorem corner_adjacency {a b : ℝ} (ha : SmallHeight a) (hb : SmallHeight b) (m : RigidMotion) (heq : m '' G a=G b) (p : Fin 4 ≃ Fin 4) (hp : ∀ k, m (B k) = B (
+  RegisteredCellGeometry.lean body_cellCenter_mem_interior [added]
+     build:    theorem body_cellCenter_mem_interior {m : RigidMotion} {p : Pose} {a : V3} (hpframe : p.frame ∈ allFrames) (hm : RealizesPose m p) (ha : a ∈ body p) : cellCente
+  WedgeVolume.lean prism_volume_by_slices [changed]
+     delivery: theorem prism_volume_by_slices {W:Set E2} (hW:MeasurableSet W) : volume (prism W∩Metric.closedBall (0:E3) 1)= ∫⁻z:ℝ,volume (section W z) 
+     build:    theorem prism_volume_by_slices {W:Set E2} (hW:MeasurableSet W) : volume (prism W∩Metric.closedBall (0:E3) 1)= ∫⁻z:ℝ,volume («section» W z) 
+  WedgeVolume.lean section [changed]
+     delivery: def section (W:Set E2) (z:ℝ) : Set E2 
+     build:    def «section» (W:Set E2) (z:ℝ) : Set E2 
+  WedgeVolume.lean section_inside [changed]
+     delivery: theorem section_inside {W:Set E2} {z:ℝ} (hz:-1≤z ∧ z≤1) : section W z=W∩Metric.closedBall (0:E2) (Real.sqrt (1-z^2)) 
+     build:    theorem section_inside {W:Set E2} {z:ℝ} (hz:-1≤z ∧ z≤1) : «section» W z=W∩Metric.closedBall (0:E2) (Real.sqrt (1-z^2)) 
+  WedgeVolume.lean section_outside [changed]
+     delivery: theorem section_outside {W:Set E2} {z:ℝ} (hz:z< -1 ∨ 1<z) : section W z=∅ 
+     build:    theorem section_outside {W:Set E2} {z:ℝ} (hz:z< -1 ∨ 1<z) : «section» W z=∅ 
+  WedgeVolume.lean slice_indicator [changed]
+     delivery: theorem slice_indicator {W:Set E2} {theta:ℝ} (hW:SectorDiskLaw W theta) (z:ℝ) : volume (section W z)= (Ioc (-1:ℝ) 1).indicator (fun z => ENNReal.ofReal (theta*(
+     build:    theorem slice_indicator {W:Set E2} {theta:ℝ} (hW:SectorDiskLaw W theta) (z:ℝ) : volume («section» W z)= (Ioc (-1:ℝ) 1).indicator (fun z => ENNReal.ofReal (theta
