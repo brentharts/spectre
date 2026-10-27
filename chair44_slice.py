@@ -317,7 +317,7 @@ def show_slice(depth=5, save=None, show=True):
     ax[1, 1].set_title("median (o) falls every level; mean (x) noisy: peaks", fontsize=9)
     ax[1, 1].legend(fontsize=7)
     n = np.arange(1, depth + 1)
-    ax[1, 2].semilogy(n, 8.0 ** n, "k-", label="unweighted |F(0)|^2 = 8^n (Bragg)")
+    ax[1, 2].semilogy(n, 64.0 ** n, "k-", label="unweighted |F(0)|^2 = 64^n (Bragg)")
     ax[1, 2].semilogy(n, 3.0 * 4.0 ** n, "r-", label="notch-weighted |F(0)|^2 = 3*4^n")
     ax[1, 2].semilogy(n, 3.0 * 8.0 ** n, "b:", label="random signs ~ 3*8^n")
     ax[1, 2].set_xlabel("level n"); ax[1, 2].legend(fontsize=7)

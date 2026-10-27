@@ -10,7 +10,9 @@ from the modules chair44_diffraction, spectre_orient, orientation_spectra, conta
 What is and is not claimed.  Pure-pointness of the Spectre diffraction is a published theorem (Baake, Gahler, Mazac,
 Sadun) and is not re-proved; what is new here is the exact analysis of the Chair44 centre set, the exact orientation
 recursion, the integer inflation matrix in the lift, and a numerically identified (not proved) closed form for the
-orientation constant.  The window dimension is a box-counting estimate.
+orientation constant.  The box count of the window image recorded here is a numerical estimate; the exact value
+log(5+2 sqrt6)/log(4+sqrt15) for the seams of the window, a lower bound for its boundary, is Theorem thm:window of the
+paper (boundary_certificate/spectre_window.py).
 
     python3 monotilefacts.py             print the Facts
     python3 monotilefacts.py --selftest  recompute and check them
@@ -166,7 +168,7 @@ def register():
     rows, ex = LM.window_boundary_exponents(5, (0.2, 0.1, 0.05))
     zj = np.abs(L.internal(np.array(list(L.lift_patch(3)[1].values()), float), 5)).max()
     fact(key='internal_plane',
-         claim=r'\text{bounded plane over }\mathbb{Q}(\sqrt{15});\ \ \dim_{\partial}\text{ of the window}\approx1.2',
+         claim=r'\text{bounded plane over }\mathbb{Q}(\sqrt{15});\ \ \text{window box count}\approx1.2\ \text{(exact seam dimension }1.111\text{, by the window theorem)}',
          value=dict(plane=[[sp.nsimplify(c) for c in row] for row in G.tolist()],
                     fitted_cosines=[float(c) for c in LM.subspace_cosines(Gn, L.bounded_plane(4)[0])],
                     internal_extent={k: v[0] for k, v in ext.items()},
@@ -181,7 +183,8 @@ def register():
                 'vertices; its extent on the level-3 and level-4 patches is stable while the physical extent grows '
                 'by the inflation factor; the Galois conjugate z -> z^5 is not bounded; the boundary-cell count of '
                 'the window image (level-5 patch, 214,000 vertices, holes filled) grows by 2^1.2 per halving of '
-                'the cell size, a box-counting estimate and not a dimension')
+                'the cell size, a box-counting estimate and not a dimension; the exact seam dimension '
+                'log(5+2sqrt6)/log(4+sqrt15) = 1.110977, a lower bound for the boundary, is Theorem thm:window')
     return F.FACTS
 
 

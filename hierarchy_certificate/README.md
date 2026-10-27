@@ -15,3 +15,16 @@ The code was written independently of Kamenetsky's `cert6.py` and of `chair44_in
 Tsiokos's solid, `../chair44_data/r44_solid.json`, as data.
 
     cd hierarchy_certificate && python3 check_chair44_hierarchy.py      # about 1 minute
+
+## Lemma `lem:blocks` (admissible blocks), a further implementation
+
+`chair44_blocks_indep.py` was written from the definitions for the prepublication referee review. It shares no code
+with the other implementations (the paper lists all four after the lemma) and reads only Tsiokos's solid as data. It derives the legal contacts from the pyramid geometry,
+then enumerates every admissible block, not only orbit representatives, using a pairwise-compatibility bitset search.
+Its output is `out_chair44_blocks_indep.txt`:
+- 2388 / 1194 / 44 contacts and the 30 hierarchical ones;
+- the coincidence at depth 3;
+- 1410 legal blocks and 27 fixed seeds;
+- 360,189 admissible blocks in 15,214 O-orbits, none with an illegal child window.
+
+    cd hierarchy_certificate && python3 -I chair44_blocks_indep.py ../chair44_data/r44_solid.json   # about 15 minutes

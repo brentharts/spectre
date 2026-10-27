@@ -1,0 +1,20 @@
+raw face contacts: 2388  mirror: 1194  legal: 44  legal mirror: 0
+hierarchical contacts: |P1| = 21  |P0| = 30  P0 subset of legal: True
+cell substitution: every label appears [8] times as a child (row sums of the 168x168 matrix); each label has 8 children
+primitive: all entries of M^3 positive
+depth 1: 0 of 8 addresses coincide
+depth 2: 0 of 64 addresses coincide
+depth 3: 336 of 512 addresses coincide
+   (0,0,2) among them: True ; also with reversed digit order: True
+distinct windows of sigma^n(j), cumulative n=1..6: [168, 600, 1278, 1398, 1410, 1410]
+closed under child windows: True
+central map: 27 periodic blocks, 27 fixed
+stabiliser orders of the fixed blocks: {1: 24, 8: 3}
+admissible blocks: 360189
+O-orbits: 15214
+admissible blocks with an illegal window in their substitution: 0
+legal blocks that are admissible: 1410 of 1410
+
+real	14m6.016s
+user	13m50.118s
+sys	0m6.338s

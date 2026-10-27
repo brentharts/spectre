@@ -2,9 +2,9 @@
 """chair44_unfold.py - unfold the surface of the Chair44 tile into a flat net (a polyomino).
 
 The seven-cube chair is a topological sphere made of 24 unit squares (48 edges, 26 vertices).
-Cutting along a spanning tree of the face-adjacency graph (23 cuts) and folding every face
+Keeping a spanning tree of the face-adjacency graph as hinges (23 kept, 25 cut) and folding every face
 into the plane gives a 24-omino.  Different spanning trees give different nets; some overlap
-themselves and are rejected.  Everything is exact integer arithmetic.
+themselves and are rejected.  Positions are small integers and half-integers in floating point, so exact.
 
 Public API
   surface()                    faces, edges, adjacency, fold type of each edge

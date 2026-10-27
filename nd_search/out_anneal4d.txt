@@ -1,0 +1,53 @@
+== seed 11
+best 1626 after 1 evals, 4s
+best 1596 after 11 evals, 28s
+best 1566 after 45 evals, 102s
+best 1212 after 765 evals, 1703s
+best 1206 after 766 evals, 1705s
+best 1200 after 768 evals, 1709s
+best 1197 after 772 evals, 1718s
+best 1189 after 773 evals, 1720s
+best 1185 after 776 evals, 1728s
+best 1184 after 781 evals, 1740s
+best 1180 after 808 evals, 1799s
+best 1176 after 815 evals, 1813s
+best 1173 after 818 evals, 1820s
+best 1167 after 826 evals, 1837s
+best 918 after 832 evals, 1850s
+best 910 after 837 evals, 1862s
+best 592 after 851 evals, 1894s
+best 568 after 865 evals, 1931s
+best 564 after 866 evals, 1934s
+best 516 after 869 evals, 1942s
+best 508 after 873 evals, 1951s
+best 403 after 877 evals, 1963s
+best 396 after 891 evals, 2000s
+best 394 after 905 evals, 2049s
+best 390 after 906 evals, 2052s
+best 382 after 942 evals, 2149s
+best 287 after 946 evals, 2172s
+best 283 after 952 evals, 2218s
+best 273 after 962 evals, 2260s
+done: 2399 evaluations (2343 distinct) in 7201s; best objective 273 at ((0, 1, 2, 3), (1, 2, 3, 0), (3, 2, 0, 1), (1, 0, 3, 2), (0, 2, 1, 3), (1, 2, 0, 3), (2, 0, 1, 3), (0, 1, 3, 2), (0, 3, 2, 1), (2, 0, 1, 3), (3, 0, 2, 1), (2, 0, 3, 1), (1, 0, 3, 2), (3, 2, 0, 1), (1, 2, 3, 0))
+== seed 12
+best 1626 after 1 evals, 4s
+best 1596 after 3 evals, 9s
+best 1566 after 13 evals, 29s
+best 1361 after 954 evals, 2087s
+best 1355 after 958 evals, 2096s
+best 1353 after 960 evals, 2100s
+best 1181 after 967 evals, 2114s
+best 461 after 971 evals, 2124s
+best 459 after 979 evals, 2146s
+best 448 after 984 evals, 2162s
+best 404 after 990 evals, 2194s
+best 402 after 1049 evals, 2351s
+done: 3208 evaluations (3141 distinct) in 7202s; best objective 402 at ((0, 1, 2, 3), (2, 3, 1, 0), (3, 0, 1, 2), (2, 1, 3, 0), (3, 0, 1, 2), (2, 0, 1, 3), (0, 1, 2, 3), (1, 0, 2, 3), (1, 3, 0, 2), (2, 3, 0, 1), (3, 1, 0, 2), (3, 1, 2, 0), (0, 3, 1, 2), (0, 2, 1, 3), (3, 2, 0, 1))
+== seed 13
+best 1626 after 1 evals, 4s
+best 1596 after 136 evals, 310s
+best 1566 after 261 evals, 579s
+done: 3424 evaluations (3402 distinct) in 7201s; best objective 1566 at ((0, 1, 2, 3), (3, 0, 1, 2), (1, 0, 2, 3), (1, 3, 2, 0), (0, 2, 1, 3), (1, 2, 0, 3), (3, 2, 1, 0), (3, 0, 1, 2), (1, 2, 3, 0), (3, 0, 2, 1), (0, 3, 1, 2), (0, 2, 1, 3), (2, 1, 3, 0), (2, 3, 1, 0), (0, 2, 1, 3))
+== seed 21
+best 286 after 8 evals, 12s
+done: 3101 evaluations (3053 distinct) in 7001s; best objective 286 at ((0, 1, 2, 3), (1, 0, 2, 3), (1, 0, 2, 3), (0, 1, 2, 3), (1, 0, 2, 3), (0, 1, 2, 3), (0, 1, 2, 3), (1, 0, 2, 3), (1, 0, 2, 3), (0, 1, 2, 3), (0, 1, 2, 3), (0, 1, 3, 2), (0, 1, 2, 3), (1, 0, 2, 3), (1, 0, 2, 3))

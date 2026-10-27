@@ -289,7 +289,7 @@ def register():
                 'the doubled chair: equal, so the inflation is a pure scaling by 2 with no net '
                 'rotation and no mirror; the child frames are rotations by 0, 90, 120, 180 degrees '
                 '(rational multiples of pi) whose mean matrix is exactly I/4, so the mean frame at '
-                'depth n is I/4^n. Contrast Fact 11: the Spectre supertile is turned by 11.565 '
+                'depth n is I/4^n, and the 64 frames at depth two already give all 24 rotations. Contrast the Spectre, whose supertile is turned by 11.565 '
                 'degrees (irrational) and mirrored at every level')
 
     import chair44_findings as FD
@@ -323,7 +323,7 @@ def register():
 
     ot = FD.orientation_table()
     fact(key='orientation_sums',
-         claim=r'S_{n}^{\mathrm{chair}}=2^{n}\ \text{exactly};\ \ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489',
+         claim=r'S_{n,z}^{\mathrm{chair}}=2^{n}\ \text{exactly};\ \ |S_{n}^{\mathrm{Spectre}}|/\lambda^{n}\to1.4489',
          value=dict(levels=[r['n'] for r in ot['chair']],
                     chair_sum=[r['S'] for r in ot['chair']],
                     chair_i0=[r['i0'] for r in ot['chair']],
@@ -352,7 +352,7 @@ def register():
     tw = TA.report()
     c = tw['counts']
     fact(key='chair_coincidence',
-         claim=r'\text{modular coincidence at depth }3,\ c(M)=28\cdot2^{M}-48\ (M\ge3)',
+         claim=r'\text{modular coincidence at depth }3,\ c(M)=28\cdot2^{M}-48\ (M\ge1)',
          value=dict(labels=tw['labels'], primitive_exponent=tw['primitive_exponent'],
                     depth=tw['coincidence_depth'], address_0_0_2=tw['address_0_0_2'],
                     coincident=tw['coincident_addresses'], of=tw['words_at_depth'],
@@ -363,7 +363,7 @@ def register():
                 'with (0,0,2) among the 336 of 512 coincident addresses, matching the depth and '
                 'address recorded upstream (substitution_modular_coincidence). A subset automaton '
                 '(209 reachable label sets, 41 non-singleton) counts the words not yet coincided, '
-                'c(M) = 28*2^M - 48, so the undetermined set in Z_2^3 has box dimension 1. '
+                'c(M) = 28*2^M - 48 for M >= 1, so the undetermined set in Z_2^3 has box dimension 1. '
                 'Pure-point diffraction and limit-periodicity follow only through the cited '
                 'Lee-Moody / Schlottmann theorem, which is not re-proved here',
          lean='coincidence_closed')
@@ -385,19 +385,19 @@ def register():
                 '(about ten minutes), and it is not recomputed in this fast check')
 
     fact(key='chair_hull_theorem',
-         claim=r'\text{every atlas tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
+         claim=r'\text{every atlas tiling lies in the hull};\ \mathrm{Sym}(T)\in\{1,C_{2}^{\mathrm{diag}},C_{4},D_{4}\},\ |\mathrm{Sym}(T)|\le8',
          value=dict(hull=True, groups=['1', 'C2 (face-diagonal axis)', 'C4', 'D4'], max_order=8,
                     three_fold_axis=False, klein_four=False, c2_coordinate_axis=False,
                     pure_point=True, limit_periodic_hull=True, internal_space='Z_2^3',
                     scope='atlas tilings (registered, all face contacts in the 44-contact atlas); for tilings by '
                           'the solid Q via registration (R), quoted and independently audited',
                     inputs=['registration (R), for the solid only', 'unique hierarchy (H), Kamenetsky Prop. 7.1']),
-         method='Romanov (this paper): one level of the hierarchy plus a finite computation on the 8 cells '
+         method='Romanov (the second author, cited draft): one level of the hierarchy plus a finite computation on the 8 cells '
                 'around a lattice vertex (360,189 admissible blocks in 15,214 O-orbits, each with all 27 child '
                 'windows legal), repeated by an independent implementation and published as an orbit certificate. '
                 'Quoted and not recomputed here, except the legal-block and fixed-seed counts of '
-                'chair_legal_blocks. (H) is Kamenetsky Prop. 7.1, whose finite conditions were reproduced; (R), '
-                'that every tiling by Q is an atlas tiling, is Tsiokos Thm 5.6 and is unchecked. The spectral '
+                'chair_legal_blocks. (H) is Kamenetsky Prop. 7.1, whose finite conditions are checked by hierarchy_certificate/ (Lemma lem:hier); (R), '
+                'that every tiling by Q is an atlas tiling, is Tsiokos Thm 5.6, audited by the second author and not refereed. The spectral '
                 'conclusions are for the hull Omega_sigma (minimal, uniquely ergodic, pure point, hull of a '
                 'regular model set) and use the cited Lee-Moody theorem')
 

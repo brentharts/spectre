@@ -73,7 +73,9 @@ Why the fit could never have converged
 B_c depends on T(c) AND on P(N-c).  The naive single-exponent fit needs both
 to be in their asymptotic regimes at once, which needs c large and N-c large
 simultaneously -- impossible in a finite patch.  This module reproduces the
-earlier drifting values (2.66, 2.41) from the exact formula, confirming they
+earlier drifting values (2.66, 2.41) from the exact formula, which matches
+the measured interface counts exactly once the Mystic supertiles are given
+their own perimeter Q (without that term the fit gives 2.62, 2.38), confirming they
 were the correct output of a mis-specified estimator rather than evidence
 about the geometry.
 
@@ -191,17 +193,37 @@ def exact_exponents(nu):
 # 3. the interface identity
 # ---------------------------------------------------------------------------
 
-def predicted_interfaces(depth, P):
-    """B_c = (T(c) P(N-c) - P(N)) / 2, the closed form for the counts.
+_MYSTIC = {}
+
+
+def mystic_perimeter(max_order):
+    """Q(k) = boundary edges of the order-k Mystic supertile, k = 0..max_order."""
+    if max_order not in _MYSTIC:
+        import spectre_boundary_operator as BO
+        _MYSTIC[max_order] = BO.gather(max_order)['Q']
+    return _MYSTIC[max_order]
+
+
+def predicted_interfaces(depth, P, mystic=True):
+    """B_c = ((T(c) - N_G(c)) P(N-c) + N_G(c) Q(N-c) - P(N)) / 2, the closed form for the counts.
 
     Two supertiles share each internal boundary edge, hence the halving; the
     outer boundary of the whole patch belongs to nobody and is removed first.
+    Of the T(c) supertiles of order N-c, N_G(c) = T(c-1) are Mystics, of
+    perimeter Q(N-c).  With mystic=False every one is taken to have perimeter
+    P(N-c), the older approximation (T(c) P(N-c) - P(N)) / 2, off by a few percent.
     """
+    T = F.MATRIX_TOTALS
+    Q = mystic_perimeter(depth - 1) if mystic else None
     out = []
     for c in range(1, depth + 1):
-        if c >= len(F.MATRIX_TOTALS) or depth - c < 0:
+        if c >= len(T) or depth - c < 0:
             break
-        out.append((c, (F.MATRIX_TOTALS[c] * P[depth - c] - P[depth]) / 2.0))
+        if mystic:
+            b = ((T[c] - T[c - 1]) * P[depth - c] + T[c - 1] * Q[depth - c] - P[depth]) / 2.0
+        else:
+            b = (T[c] * P[depth - c] - P[depth]) / 2.0
+        out.append((c, b))
     return out
 
 
@@ -265,7 +287,7 @@ def report(P, order, coeffs, poly, nu, mu, a, s_star, dim):
 
 
 def report_identity(depths, P):
-    print('\nthe interface identity  B_c = (T(c) P(N-c) - P(N)) / 2')
+    print('\nthe interface identity  B_c = ((T(c)-T(c-1)) P(N-c) + T(c-1) Q(N-c) - P(N)) / 2')
     for N in depths:
         meas = dict(measured_interfaces(N))
         pred = predicted_interfaces(N, P)
@@ -275,14 +297,14 @@ def report_identity(depths, P):
             if c in meas:
                 print('            %-4d %-11d %-11.1f %+.2f%%'
                       % (c, meas[c], p, 100.0 * (p - meas[c]) / meas[c]))
-    print('  (residual few-percent error is the mystic split: the deepest'
-          ' level\n   carries T(n)+T(n-1) blocks, not T(n))')
+    print('  (exact: the T(c-1) Mystic supertiles have perimeter Q, not P;'
+          ' taking\n   every perimeter as P leaves an error of a few percent)')
 
 
 def report_drift(depths, P):
     print('\nwhy the fit drifted')
-    print('  %-8s %-16s %-16s %s'
-          % ('depth', 'fit on measured', 'fit on exact form', 'asymptotic mu'))
+    print('  %-8s %-16s %-16s %-16s %s'
+          % ('depth', 'fit on measured', 'fit on exact form', 'fit, no Mystic', 'asymptotic mu'))
     for N in depths:
         meas = measured_interfaces(N)
         pred = predicted_interfaces(N, P)
@@ -290,8 +312,9 @@ def report_drift(depths, P):
         keep = [c for c, n in meas if n < 0.9 * top]
         f_meas = naive_fit(meas, keep)
         f_pred = naive_fit(pred, keep)
-        print('  %-8d %-16.4f %-16.4f %.4f'
-              % (N, f_meas, f_pred, float(sp.N(LAM2 / (2 + sp.sqrt(5))))))
+        f_old = naive_fit(predicted_interfaces(N, P, mystic=False), keep)
+        print('  %-8d %-16.4f %-16.4f %-16.4f %.4f'
+              % (N, f_meas, f_pred, f_old, float(sp.N(LAM2 / (2 + sp.sqrt(5))))))
     print('  The exact closed form reproduces the drifting fitted values, so'
           '\n  the drift was the estimator, not the geometry.  B_c depends on'
           '\n  T(c) and on P(N-c); a single-exponent fit needs c large AND'
@@ -470,9 +493,8 @@ def selftest(max_order=6):
     for N in (3, 4):
         meas = dict(measured_interfaces(N))
         pred = predicted_interfaces(N, P)
-        err = [abs(p - meas[c]) / meas[c] for c, p in pred if c in meas]
-        check('depth %d interface identity within 6%%' % N,
-              bool(err) and max(err) < 0.06)
+        check('depth %d interface identity is exact' % N,
+              bool(pred) and all(p == meas[c] for c, p in pred))
 
     print()
     if failures:

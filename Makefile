@@ -51,6 +51,7 @@ facts:
 	$(PYTHON) chair44_hull.py --tests
 	$(PYTHON) chair44_lines.py --tests
 
+# three pdflatex passes: the second still reports "Label(s) may have changed"
 # the all-orders proof of the Spectre perimeter recurrence (independent code, about 2 minutes)
 boundary-proof:
 	cd boundary_certificate && $(PYTHON) check_spectre_boundary_proof.py
@@ -78,10 +79,15 @@ paper: facts figures
 	$(PYTHON) spectrepaper.py
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_bigbang_note.tex >/dev/null
+	$(PYTHON) spectre_supplement.py
+	pdflatex -interaction=nonstopmode spectre_supplement.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_supplement.tex >/dev/null
 
 paperfast:
 	$(PYTHON) spectrepaper.py
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	open spectre_substrate.pdf
@@ -201,6 +207,7 @@ uninstall_lean:
 
 default:
 	$(PYTHON) spectrepaper.py
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	open spectre_substrate.pdf

@@ -456,13 +456,16 @@ and the constant is -16.  That single affine identity is equivalent to the
 order-three recurrence together with its seed, and it is the eigenvalue
 structure made arithmetic.
 
-The second is that the boundary is fractal.  The perimeter grows by a factor
-of at least four per step, while the linear inflation is lambda < 4, so the
-perimeter outruns the linear scale and the boundary dimension exceeds one.
-Both halves are proved below.  The final inference between them is one line of
-elementary real arithmetic and is NOT formalised here: comparing a Z15 element
-with a real growth rate needs an order on Z15 and a square root, neither of
-which this Mathlib-free file has.  What is proved is the certificate. -/
+The second is the growth comparison behind the fractal boundary.  The
+perimeter grows by a factor of at least four per step, while the linear
+inflation is lambda < 4, so the perimeter outruns the linear scale.  Only these
+two inequalities are proved below: P(k+3) >= 4 P(k+2) + 30 and lambda^2 < 16.
+That the boundary is fractal is NOT proved here.  The inference from the two
+inequalities to a perimeter outrunning the linear scale is elementary real
+arithmetic and is not formalised (comparing a Z15 element with a real growth
+rate needs an order on Z15 and a square root, neither of which this
+Mathlib-free file has), and the box dimension of the limiting boundary is
+proved in the paper (thm:frac), not in this file. -/
 
 /-- Boundary edges of an order-k supertile.  The three seed values are counted
 from placed tiles; every later value is forced. -/

@@ -73,7 +73,7 @@ FIG_BOUNDARY = '\nFigure~\\ref{fig:boundary} shows the supertiles whose perimete
     r"""Supertiles of order $k=0,\dots,3$ with their boundary edges
 (orange), and the perimeter $P(k)$ against $\nu^k$ with $\nu=\varphi^3$ and
 against the naive $\lambda^k$.  The edge counts drawn are counted on the
-geometry and asserted equal to the recurrence of this section.""")
+geometry; by Theorem~\ref{thm:bdy} they equal the recurrence of this section.""")
 
 
 
@@ -110,6 +110,12 @@ def inject_after_label(text, label, block):
 
 
 # ---------------------------------------------------------------- helpers
+
+def sci(x, digits=1):
+    """A float in scientific notation as LaTeX, $1.1\\times10^{-15}$."""
+    m, e = ('%.*e' % (digits, x)).split('e')
+    return '$%s\\times10^{%d}$' % (m, int(e))
+
 
 def tex(expr):
     """A sympy object as LaTeX, compactly.
@@ -224,10 +230,10 @@ It follows from the recurrence by induction, because
 $F_{n+6}=4F_{n+3}+F_{n}$ makes $2F_{3k+5}+4$ satisfy the same recurrence and the seeds
 agree.  It says three things
 that the recurrence did not.  The growth
-$\nu=\varphi^{3}$ is one Spectre level multiplying the Fibonacci index by three,
+$\nu=\varphi^{3}$ is one Spectre level advancing the Fibonacci index by three,
 which is how the golden unit arises.  The marginal eigenvalue $+1$ is the
-constant $4$, so $(P(k)-4)/2$ is every third Fibonacci number.  And the third
-root of $x^{2}-4x-1$ is $2-\sqrt5=-\varphi^{-3}$, which is negative, so that
+constant $4$, so $(P(k)-4)/2$ is every third Fibonacci number.  And the remaining
+root of the characteristic polynomial $(x-1)(x^{2}-4x-1)$, the conjugate of $\varphi^{3}$, is $2-\sqrt5=-\varphi^{-3}$, which is negative, so that
 component alternates in sign with the parity of the level.  That is the same
 parity that flips the determinant of the placement matrix, but any quantity
 alternating with level parity does so, and this is weak evidence of a link to
@@ -248,8 +254,8 @@ counted on the placed tiling through $k=6$,
 %
 whose sum doubled is $P(k)$.  The difference of the two totals is exactly
 $F_{3k+2}$, which is the amplitude of the $\mathbb{Z}/2$ character in
-Table~\ref{tab:dirs}.  The remaining two characters of
-$\mathbb{Z}/6=\mathbb{Z}/2\times\mathbb{Z}/3$ stay bounded:
+Table~\ref{tab:dirs}.  The remaining characters of
+$\mathbb{Z}/6=\mathbb{Z}/2\times\mathbb{Z}/3$, the $\mathbb{Z}/3$ and faithful ones (each up to complex conjugation), stay bounded:
 their largest amplitude over $k\le6$ is @peak@.  The group $\mathbb{Z}/6$ is the one that acts on the hexagonal directions of the tiling, and the data identify the group, not the action.
 
 \begin{table}[h]
@@ -278,6 +284,15 @@ the other characters is an observation.  The directions are counted with the
 fork's own tile builder, so this is a count and not an independent second
 route.
 
+\textbf{The fine decomposition.}  Resolved by species and edge index, the boundary has $52$ edge types,
+and counted on placed tiles for $1\le k\le6$ (\code{spectre\_golden.py}; the single tile at $k=0$ is dropped) only $34$ of
+them satisfy the recurrence of Theorem~\ref{thm:bdy}.  Of the other $18$, $14$ are bounded and of period two, such as
+$1,2,1,2,1,2$, and the remaining four grow without obeying it or its obvious order-four extension: the edges $3$ and $4$
+of $\Pi$ both give $1,7,22,91,378,1599$ and those of $\Psi$ both give $0,5,31,141,607,2581$, and their ratios still
+approach $\nu$.  The operator of
+Theorem~\ref{thm:bdy} is exact for the aggregates; the operator on the fine types is larger, and its
+spectrum below $\nu$ is not determined by these orders.
+
 \subsection{The balanced exponent}
 \label{sec:sstar}
 
@@ -287,7 +302,7 @@ is a single exponent.
 
 \begin{prop}
 \label{prop:sstar}
-Interfaces at coarseness $c<N$ in a depth-$N$ patch, that is, unit edges shared by two
+Interfaces at coarseness $1\le c\le N$ in a depth-$N$ patch, that is, unit edges shared by two
 different supertiles of order $N-c$, number
 $\tfrac12\bigl((T(c)-N_{\Gamma}(c))P(N-c)+N_{\Gamma}(c)Q(N-c)-P(N)\bigr)$, with $Q$ the Mystic
 perimeter of~\eqref{eq:bdyid} and $N_{\Gamma}(c)=T(c-1)$; so, since $P$ and $Q$ grow like $\nu^{k}$
@@ -304,6 +319,15 @@ s^{*}=1-\frac{\log\nu}{\log\lam^{2}}=@sstar@ .
 \end{equation}
 \end{prop}
 
+\begin{proof}
+The depth-$N$ patch is the order-$N$ supertile, of perimeter $P(N)$.  It is the union of $T(c)$ supertiles of order
+$N-c$ with disjoint interiors (Theorem~\ref{thm:bdy}), counting a Mystic as one, and $N_{\Gamma}(c)=T(c-1)$ of them are
+Mystics (Fact~\ref{fact:mystic}).  Summing their perimeters counts every interface edge twice and every edge of the
+outline once, which gives the count.  It grows in $c$ by $\lam^{2}/\nu$ because $T(c)\sim a\lam^{2c}$ and
+$P(N-c),Q(N-c)\sim b\,\nu^{N-c}$.  With the $B_{c}$ interface edges at coarseness $c$, each of cross-section $\delta_{c}^{2}$ the volume at level $c$ is of order
+$\mu^{c}\lam^{-2sc}$, which is independent of $c$ exactly when $\lam^{2s}=\mu$, that is, at $s=s^{*}$.
+\end{proof}
+
 \noindent
 The natural guess $s=2$, one factor of the unit per level, is wrong, and
 Section~\ref{sec:bdyop} says why: every interface edge is a \emph{unit} tile edge
@@ -317,9 +341,12 @@ $s^{*}$ is a modelling choice and not a property of the tiling; given it, $s^{*}
 since $\nu$ is (Theorem~\ref{thm:bdy}).  And $s^{*}$ had to be derived rather than
 fitted: because the interface count depends on $T(c)$ and on $P(N-c)$ together,
 a single-exponent fit needs $c$ large and $N-c$ large at once, which no finite
-patch provides.  Fitting one anyway returns values that drift with depth and
-never settle --- and the closed form reproduces those drifting values, which is
-how we know the drift was the estimator and not the geometry.
+patch provides.  Fitting one anyway to the measured counts gives a growth of
+$2.66$ per level at depth~4 and $2.41$ at depth~5, against $\mu\approx1.859$.  The
+closed form of Proposition~\ref{prop:sstar}, with its Mystic term, matches those
+counts exactly at both depths, so it reproduces the same fitted values
+(\code{spectre\_boundary.py}), which is how we know the drift was the estimator
+and not the geometry.
 """, peak='%.2f' % F.get('boundary_z3_bounded').value[0], rows='\n'.join(rows),
         sstar=F.get('balanced_exponent').decimal)
 
@@ -343,8 +370,11 @@ Chair44~\cite{Tsiokos1} is a candidate three-dimensional einstein, claimed to fi
 tile is the seven-cube chair (a $2\times2\times2$ block less one corner) with each of its $24$ unit faces carrying eight
 small pyramids of signed heights.  Without the pyramids, the substitution of eight chairs on the doubled chair is the
 classical three-dimensional chair substitution~\cite{Robinson,LeeMoody}; the decorations select the frames of the
-children.  Its einstein property and strong aperiodicity are Tsiokos's claimed proof, quoted and
-not checked, and nothing below bears on them.  What is recomputed is the combinatorial atlas: \code{symchair44.py} generates
+children.  Its einstein property and strong aperiodicity rest on Tsiokos's claimed proof, which we quote and have
+not refereed.  Section~\ref{sec:hull} re-proves its combinatorial half: no tiling obeying the contact rules has a
+nonzero period, and each has a finite symmetry group.  The geometric half~(R), that every tiling by the solid obeys
+those rules, and the existence of a tiling by the solid are quoted, so aperiodicity is proved here only conditionally
+on~(R).  What is recomputed is the combinatorial atlas: \code{symchair44.py} generates
 the tile in exact rational arithmetic with no external data and agrees vertex for vertex with the published solid
 (\code{symchair44\_tests.py}, \code{chair44\_tests.py}); the Facts are in \code{chair44facts.py} and the supplement.
 
@@ -424,15 +454,15 @@ and perimeter fields observed for the Spectre in Section~\ref{sec:bdyop} does no
 
 Let the $24$ proper rotations be the species and let $M_{FF'}$ count the children of an
 $F$-oriented chair that are $F'$-oriented.  The characteristic polynomial is
-$@charpoly@$, the minimal polynomial divides $x(x-8)(x-2)$, every row and column sums to
+$@charpoly@$, the minimal polynomial is $x(x-8)(x-2)$, every row and column sums to
 $8$, and $\operatorname{rank}M^{n}=@orank@$ for all $n\ge1$.  The zero sector is
 semisimple, there is no negative eigenvalue, and orientation frequencies converge to $1/24$
-at the rate $(2/8)^{d}$ in the depth $d$.  The Spectre's matrix is the opposite on each
+at the rate $(2/8)^{n}$ in the depth $n$.  The Spectre's matrix is the opposite on each
 count: a Pisot unit, irrational frequencies and a zero sector with a Jordan pair.  The
 consequence is a narrowing.  The Pisot route to pure-point diffraction and the
 irrational-frequency witness of aperiodicity (Section~\ref{sec:spectral}) both need an inflation
-that is a Pisot number and frequencies that are irrational, and an integer inflation $2$ with
-rational frequencies supplies neither.
+that is an irrational Pisot number, with conjugates to supply a Euclidean internal space, and frequencies that
+are irrational; the integer inflation $2$, Pisot only vacuously, with rational frequencies supplies neither.
 
 The replacement is $2$-adic, and it is classical: the undecorated chair substitution, in any dimension, is a
 standard example of a lattice substitution with a modular coincidence, pure point diffractive with a $2$-adic internal
@@ -449,7 +479,7 @@ generator, which agrees on the depth and the address, and a rate.  A subset auto
 sets (only @reach@ are reachable, @nons@ of them with more than one label) counts the digit words
 of length $M$ that have not yet fixed the label:
 $c(M)=1,8,64,176,400,848,1744,\dots$, that is $c(M+1)=2c(M)+48$ and $c(M)=28\cdot2^{M}-48$
-from $M=3$.  This holds for every $M$: the vectors $v_{M}$ of counts per automaton state satisfy
+for $M\ge1$.  This holds for every such $M$: the listed values give it for $M\le4$, and the vectors $v_{M}$ of counts per automaton state satisfy
 $v_{5}=3v_{4}-2v_{3}$ exactly, so applying the linear transfer map gives $v_{M+2}=3v_{M+1}-2v_{M}$ for all
 $M\ge3$, and $c(M)$ obeys the same recurrence.  The undetermined fraction
 is $c(M)/8^{M}\sim28\cdot4^{-M}$, and the transfer matrix on the non-singleton states has
@@ -478,7 +508,8 @@ anywhere in the hierarchy.
 \noindent
 The chirality is forced twice over: by the labels, which break the three mirror planes of the seed, and by the contacts, which
 admit no mirror pair.  So, for this tile, passing from the plane to three dimensions does not by itself make mirror images
-available.  Three caveats attach.  The einstein property is Tsiokos's claim.  The forced chirality was tested on
+available.  Three caveats attach.  The einstein property is Tsiokos's claim, and Section~\ref{sec:hull} proves aperiodicity only
+given~(R).  The forced chirality was tested on
 all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
 family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
 image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
@@ -545,8 +576,12 @@ author, and all of its finite inputs recomputed in exact arithmetic, including e
 (\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md})~\cite{Romanov}; no gap was found.
 Tsiokos's formal proof of it~\cite{Tsiokos1} has also been rebuilt from source in an independent build.  The build
 succeeds, and the dependency report of the theorem lists only the three standard axioms of the proof assistant and named
-decision steps evaluated by its compiler; the report is identical to the published one (\code{lean\_rebuild/}).  It has
-not been refereed.
+decision steps evaluated by its compiler, whose results are trusted as well as its kernel; the $162$ reports printed by the
+rebuild agree, theorem by theorem and up to a namespace prefix, with the published log, and the log left by the build equals the published one byte
+for byte (\code{lean\_rebuild/}).  The $67$ proof files of the build differ from the externally delivered proofs only in
+marked compile fixes, and no delivered statement is changed beyond notation (\code{lean\_rebuild/discharge\_audit\_indep.py},
+written independently of the project's own audit).  A build shows that the formal statement holds; that the formal statement says what
+(R) says is a reading of it, not a computation.  It has not been refereed.
 \item[(H)] Every atlas tiling $T$ partitions uniquely into complete level-$1$ supertiles, which form an atlas tiling $D(T)$
 with $T=\sigma(D(T))$.  This is Kamenetsky's Proposition~7.1~\cite{Kamenetsky} applied to the Chair44, and Tsiokos
 proves it for tilings by $Q$~\cite[Thms~6.4, 6.5]{Tsiokos1}.  It is proved here as Lemma~\ref{lem:hier}.
@@ -561,13 +596,15 @@ proves it for tilings by $Q$~\cite[Thms~6.4, 6.5]{Tsiokos1}.  It is proved here 
 Call two chairs compatible if their interiors are disjoint and, if they share a unit face, their relative pose is one of
 the $44$ legal contacts.  An enclosure of a chair $A$ is a set of pairwise compatible chairs, compatible with $A$, covering
 its $24$ unit faces; it is live if the chairs of $A$ and the enclosure can all have their faces covered again by pairwise
-compatible chairs.  Three finite facts are checked by \code{hierarchy\_certificate/check\_chair44\_hierarchy.py}, written
-independently of~\cite{Kamenetsky} and~\cite{Romanov}.
+compatible chairs.  Kamenetsky's three finite conditions (C1)--(C3) are checked by
+\code{hierarchy\_certificate/check\_chair44\_hierarchy.py}, written independently of~\cite{Kamenetsky}
+and~\cite{Romanov}.
 (C1) The relative poses of touching children in the supertiles of all levels are $30$.  The poses of a level-$1$
 supertile that are admissible next to a reference supertile, with all $64$ child pairs compatible, are all aligned; they
 are exactly the doubles $(g,2t)$ of the $44$ legal contacts $(g,t)$.  The coarsening closure of the $30$ is therefore the
-$44$, and these $44$ are the contacts of the atlas; they are also exactly the poses that obey the $135$ face-to-face rules
-the $44$ induce.
+$44$, and these $44$ are the contacts of the atlas.
+(C2) The $44$ are exactly the poses that obey the $135$ face-to-face rules they induce: the face rules are tight, so a
+tiling obeying the face rules is an atlas tiling.
 (C3) A chair has $33$ enclosures, $18$ of them not live.  For each of the $15$ live ones exactly one level-$1$ supertile
 containing $A$ is compatible with $A$ and the enclosure (U).  Either $A$ is that supertile's central child $T_{0}$ and all
 eight children are already present, or $T_{0}$ is a chair of the enclosure and every enclosure of $T_{0}$ compatible with
@@ -590,16 +627,16 @@ in its substitution, a $4\times4\times4$ block, are legal.
 \end{lem}
 
 \noindent
-A third implementation, written from the definitions for a referee review of this paper and sharing no code with the
-others, derives the $44$ contacts from Tsiokos's pyramid data and reproduces @adm@ admissible blocks, $15{,}214$ orbits and
-no illegal child window, checking every block and not only orbit representatives
-(\url{https://github.com/romanov360/big-bang-monotile}, \code{research/spectre\_review}).
-It is the second author's computation (\code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py}, on the atlas
-published with~\cite{Tsiokos1}), repeated by an independent implementation that derives the atlas from the pyramid
+The count is the second author's computation, with \code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py} on the atlas
+published with~\cite{Tsiokos1}.  It is repeated by an independent implementation that derives the atlas from the pyramid
 geometry and, separately, from the eight children alone, and published as a certificate of $O$-orbit representatives with a
 stand-alone verifier~\cite{Romanov}.  \code{chair44\_hull\_admissible.py} repeats the count with the $44$ contacts that
 \code{symchair44.py} derives from its own labels; this is independent code on the same eight children, which define the
-tile.  The lemma is not vacuous: enlarging the atlas by the five non-atlas contacts of a single violating block yields
+tile.  A further implementation, written from the definitions during a referee review of this paper and sharing no code with the
+others, derives the $44$ contacts from Tsiokos's pyramid data and reproduces @adm@ admissible blocks, $15{,}214$ orbits and
+no illegal child window, checking every block and not only orbit representatives
+(\code{hierarchy\_certificate/chair44\_blocks\_indep.py}, with its output).
+The lemma is not vacuous: enlarging the atlas by the five non-atlas contacts of a single violating block yields
 $360{,}213$ admissible blocks and $24$ failures.  The count runs for minutes, so the build of this paper does not repeat it.
 
 \begin{thm}
@@ -612,7 +649,7 @@ lies, up to an isometry, in $\Omega_{\sigma}$.
 Let $P$ be a finite patch of an atlas tiling $T$.  By~(H) every $D^{m}(T)$ is an atlas tiling on a lattice
 $L_{m}=2^{m}\mathbb{Z}^{3}+o_{m}$, $L_{m+1}\subset L_{m}$.  For $2^{n-1}$ larger than the diameter of $P$, $P$ lies in
 $\sigma^{n}(\beta)$ for the block $\beta$ of $D^{n}(T)$ at the vertex $v$ of $L_{n}$ nearest to $P$, and $\beta$ is the window at
-offset $v-v'+(1,1,1)$ of $\sigma(\beta')$ for the block $\beta'$ of $D^{n+1}(T)$ at the vertex $v'$ of $L_{n+1}$ nearest to
+offset $2^{-n}(v-v')+(1,1,1)$ of $\sigma(\beta')$ for the block $\beta'$ of $D^{n+1}(T)$ at the vertex $v'$ of $L_{n+1}$ nearest to
 $v$.  As $\beta'$ is admissible, $\beta$ is legal by Lemma~\ref{lem:blocks}, and so is $P$.  No exhaustion of space by one
 supertile is used, so tilings with fault planes are covered.
 \end{proof}
@@ -724,10 +761,10 @@ previous case, not $K$.  So the shifts are not eventually constant, and their ta
 carrying two distinct shifts of the graph $G_{K}$ whose vertices are the legal blocks $w$ with
 $\mathrm{Stab}(w)\cap O_{e}=K$ and whose edges $w\to W_{j}(w)$ are labelled $j$.
 
-Conversely, take a cycle in $G_{K}$ whose labels $j_{0},\dots,j_{p-1}$ are not all equal and unroll it periodically:
-$v_{n}=p-x_{n}e$ with $x_{n}=\sum_{m<n}j_{m}2^{m}$.  With $J_{i}=\sum_{m<p}j_{i+m}2^{m}$ (indices mod $p$) and
-$y_{i}=J_{i}/(1-2^{p})$, induction gives $x_{n}=y_{0}-2^{n}y_{n\bmod p}$; since $0<|J_{i}|<2^{p}-1$, $|x_{n}|\le\mu2^{n}+1$ with
-$\mu=\max_{i}|J_{i}|/(2^{p}-1)<1$, so the blocks cover cubes of half-width $(1-\mu)2^{n}-1$ about $p$ and define a tiling in
+Conversely, take a cycle in $G_{K}$ whose labels $j_{0},\dots,j_{q-1}$ are not all equal and unroll it periodically:
+$v_{n}=p-x_{n}e$ with $x_{n}=\sum_{m<n}j_{m}2^{m}$.  With $J_{i}=\sum_{m<q}j_{i+m}2^{m}$ (indices mod $q$) and
+$y_{i}=J_{i}/(1-2^{q})$, induction gives $x_{n}=y_{0}-2^{n}y_{n\bmod q}$; since $0<|J_{i}|<2^{q}-1$, $|x_{n}|\le\eta2^{n}+1$ with
+$\eta=\max_{i}|J_{i}|/(2^{q}-1)<1$, so the blocks cover cubes of half-width $(1-\eta)2^{n}-1$ about $p$ and define a tiling in
 the hull.  Every element of $K$ fixes $A$ and stabilises every $w_{n}$ about $v_{n}\in A$, so $K\le\mathrm{Sym}(T)$.  A point
 $p+ze$ lies in every $L_{n}$ only if $z$ is the $2$-adic number $-y_{0}$, which is not an integer; by
 Lemma~\ref{lem:axes}(3) the symmetry group is cyclic about $A$, hence $K$.
@@ -748,17 +785,19 @@ four-group of symmetries, or exactly a $2$-fold coordinate axis.
 \noindent
 The theorem is about tilings and does not conflict with Fact~\ref{fact:chairchiral}, which is about the tile: the
 decorated chair has only the identity, and a tiling by it can still be invariant under a rotation of its whole pattern.
-Nor does the bound of $8$ conflict with the $24$ orientations that occur in a depth-three supertile
+Nor does the bound of $8$ conflict with the $24$ orientations that occur in a depth-two supertile
 (Fact~\ref{fact:chairtwist}): by Theorem~\ref{thm:hull} every tiling contains all of them, and it is symmetric under
 at most a third of the $24$ rotations.
 
 \textbf{Scope.}  For atlas tilings, Theorem~\ref{thm:hull}, Corollaries~\ref{cor:contacts} and~\ref{cor:hull} and
 Theorem~\ref{thm:sym} rest on Lemma~\ref{lem:hier}, on Lemma~\ref{lem:blocks}, and, for the
-corollary, on the theorem of Lee, Moody and Solomyak.  For tilings by $Q$ they also rest on~(R), quoted, audited by the
+corollary, on the theorem of Lee and Moody~\cite{LeeMoody} with its consequence for the hull~\cite{LMS}.  For tilings by $Q$ they also rest on~(R), quoted, audited by the
 second author, and not refereed.  The admissible-block
 count, the axial-group analysis and the explicit patches are the second author's computations, repeated independently; the
-build of this paper recomputes the language of legal blocks, its closure, the fixed seeds and their stabilisers.  None of
-this bears on the einstein property or on strong aperiodicity of the Chair44, which remain Tsiokos's claim.
+build of this paper recomputes the language of legal blocks, its closure, the fixed seeds and their stabilisers.  Since
+$\mathrm{Sym}(T)$ embeds in $O$, no atlas tiling has a nonzero period, so by~(R) no tiling by $Q$ is periodic; that is the
+whole bearing of this section on strong aperiodicity.  (R) itself and the existence of a tiling by $Q$ are quoted, so the
+einstein property and strong aperiodicity of the Chair44 remain Tsiokos's claim.
 """, labels=hu['labels'], adm=commas(hu['romanov']['admissible']), pd=', '.join(str(x) for x in hu['per_depth']),
         legal=hu['legal'], fixed=hu['fixed'], s1=hu['stabilisers_fixed'][1], s8=hu['stabilisers_fixed'][8])
 
@@ -784,7 +823,7 @@ def lines_subsection():
 
 Corollary~\ref{cor:hull} says that every finite patch has a frequency, reached uniformly by boxes of side $L$ in every
 tiling.  It is tempting to read this as a statement about any scan of a tiling, for instance the sum of an observable
-along a line of cells.  It is not, and this subsection says what is true.  Everything below is an exact finite computation
+along a line of cells.  It is not, and this subsection says what is true.  Everything below is proved from, or is, an exact finite computation
 (\code{chair44\_lines.py}) except the last proposition, which is conditional on the internal space of
 Corollary~\ref{cor:hull}.
 
@@ -799,9 +838,9 @@ mean exactly $0$, in each component.
 \label{prop:stack}
 Six of the @labels@ labels, namely cell $0$ of the chairs whose notch points along $\pm(1,1,1)$ (three along each sign), satisfy
 $\sigma(j)_{000}=\sigma(j)_{111}=j$.  For each of them and every $n$, the chairs of $\sigma^{n}(j)$ form a stack in which each
-chair fills the notch of the next, and each of the seven cells of the chair gives a line of identical labels, of length
-$2^{n}-2$, in direction $(1,1,1)$.  Along such a line $p$ is constant, $-36$ on one cell type and $+36$ on another, and
-each component of $d$ is $\pm1$.
+chair fills the notch of the next, and each of the seven cells of the chair gives a line of identical labels in direction
+$(1,1,1)$, of length $2^{n}$ on the main diagonal and $2^{n}-1$ for the other six cells.  On the line of one cell type $p$ is
+$-36$ throughout, on that of another $+36$, and on each of the seven lines each component of $d$ is $\pm1$.
 \end{prop}
 
 \begin{proof}
@@ -811,7 +850,8 @@ $\sigma^{n}(j)$ with difference in $T$ has the label $\Lambda(e)$, by induction 
 $(0,0)$ and label $j=\Lambda(0,0)$.  A cell of $\sigma^{n+1}(j)$ is the child $(a,b,c)\in\{0,1\}^{3}$ of a cell of
 $\sigma^{n}(j)$ whose difference is $e'=\bigl((e_{0}-a+c)/2,(e_{1}-b+c)/2\bigr)$.  So it suffices that, for every $e\in T$ and
 every child position compatible with $e$, the difference $e'$ lies in $T$ and $\sigma[\Lambda(e'),(a,b,c)]=\Lambda(e)$.  That
-is $@cases@$ cases for each of the six labels, and they all hold (\code{chair44\_lines.py}).  The main diagonal is the case $e=(0,0)$.
+is $@cases@$ cases for each of the six labels, and they all hold (\code{chair44\_lines.py}).  The set $T$ is $\{(0,0),\pm(1,0),\pm(0,1),\pm(1,1)\}$, and the cells of the cube $[0,2^{n})^{3}$ with difference $e$ number
+$2^{n}-\max(0,e_{0},e_{1})+\min(0,e_{0},e_{1})$: that is $2^{n}$ on the main diagonal $e=(0,0)$ and $2^{n}-1$ for the other six.
 \end{proof}
 
 \noindent
@@ -823,8 +863,9 @@ no uniformity in $L$ can hold for them.
 
 \paragraph{Corner lines.}  For $b\in\{0,1\}^{3}$ the cells $tb$ of $\sigma^{n}(j)$, $0\le t<2^{n}$, are the $n$-th iterate of the
 constant-length-$2$ substitution $\tau_{b}(j)=\sigma[j,0]\,\sigma[j,b]$ on the same labels, since the child positions along
-the line are always $0$ and $b$.  Its closed strongly connected classes, each primitive and each reached from every label, carry
-exact letter frequencies and so exact limits of the mean of each cell observable along the line, for each starting label.  Table~\ref{tab:corner} gives the
+the line are always $0$ and $b$.  Every label leads into one of its closed strongly connected classes, each of which is
+primitive and carries exact letter frequencies, so the mean of each cell observable along the line has an exact limit for each
+starting label.  Table~\ref{tab:corner} gives the
 mean of the notch vector; the mean of $p$ is $0$ on all of them.  The seven lines are the lines through the corner of the
 cube in the seven directions in $\{0,1\}^{3}$; they are also read off the label cube, with agreement.
 
@@ -841,25 +882,31 @@ direction $b$ & closed classes of $\tau_{b}$ & mean of $d$ \\ \hline
 
 \begin{prop}
 \label{prop:lineaction}
-Assume that the hull $\Omega$ of label configurations, under the action of $\mathbb{Z}^{3}$ by translations, has maximal
-equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\nu$ the Haar measure (Corollary~\ref{cor:hull}; for the
-action of $\mathbb{R}^{3}$ on tilings the factor is a solenoid, not $\mathbb{Z}_{2}^{3}$).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $T^{v}$ on $\Omega$ is
+Assume that the hull $\Omega$ of label configurations, under the action of $\mathbb{Z}^{3}$ by translations, is uniquely
+ergodic with invariant probability measure $\mathbb{P}$ and has maximal
+equicontinuous factor $\pi:\Omega\to\mathbb{Z}_{2}^{3}$ with $\pi_{*}\mathbb{P}$ the Haar measure (Corollary~\ref{cor:hull}; for the
+action of $\mathbb{R}^{3}$ on tilings the factor is a solenoid, not $\mathbb{Z}_{2}^{3}$).  Let $v\in\mathbb{Z}^{3}\setminus0$.  Then the action of the translation $S^{v}$ on $\Omega$ is
 not uniquely ergodic.  There are a function $f$ of a finite window of labels and a tiling $T$ such that the averages
-$\frac1L\sum_{t<L}f(T^{tv}T)$ along the line through $0$ in direction $v$ converge to a number different from $\int f\,d\nu$.
+$\frac1L\sum_{t<L}f(S^{tv}T)$ along the line through $0$ in direction $v$ converge to a number different from $\int f\,d\mathbb{P}$.
 \end{prop}
 
 \begin{proof}
 The closure of $\{tv:t\in\mathbb{Z}\}$ in $\mathbb{Z}_{2}^{3}$ is $H=\mathbb{Z}_{2}v$, a closed subgroup of infinite index, so its
-Haar measure is $0$.  For $x\in\Omega$ the set $K=\pi^{-1}(\pi(x)+H)$ is compact, non-empty and $T^{v}$-invariant, so it carries a
-$T^{v}$-ergodic probability measure $\mu$.  Since $\nu(K)=0$, $\mu\neq\nu$, and functions of a finite window of labels are dense
-in $C(\Omega)$, so some such $f$ has $\int f\,d\mu\ne\int f\,d\nu$.  By Birkhoff's theorem the averages along the line converge to
-$\int f\,d\mu$ for $\mu$-almost every tiling.
+Haar measure is $0$.  For $x\in\Omega$ the set $K=\pi^{-1}(\pi(x)+H)$ is compact, non-empty and $S^{v}$-invariant, so it carries a
+$S^{v}$-ergodic probability measure $\mathbb{P}'$.  Since $\mathbb{P}(K)=0$, $\mathbb{P}'\neq\mathbb{P}$, and functions of a finite window of labels are dense
+in $C(\Omega)$, so some such $f$ has $\int f\,d\mathbb{P}'\ne\int f\,d\mathbb{P}$.  By Birkhoff's theorem the averages along the line converge to
+$\int f\,d\mathbb{P}'$ for $\mathbb{P}'$-almost every tiling.
 \end{proof}
 
 \noindent
 Proposition~\ref{prop:stack} and Table~\ref{tab:corner} are explicit instances for the directions $(1,1,1)$ and the others in
 $\{0,1\}^{3}$.  The failure depends on the observable and on the line: the corner lines all have $p$-mean $0$, and a
-coordinate-axis line can have bounded sums of $d_{z}$ while another has sums of $d_{z}$ growing like $L$.  Nothing here
+coordinate-axis line can have bounded sums of $d_{z}$ while another has sums of $d_{z}$ growing like $L$.  On the corner line
+in direction $(0,0,1)$, $\tau_{b}$ maps the four letters of its closed class onto two words $uv$ and $u'v'$, each letter of
+the closed class goes to $uv$ if it is a first letter of one of these two words and to $u'v'$ otherwise, and $d_{z}$ is $+1$ on $u,v$ and $-1$ on $u',v'$.
+So beyond the first level the line reads $uvu'v'uvu'v'\cdots$, $d_{z}$ runs $+1,+1,-1,-1,\dots$ and its sums stay in
+$\{0,1,2\}$.  On the corner line in direction $(1,0,0)$ every letter of the closed class has $d_{z}=1$, so the sums equal $L$
+(\code{chair44\_lines.py}).  Nothing here
 concerns directions that are not lattice directions: the cells met by a line of irrational slope are not an orbit of a
 subgroup of $\mathbb{Z}^{3}$, and the argument does not apply.
 """, labels=hu['labels'], cases=ln['tube']['cases'][0], rows=' \\\\\n'.join(rows) + ' \\\\')
@@ -913,9 +960,9 @@ the repeated eigenvalue $2$ of the orientation matrix is not shown.
 \subsection{Polyhedral Unfolding and Surface Net Construction}
 
 The surface of the chair is a sphere made of $@F@$ unit squares, with $@V@$ vertices and
-$@E@$ edges, whose folds are $@convex@$ convex, $@flat@$ flat and $@concave@$ concave.  Cutting it along a
-spanning tree of its face-adjacency graph, $23$ cuts, and folding every face into the plane gives a
-$24$-omino.  There are $@trees@$ spanning trees (the matrix-tree theorem, exact).  Of $@samples@$
+$@E@$ edges, whose folds are $@convex@$ convex, $@flat@$ flat and $@concave@$ concave.  Keeping the $23$
+edges of a spanning tree of its face-adjacency graph as hinges, cutting the other $@cutn@$ edges, and folding every face into
+the plane gives a $24$-omino.  There are $@trees@$ spanning trees (the matrix-tree theorem, exact).  Of $@samples@$
 random trees, $@valid@$ give a valid net and $@over@$ overlap themselves; the valid nets have
 perimeters from $@minper@$ to $50$, and $@tilers@$ of them tile the plane by translation.  The smallest
 perimeter found is a sampled value and not a minimum (any $24$-omino has perimeter at least $20$).  The
@@ -948,7 +995,7 @@ interface length inside the layer $z=0$ is $4^{n+1}-4\cdot2^{n}$ for $n\le4$ ($@
 The sum of the notch vectors in Fact~\ref{fact:chairslices} is the sum rule of Fact~\ref{fact:chairtwist} applied to the vector
 $(1,1,1)$, and it was also counted.  It is far smaller than the sum of $8^{n}$ random signs, which is of order
 $8^{n/2}$: the intensity of the notch-weighted structure factor at the origin per tile is
-$3\cdot2^{-n}$ instead of order $1$.  The layer interface grows by a factor tending to $4$ per level,
+$3\cdot2^{-n}$ instead of order $1$.  The layer interface grows by a factor approaching $4$ per level over the levels computed,
 again dimension $2$.  Figure~\ref{fig:chairslice} shows a slice, the $k_{z}=0$ plane at level $5$, the origin
 values, and the median intensity at random wave vectors.
 @FIGSLICE@
@@ -960,25 +1007,27 @@ can be computed on the placed tiles.
 
 \begin{fact}
 \label{fact:orientsum}
-For the Chair44 the notch sum is $2^{n}$ exactly ($@csum@$ at levels $2,\dots,5$).  For the Spectre,
+For the Chair44 the notch sum is $2^{n}(1,1,1)$ exactly (each component $@csum@$ at levels $2,\dots,5$).  For the Spectre,
 $|\sum_{j}e^{i\theta_{j}}|/\lambda^{n}=@sratio@$ at levels $2,\dots,5$ (patches of $@sN@$ tiles), and
 the ratio of the last two sums is $@step@$ against $\lambda=2.8059$.  The first is exact and
-the second is a measurement over floating-point sums, with no proof.
+the second is a measurement over floating-point sums; Fact~\ref{fact:orientrec} in Section~\ref{sec:exact} explains it by
+an exact recursion.
 \end{fact}
 
 \noindent
 In both tilings the orientation sum grows like the linear inflation.  The tile counts grow
 like $\lambda^{dn}$, so $|S|^{2}/N\propto\lambda^{(2-d)n}$ is constant for the Spectre ($d=2$; the values
-are $@si0@$) and $2^{-n}$ for the Chair44 ($d=3$).  On this evidence the two tilings differ in that
+are $@si0@$) and $2^{-n}$ in each component for the Chair44 ($d=3$).  On this evidence the two tilings differ in that
 quantity through the dimension alone, and not through the details of the tile.  This is an observation about
-one choice of orientation weight; it is not a theorem for the Spectre, whose inflation reverses orientation, so
-that a sum rule of the form $\sum H_{i}=\lambda I$ is not available to it in the same way.
+one choice of orientation weight.  For the Chair44 it is the sum rule; for the Spectre, whose inflation reverses
+orientation, a sum rule of the form $\sum H_{i}=\lambda I$ is not available in the same way, and the growth comes instead from
+the two-level recursion of Fact~\ref{fact:orientrec}.
 
 Where the power goes is asked with a deliberately loose statistic: the median of $I(k)/N$ over $300$ fixed random wave
-vectors, with $k$ in the box $[0,2\pi/\ell]^{d}$, against the number of tiles.  It falls in both, as $N^{@s_s@}$ for the Spectre
+vectors, with $k$ in the box $[0,2\pi/\ell]^{d}$ and $\ell$ the tile scale (the square root of the tile area for the Spectre, $7^{1/3}$ for the chair), against the number of tiles.  It falls in both, as $N^{@s_s@}$ for the Spectre
 centroids and $N^{@s_c@}$ for the Chair44 centres, and as $N^{@s_sw@}$ and $N^{@s_cw@}$ with orientation weights: the intensity
-is concentrated on few wave vectors, as in a Bragg spectrum, and faster for the chair, whose centres lie on a lattice with
-defects.  Figure~\ref{fig:chaircompare} and Table~\ref{tab:unfold} gather the comparison.
+is concentrated on few wave vectors, as in a Bragg spectrum, and faster for the chair, whose centres lie on two cosets
+of $2\mathbb{Z}^{3}$ (Fact~\ref{fact:chairslices}); the cause of the difference in rate is not analysed.  Figure~\ref{fig:chaircompare} and Table~\ref{tab:unfold} gather the comparison.
 @FIGCOMPARE@
 
 \begin{table}[h]
@@ -995,8 +1044,8 @@ supertile twist & $11.565^{\circ}$, mirrored each level & $0$, no mirror \\
 orientations & $12$ (steps of $30^{\circ}$) & $24$ rotations \\
 supertile outline, dimension & $@Db@$ & $2$ \\
 tile count per level & $\lambda^{2}\approx7.87$ & $8$ \\
-orientation sum & $\approx1.4489\,\lambda^{n}$ & $2^{n}$ exactly \\
-$|S|^{2}/N$ & constant, $\approx@si0last@$ & $2^{-n}$ \\
+orientation sum & $\approx1.4489\,\lambda^{n}$ & $2^{n}(1,1,1)$ exactly \\
+$|S|^{2}/N$ & constant, $\approx@si0last@$ & $2^{-n}$ per component \\
 median $I/N$, slope in $N$ & $@s_s@$ (weighted $@s_sw@$) & $@s_c@$ (weighted $@s_cw@$) \\
 \bottomrule
 \end{tabular}
@@ -1013,7 +1062,7 @@ theorem~\cite{BaakeHat,BaakeSpectre}, and the exact analysis of the Chair44 cent
 """, N5=F.GEOMETRIC_TOTALS[5],
         angles=', '.join('%g' % a for a in sorted(set(tw['angles']))),
         group=tw['group'],
-        F=nt['faces'], V=nt['vertices'], E=nt['edges'], convex=nt['folds']['convex'],
+        F=nt['faces'], V=nt['vertices'], E=nt['edges'], cutn=nt['edges'] - nt['faces'] + 1, convex=nt['folds']['convex'],
         flat=nt['folds']['flat'], concave=nt['folds']['concave'],
         trees=commas(nt['trees']), samples=nt['samples'], valid=nt['valid'], over=nt['overlapping'],
         minper=nt['min_perimeter'], tilers=nt['tilers'], cubetrees=nt['cube_trees'], cubenets=nt['cube_nets'],
@@ -1033,7 +1082,7 @@ nets that tile the plane by translation, and a median one; and the perimeters of
         FIGSLICE=figure_block('chair44_slice', 'fig:chairslice',
             r"""Slices and projection of the hierarchy.  (a) A depth-$3$ layer, coloured by tile.  (b) The $k_{z}=0$ plane
 of the diffraction of the level-$5$ chair centres, which is the Fourier transform of their projection.  (c) The squared structure
-factor at the origin: the centres (Bragg, $8^{n}$), random signs ($3\cdot8^{n}$) and the notch vectors ($3\cdot4^{n}$).  (d) The median of $I/N$ at
+factor at the origin: the centres (Bragg, $64^{n}$), random signs ($3\cdot8^{n}$) and the notch vectors ($3\cdot4^{n}$).  (d) The median of $I/N$ at
 $300$ random wave vectors, unweighted and weighted by a notch component."""),
         FIGCOMPARE=figure_block('chair44_compare', 'fig:chaircompare',
             r"""The same questions for both tilings.  (a) The orientation sum over the linear inflation to the $n$: constant for both.
@@ -1274,8 +1323,8 @@ separated at every order: by a radius bound for $k\le60$, and by the exact eigen
 $q_{k}$ for $k>60$, with a margin of at least $0.097$ in units of the quadrilateral's diagonal.  On
 the $93$ types the interior overlap vanishes at order $0$, hence at every order by the same sum.
 So the supertiles are genuine patches; this is proved here, not assumed.  The state
-$(P,Q,S_{1},\dots,S_{93})$ then obeys $V(k+1)=BV(k)$ with a fixed $95\times95$ integer matrix $B$.
-The sequence $e^{\top}B^{k}p(B)V(0)$, with $p(x)=x^{3}-5x^{2}+3x+1$, vanishes for $k<95$, hence for
+$(P,Q,S_{1},\dots,S_{93})$ then obeys $V(k+1)=\mathcal{B}V(k)$ with a fixed $95\times95$ integer matrix $\mathcal{B}$.
+The sequence $e^{\top}\mathcal{B}^{k}p(\mathcal{B})V(0)$, with $p(x)=x^{3}-5x^{2}+3x+1$, vanishes for $k<95$, hence for
 all $k$ by Cayley--Hamilton; the same argument gives the recurrence of $Q$.  The closed form follows
 because $F_{n+6}=4F_{n+3}+F_{n}$ and the seeds agree.  The computation is
 \code{boundary\_certificate/check\_spectre\_boundary\_proof.py}.  It works from an independent exact
@@ -1305,7 +1354,8 @@ rounding key is therefore not load-bearing for any of the boundary results.
 \end{fact}
 
 \noindent
-The factorisation of $\chi_{\partial}$ is not left as a spectral remark.  Its
+The factorisation of the characteristic polynomial $\chi_{\partial}$ of the perimeter recurrence
+(Fact~\ref{fact:bdychi} below) is not left as a spectral remark.  Its
 quadratic factor applied to the sequence annihilates the growing part and
 leaves behind the constant belonging to the marginal eigenvalue.  By
 Theorem~\ref{thm:bdy} the identity holds for the perimeters at every order:
@@ -1331,8 +1381,8 @@ The Perron root is $\nu=%s=\varphi^{3}=%s$.
 \end{fact}
 
 \noindent
-So, on the orders computed, the area of a supertile inflates by $\lam^{2}=4+\sqrt{15}$
-and its perimeter by $2+\sqrt5$.  This is a $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$
+So, for every order (Theorem~\ref{thm:bdy}), the area of a supertile grows asymptotically by $\lam^{2}=4+\sqrt{15}$
+per level and its perimeter by $2+\sqrt5$.  This is a $\mathbb{Q}(\sqrt{15})$ / $\mathbb{Q}(\sqrt5)$
 divide between area and perimeter of the
 \emph{same} tile.  The supertile
 boundary is golden although the tiling is not.
@@ -1359,8 +1409,13 @@ children matrix $\bigl(\begin{smallmatrix}7&1\\6&1\end{smallmatrix}\bigr)$ has P
 positive area and its pieces overlap in measure zero.
 
 A grandchild of $S$ (slot $3$ of slot $7$) is separated at every order from every contact it could have outside its
-supertile, with a margin of $0.267$ quadrilateral diagonals.  In a Spectre tiling of the plane~\cite{SmithEtAl} a ball
-of that relative radius about it therefore lies in the supertile.  So $K_{p}$ has interior and, since its pieces are
+supertile, with a margin of $0.267$ quadrilateral diagonals.  Take a Spectre tiling of the plane whose tiles group, for
+every $k$, into the construction's order-$k$ supertiles, with every two adjacent supertiles placed as in one of the types
+of Theorem~\ref{thm:bdy}.  A limit of the supertiles $S_{k}$, re-centred at tiles whose distance from the outline grows
+without bound, is such a tiling: those distances do grow, since the area of $S_{k}$ grows by $\lam^{2}$ and its
+perimeter only by $\nu$, and inside each $S_{k}$ adjacent supertiles are placed as in one of the finitely many types
+(this is the hierarchical structure of~\cite[Thms~2.2, 5.1]{SmithEtAl2}).  In that tiling a ball of that relative
+radius about the grandchild therefore lies in the supertile.  So $K_{p}$ has interior and, since its pieces are
 dense, it is the closure of its interior.
 
 For the upper bound, every point of $\partial K_{p}$ is within any $\varepsilon$ of the outline of $\lam^{-k}S_{k}$ for
@@ -1370,7 +1425,9 @@ polynomial $x^{84}(x-1)^{3}(x+1)^{4}(x^{2}-4x-1)$, with $\nu$ a simple dominant 
 
 For the lower bound, $20$ of the types share an edge at every order $k\ge1$, and they contain an irreducible block of spectral
 radius $\nu$ that sibling pairs reach.  So at least $c\nu^{m}$ pairs of depth-$m$ pieces of two sibling limit tiles meet,
-each in a point of both boundaries.  A box of side $\lam^{-m}$ meets boundedly many pieces, because the pieces have area
+each in a point on the boundaries of both siblings.  Among the sibling types that reach the block are pairs of two
+non-Mystic children, which are similar copies of $K_{p+1}$; applied on both parities, the bound transfers to
+$\partial K_{p}$.  A box of side $\lam^{-m}$ meets boundedly many pieces, because the pieces have area
 of order $\lam^{-2m}$ and overlap in measure zero.
 
 The finite inputs are checked by \code{boundary\_certificate/check\_spectre\_fractal.py}.
@@ -1449,6 +1506,41 @@ def paper_facts():
     return [f for f in F.FACTS if f.key not in OFF_PAPER]
 
 
+def claim_cell(claim):
+    """A claim as a table cell that can break: a p-column will not break inside $...$, so the claim is split at its
+    top-level separators, and a top-level \\text{...} (not inside braces, a \\left...\\right pair or a sub- or
+    superscript) is set as running text."""
+    segs, math, i, depth, lr = [], '', 0, 0, 0
+    while i < len(claim):
+        if claim.startswith(r'\left', i):
+            lr += 1
+        elif claim.startswith(r'\right', i):
+            lr -= 1
+        if claim.startswith(r'\text{', i) and depth == 0 and lr == 0 and not math.rstrip().endswith(('^', '_')):
+            j, d = i + len(r'\text{'), 1
+            while d:
+                d += {'{': 1, '}': -1}.get(claim[j], 0)
+                j += 1
+            segs += [('m', math), ('t', claim[i + len(r'\text{'):j - 1])]
+            math, i = '', j
+            continue
+        c = claim[i]
+        depth += {'{': 1, '}': -1}.get(c, 0)
+        math += c
+        i += 1
+    segs.append(('m', math))
+    out = []
+    for mode, txt in segs:
+        if mode == 't':
+            out.append(txt)
+            continue
+        for sep in (r'\qquad', r'\quad', r';\ ', ',\\ '):
+            txt = txt.replace(sep, '$' + sep + ' $')
+        if txt.strip():
+            out.append('$' + txt + '$')
+    return ''.join(out).replace('$$', '')
+
+
 def facts_appendix():
     rows = []
     for f in paper_facts():
@@ -1462,18 +1554,15 @@ def facts_appendix():
         # long claims must be allowed to break, or the cell overruns: a
         # p-column will not break inside $...$, so the claim is split at its
         # top-level separators and each piece set as its own math group
-        claim = f.claim
-        for sep in (r'\qquad', r'\quad', r';\ ', ',\\ '):
-            claim = claim.replace(sep, '$ ' + sep + ' $')
-        rows.append(r'\code{%s} & $%s$ & %s & %s \\'
-                    % (esc(f.key), claim, esc(how), mark))
+        rows.append(r'\code{%s} & %s & %s & %s \\'
+                    % (esc(f.key), claim_cell(f.claim), esc(how).replace(r'\_', r'\_\allowbreak{}'), mark))
     return r"""
 \appendix
 \footnotesize
 \section{Every Fact, and how it was obtained}
 \label{app:facts}
 
-Generated from \code{spectrefacts.py}.  The last column marks the Facts that
+Generated from the ledger modules.  The last column marks the Facts that
 are also proved in Lean, see \url{https://github.com/brentharts/spectre/wiki/Spectre-Lean}; the others are computations.
 
 \setlength{\tabcolsep}{3pt}
@@ -1519,12 +1608,17 @@ stated.
 \bibitem{HartshornRomanov} B.~Hartshorn and T.~Romanov, \emph{''' + TITLE + r'''}, preprint (2026),
 \url{https://github.com/brentharts/spectre}.
 
-\bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
-\emph{A chiral aperiodic monotile}
-Combinatorial Theory, 4(2).
+\bibitem{SmithEtAl2} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{A chiral aperiodic monotile},
+Combin.\ Theory \textbf{4}(2) (2024); arXiv:2305.17743.
 
-\bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
+\bibitem{Tsiokos1} I.~Tsiokos, \emph{A strongly aperiodic monotile in three dimensions} (2026),
 arXiv:2609.19214.
+
+\bibitem{SocolarTaylor} J.~E.~S.~Socolar and J.~M.~Taylor, \emph{An aperiodic hexagonal tile}, J.\ Combin.\ Theory Ser.\ A
+\textbf{118} (2011) 2207--2231; arXiv:1003.4279.
+
+\bibitem{LeeMoodyTS} J.-Y.~Lee and R.~V.~Moody, \emph{Taylor--Socolar hexagonal tilings as model sets}, Symmetry
+\textbf{5} (2013) 1--46; arXiv:1207.6237.
 
 ''' + NOTE_MOVED_BIB + r'''
 \end{thebibliography}
@@ -1550,15 +1644,16 @@ TITLE = "The Internal Space and Boundary Growth of the Spectre and Tsiokos's Cha
 def abstract():
     return fill(r"""
 \begin{abstract}
-The planar Spectre and Tsiokos's three-dimensional Chair44 are aperiodic monotiles whose tilings are hierarchical;
-they are compared here by exact computation.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$.
+The planar Spectre is an aperiodic monotile and Tsiokos's three-dimensional Chair44 is claimed to be one; both
+have hierarchical tilings, and they are compared here by exact computation.  The Spectre inflates by the unit $\lam^{2}=@perron@$ of $\mathbb{Z}[\sqrt{15}]$.
 Its supertile perimeter is $2F_{3k+5}+4$ at every order $k$, proved by a finite exact certificate, so it grows by
 the unit $2+\sqrt5$ of $\mathbb{Q}(\sqrt5)$, faster than the linear inflation.  The boundary of the limiting supertile
 is a fractal of box dimension $\log(2+\sqrt5)/\log\lam$, and the tail of the common-ancestor levels of neighbouring
-tiles decays exactly by $\nu/\lam^{2}$.  The inflation acts
-on the vertex module $\mathbb{Z}^{4}$ with two expanding and two contracting directions, and the internal plane is given
-exactly; the window is the attractor of contracting similarities, with boundary dimension
-$\log(5+2\sqrt6)/\log(4+\sqrt{15})$.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
+tiles decays with ratio tending exactly to $(2+\sqrt5)/\lam^{2}$.  In the coordinates of the rank-four
+vertex module $\mathbb{Z}[\zeta_{12}]$, one level of the inflation is a $16\times16$ integer matrix on four key points, with
+expanding eigenvalues $\pm\lam$, contracting $\pm\lam^{-1}$ and marginal $\pm1$, and the internal plane, the projection
+along the expanding plane of each parity of level, is given exactly; the window is the attractor of contracting similarities and has positive area, and the seams where its pieces
+meet have box dimension $\log(5+2\sqrt6)/\log(4+\sqrt{15})$, a lower bound for the dimension of its boundary.  The Chair44 inflates by the integer $2$ on $\mathbb{Z}^{3}$, with no Euclidean internal space (its internal
 space is $2$-adic) and no twist; its centre set, that of the classical three-dimensional chair, has an explicitly computed
 pure-point diffraction measure.  The main result is that every lattice-registered tiling obeying the $44$ contact rules
 lies in the substitution hull, and that its symmetry group is conjugate to one of $1$, $C_{2}$ (a half-turn about a face
@@ -1582,28 +1677,31 @@ def introduction():
 A tiling that exists only by inflation carries an arithmetic: the number by which it inflates, the field that number
 generates, and what that field leaves behind.  The Spectre of Smith, Myers, Kaplan and Goodman-Strauss~\cite{SmithEtAl,SmithEtAl2}
 inflates by a unit of a real quadratic field, and the Chair44 of Tsiokos~\cite{Tsiokos1} by the integer $2$.  The
-Spectre's vertices lie in $\mathbb{Z}[\zeta_{12}]$, a module of rank four, on which the inflation acts as an integer matrix
-with eigenvalues $\pm\lam$ and $\pm\lam^{-1}$: the two contracting directions form an internal space in which the vertices
-fill a bounded window.  An integer inflation $m>1$ acts as $mI$, nothing contracts, and the internal space is $m$-adic.
+Spectre's vertices lie in $\mathbb{Z}[\zeta_{12}]$, a module of rank four, and one level of the inflation, acting on four key points of a
+supertile, is an integer matrix with eigenvalues $\pm\lam$, $\pm\lam^{-1}$ and $\pm1$: projecting along the expanding
+plane, which alternates with the parity of the level, gives a two-dimensional internal space in which the vertices fill
+a bounded window.  An integer inflation $m>1$ acts as $mI$, nothing contracts, and the internal space is $m$-adic.
 This paper computes that difference exactly.
 
 A companion note~\cite{BangNote} states the physical hypothesis that motivated this work; nothing here depends on it.
 Statements are stratified.  \emph{Facts} are exact statements: each is proved, or verified by an exact finite computation
-and then stated only for the range computed, or quoted, and the text says which; the supplement lists every Fact with
-the method by which it was obtained.  \emph{Propositions} are computations with a modelling step, and \emph{Theorems},
+and then stated only for the range computed, or quoted, and the text says which; the supplement lists the ledger entries behind
+the Facts, with the method by which each was obtained.  \emph{Propositions} are results of narrower scope, proved or computed, whose modelling steps and hypotheses are
+stated in them (a thickening in Proposition~\ref{prop:sstar}, ergodic structure in Proposition~\ref{prop:lineaction}), and \emph{Theorems},
 \emph{Lemmas} and \emph{Corollaries} carry proofs.  Results labelled \emph{computation, not Fact} are numerical, on finite
 patches, and enter no ledger.
 
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
 \ref{sec:bdyop} (perimeter growth) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
-and~\ref{sec:unfold}, with a proof, resting on two quoted inputs, that every Chair44 tiling lies in the substitution hull
+and~\ref{sec:unfold}, with a proof, resting on one quoted input and two finite computations, that every Chair44 tiling lies in the substitution hull
 and a classification of the symmetry groups of its tilings in Section~\ref{sec:hull}, and the two are compared in Section~\ref{sec:exact}.  Section~\ref{sec:hier} tests whether the
 Spectre's substitution hierarchy can serve as a clock.
 
 What is not claimed matters as much.  The inputs are these.  For the Spectre: the published substitution rule of
 \cite{SmithEtAl2}, that is, the matrix~\eqref{eq:M} together with the placement transforms of the construction, from which
 every placed patch is built.  For the Chair44: Tsiokos's solid and its eight substitution children~\cite{Tsiokos1}.  The
-einstein property of the Chair44 is Tsiokos's claimed proof~\cite{Tsiokos1}, quoted.  The hull theorem of
+einstein property of the Chair44 rests on Tsiokos's claimed proof~\cite{Tsiokos1}, quoted; what Section~\ref{sec:hull}
+adds is that, given his registration theorem, no tiling by the solid is periodic.  The hull theorem of
 Section~\ref{sec:hull} is proved for tilings obeying the contact rules, using Kamenetsky's unique-hierarchy
 criterion~\cite{Kamenetsky} with its finite certificate checked independently (Lemma~\ref{lem:hier}), and for the solid it rests in addition on Tsiokos's registration
 theorem~\cite{Tsiokos1}, quoted; that proof has been audited by the second author~\cite{Romanov} but has not been refereed.
@@ -1704,7 +1802,7 @@ space; the internal space of the chair is $2$-adic (Section~\ref{sec:chair}).
 \begin{fact}[The internal plane]
 \label{fact:plane}
 A linear functional of $(p,q,r,s)$ has bounded range on the supertile corners exactly when it kills the expanding part
-($\Phi^{2}=4+\sqrt{15}$) of every iterate of the key-point vector.  Each level mirrors the frame, so the odd iterates
+(on which $\Phi^{2}$ acts as $4+\sqrt{15}$) of every iterate of the key-point vector.  Each level mirrors the frame, so the odd iterates
 are mirrored first; the expanding parts then span two dimensions and the annihilator is the plane
 \[
 @plane@
@@ -1733,37 +1831,64 @@ read in the frame of each tile, is the attractor of the graph-directed system
 \[
 Z_{p}(S)=\bigcup_{i}\bar A_{i}^{-1}\Bigl(\gamma_{i,p}+\lam^{-1}\bigcup_{S'}Z_{p+1}(S')\Bigr)
 \]
-of similarities of ratio $1/\lam$.  It is dual to the system of Theorem~\ref{thm:frac}, with shape matrix
+of similarities of ratio $1/\lam$.  Each $Z_{p}(S)$ has positive area, and its pieces overlap in measure zero.  The
+system is dual to that of Theorem~\ref{thm:frac}, with shape matrix
 $\bigl(\begin{smallmatrix}7&6\\1&1\end{smallmatrix}\bigr)$.  Its contact matrix, on $1192$ types, has characteristic
-polynomial $(x-1)^{35}(x+1)^{35}x^{1114}(x^{4}-10x^{2}+1)^{2}$, and spectral radius $\sqrt2+\sqrt3$.  Hence
+polynomial $(x-1)^{35}(x+1)^{35}x^{1114}(x^{4}-10x^{2}+1)^{2}$, and spectral radius $\sqrt2+\sqrt3$.  Let the seam
+$\Sigma_{p}(S)$ be the union of the intersections of distinct pieces of $Z_{p}(S)$.  Then
 \[
-\dim_{B}\partial W=\frac{\log(\sqrt2+\sqrt3)}{\log\lam}=\frac{\log(5+2\sqrt6)}{\log(4+\sqrt{15})}=1.110977\ldots
+\dim_{B}\Sigma_{p}(S)=\frac{\log(\sqrt2+\sqrt3)}{\log\lam}=\frac{\log(5+2\sqrt6)}{\log(4+\sqrt{15})}=1.110977\ldots,
 \]
+and the lower box dimension of $\partial Z_{p}(S)$ is at least this value, for every $S$ and $p$.
 \end{thm}
 
 \begin{proof}
 The plane, intertwining and coboundary statements are linear algebra on the eigencomponents of $q_{0}$.  They are checked
 to sixty digits, together with a metric in which every internal map is orthogonal (the even products form a group of
-order $6$).  The bottom-up expansion of a tile's internal coordinate is then the stated system.  The upper bound counts
-contact pairs: at depth $m$ there are $O(m(\sqrt2+\sqrt3)^{m})$ of them, since the dominant root is double.  For the lower
-bound, $142$ types lie on infinite paths of the contact graph, so their pieces meet at every depth.  They contain an
-irreducible block carrying $x^{4}-10x^{2}+1$, reached from sibling pairs.  As in Theorem~\ref{thm:frac}, this needs the
-pieces to overlap in measure zero and the window to be the closure of its interior.  Both hold because the Spectre tilings
-have pure point spectrum and regular windows~\cite{BaakeSpectre}.  The computation is
-\code{boundary\_certificate/spectre\_window.py}.
+order $6$).  The bottom-up expansion of a tile's internal coordinate is then the stated system.
+
+Two distinct pieces of the same depth $m$ descend from a pair of sibling pieces.  If they lie within $\delta\lam^{-m}$
+of each other ($\delta=10^{-20}$, the margin of the certificate), so do their ancestors at every depth, so none of
+those pairs is pruned and the relative placement of the two pieces is one of the $1192$ types.  No type is the
+identity (the nearest candidate is at distance $4.11$), so a piece is determined by its type relative to another, and a
+disc of radius $\delta\lam^{-m}/2$ meets at most $1193$ pieces of depth $m$.  Give $Z_{p}(S)$ its natural measure
+$\rho$, in which a piece of depth $m$ and type $q$ has mass $\lam^{-2m}w_{q}/w_{(p,S)}$, with $w$ the Perron vector of
+the shape matrix.  Then $\rho(B(x,r))\le Cr^{2}$, so $Z_{p}(S)$ has positive area by the mass distribution principle.
+The vector $a$ of areas satisfies $a\le\lam^{-2}Na$, with $N$ the shape matrix; pairing with the positive left Perron
+vector of $N$, of root $\lam^{2}$, forces equality, so the pieces overlap in measure zero.
+
+For the upper bound on the seam, a meeting point of two pieces of depth one lies, at each depth $m$, in a pair of meeting
+pieces whose type is live.  There are $O(m(\sqrt2+\sqrt3)^{m})$ such pairs, since the dominant root is double, and
+each lies in a disc of radius of order $\lam^{-m}$.  For the lower bound, $142$ types lie on infinite paths of the
+contact graph, so their pieces meet at every depth.  They contain an irreducible block carrying $x^{4}-10x^{2}+1$,
+reached from $16$ sibling types, so at least $c(\sqrt2+\sqrt3)^{m}$ pairs of pieces of depth $m$ meet.  A disc of
+radius $\lam^{-m}$ meets boundedly many pieces of depth $m$, because they have area of order $\lam^{-2m}$ and overlap
+in measure zero, so a fixed fraction of that many discs is needed to cover the seam.  A meeting point $x$ of two pieces
+$A$ and $B$ lies on $\partial A$: every neighbourhood of $x$ contains a whole piece of $B$ of some depth, of positive
+area, which would otherwise meet $A$ in positive measure.  The pieces in the sibling types that reach the block are
+similar copies of $Z_{p'}(S')$ for all four choices of $S'$ and $p'$, so the lower bound holds for every
+$\partial Z_{p}(S)$.  The computation is \code{boundary\_certificate/spectre\_window.py}.
 \end{proof}
 
 \noindent
-Baake, G\"ahler, Mazá\v{c} and Sadun obtain the same value for the self-similar member CASPr of the family, from its
-orbit separation dimension; they note that it deserves a closer analysis~\cite{BaakeSpectre}.  Theorem~\ref{thm:window}
-derives it for the Spectre's own window from the substitution.  The image in the fitted plane is bounded, and its boundary cell count
-(Figure~\ref{fig:lift}; level-$5$ patch, holes from finite sampling filled) grows by $2^{@e1@}$ and $2^{@e2@}$ at the
-successive halvings of the cell size from $0.2$, against $2^{1}$ for a smooth curve, while the area grows by
-$2^{@ea@}$.  The boundary is therefore not a smooth curve; a box count at these resolutions gives about $1.2$, against
-the exact $1.111$ of Theorem~\ref{thm:window}.  It is not the dimension $\log\nu/\log\lam$ of the supertile outline in the physical plane
-(Section~\ref{sec:bdyop}).  It agrees with the windows of Rauzy type that Baake, G\"ahler, Mazá\v{c} and Sadun
-obtain~\cite{BaakeHat,BaakeSpectre}, who prove that Spectre tilings arise from a $4{:}2$ cut-and-project scheme with such
-windows; the analogous statement for the Hat family is~\cite{BGS}.  Whether anything like this exists for a
+The theorem bounds the dimension of $\partial W$ from below and not from above, because a point of $\partial W$ need
+not lie near a seam.  An upper bound needs the pieces of the windows that neighbour $W$ in a covering of internal space,
+the role played in Theorem~\ref{thm:frac} by the neighbouring supertiles of a tiling.  Baake, G\"ahler, Mazá\v{c} and
+Sadun show that the window of the self-similar member CASPr of the family and its lattice translates tile internal
+space~\cite{BaakeSpectre}.  The Spectre is mutually locally derivable from a reprojection of CASPr with the same lattice.
+Identifying $W$ with their window, and showing that the neighbour placements of that tiling lie among the $1192$ types,
+would give $\dim_{B}\partial W=1.110977\ldots$; this is not done here.  They obtain the same value for CASPr as a
+Hausdorff dimension, extracted from its orbit separation dimension, and remark that whether the dimension is the same
+everywhere along the boundary deserves a closer analysis~\cite{BaakeSpectre}.  Theorem~\ref{thm:window} derives the value
+for the seams of the Spectre's own window from the substitution, as a box dimension.  The image in the fitted plane is
+bounded, and its boundary cell count (a level-$5$ patch, holes from finite sampling filled; Figure~\ref{fig:lift} shows
+level $4$) grows by $2^{@e1@}$ and $2^{@e2@}$ at the successive halvings of the cell size from $0.2$, against $2^{1}$
+for a smooth curve, while the area grows by $2^{@ea@}$.  The boundary is not a smooth curve, since by
+Theorem~\ref{thm:window} its lower box dimension exceeds $1$; a box count at these resolutions gives about $1.2$, a
+crude estimate, against the exact $1.111$ of the seams.  It is not the dimension $\log\nu/\log\lam$ of the supertile outline in the physical plane
+(Section~\ref{sec:bdyop}).  Fractal windows of this kind are the Rauzy-type windows that Baake, G\"ahler, Mazá\v{c} and Sadun
+obtain~\cite{BaakeHat,BaakeSpectre}, who prove that the Spectre tilings are mutually locally derivable from model sets of a
+$4{:}2$ cut-and-project scheme with such windows; the analogous statement for the Hat family is~\cite{BGS}.  Whether anything like this exists for a
 three-dimensional tile is the question raised by Kamenetsky~\cite{Kamenetsky}, who finds that the obvious
 four-dimensional analogues of the Chair44 fail a closure test; the integer inflation of the chair leaves nothing to project.
 @FIGLIFT@
@@ -1832,8 +1957,9 @@ Take one point per chair, the centre of its bounding cube, and call the set at d
 $X_{n}=2X_{n-1}\cup(B_{n}\setminus B_{n}')$, where $B_{n}$ is the set of odd points of the cube $[1,2^{n+1}-1]^{3}$ and
 $B_{n}'$ the odd points with every coordinate above $2^{n}$ (the corner octant); the recursion reproduces the placed
 patch for $n\le4$.  The structure factor is a finite sum of products of geometric series and equals the direct sum over
-the centres (relative difference @cd@).  At the dyadic wave vectors $k=2\pi m/2^{J}$, $m$ not all even, its limit is the
-exact amplitude
+the centres (relative difference @cd@).  At the dyadic wave vectors $k=2\pi m/2^{J}$, $m$ not all even, its limit per
+centre, $a(k)=\lim_{n}8^{-n}\sum_{x\in X_{n}}e^{ik\cdot x}$ (so $a(0)=1$, and the Bragg intensity is $|a(k)|^{2}$ times the
+squared density $1/49$), is the exact amplitude
 \[
 a(k)=\tfrac78\,8^{1-J}\bigl(\pm1+\tfrac17\bigr),
 \]
@@ -1858,7 +1984,7 @@ route, a cut-and-project scheme with an internal space for the Spectre and a dya
 
 \subsection{Orientation sums and their channels}
 
-Section~\ref{sec:unfold} measured the sum of the orientation vectors of both tilings.  The chair's is exactly $2^{n}$.  For the
+Section~\ref{sec:unfold} measured the sum of the orientation vectors of both tilings.  The chair's is exactly $2^{n}$ in each component.  For the
 Spectre it can now be written as a recursion.
 
 \begin{fact}[The orientation recursion]
@@ -1867,7 +1993,8 @@ Let $S_{n}$ be the vector over the nine tile labels of the sums of $e^{i\theta}$
 of each label.  Then $S_{n+1}=C\,\overline{S_{n}}$ with $C$ the $9\times9$ matrix of the slot rotations of the construction;
 the conjugate appears because the inflation reverses orientation.  Two levels give $C\overline{C}$ with leading eigenvalue
 $\lam^{2}=@perron@$, and the sums over the placed tiles agree with the recursion (largest relative difference $@mr@$, to
-level $5$).  Hence $|S_{n}|\sim c\,\lam^{n}$ for a constant $c>0$.
+level $5$).  Hence the entry $S_{n}^{\Delta}$ of the $\Delta$ supertile, the orientation sum of the depth-$n$
+supertile itself, satisfies $|S_{n}^{\Delta}|\sim c\,\lam^{n}$ for a constant $c>0$, along even and odd $n$ alike.
 \end{fact}
 
 \noindent
@@ -1887,9 +2014,11 @@ angle for the Spectre, gives the growth exponent of each channel.
 \label{fact:channels}
 The $24$-dimensional orientation matrix of the Chair44 has characteristic polynomial $x^{3}(x-8)(x-2)^{20}$: the trivial
 channel has eigenvalue $8$ and every non-trivial channel is exactly $2$ times a projector.  With the exponent
-$h=\ln\mu/\ln\lam_{\rm lin}$ of the leading eigenvalue $\mu$ in the linear inflation $\lam_{\rm lin}$, the trivial channel
+$h=\ln\varrho/\ln\lam_{\rm lin}$ of the leading eigenvalue $\varrho$ in the linear inflation $\lam_{\rm lin}$, the trivial channel
 has $h=3$ and all others $h=@hc@$.  For the Spectre the harmonics $m\in\mathbb{Z}/12$ give $h=@h0@$ for $m=0,6$, $h=@h1@$ for
-$m=\pm1$ and $m=\pm5$ (the Galois partners of $\pm1$ under $z\mapsto z^{5}$), and $h\le0$ for $m=\pm2,\pm3,\pm4$.
+$m=\pm1$ and $m=\pm5$ (the Galois partners of $\pm1$ under $z\mapsto z^{5}$), and $h\le0$ for $m=\pm2,\pm3,\pm4$.  The sums for
+$m=\pm2,\pm3$ stay bounded, while those for $m=\pm4$ grow linearly in $n$ on the orders computed, so there $h=0$ with a
+polynomial factor.
 \end{fact}
 
 \noindent
@@ -1916,9 +2045,9 @@ characteristic polynomial $(x-1)(x^{2}-4x-1)$ of Section~\ref{sec:bdyop}, and th
 $S_{N}=24\cdot4^{N}$, with characteristic polynomial $x-4$.
 
 @HATTURTLE@
-""", cd='$%.1e$' % cd['closed_vs_direct'], aa=sp.latex(sp.Rational(cd['amp_axis'].numerator, cd['amp_axis'].denominator)),
+""", cd=sci(cd['closed_vs_direct']), aa=sp.latex(sp.Rational(cd['amp_axis'].numerator, cd['amp_axis'].denominator)),
         ad=sp.latex(sp.Rational(cd['amp_diag'].numerator, cd['amp_diag'].denominator)),
-        perron=tex(F.get('perron').value), mr='%.0e' % orr['max_rel'], c2='%.4f' % orr['c2'],
+        perron=tex(F.get('perron').value), mr=sci(orr['max_rel'], 0).strip('$'), c2='%.4f' % orr['c2'],
         c='$%.4f$' % math.sqrt(orr['c2']),
         hc='%d' % round(ce['chair A2']), h0='%d' % round(se['spectre m=0']), h1='%d' % round(se['spectre m=1']),
         sc='{:,}'.format(sp_['contacts']).replace(',', '{,}'), ss=sp_['support'], sr=sp_['rank'],
@@ -2001,11 +2130,15 @@ an asymmetry that is an arrow only if an observer's patch grows in one direction
 \paragraph{Look-back.}  Let $h$ be the level of the lowest common ancestor of two tiles at distance $d$
 (Figure~\ref{fig:hlook}).  If depth were look-back time, $\langle h\rangle$ would grow as $\log_\lam d$; it does, with slope
 @sl@ (@slq@ for a quadtree with $\lam=2$ through the same code), below $1$ because $h$ is capped.  For tiles $1$ to $2\ell$
-apart, $P(h\ge k+1)/P(h\ge k)$ is @r2@, @r3@ for $k=2,3$ in the Spectre and @q3@, @q4@ for $k=3,4$ in the quadtree.  The
+apart, $\Pr(h\ge k+1)/\Pr(h\ge k)$ is @r2@, @r3@ for $k=2,3$ in the Spectre and @q3@, @q4@ for $k=3,4$ in the quadtree.  The
 outline dimension $\ln\nu/\ln\lam=@dim@$ would give $\nu/\lam^{2}=@pred@$ and the quadtree $1/2$; the data do not separate
-them, but an exact count does.  For tiles sharing an edge, the pairs whose lowest common ancestor has level $\ell$ are the
-edges between different children of the level-$\ell$ supertiles.  Their number in a level-$N$ patch is $T(N-\ell)$ times
-the glue of~\eqref{eq:bdyid}, which Theorem~\ref{thm:bdy} gives exactly.  As $N\to\infty$, $P(h\ge k+1)/P(h\ge k)$ is
+them, but an exact count does.  For tiles sharing an edge, the pairs whose lowest common ancestor has level $j$ are the
+edges between different children of the level-$j$ supertiles.  Their number in a level-$N$ supertile is
+$c_{O}G_{O}(j)+c_{G}G_{G}(j)$, where $c_{O},c_{G}$ count its level-$j$ supertiles of the two shapes and
+$G_{O}(j)=\tfrac12\bigl(7P(j-1)+Q(j-1)-P(j)\bigr)$, $G_{G}(j)=\tfrac12\bigl(6P(j-1)+Q(j-1)-Q(j)\bigr)$
+are the glue of~\eqref{eq:bdyid} for each shape, which Theorem~\ref{thm:bdy} gives exactly; the Mystic is taken as one
+tile, so the four edges between its halves have $h=0$ (taking them at $h=1$ changes only the first ratio below, to
+$0.368$).  As $N\to\infty$, $\Pr(h\ge k+1)/\Pr(h\ge k)$ is
 $0.394$, $0.498$, $0.528$, $0.536$ for $k=1,\dots,4$ and tends to $\nu/\lam^{2}$.  So the tail ratio is $\nu/\lam^{2}$,
 not $1/2$.
 The dictionary holds on average and is shared by any self-similar hierarchy, and spatial neighbours can be several levels
@@ -2013,13 +2146,15 @@ apart in it.
 
 \paragraph{Parity.}  The common determinant of the placements in a depth-$n$ patch alternates in sign with $n$
 (Proposition~\ref{prop:parity}), so the construction mirrors at every level.  Were that a clock, reflection-odd statistics
-would alternate with level (Figure~\ref{fig:hpar}).  For tile pairs they do not: the mean of
-$\sin(\theta_o+\theta_t-2\phi)$, verified to change sign under a mirror image, for pairs $1$ to $3\ell$ apart is @p1@ when
+would alternate with level (Figure~\ref{fig:hpar}).  For tile pairs they do not: with $\theta_{o},\theta_{t}$ the orientations of two tiles $o$ and $t$, after both are reflected to a common
+handedness, and $\phi$ the direction from $o$ to $t$, the mean of
+$\sin(\theta_{o}+\theta_{t}-2\phi)$, verified to change sign under a mirror image, for pairs $1$ to $3\ell$ apart is @p1@ when
 the common ancestor is the level-$1$ supertile and @p2@, @p3@, @p4@ for levels $2,3,4$, and the swirl
-$\langle\sin(\theta-\phi)\rangle$ about a level-$k$ supertile centre is negative at every level (@s1@, @s2@, @s3@ for
+$\langle\sin(\theta-\phi)\rangle$ about a level-$k$ supertile centre, with $\phi$ now the direction of the tile from the centre, is negative at every level (@s1@, @s2@, @s3@ for
 $k=1,2,3$).  In outlines the flip is visible: a level-$k$ supertile outline is nearer to the mirror image of the same-type
 level-$(k+1)$ one than to a rotation in @f1@ of @n1@ comparisons, and nearer to a rotation of the level-$(k+2)$ one in
-@f2@ of @n2@, clearly only for $k=3$ (@p35@ by rotation against @m35@ with reflection).  The alternation lives in the
+@f2@ of @n2@, though the rotation distance is below $0.8$ times the reflection distance only for $k=3$ (@p35@ against @m35@; for $k=2$
+the two are within that margin).  The alternation lives in the
 shapes of supertiles and not in the tiles; the mirror image of a Spectre tiling is a Spectre tiling, so it belongs to the
 substitution as written and is not a dynamics.
 
@@ -2040,7 +2175,7 @@ clustering and record computations are in \code{paper/figures/spectre\_hier\_clu
 HIER_FIGS = figure_block(
     'spectre_hier_lookback', 'fig:hlook',
     r"""Left: mean common-ancestor level against $\log_\lam d/\ell$ (with standard deviation), Spectre and quadtree control.
-Right: the tail $P(h\ge k)$ for pairs $1$ to $2\ell$ apart, with $0.538^{k-1}$ and $0.5^{k-1}$.""", width=r'0.9\textwidth') + figure_block(
+Right: the tail $\Pr(h\ge k)$ for pairs $1$ to $2\ell$ apart, with $0.538^{k-1}$ and $0.5^{k-1}$.""", width=r'0.9\textwidth') + figure_block(
     'spectre_hier_parity', 'fig:hpar',
     r"""(a) The reflection-odd pair statistic by common-ancestor level, depths $5$ to $7$.  (b) The swirl of tile orientations
 about supertile centres.  (c) Outline-signature distance between same-type supertiles one and two levels apart, by
@@ -2083,8 +2218,12 @@ result: no map from tile data to a physical quantity is given, the dichotomy is 
 passage between the two kinds of inflation is not constructed.  The hierarchy section of~\cite{HartshornRomanov} tried the substitution hierarchy as that quantity, and it does not
 supply the map.  The reading would
 be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
-that the dichotomy is an artefact of the two examples, for instance by a planar tile with an integer inflation and a
-pure-point diffraction measure, or by a three-dimensional tile with a unimodular one.
+that the dichotomy is an artefact of the two examples, for instance by a three-dimensional tile with a unimodular
+inflation.  A planar counterexample of the other kind already exists: the hexagonal monotile of Socolar and
+Taylor~\cite{SocolarTaylor} inflates by $2$, and its tilings are model sets with a $2$-adic internal
+space~\cite{LeeMoodyTS}.  Its matching rules are carried by decorations, or by a shape that is not a connected region, so
+the dichotomy can survive it only as a statement about connected tiles whose shape alone forces aperiodicity; this
+narrowing is part of the reading, not a consequence of it.
 
 \begin{remark}[A proposal on the Weyl tensor]
 \label{rem:weyl}
@@ -2096,8 +2235,8 @@ the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no
 degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
 Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
 $3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of~\cite{HartshornRomanov} leaves open what
-the hierarchy depth is: if the
-third spatial dimension, a separate time is needed, and if look-back time, gravitational waves need a propagation rule that
+the hierarchy depth is: if it is the
+third spatial dimension, a separate time is needed, and if it is look-back time, gravitational waves need a propagation rule that
 the tiling does not supply.
 \end{remark}
 """
@@ -2110,36 +2249,44 @@ def conclusion_section():
 
 The two tilings separate cleanly in the quantities computed: the Spectre by a unit of $\mathbb{Z}[\sqrt{15}]$, a perimeter
 growing by a unit of $\mathbb{Q}(\sqrt5)$ at every order, and an exact internal plane; the Chair44 by inflation $2$ on
-$\mathbb{Z}^{3}$, no Euclidean internal space, no twist, an explicit pure-point centre set, orientation sums $2^{n}$
+$\mathbb{Z}^{3}$, no Euclidean internal space, no twist, an explicit pure-point centre set, notch sums $2^{n}(1,1,1)$
 and face contacts that are not bipartite.  The main new result is the hull theorem and the classification of the symmetry
-groups of Chair44 tilings in Section~\ref{sec:hull}, conditional on two unrefereed inputs.  The hierarchy tests of
+groups of Chair44 tilings in Section~\ref{sec:hull}; for tilings by the solid it is conditional on one quoted,
+unrefereed input, Tsiokos's registration theorem (R), and it rests on the finite computations of
+Lemmas~\ref{lem:hier} and~\ref{lem:blocks}.  The hierarchy tests of
 Section~\ref{sec:hier} are negative or generic.
 
 What the Facts do not reach is as follows.  The Spectre results take the published substitution rule (matrix and placement
 transforms) as input, and the Chair44 results Tsiokos's solid and substitution.  The einstein property and aperiodicity of
-the Chair44 are Tsiokos's claimed proof, quoted and not checked \cite{Tsiokos1}.  The hull theorem and the symmetry
+the Chair44 rest on Tsiokos's claimed proof, which we quote and have not refereed \cite{Tsiokos1}; Section~\ref{sec:hull}
+proves the absence of periods only given his registration theorem.  The hull theorem and the symmetry
 classification of Section~\ref{sec:hull} are proved for tilings obeying the $44$ contact rules, from Kamenetsky's
 unique-hierarchy criterion (Lemma~\ref{lem:hier}, its finite certificate checked independently) and from the count of admissible blocks of
-Lemma~\ref{lem:blocks}, which the build of this paper does not repeat but which an independent implementation reproduces;
+Lemma~\ref{lem:blocks}, which the build of this paper does not repeat but which three further implementations, described after the lemma, reproduce;
 for tilings by the solid they rest in addition on Tsiokos's registration theorem, quoted, audited by the second author (its
 written steps checked, all of its finite inputs recomputed), and not refereed.  The counts of legal blocks and fixed seeds
 are recomputed.  That the Spectre diffraction is pure point is a published theorem and is quoted.  The perimeter recurrence
 of the Spectre, its closed form, the growth bound and the boundary exponent are proved for every order by the finite
 certificate of Theorem~\ref{thm:bdy}, which is independent code.  The box dimension of the limiting boundary,
-Theorem~\ref{thm:frac}, uses in addition the existence of Spectre tilings of the plane~\cite{SmithEtAl}.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
-constant is identified and not proved, the window dimension (Theorem~\ref{thm:window}) uses the regularity of the windows from~\cite{BaakeSpectre}, the weighted diffraction of the
+Theorem~\ref{thm:frac}, uses in addition a Spectre tiling of the whole plane with the construction's hierarchy,
+obtained in its proof as a limit of supertiles.  The twist of the Spectre supertile is a limiting statement.  The closed form of the orientation
+constant is identified and not proved, the window theorem (Theorem~\ref{thm:window}) gives the dimension of the seams and only a lower bound for the boundary,
+whose upper bound would need a covering of internal space by windows that is not proved here, the weighted diffraction of the
 chair is only numerically consistent with pure point, and the Hat and Turtle diffraction is one patch with one window.
 The boundary operator governs the perimeter in the aggregate at every order; resolved by species and edge index, on the orders counted, a
-handful of components obey neither it nor its obvious extensions, while their ratios still approach $\nu$, and the full fine operator is not claimed.  The hierarchy results are numerics on finite
+few components obey neither it nor its obvious extensions, while their ratios still approach $\nu$, and the full fine operator is not claimed.  The hierarchy results are numerics on finite
 patches, with controls, and are not Facts.
 
-One problem remains open: a four-dimensional analogue of the chair, Kamenetsky's Problem~9.1~\cite{Kamenetsky}.
+One further problem remains open: a four-dimensional analogue of the chair, Kamenetsky's Problem~9.1~\cite{Kamenetsky}.
 An independent implementation of his closure test, which reproduces his three-dimensional count (exactly $3$ of the $2187$
-homochiral assignments close, with $30\to44\to44$ contacts), was run on $12{,}784$ further four-dimensional assignments.  Half
-of them extend the three-dimensional marking on a facet, and half are random.  None is coarsening-closed, and every one
-exceeds $400$ contact poses.  A simulated-annealing search on Kamenetsky's statistic $|\Sigma(P_{0})|$, which in three
-dimensions is minimised exactly by the closed assignments ($44$), made about $12{,}100$ further evaluations.  It got below
-his structured-family plateau of $1566$, to $273$, but never near a closed value; the question stays open.
+homochiral assignments are coarsening-closed with at most $300$ contact poses, Kamenetsky's cap, with $30\to44\to44$
+contacts), was run on $12{,}784$ further four-dimensional assignments.  Half of them extend the three-dimensional marking
+on a facet, and half are random.  The test stops at $400$ contact poses, and every one of them reached that cap, so none
+is coarsening-closed with fewer than $400$ poses.  A simulated-annealing search on Kamenetsky's statistic
+$|\Sigma(P_{0})|$ made $12{,}132$ further evaluations.  It got from his random-start plateau of $1566$ down to $273$,
+which is still above the value $158$ of his structured families, and it found no closed assignment; the question stays
+open.  The search code and its logs are in \code{nd\_search/}; they are not part of this paper's build and were not
+rerun for it.
 """
 
 
@@ -2169,17 +2316,16 @@ All source code and data supporting this study are available at:
 
 NOTE_MOVED_BIB = r"""
 \bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
-J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
+J.\ High Energy Phys.\ \textbf{2012} (2012) 126; \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
 
 \bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
-\textbf{882}, 140989 (2026). \url{https://doi.org/10.1016/j.physletb.2026.140989}
+\textbf{882} (2026) 140989; \url{https://doi.org/10.1016/j.physletb.2026.140989}
 
-\bibitem{hartshorn2026} B.~Hartshorn
-\emph{Gravity from Relative Entropy: Jackiw--Teitelboim Dynamics on the Nariai Horizon}
-[preprint]
+\bibitem{hartshorn2026} B.~Hartshorn,
+\emph{Gravity from relative entropy: Jackiw--Teitelboim dynamics on the Nariai horizon}, preprint (2026),
 \url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
 
-\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From Quantum Relative Entropy to the Semiclassical Einstein Equations}, Phys.\ Rev.\ Lett.\ \textbf{136}, 091602 (2026); arXiv:2510.24491.
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From quantum relative entropy to the semiclassical Einstein equations}, Phys.\ Rev.\ Lett.\ \textbf{136} (2026) 091602; arXiv:2510.24491;
 \url{https://doi.org/10.1103/lmq8-nsty}
 
 
@@ -2189,39 +2335,36 @@ J.\ High Energy Phys.\ \textbf{2012}, 126 (2012). \url{https://link.springer.com
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
 
-\bibitem{SmithEtAl} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
-\emph{An aperiodic monotile}.
-Combinatorial Theory, 4(1); arXiv:2303.10798.
+\bibitem{SmithEtAl} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{An aperiodic monotile},
+Combin.\ Theory \textbf{4}(1) (2024); arXiv:2303.10798.
 
-\bibitem{SmithEtAl2} D.~Smith, J.S.~Myers, C.S.~Kaplan and C.~Goodman-Strauss. (2024).
-\emph{A chiral aperiodic monotile}.
-Combinatorial Theory, 4(2); arXiv:2305.17743.
+\bibitem{SmithEtAl2} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{A chiral aperiodic monotile},
+Combin.\ Theory \textbf{4}(2) (2024); arXiv:2305.17743.
 
 
 \bibitem{BangNote} B.~Hartshorn and T.~Romanov, \emph{A flat initial surface? A speculative reading of the Spectre and
 Chair44 tilings}, companion note (2026), \code{spectre\_bigbang\_note.tex} in~\url{https://github.com/brentharts/spectre}.
 
-\bibitem{Tsiokos1} I.~Tsiokos (2026). \emph{A strongly aperiodic monotile in three dimensions},
+\bibitem{Tsiokos1} I.~Tsiokos, \emph{A strongly aperiodic monotile in three dimensions} (2026),
 arXiv:2609.19214.  Code and data:
 \url{https://github.com/ioannist/six-birds-tiles} (CC BY 4.0).
 
-\bibitem{GoodmanStrauss} C.~Goodman-Strauss (2026). \emph{Notes on a strongly aperiodic monotile in $E^{3}$},
+\bibitem{GoodmanStrauss} C.~Goodman-Strauss, \emph{Notes on a strongly aperiodic monotile in $E^{3}$} (2026),
 arXiv:2609.24779.
 
-\bibitem{Flicker} F.~Flicker (2026). \emph{Matching rules for a three-dimensional strongly aperiodic monotile},
+\bibitem{Flicker} F.~Flicker, \emph{Matching rules for a three-dimensional strongly aperiodic monotile} (2026),
 arXiv:2609.23783.
 
-\bibitem{Romanov} T.~Romanov (2026). \emph{The hull and the symmetry groups of Chair44 tilings}, draft.  The
+\bibitem{Romanov} T.~Romanov, \emph{The hull and the symmetry groups of Chair44 tilings}, draft (2026).  The
 computations are \code{chair44\_vertex\_blocks.py}, \code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py},
 run on commit \code{d53d224} of~\cite{Tsiokos1} and merged into
 \href{https://github.com/brentharts/six-birds-tiles/tree/main/verify/hull}{six-birds-tiles, \code{verify/hull}}; an independent
 implementation, the reproduction of Kamenetsky's finite conditions, the $O$-orbit certificate of the lemma
 (\code{c44lemma\_cert.py}, \code{lemmaA\_orbits.json}) and the audit of Tsiokos's registration theorem
-(\code{registration\_audit.py}, \code{REGISTRATION\_AUDIT.md}) are in the directory \code{chair44\_independent} of this
-repository.
+(\code{registration\_audit.py}, \code{REGISTRATION\_AUDIT.md}) are in the directory \code{chair44\_independent} of~\url{https://github.com/brentharts/spectre}.
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
-and some of their relatives}, arXiv:2502.03268.
+and some of their relatives}, J.\ Math.\ Phys.\ \textbf{66} (2025) 092707; arXiv:2502.03268.
 
 \bibitem{BaakeSpectre} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and L.~Sadun, \emph{On the long-range order of the Spectre
 tilings}, Discrete Comput.\ Geom.\ \textbf{78} (2026) 739--762; arXiv:2411.15503.
@@ -2230,32 +2373,33 @@ tilings}, Discrete Comput.\ Geom.\ \textbf{78} (2026) 739--762; arXiv:2411.15503
 \textbf{270} (2025) 449--485; arXiv:2305.05639.
 
 \bibitem{CheritatMa} A.~Ch\'eritat and N.~Ma (initial idea N.~Ma; contributions P.~Mostert),
-\emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023).
+\emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023),
 \url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
 
 
 
-\bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions}, arXiv:2610.00916.
+\bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions} (2026), arXiv:2610.00916.
 
-\bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody (2001). Lattice substitution systems and model
-sets. \emph{Discrete Comput. Geom.} 25, 173--201.
+\bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody, \emph{Lattice substitution systems and model
+sets}, Discrete Comput.\ Geom.\ \textbf{25} (2001) 173--201.
 
-\bibitem{BMS} M.~Baake, R.~V.~Moody and M.~Schlottmann (1998). Limit-(quasi)periodic point sets as quasicrystals with
-$p$-adic internal spaces. \emph{J. Phys. A: Math. Gen.} 31, 5755--5765.
+\bibitem{BMS} M.~Baake, R.~V.~Moody and M.~Schlottmann, \emph{Limit-(quasi)periodic point sets as quasicrystals with
+$p$-adic internal spaces}, J.\ Phys.\ A: Math.\ Gen.\ \textbf{31} (1998) 5755--5765.
 
-\bibitem{Robinson} E.~A.~Robinson, Jr. (1999). On the table and the chair. \emph{Indag. Math. (N.S.)} 10, 581--599.
+\bibitem{Robinson} E.~A.~Robinson, Jr., \emph{On the table and the chair}, Indag.\ Math.\ (N.S.) \textbf{10} (1999) 581--599.
 
-\bibitem{Gelfond} A.~O.~Gelfond (1934). Sur le septi\`eme probl\`eme de Hilbert. \emph{Izv. Akad. Nauk SSSR} 7, 623--630;
-Th.~Schneider (1935). Transzendenzuntersuchungen periodischer Funktionen I. \emph{J. Reine Angew. Math.} 172, 65--69.
+\bibitem{Gelfond} A.~O.~Gelfond, \emph{Sur le septi\`eme probl\`eme de Hilbert}, Izv.\ Akad.\ Nauk SSSR \textbf{7} (1934) 623--630;
+Th.~Schneider, \emph{Transzendenzuntersuchungen periodischer Funktionen I}, J.\ Reine Angew.\ Math.\ \textbf{172} (1935) 65--69.
 
-\bibitem{Schlottmann} M.~Schlottmann (2000). Generalized model sets and dynamical systems.
-In \emph{Directions in Mathematical Quasicrystals}, CRM Monograph Series 13, AMS, 143--159.
+\bibitem{Schlottmann} M.~Schlottmann, \emph{Generalized model sets and dynamical systems},
+in: Directions in Mathematical Quasicrystals, CRM Monograph Series \textbf{13}, AMS (2000) 143--159.
 
-\bibitem{LMS} J.-Y.~Lee, R.~V.~Moody and B.~Solomyak (2003). Consequences of pure point
-diffraction spectra for multiset substitution systems. \emph{Discrete Comput. Geom.} 29, 525--560.
+\bibitem{LMS} J.-Y.~Lee, R.~V.~Moody and B.~Solomyak, \emph{Consequences of pure point
+diffraction spectra for multiset substitution systems}, Discrete Comput.\ Geom.\ \textbf{29} (2003) 525--560.
 
 \bibitem{BKM} J.~Barbour, T.~Koslowski and F.~Mercati, \emph{Identification of a gravitational arrow of time},
-Phys.\ Rev.\ Lett.\ \textbf{113}, 181101 (2014); arXiv:1409.0917. \url{https://doi.org/10.1103/PhysRevLett.113.181101}
+Phys.\ Rev.\ Lett.\ \textbf{113} (2014) 181101; arXiv:1409.0917;
+\url{https://doi.org/10.1103/PhysRevLett.113.181101}
 
 \end{thebibliography}
 
@@ -2375,7 +2519,7 @@ def selftest():
     check('s* is called exact but not algebraic',
           'not algebraic' in text)
     check('the drifting fit is explained as the estimator',
-          'the estimator and not the geometry' in text)
+          'the estimator and not the geometry' in ' '.join(text.split()))
     check('the interface count carries the Mystic perimeter',
           r'N_{\Gamma}(c)Q(N-c)' in text)
     check('the fine spectrum is left open explicitly',
@@ -2450,9 +2594,9 @@ def selftest():
     check('the window dimension is the proved theorem, the box count an estimate against it',
           r'\label{thm:window}' in text and 'spectre\\_window.py' in text
           and 'against the exact $1.111$' in flat)
-    check('the lift quotes the regularity of the windows from the literature',
+    check('the window theorem is a lower bound for the boundary, and the missing covering is named',
           r'\cite{BaakeHat,BaakeSpectre}' in text and r'\cite{CheritatMa}' in text and r'\cite{Kamenetsky}' in text
-          and 'regular windows~\\cite{BaakeSpectre}' in text)
+          and 'from below and not from above' in flat and 'this is not done here' in flat)
     check('the centre diffraction is exact with the full Parseval sum',
           r'=\frac17=\text{density of the centres}' in text and 'pure point' in flat
           and cd['total'] == cd['density'] and 'only numerically consistent' in flat)
@@ -2552,7 +2696,7 @@ def selftest():
           ht['hull'] and set(ht['groups']) >= {'1', 'C4', 'D4'} and r'$1$, $C_{2}^{\mathrm{diag}}$' in hull
           and r'|\mathrm{Sym}(T)|\le8' in hull and 'does not conflict with Fact' in hull)
     check('the einstein property is still called Tsiokos\'s claim',
-          'which remain Tsiokos\'s claim' in hull)
+          'remain Tsiokos\'s claim' in ' '.join(hull.split()))
     tsio = text.split(r'\bibitem{Tsiokos1}')[1].split(r'\bibitem{')[0]
     check('2609.23783 is no longer credited to Tsiokos; the three new references are listed and cited',
           '2609.23783' not in tsio and 'arXiv:2609.19214' in tsio

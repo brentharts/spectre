@@ -214,8 +214,24 @@ if __name__ == '__main__':
     idx = {k: n for n, k in enumerate(keys)}
     n = len(keys)
     print("window contact closure: %d live types (%d pruned visits)" % (n, pruned))
-    # distinct keys must be well separated (exactness check for the rounding keys)
-    ds = sorted(set((k[4], k[5]) for k in keys))
+    # the rounding keys are exact: within one class (S1, S2, p, B) distinct translations are far apart
+    cls = {}
+    for k in keys:
+        cls.setdefault(k[:4], []).append(live[k][4])
+    sep = min((mp.norm(a - b) for v in cls.values() for a, b in itertools.combinations(v, 2)), default=mp.inf)
+    assert sep > 1, sep
+    print("rounding keys: distinct translations in one class are at least %s apart" % mp.nstr(sep, 4))
+    # no exact overlap: no type puts a piece exactly on another piece of the same window type (identity map).  Two
+    # distinct pieces of depth m within margin*lam^-m of each other have a live type (their ancestors are never
+    # pruned), and a piece is fixed by its type relative to another, so a disc of radius margin*lam^-m / 2 meets at
+    # most len(live)+1 pieces of depth m.  With the natural (Perron) measure this gives mu(B(x,r)) <= C r^2, hence
+    # positive area by the mass distribution principle.
+    I2 = key2(mp.eye(2))
+    ov = min((mp.norm(t[4]) for t in live.values() if t[0] == t[1] and key2(t[3]) == I2), default=mp.inf)
+    assert ov > mp.mpf(10) ** -10, ov
+    print("no type is the identity (nearest same-shape, same-frame type at distance %s): at most %d pieces of a "
+          "depth meet a disc of radius margin/2 at that depth, so every Z_p(S) has positive area"
+          % (mp.nstr(ov, 4), n + 1))
     Nm = sp.zeros(n, n)
     for a, k in enumerate(keys):
         for c in children(*live[k]):
@@ -261,3 +277,7 @@ if __name__ == '__main__':
     reach = [a for a in st if a in inter and (a in dom or any(d in dom for d in nx.descendants(G, a)))]
     print("intersecting types: %d; an irreducible block of %d types carries x^4-10x^2+1 (radius sqrt2+sqrt3) and is "
           "reached from %d sibling types" % (len(inter), len(dom), len(reach)))
+    # a meeting point of two pieces lies on the boundary of each (every neighbourhood of it holds a whole small piece of
+    # the other, of positive area); the pieces are similar copies of Z_{p'}(S'), so the lower bound reaches these types
+    wt = sorted(set((live[keys[a]][c], live[keys[a]][2]) for a in reach for c in (0, 1)))
+    print("window types (shape, parity) of the pieces in those sibling types:", wt)

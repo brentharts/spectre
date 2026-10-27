@@ -82,9 +82,14 @@ assert dom is not None, "no irreducible block of radius nu inside E"
 sib = [idx[bp.tkey(*t)] for X in 'OG' for t in bp.start[X] if bp.tkey(*t) in idx]
 sib_in = [a for a in sib if a in E and any(nx.has_path(G, a, d) for d in dom)]
 assert sib_in
+# the meeting points lie on the boundaries of the two children; the bound reaches K itself (and not only the Mystic
+# limit) because some of these sibling pairs consist of two non-Mystic children
+sib_shapes = sorted(set((keys[a][0], keys[a][1]) for a in sib_in))
+assert ('O', 'O') in sib_shapes
 print("(d) E: %d types with S(j) >= 1 for all j >= 1, closed under taking a child in E; it contains an irreducible "
       "block of %d types with x^2-4x-1 dividing its charpoly (radius nu), reached from %d sibling types"
       % (len(E), len(dom), len(sib_in)))
+print("    shapes of the two children in those sibling types:", sib_shapes)
 # depth-m contact-pair counts from a sibling type, against nu^m
 a0 = sib_in[0]
 NE = Nm.extract(sorted(E), sorted(E))

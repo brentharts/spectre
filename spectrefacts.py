@@ -1352,8 +1352,8 @@ def selftest():
                             'matrix is unconfirmed by a second route'))
         bverdict = cross_check_boundary()
         print('  cross-check: %s'
-              % (bverdict or 'pyCICY not on the path, so the perimeter is '
-                             'counted only with a rounding key'))
+              % (bverdict or 'pyCICY not on the path; the exact recount for k <= 6 '
+                             'is boundary_certificate/spectre_exact.py'))
     return len(problems)
 
 
@@ -1530,10 +1530,12 @@ fact(key='boundary_exact',
      claim=r'P(k)\ \text{counted exactly in }\mathbb{Q}(\sqrt3)',
      value=BOUNDARY_SEQ,
      method='the same sequence recounted with edges identified by equality '
-            'of exact quadratic-field coordinates rather than by a '
+            'of exact coordinates in Z[zeta_12] rather than by a '
             'four-decimal rounding key, in an independent implementation '
-            '(pyCICY.theories.spectre), for 0 <= k <= 6; agreement removes the rounding key '
-            'from the boundary results rather than bounding its error')
+            '(boundary_certificate/spectre_exact.py, "matches the exact patches for k = 0..6" in '
+            'out_spectre_boundary_proof.txt), for 0 <= k <= 6; agreement removes the rounding key '
+            'from the boundary results rather than bounding its error.  A second exact recount '
+            '(pyCICY.theories.spectre, in Q(sqrt3)) is run by --selftest only when pyCICY is on the path')
 
 
 def _with_mystic(depth):
