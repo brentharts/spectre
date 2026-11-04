@@ -8,6 +8,7 @@
 #   make paper        rebuild spectre_substrate.pdf and the companion note spectre_bigbang_note.pdf
 #   make lean         emit SpectreFacts.lean and check it
 #   make install_lean install a Lean 4 toolchain (Ubuntu/Debian, macOS)
+#   make install (git clones other repos required)
 #
 # `make lean` needs `lean` on PATH.  If you have not got one, `make
 # install_lean` will fetch one; see the toolchain section below.
@@ -41,9 +42,18 @@ ELAN_INIT_URL ?= https://raw.githubusercontent.com/leanprover/elan/master/elan-i
 # real binary should win over that.
 export PATH := $(LEAN_PREFIX)/bin:$(ELAN_HOME)/bin:$(PATH)
 
+default:
+	$(PYTHON) spectrepaper.py
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
+	open spectre_substrate.pdf
+
 # --------------------------------------------------------------- the targets
-install_cicy:
+install:
 	cd .. && git clone https://github.com/brentharts/CICY.git
+	cd .. && git clone https://github.com/brentharts/openai_math_yang_mills.git
+
+
 facts:
 	PYTHONPATH=../CICY $(PYTHON) spectrefacts.py --selftest
 	$(PYTHON) monotilefacts.py --selftest
@@ -205,12 +215,6 @@ uninstall_lean:
 
 # ------------------------------------------------------------ everything else
 
-default:
-	$(PYTHON) spectrepaper.py
-	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
-	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
-	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
-	open spectre_substrate.pdf
 
 a:
 	blender --python einstein_fibration.py -- --iter2 --b=0.5
@@ -224,6 +228,6 @@ c:
 d:
 	blender --python einstein_fibration.py -- --iter2 --b=3
 
-.PHONY: facts boundary-proof atlas lean readme figures paper check paper-clean \
-        install_lean install_lean_tarball install_lean_deps \
-        lean_env uninstall_lean
+#.PHONY: facts boundary-proof atlas lean readme figures paper check paper-clean \
+#        install_lean install_lean_tarball install_lean_deps \
+#        lean_env uninstall_lean
