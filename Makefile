@@ -102,6 +102,12 @@ paperfast:
 	pdflatex -interaction=nonstopmode spectre_substrate.tex >/dev/null
 	open spectre_substrate.pdf
 
+# Part II of the paper comes from ../openai_math_yang_mills (make install clones it).  spectrepaper.py keeps the fragments
+# of its quantum gravity paper in paper/qgravity/ with a hash of their sources, and re-runs the thirteen models behind
+# them (about 3.5 minutes) by itself when a source changes; this target forces it.
+qg:
+	$(PYTHON) spectrepaper.py --rebuild-qg
+
 readme:
 	$(PYTHON) spectrefacts.py --readme
 

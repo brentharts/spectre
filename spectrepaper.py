@@ -16,8 +16,12 @@ fact, and the Lean layer that certifies the closed ones.
     python3 spectrepaper.py --selftest   check the generated document
 """
 
+import hashlib
+import importlib
 import math
 import os
+import pathlib
+import re
 import sys
 import sympy as sp
 
@@ -115,6 +119,416 @@ def inject_after_label(text, label, block):
     marker = '\\label{%s}\n' % label
     assert text.count(marker) == 1, label
     return text.replace(marker, marker + block, 1)
+
+
+# ---------------------------------------------------------------- Part II: the quantum gravity paper
+#
+# qgravity.py of openai_math_yang_mills writes its paper from the results that thirteen sympy models register: the body,
+# the bibliography and the counts, with the two pictures.  The same call is made here, into paper/qgravity/.  The models
+# take about three and a half minutes (su2_lattice_stripn alone takes 150 s), so the fragments are kept together with a
+# hash of every source that makes them, and are rebuilt when any source changes or when `--rebuild-qg` is given.
+
+OAI_ROOT = os.path.normpath(os.path.join(HERE, '..', 'openai_math_yang_mills'))
+QG_DIR = os.path.join(HERE, 'paper', 'qgravity')
+QG_MODELS_RUN = ('su2_lattice_ladder', 'qg_spin_network', 'qg_einstein4', 'su2_lattice_strip', 'su2_peter_weyl',
+                 'su2_lattice_stripn', 'qg_volume', 'qg_penrose', 'su2_lattice_lshape', 'forest_gauge_4d_theorems',
+                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom')
+QG_PARTS = ('body', 'bibliography', 'numbers')
+_QG = {}
+
+
+def _qg_stamp():
+    """A hash of every Python source under sympy_models/ and sympy_models/models/."""
+    root = os.path.join(OAI_ROOT, 'sympy_models')
+    h = hashlib.sha256()
+    for sub in ('', 'models'):
+        for name in sorted(os.listdir(os.path.join(root, sub))):
+            if name.endswith('.py'):
+                with open(os.path.join(root, sub, name), 'rb') as handle:
+                    h.update(os.path.join(sub, name).encode())
+                    h.update(handle.read())
+    return h.hexdigest()
+
+
+def qg_fragments(rebuild=False):
+    """{'body', 'bibliography', 'numbers'}: the text of the three fragments qgravity.write produces."""
+    if _QG and not rebuild:
+        return _QG
+    stamp, stamp_path = _qg_stamp(), os.path.join(QG_DIR, 'stamp.txt')
+    paths = {k: os.path.join(QG_DIR, 'qgravity_%s.tex' % k) for k in QG_PARTS}
+    pictures = [os.path.join(QG_DIR, 'fig_qg_geometry.pdf'), os.path.join(QG_DIR, 'fig_qg_ladder.pdf')]
+    fresh = (all(os.path.exists(p) for p in list(paths.values()) + pictures + [stamp_path])
+             and open(stamp_path).read().strip() == stamp)
+    if rebuild or not fresh:
+        import eqlib
+        print('quantum gravity part: running %d models (about 3.5 minutes) ...' % len(QG_MODELS_RUN))
+        for name in QG_MODELS_RUN:
+            importlib.import_module('models.' + name).build_and_verify()
+        os.makedirs(QG_DIR, exist_ok=True)
+        got = qgravity.write(pathlib.Path(QG_DIR), list(eqlib.REGISTRY.values()))
+        assert len(got) == 3, 'qgravity.write skipped its paper: a model it needs did not register its results'
+        assert all(os.path.exists(p) for p in pictures), 'qgravity wrote no pictures (is matplotlib installed?)'
+        with open(stamp_path, 'w') as handle:
+            handle.write(stamp + '\n')
+    for k, p in paths.items():
+        with open(p, encoding='utf-8') as handle:
+            _QG[k] = handle.read()
+    return _QG
+
+
+QG_PATCHES = (
+    # sentences of the quantum gravity paper that were written for a paper of their own; each must occur exactly once
+    ('This repository has already solved two small cases',
+     r'The fork from which this part is generated (the repository \texttt{openai\_math\_yang\_mills}, called the fork below) '
+     r'has already solved two small cases'),
+    ('As in the companion paper, every term', 'Every term'),
+    (r'\nChecks{} over all registered models', r'\nChecks{} over the %d models that this build runs' % len(QG_MODELS_RUN)),
+    ('are the nearest neighbours in the repository, and neither is used in a computation here. The Spectre and Chair44 '
+     'paper~\\cite{hartshorn-romanov} computes the internal space and the boundary growth of two hierarchical tilings, and its last '
+     'section tests,',
+     'are the nearest neighbours of this part, and neither is used in a computation here. The first is '
+     'Part~\\ref{part:tilings} of this paper, which computes the internal space and the boundary growth of two hierarchical tilings, '
+     'and whose last section tests,'),
+    ("it makes no claim about gravity. Romanov's paper on three-dimensional lattice Yang--Mills theory",
+     "its discussion of gravity (Section~\\ref{sec:phys}) is a conjecture and a proposal and derives nothing. "
+     "The second, Romanov's paper on three-dimensional lattice Yang--Mills theory"),
+    ('Two things join this entry to the paper.', 'Two things join this entry to this part.'),
+    ('the one the paper already uses', 'the one this part already uses'),
+    ('The ladder equations on which the paper rests', r'The ladder equations on which Part~\ref{part:qg} rests'),
+    (r'\section{Introduction}\label{sec:intro}', r'\section{Introduction to the quantum geometry part}\label{sec:intro}'),
+    # a fuller read-through: sentences that a paper of its own could say and a part of this one cannot
+    ('\\paragraph{What this is not.} It is not a model of quantum gravity.',
+     '\\paragraph{What this part is not.} It is not a model of quantum gravity.'),
+    ('Three observations connect this to the rest of the paper.', 'Three observations connect this to the rest of this part.'),
+    # "the paper" in the entry 348 section is the paper of that entry, and in the forest-gauge section the four-dimensional one
+    ('the numbers the paper and the library use about the three model spaces',
+     'the numbers that the paper of that entry~\\cite{oai-einstein4} and the library use about the three model spaces'),
+    ('the condition $x+y<2$ of the paper is', 'the condition $x+y<2$ of that paper is'),
+    ('that the paper takes from~\\cite{gursky-lebrun-1999}', 'that the entry\'s paper takes from~\\cite{gursky-lebrun-1999}'),
+    ('in the paper\'s argument', 'in that paper\'s argument'),
+    ('is quoted in the paper holds', 'is quoted in that paper holds'),
+    ('it has no value in the paper, and none', 'it has no value in that paper, and none'),
+    ('the paper\'s own account is that these', 'the four-dimensional paper\'s own account is that these'),
+    ('Table~III of the paper (the line field)', 'Table~III of the four-dimensional paper (the line field)'),
+    ('They test the paper\'s arithmetic', 'They test that paper\'s arithmetic'),
+    ('The curvature that the paper uses for $SU(2)$', 'The curvature that the four-dimensional paper uses for $SU(2)$'),
+    ('the curvature argument of the paper controls', 'the curvature argument of the four-dimensional paper controls'),
+    ('The paper recalls that a gap uniform', 'The four-dimensional paper recalls that a gap uniform'),
+    ('from the quantity the paper states for it', 'from the quantity that the four-dimensional paper states for it'),
+    # the later sections of this part do take up the other three gravity entries
+    ('The other gravity entries of the release (the Liouville quantum gravity limit of random planar maps, entry 211; the '
+     'spacetime Penrose inequalities, 260; strong cosmic censorship near Kerr, 264) have not been examined: of them the '
+     'Penrose inequality is the closest to what is computed here,',
+     'The other gravity entries of the release are taken up in the sections that follow (the spacetime Penrose inequalities, 260, '
+     'Section~\\ref{sec:penrose}; strong cosmic censorship near Kerr, 264, Section~\\ref{sec:kerr}; the Liouville quantum gravity '
+     'limit of random planar maps, 211, Section~\\ref{sec:maps}); of them the Penrose inequality is the closest to what is '
+     'computed here,'),
+)
+_LABEL_REF = re.compile(r'\\(ref|eqref|pageref|autoref)\{([^}]*)\}')
+
+
+def prefix_labels(text, prefix):
+    """Every label that the text defines, and every reference to one of them, gets the prefix; other references are left."""
+    defined = set(re.findall(r'\\label\{([^}]*)\}', text))
+    text = re.sub(r'\\label\{([^}]*)\}', lambda m: '\\label{%s%s}' % (prefix, m.group(1)), text)
+    return _LABEL_REF.sub(lambda m: m.group(0) if m.group(2) not in defined
+                          else '\\%s{%s%s}' % (m.group(1), prefix, m.group(2)), text)
+
+
+_EQUATION = re.compile(r'\\begin\{equation\}(\\label\{[^}]*\})\n(.*?)\n\\end\{equation\}', re.S)
+
+
+def fit_equations(text):
+    """Scale a generated display down to the text width when it is wider, and leave it alone when it is not (the paper that
+    Part II came from set its text wider than this one does)."""
+    return _EQUATION.sub(lambda m: '\\begin{equation}%s\n\\adjustbox{max width=0.9\\linewidth}{$\\displaystyle\n%s\n$}\n\\end{equation}'
+                         % (m.group(1), m.group(2)), text)
+
+
+def cited_keys(text):
+    return {k.strip() for m in re.finditer(r'\\cite\w*\{([^}]*)\}', text) for k in m.group(1).split(',')}
+
+
+def qg_part():
+    """(the sections of Part II, its appendix, the \\newcommand lines of its counts), from qgravity's body with this paper's
+    labels, pictures and self-references."""
+    Q = qg_fragments()
+    body = Q['body'].replace('This paper', 'This part').replace('this paper', 'this part')
+    for old, new in QG_PATCHES:             # after that, so that a patch can say "this paper" and mean this one
+        assert body.count(old) == 1, 'the quantum gravity text has changed: %r' % old
+        body = body.replace(old, new)
+    assert body.count('build/fig_qg_') == 2, 'the pictures of the quantum gravity paper have moved'
+    body = body.replace('build/fig_qg_', 'paper/qgravity/fig_qg_')
+    body = fit_equations(prefix_labels(body, 'qg:'))
+    assert body.count('\\appendix\n') == 1
+    main, appendix = body.split('\\appendix\n')
+    macros = [l for l in Q['numbers'].splitlines() if l.startswith('\\newcommand')]
+    assert len(macros) == 9, macros
+    return main, appendix, macros
+
+
+def qg_bibliography(keys):
+    """The \\bibitem entries of the knowledge-base references among ``keys``, without the environment around them."""
+    import kbdoc
+    import knowledgebase
+    refs = knowledgebase.references()
+    got = sorted(k for k in keys if k in refs)
+    m = re.search(r'\\begin\{thebibliography\}\{99\}\n(.*)\n\\end\{thebibliography\}', kbdoc.bibliography(got), re.S)
+    assert m and m.group(1).count('\\bibitem') == len(got)
+    return m.group(1), refs
+
+
+# ---------------------------------------------------------------- Part III: the release behind the entries (oai_tree)
+#
+# oai_tree.py reads the OpenAI math release into a tree of categories: families, their manuscripts, and the connections
+# that the release's own files record (a bibliography entry, a shared Lean module, a mention in a summary).  Here it is
+# asked about the families that the two parts of this paper meet and the Yang--Mills entries that the fork's notes name.  The graph and the extra references come from the
+# catalogue; only the hooks, the places where this paper meets a family, are stated below, and each one is checked.
+
+RELEASE_FAMILIES = ('155', '215', '211', '260', '264', '348', '270', '365')
+# (family, label of the place in this paper that meets it, file of the fork whose text says so).  The label is None for
+# an entry that the fork's Yang-Mills note names and that this paper does not use; the file is None when the section named by
+# the label is itself the meeting (the entry is the subject of that section).
+RELEASE_HOOKS = (('155', 'part:tilings', 'SPECTRE_CHAIR44.md'),
+                 ('215', 'part:tilings', 'HIERARCHIES.md'), ('215', 'qg:sec:transmutation', 'tools/README.md'),
+                 ('211', 'qg:sec:maps', None), ('260', 'qg:sec:penrose', None),
+                 ('264', 'qg:sec:kerr', None), ('348', 'qg:sec:einstein', None),
+                 ('270', None, 'YANGMILLS.md'), ('365', None, 'YANGMILLS.md'))
+
+
+def hook_evidence(n, note):
+    """Whether the fork's file ``note`` names entry ``n``: as 'entry n' in its text, or, for tools/README.md, as the entry of
+    the row for the O(N) Monte Carlo tools/on_model_mc.py that the asymptotic-freedom row of Part II cites."""
+    text = open(os.path.join(OAI_ROOT, note), encoding='utf-8').read()
+    if note == 'tools/README.md':
+        return re.search(r'\|\s*\[on_model_mc\.py\]\(on_model_mc\.py\)\s*\|\s*%s\s*\|' % n, text) is not None
+    return ('entry %s' % n) in text.lower()
+_ALLOWED_NON_ASCII = '–—²¹‘’'
+_ACCENTS = {'á': "\\'a", 'é': "\\'e", 'í': "\\'{\\i}", 'ó': "\\'o", 'ú': "\\'u", 'ö': '\\"o', 'ü': '\\"u', 'ä': '\\"a'}
+_RELEASE = {}
+
+
+def release_connections():
+    """The families of RELEASE_FAMILIES, their manuscripts and the connections between them, read by oai_tree.
+
+    Returns a dict: cat, fams, dirs (manuscript directories in drawing order), cites (pairs of directories, from
+    leandsl.graph()), inner and outside (the catalogue's edges among those families and from them to others)."""
+    if _RELEASE:
+        return _RELEASE
+    cat = oai_tree.catalog()
+    fams = RELEASE_FAMILIES
+    for n in fams:
+        assert n in cat.families, 'the catalogue has no family %s' % n
+    for n in fams:
+        oai_tree.family(n, cat)
+    dirs = sorted((d for d, m in cat.manuscripts.items() if m.family in fams),
+                  key=lambda d: (fams.index(cat.manuscripts[d].family), cat.manuscripts[d].title.lower(), d))
+    for d in dirs:
+        oai_tree.paper_class(d, cat)
+        assert re.fullmatch(r'[A-Za-z0-9._-]+', d), d
+    n_cites = oai_tree.connect_papers(dirs, cat)
+    outside = oai_tree.connect_families(fams, cat)
+    graph = oai_tree.leandsl.graph()
+    cites = [(e['src'][len('paper:'):], e['dst'][len('paper:'):]) for e in graph['edges']
+             if e['kind'] == 'cites' and e['src'].startswith('paper:') and e['dst'].startswith('paper:')]
+    assert len(cites) == n_cites and set(a for ab in cites for a in ab) <= set(dirs), (len(cites), n_cites)
+    inner = [e for e in cat.edges() if e.src in fams and e.dst in fams]
+    _RELEASE.update(cat=cat, fams=fams, dirs=dirs, cites=sorted(cites), inner=inner, outside=outside)
+    return _RELEASE
+
+
+def release_title(text):
+    """A manuscript title as LaTeX for pdflatex: the release's markdown through oai_tree, and nothing but a few known
+    characters beyond ASCII."""
+    out = oai_tree.md_to_tex(text)
+    for c, tex_accent in _ACCENTS.items():
+        out = out.replace(c, tex_accent)
+    bad = sorted(set(c for c in out if ord(c) > 127 and c not in _ALLOWED_NON_ASCII))
+    assert not bad, (text, bad)
+    return out
+
+
+def release_date(directory):
+    m = re.search(r'-([A-Z][a-z]+)-(\d{1,2})-(\d{4})$', directory)
+    assert m, directory
+    return '%s %s, %s' % (m.group(1), m.group(2), m.group(3))
+
+
+def release_references(R, kb_refs):
+    """{manuscript directory: bibliography key} and the \\bibitem text of those that the knowledge base lacks."""
+    keys, items = {}, []
+    for d in R['dirs']:
+        have = [k for k, r in kb_refs.items() if '/' + d + '/' in r.url]
+        if have:
+            keys[d] = have[0]
+            continue
+        m = R['cat'].manuscripts[d]
+        keys[d] = 'OAI:' + d
+        items.append(r'\bibitem{%s} OpenAI. \emph{%s}. OpenAI Math Release preprint, %s. \url{%s}'
+                     % (keys[d], release_title(m.title), release_date(d), oai_tree.UPSTREAM + m.pdf))
+    return keys, '\n\n'.join(items)
+
+
+def release_arcs(cites, place):
+    """TikZ for the citation arrows.  An arrow within a row leaves and enters the dots from above or below: arrows whose spans
+    overlap (or touch at a dot) are put in different slots, alternating above and below the row, and each slot has its own
+    height, so no arrow runs through a dot or lies on another.  An arrow between rows is a straight line."""
+    out, slots = [], {}
+    inside = sorted(((a, b) for a, b in cites if place[a][0] == place[b][0]),
+                    key=lambda ab: (abs(place[ab[0]][1] - place[ab[1]][1]), place[ab[0]][1], place[ab[1]][1]))
+    for a, b in inside:
+        (n, ka), (_, kb_) = place[a], place[b]
+        lo, hi = min(ka, kb_), max(ka, kb_)
+        taken = slots.setdefault(n, [])           # (slot, lo, hi) for the arrows of this row
+        s = 0
+        while any(t == s and not (hi < l or h < lo) for t, l, h in taken):
+            s += 1
+        taken.append((s, lo, hi))
+        sign = 1 if s % 2 == 0 else -1            # slot 0 above, 1 below, 2 above higher, ...
+        side = 'north' if sign > 0 else 'south'
+        height = 0.30 + 0.20 * (s // 2) + 0.12 * (hi - lo)
+        out.append(r'\draw[cite] (m%s_%d.%s) .. controls +(0,%.2f) and +(0,%.2f) .. (m%s_%d.%s);'
+                   % (n, ka, side, sign * height, sign * height, n, kb_, side))
+    for a, b in cites:
+        if place[a][0] != place[b][0]:
+            out.append(r'\draw[cite] (m%s_%d) -- (m%s_%d);' % (place[a] + place[b]))
+    return out
+
+
+def release_figure(R):
+    """The graph as TikZ: one row per family, a dot per manuscript, an arrow for each bibliography citation between
+    manuscripts, and dashed lines from the two parts of this paper, and from the fork's Yang-Mills note, to the families
+    they meet."""
+    cat, fams, dirs = R['cat'], R['fams'], R['dirs']
+    row = {n: i for i, n in enumerate(fams)}
+    place, count = {}, {n: 0 for n in fams}
+    for d in dirs:
+        n = cat.manuscripts[d].family
+        count[n] += 1
+        place[d] = (n, count[n])
+    step, y0, x0 = 0.62, -2.15, 3.0
+    out = [r'\begin{tikzpicture}[x=1cm,y=1cm,>=stealth,',
+           r'  fam/.style={draw,rounded corners=2pt,fill=blue!6,minimum height=1.3cm,text width=3.7cm,align=center,inner sep=2pt,font=\tiny},',
+           r'  part/.style={draw,thick,fill=orange!12,minimum height=1.0cm,minimum width=2.7cm,align=center,font=\small},',
+           r'  ms/.style={draw,circle,fill=white,inner sep=0pt,minimum size=0.46cm,font=\tiny},',
+           r'  cite/.style={->,semithick,red!60!black},hook/.style={dashed,thick,orange!70!black}]']
+    for n in fams:
+        f = cat.families[n]
+        # not Family.tex_title: the parser of overview.tex leaves the delimiters of the next arguments in it
+        out.append(r'\node[fam] (f%s) at (0,%.2f) {\textbf{%s}\\ %s};' % (n, y0 * row[n], n, release_title(f.title)))
+    for d in dirs:
+        n, k = place[d]
+        out.append(r'\node[ms] (m%s_%d) at (%.2f,%.2f) {%d};' % (n, k, x0 + step * (k - 1), y0 * row[n], k))
+    for n in fams:
+        if count[n]:
+            out.append(r'\draw[gray!60] (f%s.east) -- (m%s_1.west);' % (n, n))
+    out += release_arcs(R['cites'], place)
+    # each node sits at the mean height of the families it is joined to
+    at = {}
+    for src, pick in (('p1', lambda l: l is not None and l.startswith('part:')),
+                      ('p2', lambda l: l is not None and l.startswith('qg:')), ('p3', lambda l: l is None)):
+        rows = [row[n] for n, l, _ in RELEASE_HOOKS if pick(l)]
+        at[src] = y0 * sum(rows) / len(rows)
+    out.append(r'\node[part] (p1) at (-6.3,%.2f) {Part~\ref{part:tilings}\\ Spectre, Chair44};' % at['p1'])
+    out.append(r'\node[part] (p2) at (-6.3,%.2f) {Part~\ref{part:qg}\\ spin networks};' % at['p2'])
+    out.append(r'\node[part] (p3) at (-6.3,%.2f) {Fork note\\ \code{YANGMILLS.md}};' % at['p3'])
+    for n, label, note in RELEASE_HOOKS:
+        src = 'p3' if label is None else 'p1' if label.startswith('part:') else 'p2'
+        if label is None:
+            text = ''
+        elif label.startswith('part:'):
+            text = '\\code{%s}' % note.replace('_', '\\_')
+        else:
+            text = 'Sec.~\\ref{%s}' % label
+        out.append(r'\draw[hook] (%s.east) -- node[sloped,above,font=\tiny,pos=0.45] {%s} (f%s.west);' % (src, text, n))
+    out.append(r'\end{tikzpicture}')
+    return '\n'.join(out)
+
+
+def release_section(kb_refs):
+    """(the section, the \\bibitem text of its extra references, the knowledge-base keys it cites)."""
+    R = release_connections()
+    cat, fams, dirs, cites = R['cat'], R['fams'], R['dirs'], R['cites']
+    keys, extra = release_references(R, kb_refs)
+    kinds = lambda edges: ', '.join('%d %s' % (v, k) for k, v in sorted(
+        {k: sum(1 for e in edges if e.kind == k) for k in {e.kind for e in edges}}.items()))
+    across = [(a, b) for a, b in cites if cat.manuscripts[a].family != cat.manuscripts[b].family]
+    for n, label, note in RELEASE_HOOKS:          # every place that this paper says it meets a family must be there to be read
+        if note:
+            assert os.path.exists(os.path.join(OAI_ROOT, note)) and hook_evidence(n, note), (n, note)
+    listing = []
+    for n in fams:
+        mine = [d for d in dirs if cat.manuscripts[d].family == n]
+        listing.append(r'\noindent\textbf{Entry %s}, %s: %s.' % (
+            n, release_title(cat.families[n].title),
+            '; '.join(r'(%d)~\cite{%s}' % (k, keys[d]) for k, d in enumerate(mine, 1))))
+    every = cat.edges()
+    touched = {x for e in every for x in (e.src, e.dst)}
+    with_lean = [n for n in fams if cat.families[n].lean_doc]
+    without = [n for n in fams if n not in with_lean]
+    nf = number(len(fams))
+    assert sum(1 for d in dirs if cat.manuscripts[d].family == '215') == 5, 'the text below says that entry 215 holds five papers'
+    if R['inner'] or R['outside']:
+        inner = ('The catalogue records %d edges among the %s families (%s) and %d from them to other families (%s).'
+                 % (len(R['inner']), nf, kinds(R['inner']) or 'none', len(R['outside']), kinds([e for e, _ in R['outside']]) or 'none'))
+    else:
+        inner = ('The catalogue holds %d edges between families, touching %d of its %d families, and none of them touches any of these '
+                 '%s.  %s of the %s have a Lean scope note, which an edge of the second kind needs%s.  In the release the %s are '
+                 'therefore separate clusters, and the connections that this paper draws between the entries are its own, or those of '
+                 'the fork\'s notes.'
+                 % (len(every), len(touched), len(cat.families), nf, number(len(with_lean)).capitalize(), nf,
+                    (' (%s %s)' % ('the exceptions are entries' if len(without) > 1 else 'the exception is entry',
+                                   ', '.join(without))) if without else '', nf))
+    text = r"""
+\section{The release behind the entries}
+\label{sec:release}
+
+Part~\ref{part:qg} takes four entries of the OpenAI math release as subjects: Einstein four-manifolds (entry~348,
+Section~\ref{qg:sec:einstein}), the Penrose inequality (260, Section~\ref{qg:sec:penrose}), strong cosmic censorship near Kerr (264,
+Section~\ref{qg:sec:kerr}) and the Liouville quantum gravity limit of random planar maps (211, Section~\ref{qg:sec:maps}).  The
+fork's note \code{SPECTRE\_CHAIR44.md} sets the Spectre and the Chair44 of Part~\ref{part:tilings} beside a fifth entry, 155, a tile
+of $\mathbb{Z}^{3}$ with no fully periodic tiling.
+
+Two more groups of entries come from the fork's notes on Yang--Mills theory.  Entry 215 holds the five papers on the
+two-dimensional $O(3)$ and $O(4)$ lattice models; the continuum-limit paper for $O(3)$ works by exact blocking, in the block
+renormalization tradition.  Two of the fork's files tie the entry to this paper.  \code{HIERARCHIES.md} compares those papers with the Spectre and the Chair44, as block renormalization against
+substitution hierarchies, and calls it the strongest of its comparisons, one that it makes itself, since the sources say nothing
+about each other.  And \code{tools/README.md} assigns to entry 215 the Monte Carlo \code{tools/on\_model\_mc.py}, the source of the
+library's asymptotic-freedom mass scaling in Section~\ref{qg:sec:transmutation}.  So Part~\ref{part:tilings} and Part~\ref{part:qg}
+are both tied to the same entry, by the notes and not by a computation of either part.  The note \code{YANGMILLS.md} names two
+further entries whose preprints mention Yang--Mills theory, the BFSS matrix model (270) and the recovery of a metric and a connection
+from boundary data (365); neither is used in this paper, and the note's own account is that none of the preprints treats a gauge
+theory.  This section draws what the release's own files say about these @nf@ families.
+The graph of Figure~\ref{fig:release} and the extra references below are read by \code{oai\_tree.py} from \code{overview.tex},
+\code{CONTENTS.md}, the \code{OAI:} keys in the bibliographies of the manuscripts and the Lean files; nothing is inferred from
+similar subject matter.  The @nf@ families hold @nms@ manuscripts, numbered within each family as in the figure.
+
+@listing@
+
+\begin{figure}[p]
+\centering
+\resizebox{\textwidth}{!}{%
+@tikz@}
+\caption{The @nf@ families of the release that this paper takes up or that the fork's notes tie to it, as read by
+\code{oai\_tree.py}.  Each dot is a manuscript of the family on its row; a solid red arrow is a citation of one manuscript by
+another in its bibliography (@ncites@ in all, @nwithin@ of them between manuscripts of one family and @nacross@ between
+families).  The dashed lines are the places where this paper or a note of the fork meets a family, and are the only part of the
+figure that is not read from the release: the sections of Part~\ref{part:qg} that take up an entry, the notes
+\code{SPECTRE\_CHAIR44.md} and \code{HIERARCHIES.md} that compare entries with the tilings of Part~\ref{part:tilings}, and
+\code{YANGMILLS.md}, which names entries whose preprints mention Yang--Mills theory.  Each is checked against the text of the
+note when the paper is built.}
+\label{fig:release}
+\end{figure}
+
+An edge of the catalogue between two families is one of three kinds.  A \emph{cites} edge is a bibliography entry of one family's
+manuscript naming another's.  A \emph{shares} edge means that the Lean files behind the two main results import some of the same
+modules (modules imported by five or more families are ignored as infrastructure): evidence of related machinery, not of one result
+depending on the other.  A \emph{mentions} edge is a family's summary naming another result.  @inner@
+"""
+    text = fill(text, nms=len(dirs), listing='\n\n'.join(listing), tikz=release_figure(R), ncites=len(cites),
+                nwithin=len(cites) - len(across), nacross=len(across), inner=inner, nf=nf)
+    used = {keys[d] for d in dirs if keys[d] in kb_refs}
+    return text, extra, used
 
 
 # ---------------------------------------------------------------- helpers
@@ -1639,7 +2053,7 @@ stated.
     bib = (r'''
 \begin{thebibliography}{9}
 
-\bibitem{HartshornRomanov} B.~Hartshorn and T.~Romanov, \emph{''' + TITLE + r'''}, preprint (2026),
+\bibitem{HartshornRomanov} B.~Hartshorn and T.~Romanov, \emph{''' + TILINGS_TITLE + r'''}, preprint (2026),
 \url{https://github.com/brentharts/spectre}.
 
 \bibitem{SmithEtAl2} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{A chiral aperiodic monotile},
@@ -1672,10 +2086,12 @@ def write(path=OUTPUT, note_path=NOTE_OUTPUT):
 
 
 #TITLE = 'Inflation, Internal Space and the Absent Clock: Exact Arithmetic of the Spectre and the Chair44'
-TITLE = "The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings"
+TILINGS_TITLE = "The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings"   # the preprint that Part I came from
+TITLE = (r"The Spectre and Chair44 Tilings and the $SU(2)$ Ladder: Exact Computations on Internal Space, "
+         r"Boundary Growth and Quantum Geometry")
 
 
-def abstract():
+def tilings_abstract():
     return fill(r"""
 \begin{abstract}
 The planar Spectre is an aperiodic monotile and Tsiokos's three-dimensional Chair44 is claimed to be one; both
@@ -1701,6 +2117,41 @@ law is shared with a quadtree, and the parity flip of the construction shows in 
 tiles.
 \end{abstract}
 """, perron=tex(F.get('perron').value))
+
+
+def abstract(full=True):
+    """The abstract: Part I's (the abstract this paper had) alone, or joined with those of Parts II and III."""
+    text = tilings_abstract()
+    if not full:
+        return text
+    head, tail = '\\begin{abstract}\n', '\\end{abstract}'
+    assert text.count(head) == 1 and text.count(tail) == 1
+    inner = text.split(head)[1].split(tail)[0].strip()
+    return head + r"""Exact computations on three connected subjects are joined here, and every number in them is generated and checked
+when the paper is built.
+
+\emph{Part~\ref{part:tilings}.}  """ + inner + r"""
+
+\emph{Part~\ref{part:qg}.}  The exactly solved two-plaquette $SU(2)$ lattice gauge theory has the spin networks of the theta graph
+as its gauge-invariant states, and the electric energy of a link is the squared area of a surface that cuts it.  In the ground state the
+mean-square area of the surface between the plaquettes is exactly $2/(3g^{8})$ at strong coupling and $3/(\sqrt{10}\,g^{2})$ at
+weak coupling.  Counting spin-$\tfrac12$ punctures against the Bekenstein--Hawking entropy gives $\gamma_I=\ln2/(\pi\sqrt3)$, a property
+of that count and not of the area spectrum, and the smallest vertex with a volume of its own, four spin-$\tfrac12$ legs, has
+triple-product spectrum $\pm\sqrt3/4$.  A third plaquette tests the strip formula $2\sqrt{2-\cos(\pi/4)}\approx2.274$ for the
+weak-coupling gap.  Four entries of the OpenAI math release are then read in the same language: the Weyl blocks of $S^{4}$,
+$\mathbb{CP}^{2}$ and $S^{2}\times S^{2}$ as spin-$2$ objects of $SU(2)_{+}\times SU(2)_{-}$, recovering $\chi=2,3,4$ and $\tau=0,1,0$ from
+their metrics; the Penrose inequality and the Kerr horizon algebra against the smallest quantised area, as arithmetic and heuristics
+and not as theorems; Catalan counts of planar maps against the invariants of $SU(2)_k$; and the finite statements of a
+four-dimensional lattice gauge-fixing paper.  This is not a model of quantum gravity: the graph is fixed and the Hamiltonian is a
+gauge-theory one.
+
+\emph{Part~\ref{part:release}.}  The families of the release that the two parts meet are read from its catalogue by
+\code{oai\_tree.py}, and the graph of their connections is drawn with the places where this paper meets them.
+
+\nChecks{} registered checks, \nQgChecks{} of them in the quantum gravity models, pass in the build together with the figure checks,
+and a failure stops it; they test that stated formulas agree with one another and with independent computation, and do not re-prove
+any theorem.  The material on the OpenAI release is fork-level and is not an official OpenAI document.
+""" + tail + '\n'
 
 
 def introduction():
@@ -2498,35 +2949,112 @@ Phys.\ Rev.\ Lett.\ \textbf{113} (2014) 181101; arXiv:1409.0917;
 
 
 
-def document():
-    text = '\n'.join([
-        PREAMBLE.replace('@TITLE@', TITLE), 
-        abstract(),
-        
-        qgravity.quantum_geometry_figure()[-1],
-        qgravity.einstein_figure()[-1],
-        
+def overview_section():
+    return r"""
+\section{Overview}
+\label{sec:overview}
+
+This paper joins two computations that were written separately and share a method.  Every number, matrix and table in both is
+produced when the paper is built, from code that checks it: in Part~\ref{part:tilings}, exact integer and algebraic arithmetic and
+the finite certificates behind it; in Part~\ref{part:qg}, the results that thirteen sympy models register, where each term of each
+displayed row is a library equation solved for the row's quantity, substituted back and required to give an identity.  A failed
+check stops the build.  What is written by hand is the argument.
+
+Part~\ref{part:tilings} compares the planar Spectre with Tsiokos's Chair44: inflation, internal space, boundary growth, the hull of
+the Chair44 and the symmetry groups of its tilings, and four tests of whether a substitution hierarchy can serve as a clock.
+Part~\ref{part:qg} reads the exactly solved two-plaquette $SU(2)$ lattice gauge theory as the kinematics of loop quantum gravity, and
+takes up four entries of the OpenAI math release in that language: Einstein four-manifolds, the Penrose inequality, strong cosmic
+censorship near Kerr, and random planar maps, with the finite statements of a four-dimensional lattice gauge-fixing paper.
+Part~\ref{part:release} reads from the release's own files how the families that the two parts meet, and the entries that the
+fork's Yang--Mills note names, are connected, and draws the graph.  The material on the OpenAI release (Parts~\ref{part:qg} and~\ref{part:release}) is fork-level and is not an official OpenAI
+document.
+
+The parts do not use one another's results, and nothing in either is derived from the other.  They touch at one place, which is a
+remark and not a result: the Weyl tensor.  The discussion of Part~\ref{part:tilings} (Section~\ref{sec:phys}) proposes that a flat
+two-dimensional initial surface would have no Weyl curvature, which first appears with the third spatial dimension.  Part~\ref{part:qg}
+(Section~\ref{qg:sec:einstein}) computes, for three model Einstein four-manifolds, the two trace-free Weyl blocks as spin-$2$ objects
+of the two factors of $\mathrm{Spin}(4)=SU(2)_{+}\times SU(2)_{-}$.  The first is a Lorentzian reading about $2{+}1$ and $3{+}1$
+dimensions and the second a Euclidean computation in four, and no map between them is given.  Part~\ref{part:release} shows a
+second, indirect meeting: the fork's own notes tie both parts to entry 215 of the release, the two-dimensional $O(N)$ lattice
+models proved by block renormalization, Part~\ref{part:tilings} through a comparison of that renormalization with a substitution
+hierarchy and Part~\ref{part:qg} through the scaling forms of Section~\ref{qg:sec:transmutation}.  That is a statement about the
+notes and not a result of either part.
+"""
+
+
+EXTRA_PREAMBLE = r"""\usepackage{tikz,adjustbox}
+\allowdisplaybreaks
+\makeatletter\def\UrlBreaks{\do\/\do\-\do\.\do\_}\makeatother
+\Urlmuskip=0mu plus 2mu
+%s
+"""
+
+
+def document_problems(text):
+    """What would not compile cleanly: a label defined twice, a reference to a label that is not defined, a citation without an
+    entry and an entry without a citation."""
+    labels = re.findall(r'\\label\{([^}]*)\}', text)
+    refs = {m.group(2) for m in _LABEL_REF.finditer(text)}
+    items = re.findall(r'\\bibitem\{([^}]*)\}', text)
+    cited = cited_keys(text.split(r'\begin{thebibliography}')[0])
+    out = ['label %s is defined twice' % x for x in sorted({l for l in labels if labels.count(l) > 1})]
+    out += ['reference to the undefined label %s' % x for x in sorted(refs - set(labels))]
+    out += ['citation of %s has no entry' % x for x in sorted(cited - set(items))]
+    out += ['entry %s is never cited' % x for x in sorted(set(items) - cited)]
+    out += ['entry %s is listed twice' % x for x in sorted({i for i in items if items.count(i) > 1})]
+    return out
+
+
+def document(full=True):
+    """The paper.  ``full=False`` is Part I alone, as the paper was before the other parts were joined to it (the selftest
+    checks that part against its own claims)."""
+    pieces = [PREAMBLE.replace('@TITLE@', TITLE), abstract(full)]
+    if full:
+        qg_main, qg_appendix, macros = qg_part()
+        keys = cited_keys(qg_main + qg_appendix)
+        qg_bib, refs = qg_bibliography(keys)
+        release, release_bib, release_keys = release_section(refs)
+        qg_bib_all, _ = qg_bibliography(keys | release_keys)
+        spectre_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', BIBLIOGRAPHY))
+        new_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', qg_bib_all + release_bib))
+        assert not (spectre_keys & new_keys), sorted(spectre_keys & new_keys)
+        pieces += [r'\tableofcontents', overview_section()]
+    pieces += [
+        r'\part{The Spectre and Chair44 tilings}', r'\label{part:tilings}',
         introduction(),
         spectral_section(), census_section(), charges_section(), twist_subsection(),
         boundary_operator_section(), boundary_additions(),
         lift_section(),
         chair_section(), hull_subsection(), lines_subsection(),
         unfolding_section(), exact_section(), hierarchy_section(),
-
         phys_section(),
-
         conclusion_section(),
-        r'\appendix',
-        qgravity.physics_figure()[-1],
-        supplement_pointer(), 
-        BIBLIOGRAPHY,
-    ])
+    ]
+    if full:
+        pieces += [r'\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}', r'\label{part:qg}', qg_main,
+                   r'\part{The release}', r'\label{part:release}', release]
+    pieces.append(r'\appendix')
+    if full:
+        pieces.append(qg_appendix)
+    pieces.append(supplement_pointer())
+    bibliography = BIBLIOGRAPHY
+    if full:
+        assert bibliography.count('\\end{thebibliography}') == 1
+        bibliography = bibliography.replace(
+            '\\end{thebibliography}',
+            '%% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)\n\n%s\n\n%s\n\\end{thebibliography}'
+            % (qg_bib_all, release_bib))
+    pieces.append(bibliography)
+    text = '\n'.join(pieces)
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
     text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
-    #text = inject_before(text, '\\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}',
-    #                     hull_subsection() + lines_subsection())
-    #return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
+    if full:
+        assert text.count('\\begin{document}') == 1
+        text = text.replace('\\begin{document}', EXTRA_PREAMBLE % '\n'.join(macros) + '\\begin{document}', 1)
+        problems = document_problems(text)
+        assert not problems, problems
     return text
+
 
 def certificate_numbers():
     """The numbers the paper quotes from certificates that its build does not rerun, read from their committed outputs
@@ -2568,7 +3096,7 @@ def selftest():
             failures.append(label)
 
     import re
-    text = document()
+    text = document(full=False)
     flat = ' '.join(text.split())
     print('structure')
     check('it opens a document', r'\begin{document}' in text)
@@ -2829,6 +3357,33 @@ def selftest():
           'every line' not in lines.lower() and 'depends on the observable and on the line' in lines)
     check('chair44_lines recomputes the box means, the stacks and the corner classes', LN.run_tests(verbose=False))
 
+    print('the joined paper')
+    full = document()
+    check('one document: no label twice, no dangling reference, no citation without an entry or entry without a citation',
+          document_problems(full) == [])
+    check('the title is the combined one', (r'\title{%s}' % TITLE) in full)
+    check('the three parts are there', all(('\\label{%s}' % k) in full for k in ('part:tilings', 'part:qg', 'part:release')))
+    check('every section of the quantum gravity paper is in Part II',
+          all(('\\label{qg:sec:%s}' % k) in full for k in ('physics', 'geometry', 'intertwiners', 'ladder', 'strip', 'entropy',
+                                                          'einstein', 'penrose', 'kerr', 'maps', 'forest', 'transmutation',
+                                                          'conclusion', 'selected')))
+    check('Part II does not cite the earlier preprint of Part I', 'hartshorn-romanov' not in full)
+    check('the counts of Part II are defined', all(('\\newcommand{\\%s}' % k) in full for k in ('nChecks', 'nQgChecks')))
+    check('the abstract names the three parts and keeps the hull theorem',
+          all(('\\ref{%s}' % k) in abstract() for k in ('part:tilings', 'part:qg', 'part:release')) and 'substitution hull' in abstract())
+    R = release_connections()
+    cat = R['cat']
+    check('the release graph has a dot for every manuscript of its families',
+          len(R['dirs']) == sum(len(cat.families[n].manuscripts) for n in R['fams']))
+    pc = cat.paper_cites()
+    check('its arrows are the bibliography citations among those manuscripts and no others',
+          sorted(R['cites']) == sorted((a, b) for a in R['dirs'] for b in pc.get(a, ()) if b in R['dirs']))
+    check('every place where this paper says it meets a family exists in it',
+          all(('\\label{%s}' % lab) in full for _, lab, _ in RELEASE_HOOKS if lab))
+    check('the note of the fork behind each other hook names its entry, and a Yang-Mills entry is in the graph',
+          all(hook_evidence(n, note) for n, _, note in RELEASE_HOOKS if note)
+          and {'215', '270', '365'} <= set(R['fams']) and 'YANGMILLS.md' in full)
+
     print()
     if failures:
         print('%d failure(s): %s' % (len(failures), ', '.join(failures)))
@@ -2839,6 +3394,8 @@ def selftest():
 
 
 if __name__ == '__main__':
+    if '--rebuild-qg' in sys.argv:
+        qg_fragments(rebuild=True)
     if '--selftest' in sys.argv:
         sys.exit(1 if selftest() else 0)
     elif '--stdout' in sys.argv:

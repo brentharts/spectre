@@ -21,17 +21,32 @@
 \emergencystretch=2em
 \hyphenation{re-flec-tion-ad-mit-ting quasi-crys-tal-line}
 
-\title{The Internal Space and Boundary Growth of the Spectre and Tsiokos's Chair44 Tilings}
+\title{The Spectre and Chair44 Tilings and the $SU(2)$ Ladder: Exact Computations on Internal Space, Boundary Growth and Quantum Geometry}
 
 \author{Brent Hartshorn \orcidlink{0009-0004-2853-655X}
         and Tristan Romanov}
 
+\usepackage{tikz,adjustbox}
+\allowdisplaybreaks
+\makeatletter\def\UrlBreaks{\do\/\do\-\do\.\do\_}\makeatother
+\Urlmuskip=0mu plus 2mu
+\newcommand{\nEq}{184}
+\newcommand{\nQty}{182}
+\newcommand{\nLinks}{124}
+\newcommand{\nModels}{35}
+\newcommand{\nRegEq}{41}
+\newcommand{\nChecks}{204}
+\newcommand{\nQgEq}{33}
+\newcommand{\nQgChecks}{182}
+\newcommand{\nEinsteinChecks}{18}
 \begin{document}
 \maketitle
 
-
 \begin{abstract}
-The planar Spectre is an aperiodic monotile and Tsiokos's three-dimensional Chair44 is claimed to be one; both
+Exact computations on three connected subjects are joined here, and every number in them is generated and checked
+when the paper is built.
+
+\emph{Part~\ref{part:tilings}.}  The planar Spectre is an aperiodic monotile and Tsiokos's three-dimensional Chair44 is claimed to be one; both
 have hierarchical tilings, and they are compared here by exact computation.  The Spectre inflates by the unit $\lam^{2}=\sqrt{15} + 4$ of $\mathbb{Z}[\sqrt{15}]$.
 Its supertile perimeter is $2F_{3k+5}+4$ at every order $k$, proved by a finite exact certificate, so it grows by
 the unit $2+\sqrt5$ of $\mathbb{Q}(\sqrt5)$, faster than the linear inflation.  The boundary of the limiting supertile
@@ -52,8 +67,61 @@ computations then test whether the Spectre's substitution hierarchy can serve as
 arrow, the radius needed to recognize an ancestor grows about threefold per level without making one, the look-back
 law is shared with a quadtree, and the parity flip of the construction shows in the outlines of supertiles and not in the
 tiles.
+
+\emph{Part~\ref{part:qg}.}  The exactly solved two-plaquette $SU(2)$ lattice gauge theory has the spin networks of the theta graph
+as its gauge-invariant states, and the electric energy of a link is the squared area of a surface that cuts it.  In the ground state the
+mean-square area of the surface between the plaquettes is exactly $2/(3g^{8})$ at strong coupling and $3/(\sqrt{10}\,g^{2})$ at
+weak coupling.  Counting spin-$\tfrac12$ punctures against the Bekenstein--Hawking entropy gives $\gamma_I=\ln2/(\pi\sqrt3)$, a property
+of that count and not of the area spectrum, and the smallest vertex with a volume of its own, four spin-$\tfrac12$ legs, has
+triple-product spectrum $\pm\sqrt3/4$.  A third plaquette tests the strip formula $2\sqrt{2-\cos(\pi/4)}\approx2.274$ for the
+weak-coupling gap.  Four entries of the OpenAI math release are then read in the same language: the Weyl blocks of $S^{4}$,
+$\mathbb{CP}^{2}$ and $S^{2}\times S^{2}$ as spin-$2$ objects of $SU(2)_{+}\times SU(2)_{-}$, recovering $\chi=2,3,4$ and $\tau=0,1,0$ from
+their metrics; the Penrose inequality and the Kerr horizon algebra against the smallest quantised area, as arithmetic and heuristics
+and not as theorems; Catalan counts of planar maps against the invariants of $SU(2)_k$; and the finite statements of a
+four-dimensional lattice gauge-fixing paper.  This is not a model of quantum gravity: the graph is fixed and the Hamiltonian is a
+gauge-theory one.
+
+\emph{Part~\ref{part:release}.}  The families of the release that the two parts meet are read from its catalogue by
+\code{oai\_tree.py}, and the graph of their connections is drawn with the places where this paper meets them.
+
+\nChecks{} registered checks, \nQgChecks{} of them in the quantum gravity models, pass in the build together with the figure checks,
+and a failure stops it; they test that stated formulas agree with one another and with independent computation, and do not re-prove
+any theorem.  The material on the OpenAI release is fork-level and is not an official OpenAI document.
 \end{abstract}
 
+\tableofcontents
+
+\section{Overview}
+\label{sec:overview}
+
+This paper joins two computations that were written separately and share a method.  Every number, matrix and table in both is
+produced when the paper is built, from code that checks it: in Part~\ref{part:tilings}, exact integer and algebraic arithmetic and
+the finite certificates behind it; in Part~\ref{part:qg}, the results that thirteen sympy models register, where each term of each
+displayed row is a library equation solved for the row's quantity, substituted back and required to give an identity.  A failed
+check stops the build.  What is written by hand is the argument.
+
+Part~\ref{part:tilings} compares the planar Spectre with Tsiokos's Chair44: inflation, internal space, boundary growth, the hull of
+the Chair44 and the symmetry groups of its tilings, and four tests of whether a substitution hierarchy can serve as a clock.
+Part~\ref{part:qg} reads the exactly solved two-plaquette $SU(2)$ lattice gauge theory as the kinematics of loop quantum gravity, and
+takes up four entries of the OpenAI math release in that language: Einstein four-manifolds, the Penrose inequality, strong cosmic
+censorship near Kerr, and random planar maps, with the finite statements of a four-dimensional lattice gauge-fixing paper.
+Part~\ref{part:release} reads from the release's own files how the families that the two parts meet, and the entries that the
+fork's Yang--Mills note names, are connected, and draws the graph.  The material on the OpenAI release (Parts~\ref{part:qg} and~\ref{part:release}) is fork-level and is not an official OpenAI
+document.
+
+The parts do not use one another's results, and nothing in either is derived from the other.  They touch at one place, which is a
+remark and not a result: the Weyl tensor.  The discussion of Part~\ref{part:tilings} (Section~\ref{sec:phys}) proposes that a flat
+two-dimensional initial surface would have no Weyl curvature, which first appears with the third spatial dimension.  Part~\ref{part:qg}
+(Section~\ref{qg:sec:einstein}) computes, for three model Einstein four-manifolds, the two trace-free Weyl blocks as spin-$2$ objects
+of the two factors of $\mathrm{Spin}(4)=SU(2)_{+}\times SU(2)_{-}$.  The first is a Lorentzian reading about $2{+}1$ and $3{+}1$
+dimensions and the second a Euclidean computation in four, and no map between them is given.  Part~\ref{part:release} shows a
+second, indirect meeting: the fork's own notes tie both parts to entry 215 of the release, the two-dimensional $O(N)$ lattice
+models proved by block renormalization, Part~\ref{part:tilings} through a comparison of that renormalization with a substitution
+hierarchy and Part~\ref{part:qg} through the scaling forms of Section~\ref{qg:sec:transmutation}.  That is a statement about the
+notes and not a result of either part.
+
+\part{The Spectre and Chair44 tilings}
+\label{part:tilings}
 
 \section{Introduction}
 \label{sec:intro}
@@ -66,14 +134,6 @@ supertile, is an integer matrix with eigenvalues $\pm\lam$, $\pm\lam^{-1}$ and $
 plane, which alternates with the parity of the level, gives a two-dimensional internal space in which the vertices fill
 a bounded window.  An integer inflation $m>1$ acts as $mI$, nothing contracts, and the internal space is $m$-adic.
 This paper computes that difference exactly.
-
-A companion note~\cite{BangNote} states the physical hypothesis that motivated this work; nothing here depends on it.
-Statements are stratified.  \emph{Facts} are exact statements: each is proved, or verified by an exact finite computation
-and then stated only for the range computed, or quoted, and the text says which; the supplement lists the ledger entries behind
-the Facts, with the method by which each was obtained.  \emph{Propositions} are results of narrower scope, proved or computed, whose modelling steps and hypotheses are
-stated in them (a thickening in Proposition~\ref{prop:sstar}, ergodic structure in Proposition~\ref{prop:lineaction}), and \emph{Theorems},
-\emph{Lemmas} and \emph{Corollaries} carry proofs.  Results labelled \emph{computation, not Fact} are numerical, on finite
-patches, and enter no ledger.
 
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
 \ref{sec:bdyop} (perimeter growth) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
@@ -462,6 +522,36 @@ dimension strictly between $1$ and $2$.  The growth is also visible at every fin
 every $k$, while $\lam^{2}<16$ hence $\lam<4$, so $P(k{+}1)/P(k)>4>\lam$ for every $k\ge2$, and a perimeter argument
 assuming $P(k)\sim\lam^{k}$ is wrong at every order.
 
+\subsection{What the golden appearance is not}
+
+$\varphi^{3}$ next to the Hat's $\varphi^{4}$ invites the conjecture that the
+Spectre's boundary combinatorics \emph{are} the Hat's.  They are not.
+
+\begin{fact}
+\label{fact:goldenabsent}
+$x^{2}-4x-1$ divides neither $\chi_{M}$ nor $\chi_{H}(x)=(x-1)(x+1)(x^{2}-7x+1)$, the
+characteristic polynomial of the four-metatile substitution of the Hat~\cite{SmithEtAl}.
+\end{fact}
+
+\begin{fact}
+\label{fact:lucas}
+$\varphi^{n}$ has minimal polynomial $x^{2}-L_{n}x+(-1)^{n}$ with $L_{n}$
+Lucas ($n\ge1$).  So $x^{2}-4x-1$ is the minimal polynomial of $\varphi^{3}$ and
+$x^{2}-7x+1$ that of $\varphi^{4}$: any two powers of $\varphi$ have Lucas quadratics as
+minimal polynomials, and the resemblance carries no information beyond
+$\mathbb{Q}(\sqrt5)$.
+\end{fact}
+
+\noindent
+The asymmetry is worth recording: the Spectre's own unit is not golden, since
+$\chi_{M}$ contributes the trace $8$ and $8$ is not a Lucas number.  The three
+operators sit at traces $8$, $7$ and $4$ with norms $+1$, $+1$ and $-1$.
+
+What survives is weaker and true.  The ratio $\mu=\lam^{2}/\nu$ has minimal
+polynomial $x^{4} + 32 x^{3} - 46 x^{2} - 32 x + 1$ --- degree four, not two --- so it lies in the compositum
+$\mathbb{Q}(\sqrt3,\sqrt5)$ and in neither quadratic field alone.  Both $\lam^{2}$ and $\nu$
+are Spectre quantities; the Hat does not enter $\mu$.
+
 
 \subsection{A closed form, and the directions of the boundary edges}
 \label{sec:bdyclosed}
@@ -603,35 +693,6 @@ closed form of Proposition~\ref{prop:sstar}, with its Mystic term, matches those
 counts exactly at both depths, so it reproduces the same fitted values
 (\code{spectre\_boundary.py}), which is how we know the drift was the estimator
 and not the geometry.
-\subsection{What the golden appearance is not}
-
-$\varphi^{3}$ next to the Hat's $\varphi^{4}$ invites the conjecture that the
-Spectre's boundary combinatorics \emph{are} the Hat's.  They are not.
-
-\begin{fact}
-\label{fact:goldenabsent}
-$x^{2}-4x-1$ divides neither $\chi_{M}$ nor $\chi_{H}(x)=(x-1)(x+1)(x^{2}-7x+1)$, the
-characteristic polynomial of the four-metatile substitution of the Hat~\cite{SmithEtAl}.
-\end{fact}
-
-\begin{fact}
-\label{fact:lucas}
-$\varphi^{n}$ has minimal polynomial $x^{2}-L_{n}x+(-1)^{n}$ with $L_{n}$
-Lucas ($n\ge1$).  So $x^{2}-4x-1$ is the minimal polynomial of $\varphi^{3}$ and
-$x^{2}-7x+1$ that of $\varphi^{4}$: any two powers of $\varphi$ have Lucas quadratics as
-minimal polynomials, and the resemblance carries no information beyond
-$\mathbb{Q}(\sqrt5)$.
-\end{fact}
-
-\noindent
-The asymmetry is worth recording: the Spectre's own unit is not golden, since
-$\chi_{M}$ contributes the trace $8$ and $8$ is not a Lucas number.  The three
-operators sit at traces $8$, $7$ and $4$ with norms $+1$, $+1$ and $-1$.
-
-What survives is weaker and true.  The ratio $\mu=\lam^{2}/\nu$ has minimal
-polynomial $x^{4} + 32 x^{3} - 46 x^{2} - 32 x + 1$ --- degree four, not two --- so it lies in the compositum
-$\mathbb{Q}(\sqrt3,\sqrt5)$ and in neither quadratic field alone.  Both $\lam^{2}$ and $\nu$
-are Spectre quantities; the Hat does not enter $\mu$.
 
 
 \section{The Spectre monotile in four dimensions}
@@ -910,6 +971,35 @@ of dimension $3$.  The two $2$'s are the same number as the linear inflation and
 subdominant orientation eigenvalue, and no link between them is claimed there; Section~\ref{sec:unfold} finds the first-moment sum rule that both obey.  The Spectre rests on
 a Pisot unit and an irrational window; Tsiokos's Chair44 rests on an integer inflation and a $2$-adic one.
 
+\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
+
+A common heuristic about parity rests on a sentence: a planar
+patch embedded in a three-dimensional bulk has its reflection realized as an ambient rotation, so parity that is
+forbidden on the surface is restored by embedding.  The Chair44 does not touch that sentence.
+It does touch the suggestion that three dimensions are what restores parity.
+
+\begin{fact}
+\label{fact:chairchiral}
+The undecorated seven-cube chair has $6$ symmetries, 3 of them mirrors, and is achiral.
+The decorated Chair44 has only the identity, so it is chiral.  Of the $2388$ raw face
+contacts, $1194$ place a mirror image against the root, and none is legal: all $44$
+legal contacts are proper rotations, so no copy of the tile touches its own mirror image
+anywhere in the hierarchy.
+\end{fact}
+
+\noindent
+The chirality is forced twice over: by the labels, which break the three mirror planes of the seed, and by the contacts, which
+admit no mirror pair.  So, for this tile, passing from the plane to three dimensions does not by itself make mirror images
+available.  Three caveats attach.  The einstein property is Tsiokos's claim, and Section~\ref{sec:hull} proves aperiodicity only
+given~(R).  The forced chirality was tested on
+all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
+family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
+image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
+candidate).  This section does not show that the Chair44 is an einstein monotile, or aperiodic, or that the pyramid decoration
+is the only one that works; it re-derives its atlas and finds it equal to the published one.  A numerical scan of sliding and
+tilted placements of smoothed variants (\code{chair44\_rigidity.py}) found no non-lattice contact, which is evidence for rigidity
+and not a proof of it.
+
 
 \subsection{Every tiling lies in the hull, and the symmetry groups of tilings}
 \label{sec:hull}
@@ -1174,6 +1264,7 @@ $\mathrm{Sym}(T)$ embeds in $O$, no atlas tiling has a nonzero period, so by~(R)
 whole bearing of this section on strong aperiodicity.  (R) itself and the existence of a tiling by $Q$ are quoted, so the
 einstein property and strong aperiodicity of the Chair44 remain Tsiokos's claim.
 
+
 \subsection{Uniform frequencies hold in boxes, not along lines}
 \label{sec:lines}
 
@@ -1271,34 +1362,6 @@ $\{0,1,2\}$.  On the corner line in direction $(1,0,0)$ every letter of the clos
 (\code{chair44\_lines.py}).  Nothing here
 concerns directions that are not lattice directions: the cells met by a line of irrational slope are not an orbit of a
 subgroup of $\mathbb{Z}^{3}$, and the argument does not apply.
-\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}
-
-A common heuristic about parity rests on a sentence: a planar
-patch embedded in a three-dimensional bulk has its reflection realized as an ambient rotation, so parity that is
-forbidden on the surface is restored by embedding.  The Chair44 does not touch that sentence.
-It does touch the suggestion that three dimensions are what restores parity.
-
-\begin{fact}
-\label{fact:chairchiral}
-The undecorated seven-cube chair has $6$ symmetries, 3 of them mirrors, and is achiral.
-The decorated Chair44 has only the identity, so it is chiral.  Of the $2388$ raw face
-contacts, $1194$ place a mirror image against the root, and none is legal: all $44$
-legal contacts are proper rotations, so no copy of the tile touches its own mirror image
-anywhere in the hierarchy.
-\end{fact}
-
-\noindent
-The chirality is forced twice over: by the labels, which break the three mirror planes of the seed, and by the contacts, which
-admit no mirror pair.  So, for this tile, passing from the plane to three dimensions does not by itself make mirror images
-available.  Three caveats attach.  The einstein property is Tsiokos's claim, and Section~\ref{sec:hull} proves aperiodicity only
-given~(R).  The forced chirality was tested on
-all six substitutions that leave twelve height classes and does not depend on the selection rule, but a decoration outside that
-family is not excluded.  And one example is one example: a three-dimensional aperiodic tile whose legal contacts include a mirror
-image would show that forced chirality is not a feature of dimension three (\code{symchair44.legal\_contacts} tests any labelled
-candidate).  This section does not show that the Chair44 is an einstein monotile, or aperiodic, or that the pyramid decoration
-is the only one that works; it re-derives its atlas and finds it equal to the published one.  A numerical scan of sliding and
-tilted placements of smoothed variants (\code{chair44\_rigidity.py}) found no non-lattice contact, which is evidence for rigidity
-and not a proof of it.
 
 
 \section{Unfolding the Chair44 and Comparing it with the Spectre}
@@ -1595,8 +1658,8 @@ that statement rests on the vertices spanning the rank-four module $\mathbb{Z}[\
 \section{What the substitution hierarchy supplies}
 \label{sec:hier}
 
-\textbf{Computation, not Fact.}  Whether the level index of a substitution can be read as an arrow, a record, a look-back
-or a clock is a question that any physical reading of these tilings would need answered~\cite{BangNote}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
+Whether the level index of a substitution can be read as an arrow, a record, a look-back
+or a clock is a question that any physical reading of these tilings would need answered ~\ref{sec:phys}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
 repository, built on \code{hierarchy\_cache.py}, which walks the substitution tree and keeps each tile's address; the
 numbers are those they print at build time, and distances are in tile scales $\ell$.
 
@@ -1646,7 +1709,7 @@ substitution as written and is not a dynamics.
 \paragraph{What follows.}  Positional clustering shows no excess over its control beyond the first level; the record
 asymmetry and the look-back dictionary are real but generic; the parity alternation comes from the rule and not from the
 tile data.  None supplies a rule for what propagates, and none supplies a physical clock; what that would mean physically is
-discussed in the companion note~\cite{BangNote}, not here.  (Figures for the
+discussed in \ref{sec:phys}.  (Figures for the
 clustering and record computations are in \code{paper/figures/spectre\_hier\_clustering} and \code{spectre\_hier\_records}.)
 
 \begin{figure}[t]
@@ -1666,6 +1729,67 @@ rotation only and with reflection.}
 \label{fig:hpar}
 \end{figure}
 
+
+\section{Discussion: The Big Bang Pancake Conjecture}
+\label{sec:phys}
+    This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
+two-dimensional singularity, connected to the planar Spectre monotile ~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
+connected to Tsiokos's Chair44 \cite{Tsiokos1}.  Two classical background facts, a reading through the inflation arithmetic of the two
+tilings, and a proposal on the Weyl tensor are given.  Nothing is derived; what would support or retire the reading is
+stated.
+
+\begin{conj}[The initial surface]
+\label{conj:bang}
+The Big Bang was not a point-like singularity but a flat two-dimensional one.  That flat surface is connected to the
+Spectre monotile, and the emergence of three-dimensional space from it is connected to the Chair44.
+\end{conj}
+
+\noindent
+Two background facts are kept apart from the conjecture.  The first is classical and exact.  An infinite uniform flat sheet
+of surface density $\sigma$ produces a gravitational field $g=2\pi G\sigma$ that does not depend on the distance from the
+sheet, because the mass in view grows as $r^{2}$ exactly as the force per unit mass falls as $r^{-2}$ (equivalently, by
+Gauss's law on a pillbox).  Fields of parallel sheets are uniform and superpose, so sheets of equal and opposite density
+cancel outside, and two equal sheets cancel between them.  The second concerns the setting.  Ghost-free bimetric gravity
+of Hassan and Rosen~\cite{HassanRosen} gives dynamics to a second metric, and a pre-geometric origin for it has been
+proposed~\cite{PreGeometric}; a picture in which the initial state consists of two sheets, one for each metric, and the Big
+Bang is their separation is the kind of reading that such a setting invites.  No such model is built here, and no claim
+is made about the dual-sheet cosmologies themselves.  The earlier observation that the area law
+$S_{\rm rel}=\delta A/4G$ is consistent with the $s$-wave dynamics of the Nariai horizon~\cite{hartshorn2026}, the converse
+of the result of Dorau and Much~\cite{DorauMuch}, is the setting in which the question arose.
+
+What the computations of this paper offer is a precise form of the contrast the conjecture needs.  A planar tile with a unimodular
+inflation, here the Spectre, has an internal space of dimension two and a window; a tile with an integer inflation, here the
+Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
+second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
+result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
+passage between the two kinds of inflation is not constructed.  The hierarchy section of ~\ref{sec:hull} tried the substitution hierarchy as that quantity, and it does not
+supply the map.  The reading would
+be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
+that the dichotomy is an artefact of the two examples, for instance by a three-dimensional tile with a unimodular
+inflation.  A planar counterexample of the other kind already exists: the hexagonal monotile of Socolar and
+Taylor~\cite{SocolarTaylor} inflates by $2$, and its tilings are model sets with a $2$-adic internal
+space~\cite{LeeMoodyTS}.  Its matching rules are carried by decorations, or by a shape that is not a connected region, so
+the dichotomy can survive it only as a statement about connected tiles whose shape alone forces aperiodicity; this
+narrowing is part of the reading, not a consequence of it.
+
+\begin{remark}[A proposal on the Weyl tensor]
+\label{rem:weyl}
+In three spacetime dimensions the Weyl tensor vanishes identically, the Riemann tensor is fixed by the Ricci tensor, and
+vacuum general relativity has no local gravitational degrees of freedom: gravitational waves need a third spatial
+dimension.  That is classical.  The \emph{proposal}, the first author's and not a derived result, is that this is the form in which
+a flat two-dimensional initial surface would have vanishing Weyl curvature (compare Penrose's Weyl curvature hypothesis, that
+the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
+degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
+Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
+$3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of ~\ref{sec:hull} leaves open what
+the hierarchy depth is: if it is the
+third spatial dimension, a separate time is needed, and if it is look-back time, gravitational waves need a propagation rule that
+the tiling does not supply.
+\end{remark}
+
+
+
+    
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1711,8 +1835,804 @@ which is still above the value $158$ of his structured families, and it found no
 open.  The search code and its logs are in \code{nd\_search/}; they are not part of this paper's build and were not
 rerun for it.
 
+\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}
+\label{part:qg}
+% Generated by sympy_models/qgravity.py. Do not edit by hand.
+
+\section{Introduction to the quantum geometry part}\label{qg:sec:intro}
+Loop quantum gravity describes quantum geometry on the Hilbert space of spin networks: graphs whose links carry spins of $SU(2)$, and whose area and volume operators have discrete spectra~\cite{rovelli-smolin-1995,ashtekar-lewandowski-1997}. The Hamiltonian formulation of $SU(2)$ lattice gauge theory~\cite{kogut-susskind-1975} lives on the same space on a fixed graph, and the square of the electric field on a link is the Casimir $j(j+1)$ of its spin, the number whose square root the area operator takes. The fork from which this part is generated (the repository \texttt{openai\_math\_yang\_mills}, called the fork below) has already solved two small cases of that lattice theory exactly: one plaquette, and two plaquettes sharing a link, whose gauge-invariant states are spin networks on the theta graph, with seven links and two trivalent vertices. This part reads the second system, the \emph{ladder}, as the kinematics of loop quantum gravity, writes the dictionary down, and checks it. Four questions organise it.
+\begin{itemize}\itemsep2pt
+\item \textbf{What does the geometry of the ladder's ground state look like?} The surface that separates the two plaquettes cuts only the shared link, so its mean-square area is the ground-state value of $c_2(J)$. It is $2/(3g^8)$ at strong coupling and $3/(\sqrt{10}\,g^2)$ at weak coupling, both exact, and both checked against numerical ground states (Section~\ref{qg:sec:ladder}).
+\item \textbf{What does counting punctures fix?} For a horizon pierced by $N$ links of spin $\tfrac12$, the entropy $S=A/4\ell_P^2$ is matched by the count of invariant states if the Immirzi parameter is $\ln2/(\pi\sqrt3)$. We derive this from the library's own entropy and Planck length, and keep it as a property of that count, not of the area spectrum (Section~\ref{qg:sec:entropy}).
+\item \textbf{What is the smallest vertex with a volume of its own?} Four spin-$\tfrac12$ legs have a two-dimensional space of intertwiners, and the triple-product operator on it has spectrum $\pm\sqrt3/4$: one volume, two orientations (Section~\ref{qg:sec:intertwiners}).
+\item \textbf{Which gravity entry of the release speaks this part's language?} Entry 348, on Einstein four-manifolds, is a statement about the curvature operator of $\mathrm{Spin}(4)=SU(2)_+\times SU(2)_-$, whose Weyl blocks are spin-2 objects of the two $SU(2)$s. We compute those blocks for $S^4$, $\mathbb{CP}^2$ and $S^2\times S^2$ from their metrics, check the topology and the numbers the papers use, and state what corresponds to a spin network and what does not (Section~\ref{qg:sec:einstein}).
+\end{itemize}
+Every term of every displayed row is the source equation solved for the row's quantity, substituted back and required to give an identity, and every number is checked: \nQgChecks{} checks over the quantum gravity model, \nChecks{} over the 13 models that this build runs, and 91 more over the figures pass in the build, and a failure stops it. The checks test that stated formulas agree with one another and with independent computation (Weyl's integration formula against numerical Haar quadrature, exact perturbation theory against numerical ground states, explicit matrices against exact eigenvalues); they do not re-prove any theorem or establish any physics.
+
+\paragraph{What this part is not.} It is not a model of quantum gravity. The graph is fixed, the Hamiltonian is that of a gauge theory and not the Hamiltonian constraint of gravity, nothing is invariant under diffeomorphisms, there is no volume operator beyond the triple product on four-valent intertwiner spaces of Section~\ref{qg:sec:intertwiners}, and there is no semiclassical or continuum limit. What the ladder supplies is a Hilbert space of spin networks and an operator that measures the flux through a link, and what is checked is what that gives.
+
+\section{The library, conjoined}\label{qg:sec:physics}
+Every statement about quantum gravity ends in the same few constants: $G$, $\hbar$, $c$, $k_B$, and the Planck length built from the first three. Equations that state the same quantity can be set equal once each is solved for it. Figure~\ref{qg:fig:physics} does this for 7 quantities at once, among them the gravitational constant, which appears in Newton's law, the Schwarzschild radius, the Bekenstein--Hawking entropy and the Planck length. The equations are \href{https://en.wikipedia.org/wiki/Mass%E2%80%93energy_equivalence}{Mass-energy equivalence}, \href{https://en.wikipedia.org/wiki/Planck_relation}{Planck relation}, \href{https://en.wikipedia.org/wiki/Kinetic_energy}{Kinetic energy}, \href{https://en.wikipedia.org/wiki/Thermal_energy}{Thermal energy}, \href{https://en.wikipedia.org/wiki/Mass_gap}{Mass gap in physical units}, \href{https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion}{Newton's second law}, \href{https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation}{Newton's law of gravitation}, \href{https://en.wikipedia.org/wiki/Coulomb%27s_law}{Coulomb's law}, \href{https://en.wikipedia.org/wiki/Hooke%27s_law}{Hooke's law}, \href{https://en.wikipedia.org/wiki/Schwarzschild_radius}{Schwarzschild radius}, \href{https://en.wikipedia.org/wiki/Black_hole_thermodynamics}{Bekenstein-Hawking entropy}, \href{https://en.wikipedia.org/wiki/Planck_length}{Planck length}, \href{https://en.wikipedia.org/wiki/Escape_velocity}{Escape velocity}, \href{https://en.wikipedia.org/wiki/Boltzmann%27s_entropy_formula}{Boltzmann entropy}, \href{https://en.wikipedia.org/wiki/Matter_wave}{de Broglie relation}, \href{https://en.wikipedia.org/wiki/Compton_wavelength}{Compton wavelength}, \href{https://en.wikipedia.org/wiki/Correlation_function_(quantum_field_theory)}{Euclidean correlator decay}.
+
+\begin{figure}[p]
+\centering
+\resizebox{0.98\textwidth}{!}{$\displaystyle
+\left.
+\begin{aligned}
+\overbrace{E}^{\text{\tiny energy}} &= \underbrace{c^{2} m}_{\text{\tiny mass-energy}} = \underbrace{h \nu}_{\text{\tiny Planck}} = \underbrace{\tfrac{m v^{2}}{2}}_{\text{\tiny kinetic}} = \underbrace{T k_{B}}_{\text{\tiny thermal}} = \underbrace{\tfrac{c \hbar m_{L}}{a}}_{\text{\tiny mass gap}} \\[1.2ex]
+\overbrace{F}^{\text{\tiny force}} &= \underbrace{a m}_{\text{\tiny Newton II}} = \underbrace{\tfrac{G m_{1} m_{2}}{r^{2}}}_{\text{\tiny Newton}} = \underbrace{\tfrac{q_{1} q_{2}}{4 \pi \epsilon_{0} r^{2}}}_{\text{\tiny Coulomb}} = \underbrace{- k x}_{\text{\tiny Hooke}} \\[1.2ex]
+\overbrace{G}^{\text{\tiny gravitational constant}} &= \underbrace{\tfrac{F r^{2}}{m_{1} m_{2}}}_{\text{\tiny Newton}} = \underbrace{\tfrac{c^{2} r_{s}}{2 M}}_{\text{\tiny Schwarzschild}} = \underbrace{\tfrac{A c^{3} k_{B}}{4 S \hbar}}_{\text{\tiny Bekenstein--Hawking}} = \underbrace{\tfrac{c^{3} \ell_{P}^{2}}{\hbar}}_{\text{\tiny Planck length}} = \underbrace{\tfrac{r v_{e}^{2}}{2 M}}_{\text{\tiny escape}} \\[1.2ex]
+\overbrace{k_{B}}^{\text{\tiny boltzmann constant}} &= \underbrace{\tfrac{S}{\log{\left(W \right)}}}_{\text{\tiny Boltzmann}} = \underbrace{\tfrac{4 G S \hbar}{A c^{3}}}_{\text{\tiny Bekenstein--Hawking}} = \underbrace{\tfrac{E}{T}}_{\text{\tiny thermal}} \\[1.2ex]
+\overbrace{\hbar}^{\text{\tiny reduced planck constant}} &= \underbrace{\tfrac{A c^{3} k_{B}}{4 G S}}_{\text{\tiny Bekenstein--Hawking}} = \underbrace{\tfrac{c^{3} \ell_{P}^{2}}{G}}_{\text{\tiny Planck length}} = \underbrace{\tfrac{E_{gap} a}{c m_{L}}}_{\text{\tiny mass gap}} \\[1.2ex]
+\overbrace{h}^{\text{\tiny planck constant}} &= \underbrace{\tfrac{E}{\nu}}_{\text{\tiny Planck}} = \underbrace{\lambda p}_{\text{\tiny de Broglie}} = \underbrace{c \lambda_{C} m}_{\text{\tiny Compton}} \\[1.2ex]
+\overbrace{m_{L}}^{\text{\tiny lattice mass}} &= \underbrace{\tfrac{\log{\left(\tfrac{A_{0}}{C_{t}} \right)}}{t}}_{\text{\tiny correlator}} = \underbrace{\tfrac{E_{gap} a}{c \hbar}}_{\text{\tiny mass gap}}
+\end{aligned}
+\;\right\} \begin{array}{l} \text{identities:} \\ \text{17 equations, 7 quantities} \end{array}
+$}
+\caption{The physics of the library, conjoined. Each row is one quantity, overbraced with its name; each term is a library equation solved for it, underbraced with the equation's name. The letters are those of the equations, so an equals sign says that each equation states the same quantity, not that its other letters take one common value.}
+\label{qg:fig:physics}
+\end{figure}
+
+\section{Quantum geometry in the library}\label{qg:sec:geometry}
+The knowledge graph gains five equations for the geometry of a spin network, and four quantities to read them with (spin, Casimir eigenvalue, Immirzi parameter, puncture count): the Casimir, the area spectrum, the area of $N$ spin-$\tfrac12$ punctures, the horizon area, and the leading count of puncture microstates. Figure~\ref{qg:fig:qgeometry} conjoins them with the library's entropy and Planck length. The equations are \href{https://en.wikipedia.org/wiki/Loop_quantum_gravity}{LQG area spectrum}, \href{https://en.wikipedia.org/wiki/Loop_quantum_gravity}{Area of N spin-1/2 punctures}, \href{https://en.wikipedia.org/wiki/Schwarzschild_metric}{Horizon area}, \href{https://en.wikipedia.org/wiki/Black_hole_thermodynamics}{Bekenstein-Hawking entropy}, \href{https://en.wikipedia.org/wiki/Casimir_element}{Spin Casimir}, \href{https://en.wikipedia.org/wiki/Loop_quantum_gravity}{Spin-1/2 puncture microstates}, \href{https://en.wikipedia.org/wiki/Boltzmann%27s_entropy_formula}{Boltzmann entropy}.
+
+\begin{figure}[p]
+\centering
+\resizebox{0.98\textwidth}{!}{$\displaystyle
+\left.
+\begin{aligned}
+\overbrace{A}^{\text{\tiny area}} &= \underbrace{8 \pi \sqrt{c_{2}} \ell_{P}^{2} \gamma_{I}}_{\text{\tiny LQG area}} = \underbrace{4 \sqrt{3} \pi N \ell_{P}^{2} \gamma_{I}}_{\text{\tiny $N$ punctures}} = \underbrace{4 \pi r_{s}^{2}}_{\text{\tiny horizon}} = \underbrace{\tfrac{4 G S \hbar}{c^{3} k_{B}}}_{\text{\tiny Bekenstein--Hawking}} \\[1.2ex]
+\overbrace{c_{2}}^{\text{\tiny casimir eigenvalue}} &= \underbrace{j \left(j + 1\right)}_{\text{\tiny Casimir}} = \underbrace{\tfrac{A^{2}}{64 \pi^{2} \ell_{P}^{4} \gamma_{I}^{2}}}_{\text{\tiny LQG area}} \\[1.2ex]
+\overbrace{W}^{\text{\tiny microstate count}} &= \underbrace{2^{N}}_{\text{\tiny $2^N$ states}} = \underbrace{e^{\tfrac{S}{k_{B}}}}_{\text{\tiny Boltzmann}} \\[1.2ex]
+\overbrace{S}^{\text{\tiny entropy}} &= \underbrace{\tfrac{A c^{3} k_{B}}{4 G \hbar}}_{\text{\tiny Bekenstein--Hawking}} = \underbrace{k_{B} \log{\left(W \right)}}_{\text{\tiny Boltzmann}} \\[1.2ex]
+\overbrace{A_{\min}}^{\text{\tiny one puncture}} &= \underbrace{8\pi\gamma_{I}\ell_P^{2}\sqrt{\tfrac34}}_{\text{\tiny LQG area},\ c_2=3/4} = \underbrace{4\sqrt3\,\pi\gamma_{I}\ell_P^{2}}_{\text{\tiny $N=1$ puncture}} \\[1.2ex]
+\overbrace{\gamma_{I}}^{\text{\tiny spin-1/2 count only}} &= \underbrace{\frac{\ln 2}{\pi\sqrt3}}_{\text{\tiny $S/k_B=\sqrt3\pi\gamma_{I}N=N\ln2$}} \approx 0.1274 \\[2.4ex]
+{} & \underbrace{c_{2} = j (j + 1)}_{\text{\tiny Casimir}} \;\overset{\text{\tiny defines}}{\longrightarrow}\; \underbrace{A = 8 \pi \gamma_{I} \ell_P^{2} \sqrt{c_{2}}}_{\text{\tiny LQG area}} \\[1.6ex]
+{} & \underbrace{A = 4 \sqrt{3} \pi N \gamma_{I} \ell_P^{2}}_{\text{\tiny $N$ punctures}} \;\overset{\text{\tiny specialises}}{\longrightarrow}\; \underbrace{A = 8 \pi \gamma_{I} \ell_P^{2} \sqrt{c_{2}}}_{\text{\tiny LQG area}} \\[1.6ex]
+{} & \underbrace{A = 8 \pi \gamma_{I} \ell_P^{2} \sqrt{c_{2}}}_{\text{\tiny LQG area}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{S = \tfrac{k_B c^3 A}{4 G \hbar}}_{\text{\tiny Bekenstein--Hawking}} \\[1.6ex]
+{} & \underbrace{W = 2^{N}}_{\text{\tiny $2^N$ states}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{S = k_B \log W}_{\text{\tiny Boltzmann}}
+\end{aligned}
+\;\right\} \begin{array}{l} \text{identities:} \\ \text{7 equations, 6 quantities} \\[0.6ex] \text{correspondences:} \\ \text{4 links} \end{array}
+$}
+\caption{Quantum geometry in the library, conjoined. Each identity row is one quantity (the area of a surface, the Casimir it is a function of, the number of microstates, the entropy) stated by several library equations, each solved for it. The equals sign says that each equation states the same quantity, not that the other letters take a common value; in the microstate row the $2^N$ is the leading exponential of the exact count, which is a Catalan number (Section~\ref{qg:sec:intertwiners}). The two rows below are exact numbers, rederived from the library's own entropy and Planck length: $G$, $\hbar$ and $c$ cancel, leaving $S/k_B=\sqrt3\pi\gamma_IN$. The arrows are links of the library, not equations: the Casimir defines the area, the $N$-puncture area specialises it, and the area spectrum and the entropy state the same area only once a counting fixes $\gamma_I$, which depends on which spins are counted (Section~\ref{qg:sec:entropy}).}
+\label{qg:fig:qgeometry}
+\end{figure}
+
+The area of a surface is a sum over the links that pierce it. A single link of spin $j$ adds an amount that is a function of the Casimir alone.
+
+\noindent The area spectrum of a spin-network surface~\cite{rovelli-smolin-1995,ashtekar-lewandowski-1997}.
+\begin{equation}\label{qg:qeq:qg_area_spectrum}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}A\bigl(\{j_i\}\bigr)=8\pi\gamma_{I}\,\ell_P^{2}\sum_{i}\sqrt{j_i(j_i+1)},\qquad A_{\min}=4\sqrt3\,\pi\gamma_{I}\ell_P^{2}\ \ (j=\tfrac12) \\
+    {}\sqrt{j(j+1)}=\Bigl(j+\tfrac12\Bigr)-\frac{1}{8j}+O(j^{-2}),\qquad \sqrt{(j+\tfrac12)(j+\tfrac32)}-\sqrt{j(j+1)}\ \xrightarrow{j\to\infty}\ \tfrac12
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+Two properties of the spectrum matter below. It has a smallest nonzero value, and it is not equally spaced: the step from one allowed spin to the next is $0.548$ in units of $8\pi\gamma_I\ell_P^2$ from $j=\tfrac12$ to $1$, $0.522$ from $1$ to $\tfrac32$, and falls to $\tfrac12$ (Figure~\ref{qg:fig:qg-geometry}a). The Immirzi parameter $\gamma_I$ is a free number in the spectrum.
+
+The same Casimir is the electric energy of a link in the lattice gauge theory, which is what lets the ladder serve as a model. The next display states that exactly, link by link.
+
+\noindent The link Casimir as a squared area, and the ladder's electric energy~\cite{kogut-susskind-1975}.
+\begin{equation}\label{qg:qeq:qg_casimir_dictionary}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}E_l^{2}=c_2(j_l)=\Bigl(\frac{A_l}{8\pi\gamma_{I}\ell_P^{2}}\Bigr)^{2} \\
+    {}\sum_{l=1}^{7}E_l^{2}=3c_2(j_a)+3c_2(j_b)+c_2(J)=\sum_{l=1}^{7}\Bigl(\frac{A_l}{8\pi\gamma_{I}\ell_P^{2}}\Bigr)^{2}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+This is a relation between two operators on one Hilbert space. It does not make the ladder's dynamics gravitational: the Hamiltonian constraint of loop quantum gravity is a different operator, and nothing in the ladder's Hamiltonian is built from areas in that way.
+
+\section{Intertwiners and the quantum tetrahedron}\label{qg:sec:intertwiners}
+A vertex of a spin network carries an intertwiner: an invariant vector in the tensor product of the spins that meet there. The dimension of that space is the Haar integral of the product of characters, which Weyl's integration formula makes an exact integer. At a trivalent vertex it is $1$ or $0$ according to the triangle rule, which is the rule that selects the ladder's states and is why they are labelled by link spins alone. At a four-valent vertex it counts the intermediate spins, and from there on a vertex has quantum numbers of its own.
+
+\noindent Intertwiner spaces: the dimension of the invariants of a vertex~\cite{barbieri-1998}.
+\begin{equation}\label{qg:qeq:qg_intertwiners}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\dim\mathrm{Inv}\Bigl(\bigotimes_{i=1}^{n}V_{j_i}\Bigr)=\int_{SU(2)}\prod_{i=1}^{n}\chi_{j_i}(U)\,dU=\bigl[z^{0}\bigr]\Bigl(1-z^{2}\Bigr)\prod_{i}\chi_{j_i}(z) \\
+    {}n=3:\ \ \dim=\begin{cases}1&\triangle(j_1,j_2,j_3)\\0&\text{otherwise}\end{cases}\qquad n=4:\ \ \dim=\#\{J:\ \triangle(j_1,j_2,J),\ \triangle(J,j_3,j_4)\} \\
+    {}j_i=\tfrac12,\ n=N:\ \ \dim=C_{N/2}=\frac{1}{N/2+1}\binom{N}{N/2}\ :\ 1,\ 2,\ 5,\ 14,\ 42,\ \dots
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+For four spin-$\tfrac12$ legs the space is two-dimensional, and on it the triple product of three of the spins is a Hermitian operator that commutes with the total spin. It is the squared volume of the quantum tetrahedron~\cite{barbieri-1998} up to a constant, and its spectrum is computed here from explicit $16\times16$ matrices.
+
+\noindent The four-valent vertex of four spin-1/2 as a quantum tetrahedron~\cite{barbieri-1998}.
+\begin{equation}\label{qg:qeq:qg_quantum_tetrahedron}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  Q=\epsilon_{abc}\,J^{(1)}_{a}J^{(2)}_{b}J^{(3)}_{c}\Big|_{\mathrm{Inv}(V_{1/2}^{\otimes4})},\qquad \dim\mathrm{Inv}=2,\qquad \mathrm{spec}\,Q=\Bigl\{-\tfrac{\sqrt3}{4},\,+\tfrac{\sqrt3}{4}\Bigr\},\qquad V\ \propto\ \sqrt{|Q|}
+$}
+\end{equation}
+\noindent\textit{4 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+The prefactor that turns $Q$ into a volume is not computed: the statement made is that the smallest vertex with quantum numbers of its own has a single nonzero volume squared, $\sqrt3/4$ in the units of $Q$, with two orientations. The same operator is built for any four spins. In the coupled basis it is $i(x_K-x_{K'})$ times an orthogonal matrix of $6j$ symbols (the spectrum does not depend on a phase that depends on one intermediate spin alone), and it agrees with the explicit-matrix construction to $4\times10^{-15}$ for eight sets of spins.
+
+\noindent Triple-product (volume) operator on a four-valent intertwiner space.
+\begin{equation}\label{qg:qeq:qg_volume_triple_product}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}Q=\epsilon_{abc}J_{1a}J_{2b}J_{3c}=i\,[\,J_1\!\cdot\!J_2,\ J_2\!\cdot\!J_3\,]\ \ \text{on}\ \ \mathrm{Inv}\bigl(V_{j_1}\!\otimes V_{j_2}\!\otimes V_{j_3}\!\otimes V_{j_4}\bigr),\qquad [Q,J_{\mathrm{tot}}]=0,\ \ Q^\dagger=Q,\ \ \mathrm{spec}\,Q=-\mathrm{spec}\,Q \\
+    {}\dim\mathrm{Inv}=\#\{K:\ \triangle(j_1,j_2,K),\ \triangle(K,j_3,j_4)\},\qquad V\propto\sqrt{|Q|}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/qg\_volume.py}).}
+
+\noindent Exact spectra of the triple product for four equal and mixed spins.
+\begin{equation}\label{qg:qeq:qg_volume_spectra}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\mathrm{spec}\,Q:\ \ (\tfrac12)^4:\ \pm\tfrac{\sqrt3}{4};\quad (1)^4:\ 0,\pm\sqrt3;\quad (\tfrac32)^4:\ \pm\tfrac{3\sqrt3}{4},\ \pm\tfrac{3\sqrt{35}}{4};\quad (1,1,\tfrac12,\tfrac12):\ \pm\tfrac{1}{\sqrt2} \\
+    {}\mathrm{Tr}\,Q=\mathrm{Tr}\,Q^3=0,\qquad \mathrm{Tr}\,Q^2=\tfrac38,\ 6,\ \tfrac{171}{4},\ 198\ \ \bigl(j=\tfrac12,1,\tfrac32,2\bigr) \\
+    {}Q_{KK'}=i\,(x_K-x_{K'})\sum_L U_{KL}\,y_L\,U_{K'L},\ \ U_{KL}=\sqrt{(2K+1)(2L+1)}\begin{Bmatrix}j_1&j_2&K\\j_3&j_4&L\end{Bmatrix}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/qg\_volume.py}).}
+
+The spectra are symmetric under $Q\to-Q$, and vanish when a leg has spin $0$, when the vertex is trivalent. For four spin-$1$ legs there is a state of zero volume, as the dimension, three, is odd. The largest eigenvalue, against the triple product of three vectors of length $\sqrt{j(j+1)}$ of the regular tetrahedron, rises from $0.794$ at $j=\tfrac32$ to $0.921$ at $j=8$ and stays below one: a trend, not a proof of a semiclassical limit.
+
+\noindent Largest volume of four equal spins against the regular tetrahedron.
+\begin{equation}\label{qg:qeq:qg_volume_semiclassical}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \frac{\lambda_{\max}(Q)}{\frac{4}{3\sqrt3}\,[j(j+1)]^{3/2}}=0.866,\ 0.796,\ 0.794,\ 0.808,\ 0.840,\ 0.867,\ 0.921\ \ (j=\tfrac12,1,\tfrac32,2,3,4,8)\ \ \text{increasing, below }1
+$}
+\end{equation}
+\noindent\textit{1 checks passed (\texttt{models/qg\_volume.py}).}
+
+\paragraph{Where the four-valent vertex is.} After gauge fixing, every vertex of the strip of the next section is trivalent, so the strip carries no volume. A four-valent lattice vertex first appears for three plaquettes in an L shape ($a$ at the origin, $b$ to its right, $c$ above), at the corner that all three share: its four links are the one shared by $a$ and $b$, the top of $b$, the one shared by $a$ and $c$, and the right side of $c$. At strong coupling the ground state is the electric vacuum dressed by strings of spin $\tfrac12$ around plaquettes. Only a string around $b$ together with one around $c$ puts spin $\tfrac12$ on all four legs, with the two loops each contracting a pair of legs, and on that vector $Q^2=\tfrac3{16}$. Its amplitude is the second-order value $4/(9g^8)$, so that $\langle Q^2\rangle_0=1/(27g^{16})$ at leading order.
+
+\noindent The four-valent vertex of the L-shaped cluster at strong coupling.
+\begin{equation}\label{qg:qeq:qg_volume_l_shape}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\langle Q^2\rangle_0=\frac{3}{16}\,\bigl|\psi_{bc}\bigr|^2=\frac{3}{16}\Bigl(\frac{4}{9\,g^{8}}\Bigr)^{2}=\frac{1}{27\,g^{16}}\,\bigl(1+O(g^{-8})\bigr)\ \ \text{(L shape, strong coupling)} \\
+    {}\psi_{bc}=2\,\frac{(1/g^{2})^{2}}{(3g^{2}/2)(3g^{2})}=\frac{4}{9g^{8}},\quad E_{b}=\tfrac32g^{2},\ E_{bc}=3g^{2}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_volume.py}).}
+
+This estimate was first conditional: the amplitude $4/(9g^8)$ is the one two disjoint strings have, and it was not derived for the L shape. The Hamiltonian of the L-shaped cluster is now built, and the estimate is tested against it. The basis labels the spins $j_a,j_b,j_c$, the shared links $J_{ab},J_{ac}$, and an intermediate spin $K$ at the four-valent vertex, in the channel $(J_{ab}J_{ac})K$, $(j_bj_c)K$. The plaquette operators are built vertex by vertex from explicit Clebsch--Gordan coefficients, with the recoupling at the four-valent vertex included, and the signs are not guessed: the relation $\chi_{1/2}(U_p)\Psi_s=\sum_{s'}\langle s'|W_p|s\rangle\Psi_{s'}$ is checked pointwise at random group elements for $45$ pairs of a state and a plaquette, with the wave functions evaluated by direct tensor contraction.
+
+\noindent L-shaped cluster: basis, energies and plaquette operators with a four-valent vertex.
+\begin{equation}\label{qg:qeq:su2_lshape_basis}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}|j_a,j_b,j_c,J_{ab},J_{ac};K\rangle,\ \ \triangle(j_a,j_b,J_{ab}),\ \triangle(j_a,j_c,J_{ac}),\ \ K:\ (J_{ab}J_{ac})K,\ (j_bj_c)K \\
+    {}H=\frac{g^{2}}{2}\bigl[2C(j_a)+3C(j_b)+3C(j_c)+C(J_{ab})+C(J_{ac})\bigr]+\frac{1}{g^{2}}\bigl(6-W_a-W_b-W_c\bigr) \\
+    {}\langle s'|W_p|s\rangle=\prod_{l\in p}\sqrt{\tfrac{d_{j_l}}{d_{j_l'}}}\ \sum_{\mu}\ \pm\ \prod_{v\in p}F_v(\mu_v),\qquad F_v=\langle\iota'_v|\,R\otimes R\,|\iota_v\rangle,\quad R_\mu=C\bigl(j\,m,\tfrac12\mu\,|\,j'\,m{+}\mu\bigr)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{7 checks passed (\texttt{models/su2\_lattice\_lshape.py}).}
+
+The three plaquette operators are real, symmetric and commute in the interior of the truncation (and fail to at its boundary, as they should); with a plaquette trivial they reduce in absolute value to the ladder's squared-$6j$ elements; the kinetic matrix of the harmonic limit has eigenvalues $4,\,4\pm\sqrt2$, those of the strip. The ground-state energy is $6/g^2-2/g^6+O(g^{-10})$ at strong coupling, and the amplitude of the state with strings around $b$ and $c$ is $4/(9g^8)$ (ratio to the numerics tending to $1$ at $g^2=8,12,16$).
+
+\noindent The four-valent vertex of the L-shaped cluster: \textless{}Q\textasciicircum{}2\textgreater{} in the ground state.
+\begin{equation}\label{qg:qeq:su2_lshape_volume}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\langle Q^{2}\rangle_0=\sum_{s}\bigl|\psi_s\bigr|^{2}\,\langle s|Q^{2}|s\rangle,\qquad Q=\epsilon_{abc}J_{ab,a}J_{ac,b}J_{bt,c} \\
+    {}g^{16}\langle Q^{2}\rangle_0\ \xrightarrow{g\to\infty}\ \frac{1}{27}\ \ (\text{confirmed, see the numbers below}),\qquad \psi_{bc}=\frac{4}{9g^{8}}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/su2\_lattice\_lshape.py}).}
+
+The estimate is confirmed: the ratio $27\,g^{16}\langle Q^2\rangle_0$ is $0.9808$, $0.9939$, $0.99961$ and $0.999976$ at $g^2=3,4,8,16$. At intermediate coupling $\langle Q^2\rangle_0$ is $1.3\times10^{-4}$, $1.09\times10^{-3}$ and $1.34\times10^{-2}$ at $g^2=2,1.5,1$, growing as the coupling falls. The number at $g^2=0.8$ was dropped because it is converged only to about $8\%$ in the spin cutoff, and those above to about $2\%$. The constant that turns $Q$ into a volume is still not fixed, so this is a statement about the triple product, not about a physical volume.
+
+\noindent The L-shaped cluster: gap at moderate coupling against the strip and the harmonic limit.
+\begin{equation}\label{qg:qeq:su2_lshape_gap}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  K=\begin{pmatrix}4&-1&-1\\-1&4&0\\-1&0&4\end{pmatrix}_{(a,b,c)},\quad \mathrm{spec}\,K=4-\sqrt2,\,4,\,4+\sqrt2\ \ (\text{as for the strip}),\qquad \Delta_{g\to0}=2\sqrt{2-\tfrac{\sqrt2}{2}}\approx2.2741
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/su2\_lattice\_lshape.py}).}
+
+The lowest excitation is $2.4398$ at $g^2=1.5$ and $2.0570$ at $g^2=1$, against the harmonic limit $2.2741$; at $g^2=1.5$ it equals the strip's to $10^{-3}$, so the corner vertex does not show in the gap there. The weak-coupling limit itself is not reached by these numbers (the gap is below the limit at $g^2=1$), and no larger cluster or continuum limit was tried.
+
+\section{The ladder as a spin network}\label{qg:sec:ladder}
+The two plaquettes sharing a link have seven links. After a spanning-tree gauge fixing, the gauge-invariant states are the spin networks of the theta graph: the three outer links of plaquette $a$ carry one spin $j_a$, those of $b$ carry $j_b$, and the shared link carries $J$, with the triangle rule at both vertices. The Hamiltonian is the Kogut--Susskind Hamiltonian in lattice units, with the plaquette operators given by squared $6j$ symbols.
+
+\noindent Two-plaquette ladder: basis, energies and plaquette operators.
+\begin{equation}\label{qg:qeq:su2_ladder_basis}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}|j_a,j_b,J\rangle,\ \ \triangle(j_a,j_b,J),\quad H=\frac{g^{2}}{2}\bigl[3C(j_a)+3C(j_b)+C(J)\bigr]+\frac{1}{g^{2}}\bigl(4-W_a-W_b\bigr),\ \ C(j)=j(j+1) \\
+    {}\langle j_a{+}\epsilon,j_b,J{+}\eta|W_a|j_a,j_b,J\rangle=\sqrt{d_{j_a}d_{j_a'}d_Jd_{J'}}\,\begin{Bmatrix}j_a&\tfrac12&j_a'\\J'&j_b&J\end{Bmatrix}^{2},\ \ \epsilon,\eta=\pm\tfrac12
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/su2\_lattice\_ladder.py}).}
+
+A surface that separates the two plaquettes cuts one link, the shared one, so its area is the area spectrum at spin $J$ and its mean square in the ground state is $\langle c_2(J)\rangle_0$ in units of $(8\pi\gamma_I\ell_P^2)^2$. At strong coupling the ground state is the electric vacuum $J=0$, dressed to first order by the two single-plaquette strings; at weak coupling it spreads over large spins and the ladder is two coupled oscillators, whose virial theorem fixes the coefficient.
+
+\noindent The mean-square area of the cut between the two plaquettes, in the ground state of the ladder.
+\begin{equation}\label{qg:qeq:qg_ladder_geometry}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\bigl\langle A_{\mathrm{cut}}^{2}\bigr\rangle_{0}=\bigl(8\pi\gamma_{I}\ell_P^{2}\bigr)^{2}\,\bigl\langle c_2(J)\bigr\rangle_{0},\qquad \bigl\langle c_2(J)\bigr\rangle_{0}\ \xrightarrow{g\to\infty}\ \frac{\frac{2}{3}}{g^{8}},\qquad g^{2}\bigl\langle c_2(J)\bigr\rangle_{0}\ \xrightarrow{g\to0}\ \frac{3 \sqrt{10}}{10} \\
+    {}g^{2}\bigl\langle c_2(j_a)\bigr\rangle_{0}\ \xrightarrow{g\to0}\ \frac{3 \sqrt{10}}{40} + \frac{\sqrt{6}}{8}=\tfrac34\Bigl(\tfrac1{\sqrt6}+\tfrac1{\sqrt{10}}\Bigr)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{7 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+\begin{figure}[!htbp]\centering
+  \includegraphics[width=\linewidth]{paper/qgravity/fig_qg_ladder.pdf}
+  \caption{The surface that separates the two plaquettes of the ladder. (a)~The mean-square area $\langle c_2(J)\rangle_0$ in the ground state, against $g^2$ (both axes logarithmic): the numerical ground states, the exact strong-coupling law $2/(3g^8)$, and the weak-coupling law $3/(\sqrt{10}\,g^2)$ from the virial theorem. (b)~$g^2\langle c_2(J)\rangle_0$ for the shared link and $g^2\langle c_2(j_a)\rangle_0$ for a link of one plaquette, against $g^2$: both approach their exact limits (arrows, at $g^2=0$) linearly. The ladder's Hamiltonian is a gauge-theory Hamiltonian, not a gravitational one; the cut is a surface of its graph, not a horizon.}\label{qg:fig:qg-ladder}
+\end{figure}
+
+The two laws meet the numerical curve at both ends (Figure~\ref{qg:fig:qg-ladder}a), and the weak-coupling approach is linear in $g^2$ (Figure~\ref{qg:fig:qg-ladder}b). The shared link fluctuates more than a plaquette's own links by the factor $1.746$, because it carries the difference of the two loop fields. Only the leading terms are derived; the first correction in $g^2$ is not.
+
+\section{A third plaquette: the strip}\label{qg:sec:strip}
+Three plaquettes in a row have ten links. The corner vertices again force equal spins on the outer links of the end plaquettes, so the gauge-invariant states are spin networks on a graph of four trivalent vertices and six edges: $j_a$ and $j_c$ for the ends, $t$ and $b$ for the top and bottom of the middle plaquette, and $J_1$, $J_2$ for the two shared links. The electric energy is again a sum of squared areas, and the plaquette operators shift every link of the boundary of a plaquette by $\pm\tfrac12$ with a product of one $6j$ symbol per vertex on the loop: two for $a$ and $c$, four for $b$. Unlike the ladder's, these $6j$ symbols are not squared, so the signs matter.
+
+\noindent Three-plaquette strip: basis, energies and plaquette operators.
+\begin{equation}\label{qg:qeq:su2_strip_basis}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}|j_a,j_c,t,b,J_1,J_2\rangle,\ \ \triangle(j_a,t,J_1),\,\triangle(t,j_c,J_2),\,\triangle(j_a,b,J_1),\,\triangle(b,j_c,J_2) \\
+    {}H=\frac{g^{2}}{2}\bigl[3C(j_a)+3C(j_c)+C(t)+C(b)+C(J_1)+C(J_2)\bigr]+\frac{1}{g^{2}}\bigl(6-W_a-W_b-W_c\bigr) \\
+    {}\langle j_a{+}\epsilon,J_1{+}\eta|W_a|j_a,J_1\rangle=(-1)^{(k_t-k_b)/2}\sqrt{d_{j_a}d_{j_a'}d_{J_1}d_{J_1'}}\,\begin{Bmatrix}j_a&\tfrac12&j_a'\\J_1'&t&J_1\end{Bmatrix}\begin{Bmatrix}j_a&\tfrac12&j_a'\\J_1'&b&J_1\end{Bmatrix} \\
+    {}W_b:\ \ s_b\sqrt{\textstyle\prod d}\ \begin{Bmatrix}t&\tfrac12&t'\\J_1'&j_a&J_1\end{Bmatrix}\begin{Bmatrix}t&\tfrac12&t'\\J_2'&j_c&J_2\end{Bmatrix}\begin{Bmatrix}b&\tfrac12&b'\\J_2'&j_c&J_2\end{Bmatrix}\begin{Bmatrix}b&\tfrac12&b'\\J_1'&j_a&J_1\end{Bmatrix}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{8 checks passed (\texttt{models/su2\_lattice\_strip.py}).}
+
+The signs in the display were found by fitting, not derived from a convention: they were fixed against an independent construction from Wigner $3j$ symbols that shares no code with the closed forms, and agree with it on all $5047$ transitions checked (states up to spin $\tfrac32$ and a sample up to spin $2$) to $4\times10^{-16}$. The three plaquette operators are symmetric and commute in the interior of the truncated space ($6\times10^{-16}$), while the commutators reach $0.94$ at the truncation boundary, as expected, and with the third plaquette trivial the operators are the ladder's, exactly, on $948$ transitions.
+
+This is the test that the strip formula of the ladder's harmonic argument lacked. The three loop variables are three-dimensional oscillators with the tridiagonal kinetic matrix of the display; gauge invariance leaves total angular momentum zero, so the lowest excitation is two quanta in the soft mode.
+
+\noindent Weak-coupling limit of the three-plaquette strip.
+\begin{equation}\label{qg:qeq:su2_strip_weak}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\omega_k=\sqrt{2-\cos\tfrac{k\pi}{4}}\ \ (k=1,2,3)=\sqrt{\tfrac{4-\sqrt2}{2}},\ \sqrt2,\ \sqrt{\tfrac{4+\sqrt2}{2}} \\
+    {}\Delta_{g\to0}=2\omega_1=2\sqrt{2-\tfrac{\sqrt2}{2}}\approx2.2741,\quad \text{next: }\omega_1{+}\omega_2\ (\text{odd}),\ \ \omega_1{+}\omega_3,\ \ 2\omega_2\ (\text{even}) \\
+    {}\frac{\Delta_3}{\Delta_{\mathrm{plaquette}}}\to\sqrt{\tfrac12\bigl(2-\tfrac{\sqrt2}{2}\bigr)}\approx0.8040
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/su2\_lattice\_strip.py}).}
+
+Against this, the lowest even level of the numerical spectrum, extrapolated to $g\to0$ from $g^2=0.2$--$0.4$ with a cubic, is $2.2749$ ($2.2741$ predicted), and the second is $2.5520$ ($2.5513$ predicted), with the reflection parities of the oscillator modes. The next two even levels mix at finite coupling, and only their sum could be compared (agreement to $1.3\times10^{-3}$). At strong coupling the first excited level is threefold degenerate, three strings of spin $\tfrac12$ at $3g^2/2$, and exact second-order perturbation theory splits it.
+
+\noindent Strong-coupling splitting of the first excited level of the strip.
+\begin{equation}\label{qg:qeq:su2_strip_strong}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \Delta_i=\frac32\,g^{2}+\frac{\mu_i}{g^{6}}+O(g^{-14}),\ \ \mu_i=\text{eigenvalues of }M+2\cdot\mathbb 1,\ \ M=\left[\begin{matrix}- \frac{122}{105} & - \frac{2}{21} & 0\\- \frac{2}{21} & - \frac{44}{35} & - \frac{2}{21}\\0 & - \frac{2}{21} & - \frac{122}{105}\end{matrix}\right]\ \text{ on }(A,B,C)
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/su2\_lattice\_strip.py}).}
+
+The numerical levels at $g^2=6$ and $8$ match these to $5\times10^{-4}$ with the right parities. Between the limits the three gaps are ordered.
+
+\noindent The strip gap against the ladder and one-plaquette gaps.
+\begin{equation}\label{qg:qeq:su2_strip_gap}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \Delta_{3}(g)\le\Delta_{2}(g)\le\Delta_{1}(g),\qquad \frac{\Delta_3}{\Delta_1}\to\sqrt{1-\tfrac{\sqrt2}{4}}\approx0.8040\ (g\to0),\quad\to1\ (g\to\infty)
+$}
+\end{equation}
+\noindent\textit{3 checks passed (\texttt{models/su2\_lattice\_strip.py}).}
+
+The ordering holds on the grid $g^2=0.25$--$8$; the ratio to the one-plaquette gap is $0.835$ at $g^2=0.25$, against the limit $0.8040$, and $0.99995$ at $g^2=8$. The three volumes say nothing about a larger or infinite system, and, like the ladder's, the gap here is that of a gauge-theory Hamiltonian on a small lattice.
+
+\paragraph{Four and five plaquettes.} The same graph, a ladder of squares, gives $3N-3$ labels for $N$ plaquettes, and the display gives the Hamiltonian, with a phase $\sigma_p$ that extends the three-plaquette rule by a factor $(-1)^{(k_t-k_b)/2}$ for each interior neighbour. That extension is a conjecture, and it is tested rather than derived.
+
+\noindent N-plaquette strip: general-N spin-network Hamiltonian and its independent check.
+\begin{equation}\label{qg:qeq:su2_stripn_basis}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}H_N=\frac{g^{2}}{2}\sum_{\ell}C(j_\ell)+\frac{1}{g^{2}}\sum_{p=1}^{N}\bigl(2-W_p\bigr),\ \ W_p=\sigma_p\sqrt{\textstyle\prod d}\prod_{v\in p}\begin{Bmatrix}x_v&\tfrac12&x_v'\\y_v'&z_v&y_v\end{Bmatrix} \\
+    {}\sigma_p=s_p\prod_{q\sim p,\ 1<q<N}(-1)^{(k_{t_q}-k_{b_q})/2}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/su2\_lattice\_stripn.py}).}
+
+The test is an independent construction with no $6j$ symbol and no phase: wavefunctions of the $N$ loop holonomies, with the link electric fields from the Peter--Weyl decomposition and gauge invariance enforced by a penalty. It reproduces the ladder exactly at $N=2$ and the strip module at $N=3$. At $g^2=2$ the spin-network builder and the independent construction agree on the lowest four levels to $2\times10^{-6}$ at $N=4$ (ground state $3.67192$) and $10^{-3}$ at $N=5$ (ground state $4.5899$, limited by the cut), and the plaquette operators commute away from the cut. The weak-coupling gap formula $2\sqrt{2-\cos(\pi/(N+1))}$ ($2.1827$ at $N=4$, $2.1297$ at $N=5$) is \emph{not} tested: at $g^2=0.8$--$0.4$ the $N=4$ gap is still falling with the energy cut ($2.84\to2.49$ at $g^2=0.4$ between cuts $24$ and $32$), and $N=5$ was too slow to converge, so no extrapolation is claimed.
+
+\section{Counting punctures and the Immirzi parameter}\label{qg:sec:entropy}
+If a horizon of area $A$ is pierced by $N$ links of spin $\tfrac12$, its area is $N$ times the smallest value, and the number of invariant states is a Catalan number whose logarithm is $N\ln2$ at leading order. Setting $S=A/4\ell_P^2$ against that count fixes $\gamma_I$. The display uses the library's own entropy and Planck length, in which $G$, $\hbar$ and $c$ cancel~\cite{rovelli-1996}.
+
+\noindent Counting spin-1/2 punctures and the value of the Immirzi parameter~\cite{rovelli-1996,domagala-lewandowski-2004}.
+\begin{equation}\label{qg:qeq:qg_entropy_immirzi}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}W=C_{N/2}\sim\frac{2^{N}}{\sqrt\pi\,(N/2)^{3/2}},\qquad A=4\sqrt3\,\pi N\gamma_{I}\ell_P^{2},\qquad \frac{S}{k_B}=\frac{c^{3}A}{4G\hbar}=\sqrt3\,\pi\gamma_{I}N \\
+    {}\frac{S}{k_B}=\ln W\simeq N\ln2\ \Longrightarrow\ \gamma_{I}=\frac{\ln 2}{\pi\sqrt3}\approx0.1274
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_spin\_network.py}).}
+
+\begin{figure}[!htbp]\centering
+  \includegraphics[width=\linewidth]{paper/qgravity/fig_qg_geometry.pdf}
+  \caption{The area spectrum and the count of punctures. (a)~The single-link area eigenvalues $\sqrt{j(j+1)}$, in units of $8\pi\gamma_I\ell_P^2$, against $j$, with the line $j+\tfrac12$ they approach from below, and (right axis) the step between neighbouring levels, which is above $\tfrac12$ and tends to it. (b)~The entropy per puncture $\tfrac1N\ln C_{N/2}$ of $N$ spin-$\tfrac12$ punctures, from the exact Catalan numbers, with the asymptotic formula of Section~\ref{qg:sec:entropy}; it tends to $\ln2$, which fixes $\gamma_I=\ln2/(\pi\sqrt3)$ for this count.}\label{qg:fig:qg-geometry}
+\end{figure}
+
+The count is exact (Section~\ref{qg:sec:intertwiners}) and the shortfall of the entropy per puncture below $\ln2$ is $\tfrac{3}{2N}\ln\tfrac N2+\tfrac{\ln\pi}{2N}+\tfrac{9}{4N^2}$ (Figure~\ref{qg:fig:qg-geometry}b), still $0.007$ at $N=1600$. The value $0.1274$ belongs to this count: counting all spins with the area fixed gives a different number (about $0.2375$~\cite{domagala-lewandowski-2004}, quoted, not rederived here). The area spectrum does not determine $\gamma_I$, and neither does this section derive the entropy of a black hole from dynamics: the horizon area is given.
+
+\section{Einstein four-manifolds: the geometric \texorpdfstring{$SU(2)$}{SU(2)}}\label{qg:sec:einstein}
+Entry 348 of the release classifies the closed four-manifolds that are Einstein, $\mathrm{Ric}=\lambda g$, and have positive sectional curvature: up to scale, the round $S^4$, Fubini--Study $\mathbb{CP}^2$ and (for the real projective quotient) $\mathbb{RP}^4$~\cite{oai-einstein4}. Two companion papers carry it to the boundary case, where $S^2\times S^2$ enters, and to an $L^2$ gap: a simply connected nonnegatively curved four-manifold whose trace-free Ricci tensor has small enough $L^2$ energy is diffeomorphic to one of the three~\cite{oai-einstein-gap,oai-zero-plane}. This is the one gravity entry of the release whose language is the language of this part. The frame group of an oriented four-manifold is $\mathrm{Spin}(4)=SU(2)_+\times SU(2)_-$, the two-forms split as $\Lambda^2=\Lambda^+\oplus\Lambda^-$ into the adjoints of the two factors, and the curvature operator for $\mathrm{Ric}=3g$ is $\mathrm{Id}+T$ on $\Lambda^+$ and $\mathrm{Id}+U$ on $\Lambda^-$, with $T$ and $U$ the two trace-free Weyl blocks~\cite{oai-einstein4}. Each block is a symmetric trace-free endomorphism of a three-dimensional space on which one $SU(2)$ acts: a spin-2 object. The link of a spin network carries a spin of one $SU(2)$; the self-dual (Ashtekar) connection of a Euclidean four-manifold is the $SU(2)_+$ part of its Spin$(4)$ connection. What follows checks the algebra of that statement and the numbers that the paper of that entry~\cite{oai-einstein4} and the library use about the three model spaces.
+
+\noindent so(4) = su(2) + su(2): the two SU(2)s and the Casimirs of the curvature blocks.
+\begin{equation}\label{qg:qeq:qg_so4_casimirs}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\Lambda^{2}=\Lambda^{+}\oplus\Lambda^{-}=(1,0)\oplus(0,1),\qquad (c_2^{+},c_2^{-})\Big|_{V}=\bigl(\tfrac34,\tfrac34\bigr),\quad \Big|_{\Lambda^{+}}=(2,0),\quad \Big|_{\Lambda^{-}}=(0,2) \\
+    {}\mathrm{Sym}^{2}_{0}\Lambda^{\pm}=(2,0)\oplus(0,2)\ \ (\dim 5)\ \text{each},\qquad c_2=j(j+1)\big|_{j=2}=6 \\
+    {}\Sigma=\sigma_{+}+\sigma_{-}\ \text{simple}\ \Longrightarrow\ |\sigma_{+}|=|\sigma_{-}|
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_einstein4.py}).}
+
+The Casimirs are computed from explicit $4\times4$ generators. On the vector they are $(\tfrac34,\tfrac34)$, on $\Lambda^+$ they are $(2,0)$, and on a Weyl block, the five-dimensional trace-free part of the symmetric square of $\Lambda^+$, the Casimir is $6=j(j+1)$ at $j=2$: the same function of the spin as in the area spectrum (Section~\ref{qg:sec:geometry}), evaluated at spin $2$. The last line of the display is the algebraic form of a decomposable two-plane having equal self-dual and anti-self-dual parts, which is also why the sectional curvature of a plane is a mean of one value from each block. In spin-foam models the corresponding statement about a bivector (the simplicity constraint) is what ties the two spins to one spin through the Immirzi parameter~\cite{eprl-2008}; that is context here, and nothing in it is computed.
+
+The curvature blocks of the three spaces are computed from their metrics in a chart, by differentiating twice, and not from a formula for the curvature of the model.
+
+\noindent Curvature blocks of the three model Einstein four-manifolds.
+\begin{equation}\label{qg:qeq:qg_einstein_blocks}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\mathcal R=\begin{pmatrix}\mathrm{Id}+T&0\\0&\mathrm{Id}+U\end{pmatrix},\qquad \mathrm{Ric}=3g \\
+    {}S^{4}:\ (T,U)=(0,0);\qquad \mathbb{CP}^{2}:\ T\sim\mathrm{diag}(2,-1,-1),\ U=0;\qquad S^{2}\!\times\! S^{2}:\ T\sim U\sim\mathrm{diag}(2,-1,-1) \\
+    {}|T|^{2}=0,\ 6,\ 6;\quad |U|^{2}=0,\ 0,\ 6;\qquad K_{\min}=1-\tfrac{x+y}{2}=1,\ \tfrac12,\ 0,\qquad x=-\lambda_{\min}(T),\ y=-\lambda_{\min}(U)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{7 checks passed (\texttt{models/qg\_einstein4.py}).}
+
+The mixed block between $\Lambda^+$ and $\Lambda^-$ vanishes for the three Einstein spaces and not for the unbalanced product $S^2(K{=}3)\times S^2(K{=}1)$, whose Ricci tensor is $\mathrm{diag}(3,3,1,1)$: that block is the trace-free Ricci tensor, and its vanishing is the Einstein equation. The least sectional curvature is $1-(x+y)/2$, where $x$ and $y$ are the depths of the two blocks, and the condition $x+y<2$ of that paper is strict sectional positivity: $S^4$ ($0$) and $\mathbb{CP}^2$ ($1$) satisfy it, $S^2\times S^2$ ($2$) has planes of zero curvature. On every nonzero block of the three spaces $|T|^2$ or $|U|^2$ is $6$, so $v^2=b^2=1$: the gap $\mathbb{E}\,v^2\ge1$ that the entry's paper takes from~\cite{gursky-lebrun-1999} holds with equality on each, and $S^2\times S^2$ has $v+b=2$, exactly on the boundary of the condition $v+b<2$. The topology comes out of the same curvature.
+
+\noindent Euler characteristic and signature of the three model spaces from their curvature.
+\begin{equation}\label{qg:qeq:qg_einstein_topology}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\chi=\frac{1}{32\pi^{2}}\int\bigl(|\mathrm{Rm}|^{2}-4|\mathrm{Ric}|^{2}+R^{2}\bigr)\,d\mu,\qquad \tau=\frac{1}{48\pi^{2}}\int\bigl(|W^{+}|^{2}-|W^{-}|^{2}\bigr)\,d\mu \\
+    {}\mathrm{Ric}=3g:\quad \chi=\frac{3V}{4\pi^{2}}\bigl(1+s_{+}+s_{-}\bigr),\qquad \tau=\frac{V}{2\pi^{2}}\bigl(s_{+}-s_{-}\bigr),\qquad s_{+}=\mathbb E\,v^{2},\ \ s_{-}=\mathbb E\,b^{2} \\
+    {}(\chi,\tau)=(2,0),\ (3,1),\ (4,0),\qquad V=\tfrac{8\pi^{2}}{3},\ 2\pi^{2},\ \tfrac{16\pi^{2}}{9}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_einstein4.py}).}
+
+\begin{figure}[p]
+\centering
+\resizebox{0.98\textwidth}{!}{$\displaystyle
+\left.
+\begin{aligned}
+\overbrace{V}^{\text{\tiny normalised volume}} &= \underbrace{\tfrac{4 \pi^{2} \chi_{E}}{3 \left(s_{A} + s_{S} + 1\right)}}_{\text{\tiny Gauss--Bonnet}} = \underbrace{- \tfrac{2 \pi^{2} \tau_{E}}{s_{A} - s_{S}}}_{\text{\tiny signature theorem}} \\[1.2ex]
+\overbrace{s_{S}}^{\text{\tiny self-dual Weyl moment, round $S^{4}$}} &= \underbrace{- s_{A} - 1 + \tfrac{4 \pi^{2} \chi_{E}}{3 V}}_{\text{\tiny Gauss--Bonnet}} = \underbrace{s_{A} + \tfrac{2 \pi^{2} \tau_{E}}{V}}_{\text{\tiny signature theorem}} = 0 \\[1.2ex]
+\overbrace{s_{S}}^{\text{\tiny self-dual Weyl moment, Fubini--Study $\mathrm{CP}^{2}$}} &= \underbrace{- s_{A} - 1 + \tfrac{4 \pi^{2} \chi_{E}}{3 V}}_{\text{\tiny Gauss--Bonnet}} = \underbrace{s_{A} + \tfrac{2 \pi^{2} \tau_{E}}{V}}_{\text{\tiny signature theorem}} = 1 \\[1.2ex]
+\overbrace{s_{S}}^{\text{\tiny self-dual Weyl moment, $S^{2}\!\times\! S^{2}$}} &= \underbrace{- s_{A} - 1 + \tfrac{4 \pi^{2} \chi_{E}}{3 V}}_{\text{\tiny Gauss--Bonnet}} = \underbrace{s_{A} + \tfrac{2 \pi^{2} \tau_{E}}{V}}_{\text{\tiny signature theorem}} = 1 \\[1.2ex]
+\overbrace{K_{m}}^{\text{\tiny least sectional curvature, $S^{4}$}} &= \underbrace{1-\tfrac{0+0}{2}}_{\text{\tiny least plane}} = 1 \\[1.2ex]
+\overbrace{K_{m}}^{\text{\tiny least sectional curvature, $\mathrm{CP}^{2}$}} &= \underbrace{1-\tfrac{1+0}{2}}_{\text{\tiny least plane}} = \frac{1}{2} \\[1.2ex]
+\overbrace{K_{m}}^{\text{\tiny least sectional curvature, $S^{2}\!\times\! S^{2}$}} &= \underbrace{1-\tfrac{1+1}{2}}_{\text{\tiny least plane}} = 0 \\[2.4ex]
+{} & \underbrace{\chi_{E} = \tfrac{3 V}{4 \pi^{2}} (1 + s_{S} + s_{A})}_{\text{\tiny Gauss--Bonnet}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{\tau_{E} = \tfrac{V}{2 \pi^{2}} (s_{S} - s_{A})}_{\text{\tiny signature theorem}} \\[1.6ex]
+{} & \underbrace{c_{2} = j (j + 1)}_{\text{\tiny Casimir}} \;\overset{\text{\tiny specialises}}{\longrightarrow}\; \underbrace{c_{2} = 2 (2 + 1)}_{\text{\tiny Weyl block, $j=2$}} \\[1.6ex]
+{} & \underbrace{c_{2} = 2 (2 + 1)}_{\text{\tiny Weyl block, $j=2$}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{\tau_{E} = \tfrac{V}{2 \pi^{2}} (s_{S} - s_{A})}_{\text{\tiny signature theorem}}
+\end{aligned}
+\;\right\} \begin{array}{l} \text{identities:} \\ \text{5 equations, 7 quantities} \\[0.6ex] \text{correspondences:} \\ \text{3 links} \end{array}
+$}
+\caption{Einstein four-manifolds in the library, conjoined (entry 348, $\mathrm{Ric}=3g$). The first row states the volume twice, through the Euler characteristic and through the signature, in terms of the two Weyl second moments $s_S=\mathbb E\,v^2$ and $s_A=\mathbb E\,b^2$. The next three rows state $s_S$ both ways for the three model spaces, with $\chi$, $\tau$, $V$ and $s_A$ as computed from their metrics in Section~\ref{qg:sec:einstein}: the two terms of each row are the same number, shown at the end of the row ($0$, $1$, $1$), which is the check, since the equations alone would let any $s_S$ through. The last three rows give the least sectional curvature $1-(x+y)/2$ of the same spaces, which is $0$ for $S^2\times S^2$, the planes of zero curvature that strict positivity excludes. The arrows are links of the library: $\chi$ and $\tau$ share the same two moments, and the Weyl block of one chirality is the spin-2 representation, whose Casimir is the $j(j+1)$ of a spin-network link at $j=2$.}
+\label{qg:fig:einstein}
+\end{figure}
+
+Figure~\ref{qg:fig:einstein} puts the two characteristic identities in the library's own form. They are the ones that tie the two second moments to the volume in that paper's argument, and they are what the three rows of $s_S$ test: the Euler number and the signature, read as equations for the same moment, agree on all three spaces. Two numbers of the papers appear as checks of the model: the Hitchin--Thorpe quantity $2\chi-3|\tau|$ is $4$, $3$, $8$, and the condition $2\chi-3|\tau|\le4$ under which a Gursky--Malchiodi-type classification is quoted in that paper holds for the first two only. The energy $D(g)=\int|\mathrm{Ric}-\tfrac R4g|^2\,d\mu$ of the $L^2$ paper is invariant under rescaling in dimension four, is zero on the three Einstein spaces, and is $64\pi^2/3$ on the unbalanced product. The existence of the universal threshold $\varepsilon_0$ below which the classification persists is the theorem of~\cite{oai-einstein-gap}; it has no value in that paper, and none is computed here.
+
+\paragraph{What corresponds to what, and what does not.} (i)~The $SU(2)$ of a link is, in a Euclidean four-manifold, one of the two factors of the frame group, and the electric field of a link is a section of the adjoint of that factor, which is $\Lambda^+$ when the factor is $SU(2)_+$. (ii)~The two-dimensional surface whose area the spin network measures has a bivector $\Sigma$, decomposable, with $|\Sigma_+|=|\Sigma_-|$; its area is the length of $\Sigma$ and the area spectrum quantises the length of the $\Sigma_+$ part, the Casimir of Section~\ref{qg:sec:geometry} (the factor $1/\sqrt2$ is a normalisation that is not tracked). (iii)~The weak-coupling variables of the ladder are $su(2)$-valued, three components per plaquette; on the geometric side the curvature $2$-form of $SU(2)_+$ evaluated on a plane is a vector of $\Lambda^+\cong\mathbb R^3$. That the numbers of three components agree is the whole of the correspondence at this point, and it is an interpretation. Not claimed: that the ladder, which is a two-dimensional lattice problem, or any spin network, carries an Einstein metric; that $S^4$, $\mathbb{CP}^2$ or $S^2\times S^2$ is a state of any quantum theory here; anything about the Lorentzian theory, in which the group of the Ashtekar--Barbero connection is $SU(2)$ for a different reason; or any statement about the classification theorem itself, which is stated in Lean in the release (\texttt{lean/docs/348.md}) and not connected to the checks above. The other gravity entries of the release are taken up in the sections that follow (the spacetime Penrose inequalities, 260, Section~\ref{qg:sec:penrose}; strong cosmic censorship near Kerr, 264, Section~\ref{qg:sec:kerr}; the Liouville quantum gravity limit of random planar maps, 211, Section~\ref{qg:sec:maps}); of them the Penrose inequality is the closest to what is computed here, since it bounds a mass from below by an area, and the area has a spectrum in Section~\ref{qg:sec:geometry}, but combining a classical inequality with a quantum area eigenvalue is a heuristic that this part does not make.
+
+\section{The Penrose inequality and the smallest area}\label{qg:sec:penrose}
+Entry 260 proves that the invariant ADM mass $m$ of asymptotically flat initial data satisfying the dominant energy condition is at least $\sqrt{A_{\min}/16\pi}$, where $A_{\min}$ is the minimum area of a surface enclosing a weakly trapped boundary, in three spatial dimensions and with $G=c=1$~\cite{oai-penrose}. It states charged, four-dimensional and anti-de Sitter versions, and equality for Schwarzschild data under horizon hypotheses. The inequality is the one place in the release where a mass is bounded by an area, and the area has a spectrum in Section~\ref{qg:sec:geometry}. The next display restores the units, checks that the library's Schwarzschild radius and horizon area saturate the bound, and checks the equality cases of the stated variants as algebraic identities. They are consistency checks of formulas, not tests of the theorems.
+
+\noindent The Penrose bound: saturation by Schwarzschild, Planck units and the equality cases of its variants.
+\begin{equation}\label{qg:qeq:qg_penrose_equality}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}m\ \ge\ \sqrt{\frac{A_{\min}}{16\pi}}\ \ (G=c=1),\qquad M\ \ge\ \frac{c^{2}}{G}\sqrt{\frac{A_{\min}}{16\pi}},\qquad \frac{M}{M_P}\ \ge\ \sqrt{\frac{A_{\min}}{16\pi\,\ell_P^{2}}} \\
+    {}A=4\pi r_s^{2},\ r_s=\tfrac{2GM}{c^{2}}\ \Longrightarrow\ M=\tfrac{c^{2}}{G}\sqrt{\tfrac{A}{16\pi}}\ \ \text{(Schwarzschild saturates)} \\
+    {}\text{charged:}\ \ m\ge\tfrac12\bigl(r+\tfrac{Q^{2}}{r}\bigr)\ \ (r\ge Q),\quad r_+=m+\sqrt{m^{2}-Q^{2}}\ \text{saturates};\qquad 4\text{D:}\ \ m\ge\tfrac12\bigl(\tfrac{A_e}{2\pi^{2}}\bigr)^{2/3},\ \ f=1-\tfrac{2m}{r^{2}}\ \text{saturates} \\
+    {}\text{AdS}\ (\Lambda=-3):\ \ m\ge\sqrt{\tfrac{A}{16\pi}}\bigl(1+\tfrac{A}{4\pi}\bigr),\ \ f=1+r^{2}-\tfrac{2m}{r}\ \text{saturates}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_penrose.py}).}
+
+\begin{figure}[p]
+\centering
+\resizebox{0.98\textwidth}{!}{$\displaystyle
+\left.
+\begin{aligned}
+\overbrace{M}^{\text{\tiny mass}} &= \underbrace{\tfrac{c^{2} r_{s}}{2 G}}_{\text{\tiny Schwarzschild}} = \underbrace{\tfrac{\sqrt{A} c^{2}}{4 \sqrt{\pi} G}}_{\text{\tiny Penrose}} \\[1.2ex]
+\overbrace{A}^{\text{\tiny area}} &= \underbrace{4 \pi r_{s}^{2}}_{\text{\tiny horizon}} = \underbrace{\tfrac{16 \pi G^{2} M^{2}}{c^{4}}}_{\text{\tiny Penrose}} = \underbrace{8 \pi \sqrt{c_{2}} \ell_{P}^{2} \gamma_{I}}_{\text{\tiny LQG area}} \\[1.2ex]
+\overbrace{\tfrac{M_{\min}}{M_P}}^{\text{\tiny one puncture, bound}} &= \underbrace{\sqrt{\tfrac{A_{\min}}{16\pi\ell_P^{2}}}}_{\text{\tiny Penrose}} = \underbrace{\sqrt{\tfrac{4\sqrt3\pi\gamma_I}{16\pi}}}_{\text{\tiny $N=1$ puncture}} = \sqrt{\tfrac{\ln 2}{4\pi}}\approx 0.2349 \\[2.4ex]
+{} & \underbrace{r_s = \tfrac{2 G M}{c^2}}_{\text{\tiny Schwarzschild}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{M = \tfrac{c^{2}}{G} \sqrt{\tfrac{A}{16 \pi}}}_{\text{\tiny Penrose}} \\[1.6ex]
+{} & \underbrace{A = 8 \pi \gamma_{I} \ell_P^{2} \sqrt{c_{2}}}_{\text{\tiny LQG area}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{M = \tfrac{c^{2}}{G} \sqrt{\tfrac{A}{16 \pi}}}_{\text{\tiny Penrose}}
+\end{aligned}
+\;\right\} \begin{array}{l} \text{identities:} \\ \text{4 equations, 3 quantities} \\[0.6ex] \text{correspondences:} \\ \text{2 links} \end{array}
+$}
+\caption{The Penrose inequality of entry 260 at equality, in the library. The first row states the mass twice: through the Schwarzschild radius, and as the mass that saturates the inequality for a given area. The second states the area three ways: the horizon area, the area at which the Penrose mass equals $M$, and the quantised area of Section~\ref{qg:sec:geometry}; as in the other figures the equals sign says that each equation states the same quantity, not that the other letters share a value. The third row evaluates the bound at the area of one spin-$\tfrac12$ puncture, with $\gamma_I=\ln2/(\pi\sqrt3)$, exactly. The arrows are library links: Schwarzschild data saturate the bound, and the area of the bound is the area that has a spectrum. Putting a quantum area eigenvalue where the theorem has a classical enclosing area is a heuristic (Section~\ref{qg:sec:penrose}).}
+\label{qg:fig:penrose}
+\end{figure}
+
+Figure~\ref{qg:fig:penrose} puts the saturated bound in the library's form. If the area in the bound is taken to be that of $N$ spin-$\tfrac12$ punctures with $\gamma_I=\ln2/(\pi\sqrt3)$, the bound is $M/M_P\ge\sqrt{N\ln2/4\pi}$, which is $\sqrt{S/4\pi k_B}$ in terms of the entropy of Section~\ref{qg:sec:entropy}: for one puncture, $0.2349$ Planck masses.
+
+\noindent The Penrose bound at the area of N spin-1/2 punctures (a heuristic composition).
+\begin{equation}\label{qg:qeq:qg_penrose_quantum}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}A_N=4\sqrt3\pi\gamma_I N\ell_P^{2}\Big|_{\gamma_I=\ln2/(\pi\sqrt3)}=4N\ln2\,\ell_P^{2},\qquad \frac{M}{M_P}\ \ge\ \sqrt{\frac{N\ln2}{4\pi}}=\sqrt{\frac{S}{4\pi k_B}},\qquad \frac{M_{\min}}{M_P}\Big|_{N=1}=\sqrt{\frac{\ln2}{4\pi}}\approx0.2349 \\
+    {}\text{general punctures:}\ \ \frac{M}{M_P}\ge\sqrt{\tfrac{\gamma_I}{2}\sum_i\sqrt{j_i(j_i+1)}},\qquad r_s\ge\frac{\hbar}{Mc}\ \Longleftrightarrow\ \frac{M}{M_P}\ge\frac{1}{\sqrt2}\ \Longleftrightarrow\ N\ge\frac{2\pi}{\ln2}=9.06
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_penrose.py}).}
+
+\paragraph{Why this is a heuristic.} The theorem is about classical initial data, and the left-hand side of the bound is a number computed from such data; an area eigenvalue belongs to an operator on a Hilbert space of spin networks. Nothing here derives a statement about a quantum state from the theorem, or the converse, and the value of $\gamma_I$ used belongs to one counting (Section~\ref{qg:sec:entropy}). The numbers also show where the classical reading breaks. For one puncture the area radius is $0.47\,\ell_P$, below the Planck length, and the reduced Compton wavelength of the saturating mass, $4.3\,\ell_P$, is larger than the horizon. The crude criterion that the Schwarzschild radius of the saturating mass exceeds its Compton wavelength first holds at $N=10$ punctures. What survives is arithmetic: an exact closed form relating the smallest quantised area, the entropy and a mass in Planck units, which a reader can set beside the theorem and decide what it means.
+
+\section{Strong cosmic censorship near Kerr}\label{qg:sec:kerr}
+Entry 264 proves a local form of strong cosmic censorship near every fixed rotating subextremal Kerr bridge: in a weighted smooth topology, a dense $G_\delta$ set of nearby smooth two-ended asymptotically flat vacuum data has a maximal globally hyperbolic development with no future extension, in the classes $C^2\subset C^1\subset C^0\cap W^{1,2}_{\mathrm{loc}}$ of the three companion papers (the last class, a continuous metric with a locally square-integrable weak connection, gives the strongest statement). No symmetry is imposed, and extensions need not satisfy the vacuum equations~\cite{oai-kerr-w12,oai-kerr-c1,oai-kerr-c2}. What the proofs use of Kerr itself is small and explicit: a reduction by scaling to $M=1$, an inner horizon $r_->0$, and the absolute inner surface gravity $\kappa$, which fixes the decay of the lapse as $e^{-\kappa T}$ and the packet amplitude $A_T=e^{-\kappa T/4}$, larger than the square root of the lapse. The extension is then tested by holonomies of a family of small loops~\cite{oai-kerr-w12}. The first display computes, in exact algebra, the Kerr quantities these statements rest on; the fork read the abstract, introduction and the normalisation of the first paper and not the proofs.
+
+\noindent Kerr horizons: radii, areas, surface gravities, Smarr formula and the first law at both horizons~\cite{oai-kerr-w12}.
+\begin{equation}\label{qg:qeq:qg_kerr_horizons}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}r_\pm=M\pm\sqrt{M^{2}-a^{2}},\quad r_+r_-=a^{2},\quad A_\pm=4\pi(r_\pm^{2}+a^{2})=8\pi Mr_\pm,\quad \kappa_\pm=\frac{r_\pm-r_\mp}{2(r_\pm^{2}+a^{2})}=\pm\frac{\sqrt{M^{2}-a^{2}}}{2Mr_\pm},\quad \Omega_\pm=\frac{a}{r_\pm^{2}+a^{2}} \\
+    {}M=2\Omega_\pm J+\frac{\kappa_\pm A_\pm}{4\pi},\qquad dM=\frac{\kappa_\pm}{8\pi}\,dA_\pm+\Omega_\pm\,dJ,\qquad J=Ma \\
+    {}\frac{|\kappa_-|}{\kappa_+}=\frac{r_+}{r_-}>1,\qquad \kappa_+|\kappa_-|=\frac{M^{2}-a^{2}}{4M^{2}a^{2}},\qquad a^{2}|\kappa_-|\xrightarrow{a\to0}M,\qquad \kappa_\pm\xrightarrow{a\to M}0
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{10 checks passed (\texttt{models/qg\_kerr.py}).}
+
+\noindent The Penrose gap of Kerr, the Christodoulou-Ruffini form and the area product~\cite{oai-penrose,oai-kerr-w12}.
+\begin{equation}\label{qg:qeq:qg_kerr_penrose}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}M^{2}-\frac{A_+}{16\pi}=\frac{Mr_-}{2}>0\ \ (a\neq0),\qquad M^{2}=M_{\rm irr}^{2}+\frac{J^{2}}{4M_{\rm irr}^{2}},\ \ M_{\rm irr}=\sqrt{\tfrac{A_+}{16\pi}} \\
+    {}A_+A_-=(8\pi J)^{2},\qquad A_+-8\pi|J|=8\pi M(r_+-a)\ \ge0,\ \ =0\iff r_+=r_-\ (a=M)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_kerr.py}).}
+
+The second display records one exact coincidence. The Penrose inequality of Section~\ref{qg:sec:penrose} is an equality for Schwarzschild and strict for every rotating Kerr, with gap $M^2-A_+/16\pi=Mr_-/2$: it vanishes exactly when the inner horizon does, which is the condition $r_->0$ that the near-Kerr papers need. The two theorems are different statements about different objects, and the fork can say only that they share this hypothesis. The first display also shows why the constants of the papers are tied to the fixed centre: $|\kappa_-|\sim M/a^2$ grows without bound as $a\to0$ and both surface gravities vanish as $a\to M$.
+
+\noindent The Kerr area bound at the area of N spin-1/2 punctures (a heuristic composition).
+\begin{equation}\label{qg:qeq:qg_kerr_quantum}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}A_N=4\sqrt3\pi\gamma_I N\ell_P^{2}\ \ge\ 8\pi|J|\ (\hbar=1)\ \Longleftrightarrow\ N\ \ge\ \frac{2|J|}{\sqrt3\gamma_I}\xrightarrow{\gamma_I=\ln2/(\pi\sqrt3)}\frac{2\pi|J|}{\ln2} \\
+    {}|J|=\tfrac12:\ N\ge\frac{\pi}{\ln2}=4.53\ (N\ge5),\qquad |J|=1:\ N\ge\frac{2\pi}{\ln2}=9.06\ (N\ge10)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_kerr.py}).}
+
+\paragraph{What is, and is not, a connection.} Two things join this entry to this part. The first is arithmetic and heuristic: composed with the area spectrum, the classical bound $A_+\ge8\pi|J|$ asks for at least five spin-$\tfrac12$ punctures at the smallest spin $J=\hbar/2$ and ten at $J=\hbar$ (the same $2\pi/\ln2$ as the Compton threshold of Section~\ref{qg:sec:penrose}), and the Kerr mass bound $M\ge\sqrt{|J|}\,M_P$ then exceeds the Penrose bound for those punctures. It inherits every caveat of Section~\ref{qg:sec:penrose}: a classical bound against an eigenvalue of an operator. It also stops at the outer horizon: the area product $A_+A_-=(8\pi J)^2$ would make $A_-$ a spin-network area too only if $NN'=4\pi^2J^2/\ln^22$ were an integer, which is not the case at $J=\tfrac12$ (it is $20.54$), and the inner horizon is not a surface of the states of Section~\ref{qg:sec:ladder} in any case. The second is structural. The proofs of entry 264 test extensions by holonomies of small loops of the Levi-Civita connection, and a spin network is built from holonomies of a connection along the links of a graph. The resemblance ends there: the connection of the proof is the Lorentzian one on the spacetime, with only $L^2$ coefficients in a chart; the connection of this part is an $SU(2)$ connection on a spatial slice. Nothing in the displays tests this analogy.
+
+\section{Liouville quantum gravity and the Catalan counts}\label{qg:sec:maps}
+Entry 211 proves that critical Fortuin--Kasteleyn planar maps converge, for $0<q\le4$, to Liouville quantum gravity spheres decorated by conformal loop ensembles, and for $q>4$ to the Brownian continuum random tree, which is the transition from surface to tree; for FK--Ising ($q=2$, $\gamma=\sqrt3$) and for spanning-tree-decorated maps the graph metric and the stationary random walk converge as well, and the spectrum converges in the Ising case~\cite{oai-fk-sub,oai-fk-q4,oai-fk-metric,oai-fk-walk,oai-fk-spectral}. The parameters are linked by $q=2+2\cos(\pi\gamma^2/2)$ and $\kappa'=16/\gamma^2$~\cite{oai-fk-sub}. This is the entry least close to loop quantum gravity: Liouville gravity is a continuum random surface in two dimensions whose area is a multiplicative chaos measure, and the two theories share the initials and little else. The one place where the counting is the same is the one this part already uses: the Catalan numbers that give the dimension of the invariant space of $N$ spin-$\tfrac12$ legs (Section~\ref{qg:sec:intertwiners}) and the entropy of Section~\ref{qg:sec:entropy} also count the plane trees of the tree phase and, shuffled in pairs, the tree-decorated maps. The displays check what can be recomputed.
+
+\noindent Rooted planar maps and tree-rooted maps: brute force against Tutte and Mullin~\cite{oai-fk-sub}.
+\begin{equation}\label{qg:qeq:qg_maps_counts}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}M_n=\frac{2\cdot3^{n}(2n)!}{n!\,(n+2)!}=2,9,54,378,\ldots\ \sim\ \frac{2}{\sqrt\pi}\,\frac{12^{n}}{n^{5/2}},\qquad T_n=\mathrm{Cat}_n\mathrm{Cat}_{n+1}=2,10,70,588,\ldots\ \sim\ \frac{4}{\pi}\,\frac{16^{n}}{n^{3}} \\
+    {}\mathrm{Cat}_n=\frac1{n+1}\binom{2n}{n}\sim\frac{4^{n}}{\sqrt\pi\,n^{3/2}}\quad(\text{plane trees, and the invariants of }2n\text{ spin-}\tfrac12\text{ legs})
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/qg\_planar\_maps.py}).}
+
+\noindent The FK dictionary q, kappa, gamma, c and the string susceptibility~\cite{oai-fk-sub}.
+\begin{equation}\label{qg:qeq:qg_maps_exponents}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}q=2+2\cos\frac{\pi\gamma^{2}}2,\ \ \kappa'=\frac{16}{\gamma^{2}},\ \ \sqrt q=-2\cos\frac{4\pi}{\kappa'},\qquad c=\frac{(3\kappa'-8)(6-\kappa')}{2\kappa'}=25-6Q^{2},\ \ Q=\frac2\gamma+\frac\gamma2 \\
+    {}\gamma_{\rm str}=\frac{c-1-\sqrt{(1-c)(25-c)}}{12}=1-\frac4{\gamma^{2}},\qquad \#\{\text{rooted maps}\}\sim\mu^{n}n^{\gamma_{\rm str}-2} \\
+    {}q=0,1,2,3,4:\ \ \gamma^{2}=2,\tfrac83,3,\tfrac{10}3,4;\ \ c=-2,0,\tfrac12,\tfrac45,1;\ \ \gamma_{\rm str}=-1,-\tfrac12,-\tfrac13,-\tfrac15,0
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_planar\_maps.py}).}
+
+\noindent Spin-1/2 invariants at level k and the FK loop weight.
+\begin{equation}\label{qg:qeq:qg_maps_su2k}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\dim\mathrm{Inv}_k(V_{1/2}^{\otimes N})=\#\{\text{closed walks of length }N\text{ on }A_{k+1}\}=\mathrm{Cat}_{N/2}\ \ (N\le2k),\qquad \#\sim\Big(2\cos\frac{\pi}{k+2}\Big)^{N}=(\sqrt{q_k})^{N} \\
+    {}q_k=4\cos^{2}\frac{\pi}{k+2};\qquad k=1,2,4,\infty:\ \ q_k=1,2,3,4,\qquad \tfrac1N\ln\#\ \to\ \ln2\cos\tfrac{\pi}{k+2}=\tfrac12\ln q_k\ \ (\ln2\ \text{at }k=\infty)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{6 checks passed (\texttt{models/qg\_planar\_maps.py}).}
+
+\paragraph{Reading the three displays.} The brute-force counts reproduce Tutte's $2,9,54,378$ rooted maps and Mullin's $2,10,70,588$ tree-rooted maps, and Mullin's number is a shuffle of two Catalan structures, one for the tree and one for its dual. The dictionary of the second display turns the entry's parameters into central charges and exponents ($q=0,1,2,3,4$ give $c=-2,0,\tfrac12,\tfrac45,1$), and the rule that rooted counts grow as $\mu^nn^{\gamma_{\rm str}-2}$ reproduces the exponents $-3$ and $-\tfrac52$ found by brute force. The third display is the connection with this part. The invariants of $N$ spin-$\tfrac12$ legs are counted by closed walks on a Dynkin diagram $A_{k+1}$ at level $k$ of the quantum group $U_q(\mathfrak{sl}_2)$, with loop weight $2\cos(\pi/(k+2))$; setting that weight equal to $\sqrt q$ gives $q=1,2,3$ at $k=1,2,4$ (percolation, Ising, three-state Potts), and the undeformed $SU(2)$ of this part, loop weight $2=\dim V_{1/2}$, is the critical end $q=4$ of the range of the entry. The same Temperley--Lieb algebra acts in both, which is why the numbers agree; the fork constructs no map from a spin network to a decorated planar map, and the growth rate $\tfrac12\ln q$ of the count is the growth rate of a count and not an Immirzi-type constant (the $\ln2$ of Section~\ref{qg:sec:entropy} is the $k=\infty$ value, fixed there by a physical argument). A loop weight above $2$, the $q>4$ tree phase of the entry, has no unitary $SU(2)_k$ counterpart. Quantum-group deformations of loop quantum gravity, in which $k$ is set by a cosmological constant, are a known direction that this part does not use and for which it cites nothing. The classical formulas used (Tutte, Mullin, the Kardar--Parisi--Zhang relation for $\gamma_{\rm str}$) are quoted by name and checked by brute force or exact algebra where possible, not taken from a retrieved source.
+
+\section{Gauge fixing and the curvature of the link: a four-dimensional lattice result}\label{qg:sec:forest}
+A paper dated 30 October 2026 by Bhattacharjee, Bhattacharya, Lockwood and Romanov~\cite{bbll-forest-4d} studies the Euclidean Wilson action on $\mathbb Z^4$ at fixed lattice spacing. Fixing the variables on a \emph{line field} (a set $F$ of straight lines, one through every site, chosen so that every plaquette contains exactly one link of $F$) to the identity, it proves a unique infinite-volume state and an explicit transfer-matrix gap: $m\ge-\log(3\beta_W)$ for $SU(2)$ and $\beta_W<\tfrac13$, plaquette blocks that reach $0.345$ for $SU(2)$ and $0.76$ for $SU(3)$, and for every compact simple group a range $\beta_W<2N\kappa_G/29$ with a decay rate $m_G(\beta)$ given by the least Ricci curvature $\kappa_G$. It reduces the continuum gap to one cube condition and says that this condition, the slice ratio and the tree bounds are open. The fork read the first six pages and the appendix with the line field; it did not read the proofs, and the four-dimensional paper's own account is that these are strong-coupling results at a fixed spacing. What the fork could do is rebuild the finite statements: Table~III of the four-dimensional paper (the line field), the partner counts, Table~I from root-system data, and the numbers of the theorems. The next displays are those checks. They test that paper's arithmetic and combinatorics, not its theorems.
+
+\noindent The line field of period two in four dimensions: one fixed link in every plaquette and twelve free partners.
+\begin{equation}\label{qg:qeq:fg4t_linefield}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\pi_x(\sigma(x))=\sigma(x),\ \pi_x|_{R}\ \text{a 3-cycle},\ \ \pi_x(\mu)=\sigma(x+e_\mu)\ \Rightarrow\ \#\{F\cap\partial p\}=1\ \ \forall p \\
+    {}2(d-1)=\frac{d(d-1)}{2}\iff d=4,\qquad \#\text{partners}=6\cdot2=12,\qquad \#\{\text{period-2 fields}\}=8
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{10 checks passed (\texttt{models/forest\_gauge\_4d\_theorems.py}).}
+
+\noindent Partners of a free link and the Dobrushin ceiling 4/p in four dimensions.
+\begin{equation}\label{qg:qeq:fg4t_partners}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}p_{\text{line field}}=12,\quad p_{\text{temporal}}=14,\quad p_{\text{no fixing}}=3\cdot6=18 \\
+    {}\beta_W<\frac4p:\quad\frac4{12}=\frac13,\quad\frac4{14}=\frac27,\quad\frac4{18}=\frac29;\qquad p=6(d-1)\ \Rightarrow\ \frac{2}{3(d-1)}
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{5 checks passed (\texttt{models/forest\_gauge\_4d\_theorems.py}).}
+
+\noindent Table I of the four-dimensional paper from root-system data, and Lichnerowicz's bound.
+\begin{equation}\label{qg:qeq:fg4t_table1}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\kappa_G=\frac{h^{\vee}}{2\ell_\rho},\quad \ell_\rho=\frac{\dim V_\rho\,C_2(\rho)}{\dim\mathfrak g},\quad C_2(\lambda)=(\lambda,\lambda+2\rho),\quad \beta_W<\frac{2N\kappa_G}{29} \\
+    {}SU(N):\ \kappa=\tfrac N2,\ \tfrac{N^2}{29};\quad SO(N):\ \tfrac{N-2}{4},\ \tfrac{N(N-2)}{58};\quad Sp(n):\ \tfrac{n+1}{2},\ \tfrac{2n(n+1)}{29};\quad G_2,F_4,E_6,E_7,E_8:\ \kappa=1,\tfrac34,1,\tfrac34,\tfrac14 \\
+    {}\lambda_\rho=\frac{\dim G}{N}\ \ge\ \frac{\dim G}{\dim G-1}\,\kappa_G\ \ (\text{Lichnerowicz}),\qquad\text{equality only for }SU(2)
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{8 checks passed (\texttt{models/forest\_gauge\_4d\_theorems.py}).}
+
+\noindent The numbers of Theorems 1-7 and Table II of the four-dimensional paper.
+\begin{equation}\label{qg:qeq:fg4t_theorems}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}m\ge-\log(3\beta_W)\ \ (\beta_W<\tfrac13);\qquad m\ge-\tfrac12\log\alpha(\beta_W),\ \alpha(\tfrac13)\le0.9561,\ \alpha(0.345)\le0.9973 \\
+    {}m\ge-\log(1.33319\,\beta_W)\ \ (SU(3),\ \beta_W\le\tfrac34) \\
+    {}m_G(\beta)=\operatorname{arccosh}\!\Big(1+\tfrac1{12}\Big(\frac{\kappa_G}{N|\beta|}-\tfrac{29}2\Big)\Big)\to\log\frac{\kappa_G}{6N|\beta|},\qquad m_G\to0\ \text{at}\ \beta_W=\tfrac{2N\kappa_G}{29} \\
+    {}\tfrac{29}{28.840002}=1.0055,\qquad SU(2):\ \tfrac1{12},\tfrac18,\tfrac29,\tfrac4{29},\tfrac13,0.345;\quad SU(3):\ \tfrac3{16},\tfrac9{32},\tfrac9{29},\tfrac34,0.76
+  \end{gathered}
+$}
+\end{equation}
+\noindent\textit{11 checks passed (\texttt{models/forest\_gauge\_4d\_theorems.py}).}
+
+Three observations connect this to the rest of this part. None is a derivation.
+\paragraph{The link space is the Einstein three-sphere, and the smallest spin saturates Lichnerowicz.} The curvature that the four-dimensional paper uses for $SU(2)$ is the Ricci curvature of the group manifold $S^3$ with the bi-invariant metric $-\mathrm{Tr}(XY)$, which is $\kappa=1$ (Einstein with constant $2$ on the unit sphere, here radius $\sqrt2$). The electric term of the Hamiltonian of Section~\ref{qg:sec:ladder} is the Laplacian of that sphere, with eigenvalue $2j(j+1)$ in this metric. Lichnerowicz's bound $\lambda_1\ge\tfrac{n}{n-1}\kappa$ is $\tfrac32$ on $S^3$, and the spin-$\tfrac12$ eigenvalue is $\tfrac32$: equality, as Obata's theorem requires of the round sphere. The check above finds the same comparison strict for every other group in Table~I, among them $SU(3)$ ($8/3$ against $12/7$). The spin $\tfrac12$ is also the one whose area is the smallest, $\sqrt{j(j+1)}=\sqrt3/2$ (Section~\ref{qg:sec:geometry}), so the smallest area quantum of a link and the first electric excitation that the curvature argument of the four-dimensional paper controls are the same eigenfunction of the same Laplacian. This is a fact about $S^3$, not an explanation of either result.
+\paragraph{Dimension four, twice.} A field with one fixed link at every site and one in every plaquette needs the number of plaquettes through a link, $2(d-1)$, to equal the number of plaquettes at a site, $d(d-1)/2$, and the only solution is $d=4$ (checked above). The number $d(d-1)/2$ is also the dimension of the space of two-forms, and the splitting $\Lambda^2=\Lambda^+\oplus\Lambda^-$ into two copies of the adjoint of $SU(2)$, on which Section~\ref{qg:sec:einstein} rests, exists only for $d=4$ as well. The two statements are different (one is a count of cells, the other a Hodge star), and no mechanism relates them; the coincidence is recorded because the same equation $(d-1)(d-4)=0$ decides both.
+\paragraph{Gauge fixing and the spin-network basis.} The forest gauge solves the Gauss law by setting the holonomies on $F$ to the identity, which leaves three free links at every site; the spin-network basis of this part solves it by coupling spins at vertices to invariants, and the ladder of Section~\ref{qg:sec:ladder} was fixed in a spanning-tree gauge to count its states. These are two ways of removing the same redundancy, and nothing is compared beyond that.
+\paragraph{What does not follow.} The gap of Section~\ref{qg:sec:ladder} is a Hamiltonian gap of a two-plaquette system in units of $g^2$; the gaps above are transfer-matrix gaps in lattice units at strong Euclidean coupling. The four-dimensional paper recalls that a gap uniform in lattice units forces trivial continuum two-point functions~\cite{bbll-forest-4d}, so no strong-coupling bound can by itself be a statement about a continuum or about the geometry of Section~\ref{qg:sec:geometry}, and none of the numbers here is compared with a number there. One printed number does not follow from the quantity that the four-dimensional paper states for it: for $SU(3)$ at $\beta_W=\tfrac34$, $-\tfrac12\log0.9653=0.017658$ is printed as $0.0177$; the model records it. The Zenodo record 10.5281/zenodo.23841532 that was proposed as a further reference could not be retrieved from this environment and is not cited.
+
+\section{Scale and blocking}\label{qg:sec:transmutation}
+The ladder has one coupling, $g$, and refining or coarsening the lattice flows it. Any coarse-graining of spin networks, whether block-spin or spin-foam, is a flow of couplings of this kind, so the library's account of the one-loop blocking drift is kept as context. The mass gap of a spin model and the lattice scale of a gauge theory both fall as $\exp(-\mathrm{slope}\cdot\beta)$, but they belong to different theories. Figure~\ref{qg:fig:transmutation} states the identities within each theory and draws an arrow, not an equals sign, between the two. Nothing is computed here for a gravitational flow. The equations are \href{https://en.wikipedia.org/wiki/Asymptotic_freedom}{Spin-model transmutation slope}, \href{https://en.wikipedia.org/wiki/Renormalization_group}{Spin block coupling}, \href{https://en.wikipedia.org/wiki/Asymptotic_freedom}{Gauge transmutation slope}, \href{https://en.wikipedia.org/wiki/Renormalization_group}{Gauge block coupling}, \href{https://en.wikipedia.org/wiki/Lattice_gauge_theory}{Lattice coupling}, \href{https://en.wikipedia.org/wiki/Correlation_function_(quantum_field_theory)}{Euclidean correlator decay}, \href{https://en.wikipedia.org/wiki/Mass_gap}{Mass gap in physical units}, \href{https://en.wikipedia.org/wiki/Asymptotic_freedom}{Asymptotic-freedom mass scaling}, \href{https://en.wikipedia.org/wiki/Dimensional_transmutation}{Dimensional transmutation}.
+
+\begin{figure}[p]
+\centering
+\resizebox{0.98\textwidth}{!}{$\displaystyle
+\left.
+\begin{aligned}
+\overbrace{r_{s}}^{\text{\tiny spin transmutation slope}} &= \underbrace{\tfrac{2 \pi}{N - 2}}_{\text{\tiny O($N$) slope}} = \underbrace{\tfrac{\log{\left(\ell \right)}}{\beta_{0} - \beta_{1}}}_{\text{\tiny spin block}} \\[1.2ex]
+\overbrace{r_{g}}^{\text{\tiny gauge transmutation slope}} &= \underbrace{\tfrac{12 \pi^{2}}{11 N^{2}}}_{\text{\tiny gauge slope}} = \underbrace{\tfrac{\log{\left(\ell \right)}}{\beta_{0} - \beta_{1}}}_{\text{\tiny gauge block}} \\[1.2ex]
+\overbrace{\beta}^{\text{\tiny inverse coupling}} &= \underbrace{\tfrac{2 N}{g^{2}}}_{\text{\tiny lattice coupling}} = \underbrace{\beta_{1} + \tfrac{\log{\left(\ell \right)}}{r_{g}}}_{\text{\tiny gauge block}} \\[1.2ex]
+\overbrace{m_{L}}^{\text{\tiny lattice mass}} &= \underbrace{\tfrac{\log{\left(\tfrac{A_{0}}{C_{t}} \right)}}{t}}_{\text{\tiny correlator}} = \underbrace{\tfrac{E_{gap} a}{c \hbar}}_{\text{\tiny mass gap}} \\[2.4ex]
+{} & \underbrace{m = C \beta^{\tfrac{1}{N-2}} \exp\left(-\tfrac{2 \pi \beta}{N-2}\right)}_{\text{\tiny asymptotic freedom}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{\Lambda = M \exp\left(\tfrac{2 \pi}{b_{3} \alpha}\right)}_{\text{\tiny dimensional transmutation}} \\[1.6ex]
+{} & \underbrace{C_{t} = A_0 \exp(-m_{L} t)}_{\text{\tiny correlator}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{m = C \beta^{\tfrac{1}{N-2}} \exp\left(-\tfrac{2 \pi \beta}{N-2}\right)}_{\text{\tiny asymptotic freedom}} \\[1.6ex]
+{} & \underbrace{r_{s} = \tfrac{2 \pi}{N - 2}}_{\text{\tiny O($N$) slope}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{r_{g} = \tfrac{12 \pi^{2}}{11 N^{2}}}_{\text{\tiny gauge slope}} \\[1.6ex]
+{} & \underbrace{\beta_{1} = \beta_{0} - \tfrac{\ln \ell}{r_{s}}}_{\text{\tiny spin block}} \;\overset{\text{\tiny same field}}{\longleftrightarrow}\; \underbrace{\beta_{1} = \beta_{0} - \tfrac{\ln \ell}{r_{g}}}_{\text{\tiny gauge block}}
+\end{aligned}
+\;\right\} \begin{array}{l} \text{identities:} \\ \text{9 equations, 4 quantities} \\[0.6ex] \text{correspondences:} \\ \text{4 links} \end{array}
+$}
+\caption{Dimensional transmutation across the library. The identity rows are the library's equations solved for the slopes, the coupling and the gauge-theory lattice mass. The arrows are correspondences, not identities: the $O(N)$ spin model's scaling form and the Yang--Mills lattice mass share a shape (a scale that is an exponential of an inverse coupling over a one-loop coefficient) but not coefficients, couplings or theory, so the library links them and the display does not equate them. The one exact statement across the arrow is checked: the Yang--Mills exponent $1/(2b_0g^2)$ equals $r_g\beta$, with $r_g=12\pi^2/(11N^2)$, while the $O(N)$ exponent is $r_s\beta$ with $r_s=2\pi/(N-2)$.}
+\label{qg:fig:transmutation}
+\end{figure}
+
+\section{What is checked, and what is not}\label{qg:sec:conclusion}
+The dictionary holds in every case tested. The link Casimir is the squared area in units of $8\pi\gamma_I\ell_P^2$, and the ladder's electric energy is a sum of seven such squares. The area spectrum is discrete, with a smallest value $4\sqrt3\pi\gamma_I\ell_P^2$ and steps that fall to $\tfrac12$. The invariants of a vertex are counted by Weyl's integration formula, agree with the triangle rule at trivalent and four-valent vertices, and are Catalan numbers for spin-$\tfrac12$ legs. In the ground state of the ladder the surface that separates the plaquettes has a mean-square area that falls as $g^{-8}$ at strong coupling and grows as $g^{-2}$ at weak coupling, with exact coefficients. And counting spin-$\tfrac12$ punctures against the Bekenstein--Hawking entropy gives $\gamma_I=\ln2/(\pi\sqrt3)$, which is a statement about that count.
+
+Five limits apply throughout. (i)~The ladder's Hamiltonian is a gauge-theory Hamiltonian, so its ground state is the ground state of that theory and not a state of quantum gravity; the geometry computed in it is the geometry that Hamiltonian induces on a fixed graph. (ii)~The value $0.1274$ of the Immirzi parameter comes from counting spin-$\tfrac12$ punctures only; counting all spins gives a different number~\cite{domagala-lewandowski-2004}, which the fork quotes and does not rederive. (iii)~Of the volume operator only the triple product on four-valent intertwiner spaces is computed, not its prefactor and not a volume operator on general vertices; the one place a four-valent lattice vertex appears (the L-shaped cluster of three plaquettes) is computed with the cluster's Hamiltonian, but only for the triple product, at couplings $g^2\ge1$. (iv)~The strip is checked for $N=1,2,3$ plaquettes; the strip formula for general $N$ is a prediction, tested at three values. (v)~Nothing here concerns the dynamics of gravity, diffeomorphism invariance, spin foams or a limit in which the lattice spacing disappears.
+
+The natural next steps, in increasing distance from what is here: a volume prefactor for the triple product of Section~\ref{qg:sec:intertwiners}, and the weak-coupling region of the L-shaped cluster; whether $\langle c_2(J)\rangle$ at an interior link of a longer strip approaches a plateau; the plaquette operators $W_a$ and $W_b$, which are traces of holonomies around small loops and so of the kind a Thiemann-regularised Hamiltonian constraint is built from, composed with the volume, as the first step toward any dynamics of the geometry; and the entropy count over all spins, to see how far $\gamma_I$ moves. Each is a function to add to \texttt{models/qg\_spin\_network.py} and, when it has an exact statement, a row to Figure~\ref{qg:fig:qgeometry}.
+
+\paragraph{Related material.} The checks of this part are exact symbolic and seeded numerical computations, not machine-checked proofs. For a Lean~4 formalization of a quantum field theory (the free bosonic field in four Euclidean dimensions, against the Glimm--Jaffe axioms) see~\cite{dhmn-2026}. Two works of the author's collaboration are the nearest neighbours of this part, and neither is used in a computation here. The first is Part~\ref{part:tilings} of this paper, which computes the internal space and the boundary growth of two hierarchical tilings, and whose last section tests, with negative or generic outcomes, whether a substitution hierarchy can serve as an arrow or a clock; its discussion of gravity (Section~\ref{sec:phys}) is a conjecture and a proposal and derives nothing. The second, Romanov's paper on three-dimensional lattice Yang--Mills theory in a forest gauge~\cite{zenodo-23783316} fixes the links of a forest to the identity, as the spanning-tree gauge of the ladder does, and proves for $SU(2)$ at strong coupling and fixed lattice spacing a unique state and a transfer-matrix gap $m\ge-\log(7\beta_W/4)$ for $\beta_W<4/7$, and a bound $9.599991$ on the Hessian of the Wilson action in that gauge; by its own account some of its inputs are unrefereed. Its Euclidean couplings and transfer-matrix gaps are not those of the Hamiltonian $g^2$ and gaps used here, and no number of this part is compared with it; the four-dimensional paper of Section~\ref{qg:sec:forest} extends it, and the checks of that section are those of the model \texttt{forest\_gauge\_4d\_theorems}.
+
+
+\part{The release}
+\label{part:release}
+
+\section{The release behind the entries}
+\label{sec:release}
+
+Part~\ref{part:qg} takes four entries of the OpenAI math release as subjects: Einstein four-manifolds (entry~348,
+Section~\ref{qg:sec:einstein}), the Penrose inequality (260, Section~\ref{qg:sec:penrose}), strong cosmic censorship near Kerr (264,
+Section~\ref{qg:sec:kerr}) and the Liouville quantum gravity limit of random planar maps (211, Section~\ref{qg:sec:maps}).  The
+fork's note \code{SPECTRE\_CHAIR44.md} sets the Spectre and the Chair44 of Part~\ref{part:tilings} beside a fifth entry, 155, a tile
+of $\mathbb{Z}^{3}$ with no fully periodic tiling.
+
+Two more groups of entries come from the fork's notes on Yang--Mills theory.  Entry 215 holds the five papers on the
+two-dimensional $O(3)$ and $O(4)$ lattice models; the continuum-limit paper for $O(3)$ works by exact blocking, in the block
+renormalization tradition.  Two of the fork's files tie the entry to this paper.  \code{HIERARCHIES.md} compares those papers with the Spectre and the Chair44, as block renormalization against
+substitution hierarchies, and calls it the strongest of its comparisons, one that it makes itself, since the sources say nothing
+about each other.  And \code{tools/README.md} assigns to entry 215 the Monte Carlo \code{tools/on\_model\_mc.py}, the source of the
+library's asymptotic-freedom mass scaling in Section~\ref{qg:sec:transmutation}.  So Part~\ref{part:tilings} and Part~\ref{part:qg}
+are both tied to the same entry, by the notes and not by a computation of either part.  The note \code{YANGMILLS.md} names two
+further entries whose preprints mention Yang--Mills theory, the BFSS matrix model (270) and the recovery of a metric and a connection
+from boundary data (365); neither is used in this paper, and the note's own account is that none of the preprints treats a gauge
+theory.  This section draws what the release's own files say about these eight families.
+The graph of Figure~\ref{fig:release} and the extra references below are read by \code{oai\_tree.py} from \code{overview.tex},
+\code{CONTENTS.md}, the \code{OAI:} keys in the bibliographies of the manuscripts and the Lean files; nothing is inferred from
+similar subject matter.  The eight families hold 37 manuscripts, numbered within each family as in the figure.
+
+\noindent\textbf{Entry 155}, A counterexample to periodic tiling in dimension three: (1)~\cite{oai-tiling}.
+
+\noindent\textbf{Entry 215}, Canonical $O(3)$ continuum limit and exact $O(4)$ mass asymptotics: (1)~\cite{OAI:An-Isolated-Particle-Pole-for-the-Two-Dimensional-O3-Spin-Field-October-4-2026}; (2)~\cite{oai-o4-mass}; (3)~\cite{OAI:Exponential-decay-in-two-dimensional-classical-On-models-September-23-2026}; (4)~\cite{OAI:Sharp-mass-bounds-for-the-two-dimensional-O4-model-September-23-2026}; (5)~\cite{oai-o3-limit}.
+
+\noindent\textbf{Entry 211}, The geometric phase diagram, diffusion, and spectra of random planar maps: (1)~\cite{OAI:A-Linear-Clock-for-Random-Walk-on-Tree-Weighted-Planar-Maps-October-5-2026}; (2)~\cite{OAI:Brownian-continuum-random-tree-limits-of-finite-Fortuin-Kasteleyn-maps-above-four-September-24-2026}; (3)~\cite{oai-fk-sub}; (4)~\cite{oai-fk-metric}; (5)~\cite{oai-fk-walk}; (6)~\cite{oai-fk-spectral}; (7)~\cite{oai-fk-q4}.
+
+\noindent\textbf{Entry 260}, Spacetime Penrose inequalities: enclosing area, charge, rotation, and anti-de Sitter extensions: (1)~\cite{OAI:A-Charged-Reduction-of-the-Spacetime-Penrose-Inequality-in-Spatial-Dimensions-at-Least-Four-October-5-2026}; (2)~\cite{OAI:A-local-Penrose-inequality-for-conformal-perturbations-of-Schwarzschild-anti-de-Sitter-data-October-5-2026}; (3)~\cite{OAI:Area-controlled-end-replacement-and-the-Bondi-Penrose-inequality-in-the-CKS-class-September-27-2026}; (4)~\cite{OAI:Boundary-graph-deformations-for-the-spacetime-Penrose-inequality-September-27-2026}; (5)~\cite{OAI:Conformal-flow-and-the-Riemannian-Penrose-inequality-with-minimizing-frontiers-September-27-2026}; (6)~\cite{OAI:Electromagnetic-tails-and-the-Kerr-Newman-Penrose-inequality-October-5-2026}; (7)~\cite{OAI:Equality-and-rigidity-in-the-spacetime-Penrose-inequality-September-27-2026}; (8)~\cite{oai-penrose}; (9)~\cite{OAI:The-Kerr-Newman-Penrose-Inequality-for-Axisymmetric-Electrovacuum-Exteriors-October-5-2026}; (10)~\cite{OAI:The-nonmaximal-anti-de-Sitter-Penrose-Inequality-and-original-data-rigidity-October-5-2026}; (11)~\cite{OAI:The-Penrose-inequality-for-maximal-asymptotically-hyperbolic-initial-data-October-5-2026}; (12)~\cite{OAI:The-spacetime-Penrose-inequality-and-enclosing-area-September-27-2026}; (13)~\cite{OAI:The-spacetime-Penrose-inequality-with-charge-and-original-data-rigidity-October-5-2026}.
+
+\noindent\textbf{Entry 264}, Strong cosmic censorship near two-ended Kerr data: (1)~\cite{oai-kerr-c1}; (2)~\cite{oai-kerr-w12}; (3)~\cite{oai-kerr-c2}.
+
+\noindent\textbf{Entry 348}, Nonnegative-curvature Einstein classification and an \emph{L}\textsuperscript{2} topological gap: (1)~\cite{oai-einstein-gap}; (2)~\cite{oai-einstein4}; (3)~\cite{oai-zero-plane}.
+
+\noindent\textbf{Entry 270}, Threshold and positive-energy bound states of the BFSS matrix model: (1)~\cite{OAI:Positive-eigenvalues-of-the-relative-SU-2-BFSS-Hamiltonian-October-5-2026}; (2)~\cite{OAI:The-unique-threshold-bound-state-of-the-SU-N-BFSS-model-September-24-2026}.
+
+\noindent\textbf{Entry 365}, Joint metric and connection recovery from one boundary patch: (1)~\cite{OAI:Determination-of-a-metric-and-a-unitary-connection-from-one-boundary-patch-October-5-2026}; (2)~\cite{OAI:Nonuniqueness-for-Bounded-Measurable-Scalar-Conductivities-in-Three-Dimensions-September-23-2026}; (3)~\cite{OAI:Smooth-Anisotropic-Uniqueness-in-the-Calderon-Problem-from-One-Boundary-Patch-September-24-2026}.
+
+\begin{figure}[p]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm,>=stealth,
+  fam/.style={draw,rounded corners=2pt,fill=blue!6,minimum height=1.3cm,text width=3.7cm,align=center,inner sep=2pt,font=\tiny},
+  part/.style={draw,thick,fill=orange!12,minimum height=1.0cm,minimum width=2.7cm,align=center,font=\small},
+  ms/.style={draw,circle,fill=white,inner sep=0pt,minimum size=0.46cm,font=\tiny},
+  cite/.style={->,semithick,red!60!black},hook/.style={dashed,thick,orange!70!black}]
+\node[fam] (f155) at (0,-0.00) {\textbf{155}\\ A counterexample to periodic tiling in dimension three};
+\node[fam] (f215) at (0,-2.15) {\textbf{215}\\ Canonical $O(3)$ continuum limit and exact $O(4)$ mass asymptotics};
+\node[fam] (f211) at (0,-4.30) {\textbf{211}\\ The geometric phase diagram, diffusion, and spectra of random planar maps};
+\node[fam] (f260) at (0,-6.45) {\textbf{260}\\ Spacetime Penrose inequalities: enclosing area, charge, rotation, and anti-de Sitter extensions};
+\node[fam] (f264) at (0,-8.60) {\textbf{264}\\ Strong cosmic censorship near two-ended Kerr data};
+\node[fam] (f348) at (0,-10.75) {\textbf{348}\\ Nonnegative-curvature Einstein classification and an \emph{L}\textsuperscript{2} topological gap};
+\node[fam] (f270) at (0,-12.90) {\textbf{270}\\ Threshold and positive-energy bound states of the BFSS matrix model};
+\node[fam] (f365) at (0,-15.05) {\textbf{365}\\ Joint metric and connection recovery from one boundary patch};
+\node[ms] (m155_1) at (3.00,-0.00) {1};
+\node[ms] (m215_1) at (3.00,-2.15) {1};
+\node[ms] (m215_2) at (3.62,-2.15) {2};
+\node[ms] (m215_3) at (4.24,-2.15) {3};
+\node[ms] (m215_4) at (4.86,-2.15) {4};
+\node[ms] (m215_5) at (5.48,-2.15) {5};
+\node[ms] (m211_1) at (3.00,-4.30) {1};
+\node[ms] (m211_2) at (3.62,-4.30) {2};
+\node[ms] (m211_3) at (4.24,-4.30) {3};
+\node[ms] (m211_4) at (4.86,-4.30) {4};
+\node[ms] (m211_5) at (5.48,-4.30) {5};
+\node[ms] (m211_6) at (6.10,-4.30) {6};
+\node[ms] (m211_7) at (6.72,-4.30) {7};
+\node[ms] (m260_1) at (3.00,-6.45) {1};
+\node[ms] (m260_2) at (3.62,-6.45) {2};
+\node[ms] (m260_3) at (4.24,-6.45) {3};
+\node[ms] (m260_4) at (4.86,-6.45) {4};
+\node[ms] (m260_5) at (5.48,-6.45) {5};
+\node[ms] (m260_6) at (6.10,-6.45) {6};
+\node[ms] (m260_7) at (6.72,-6.45) {7};
+\node[ms] (m260_8) at (7.34,-6.45) {8};
+\node[ms] (m260_9) at (7.96,-6.45) {9};
+\node[ms] (m260_10) at (8.58,-6.45) {10};
+\node[ms] (m260_11) at (9.20,-6.45) {11};
+\node[ms] (m260_12) at (9.82,-6.45) {12};
+\node[ms] (m260_13) at (10.44,-6.45) {13};
+\node[ms] (m264_1) at (3.00,-8.60) {1};
+\node[ms] (m264_2) at (3.62,-8.60) {2};
+\node[ms] (m264_3) at (4.24,-8.60) {3};
+\node[ms] (m348_1) at (3.00,-10.75) {1};
+\node[ms] (m348_2) at (3.62,-10.75) {2};
+\node[ms] (m348_3) at (4.24,-10.75) {3};
+\node[ms] (m270_1) at (3.00,-12.90) {1};
+\node[ms] (m270_2) at (3.62,-12.90) {2};
+\node[ms] (m365_1) at (3.00,-15.05) {1};
+\node[ms] (m365_2) at (3.62,-15.05) {2};
+\node[ms] (m365_3) at (4.24,-15.05) {3};
+\draw[gray!60] (f155.east) -- (m155_1.west);
+\draw[gray!60] (f215.east) -- (m215_1.west);
+\draw[gray!60] (f211.east) -- (m211_1.west);
+\draw[gray!60] (f260.east) -- (m260_1.west);
+\draw[gray!60] (f264.east) -- (m264_1.west);
+\draw[gray!60] (f348.east) -- (m348_1.west);
+\draw[gray!60] (f270.east) -- (m270_1.west);
+\draw[gray!60] (f365.east) -- (m365_1.west);
+\draw[cite] (m211_2.north) .. controls +(0,0.42) and +(0,0.42) .. (m211_3.north);
+\draw[cite] (m365_2.north) .. controls +(0,0.42) and +(0,0.42) .. (m365_3.north);
+\draw[cite] (m348_3.north) .. controls +(0,0.42) and +(0,0.42) .. (m348_2.north);
+\draw[cite] (m211_1.south) .. controls +(0,-0.54) and +(0,-0.54) .. (m211_3.south);
+\draw[cite] (m211_2.north) .. controls +(0,0.74) and +(0,0.74) .. (m211_4.north);
+\draw[cite] (m211_1.south) .. controls +(0,-0.86) and +(0,-0.86) .. (m211_4.south);
+\draw[cite] (m211_2.north) .. controls +(0,1.30) and +(0,1.30) .. (m211_7.north);
+\draw[cite] (m260_3.north) .. controls +(0,1.38) and +(0,1.38) .. (m260_12.north);
+\node[part] (p1) at (-6.3,-1.07) {Part~\ref{part:tilings}\\ Spectre, Chair44};
+\node[part] (p2) at (-6.3,-6.45) {Part~\ref{part:qg}\\ spin networks};
+\node[part] (p3) at (-6.3,-13.97) {Fork note\\ \code{YANGMILLS.md}};
+\draw[hook] (p1.east) -- node[sloped,above,font=\tiny,pos=0.45] {\code{SPECTRE\_CHAIR44.md}} (f155.west);
+\draw[hook] (p1.east) -- node[sloped,above,font=\tiny,pos=0.45] {\code{HIERARCHIES.md}} (f215.west);
+\draw[hook] (p2.east) -- node[sloped,above,font=\tiny,pos=0.45] {Sec.~\ref{qg:sec:transmutation}} (f215.west);
+\draw[hook] (p2.east) -- node[sloped,above,font=\tiny,pos=0.45] {Sec.~\ref{qg:sec:maps}} (f211.west);
+\draw[hook] (p2.east) -- node[sloped,above,font=\tiny,pos=0.45] {Sec.~\ref{qg:sec:penrose}} (f260.west);
+\draw[hook] (p2.east) -- node[sloped,above,font=\tiny,pos=0.45] {Sec.~\ref{qg:sec:kerr}} (f264.west);
+\draw[hook] (p2.east) -- node[sloped,above,font=\tiny,pos=0.45] {Sec.~\ref{qg:sec:einstein}} (f348.west);
+\draw[hook] (p3.east) -- node[sloped,above,font=\tiny,pos=0.45] {} (f270.west);
+\draw[hook] (p3.east) -- node[sloped,above,font=\tiny,pos=0.45] {} (f365.west);
+\end{tikzpicture}}
+\caption{The eight families of the release that this paper takes up or that the fork's notes tie to it, as read by
+\code{oai\_tree.py}.  Each dot is a manuscript of the family on its row; a solid red arrow is a citation of one manuscript by
+another in its bibliography (8 in all, 8 of them between manuscripts of one family and 0 between
+families).  The dashed lines are the places where this paper or a note of the fork meets a family, and are the only part of the
+figure that is not read from the release: the sections of Part~\ref{part:qg} that take up an entry, the notes
+\code{SPECTRE\_CHAIR44.md} and \code{HIERARCHIES.md} that compare entries with the tilings of Part~\ref{part:tilings}, and
+\code{YANGMILLS.md}, which names entries whose preprints mention Yang--Mills theory.  Each is checked against the text of the
+note when the paper is built.}
+\label{fig:release}
+\end{figure}
+
+An edge of the catalogue between two families is one of three kinds.  A \emph{cites} edge is a bibliography entry of one family's
+manuscript naming another's.  A \emph{shares} edge means that the Lean files behind the two main results import some of the same
+modules (modules imported by five or more families are ignored as infrastructure): evidence of related machinery, not of one result
+depending on the other.  A \emph{mentions} edge is a family's summary naming another result.  The catalogue holds 90 edges between families, touching 82 of its 373 families, and none of them touches any of these eight.  Six of the eight have a Lean scope note, which an edge of the second kind needs (the exceptions are entries 264, 270).  In the release the eight are therefore separate clusters, and the connections that this paper draws between the entries are its own, or those of the fork's notes.
 
 \appendix
+\section{Registered results of the ladder}\label{qg:sec:selected}
+The ladder equations on which Part~\ref{part:qg} rests; each is a registered sympy result whose checks passed in the build.
+\subsection*{The ladder: basis, Hamiltonian and plaquette operator}
+The seven links and two trivalent vertices of the theta graph, the Kogut--Susskind Hamiltonian in lattice units and the matrix elements of the plaquette operators, from the model \texttt{su2\_lattice\_ladder}. These are the equations on which the geometry of Section~\ref{qg:sec:ladder} rests.
+
+\noindent Two-plaquette ladder: basis, energies and plaquette operators.
+\begin{equation}\label{qg:ceq:su2_ladder_basis}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}|j_a,j_b,J\rangle,\ \ \triangle(j_a,j_b,J),\quad H=\frac{g^{2}}{2}\bigl[3C(j_a)+3C(j_b)+C(J)\bigr]+\frac{1}{g^{2}}\bigl(4-W_a-W_b\bigr),\ \ C(j)=j(j+1) \\
+    {}\langle j_a{+}\epsilon,j_b,J{+}\eta|W_a|j_a,j_b,J\rangle=\sqrt{d_{j_a}d_{j_a'}d_Jd_{J'}}\,\begin{Bmatrix}j_a&\tfrac12&j_a'\\J'&j_b&J\end{Bmatrix}^{2},\ \ \epsilon,\eta=\pm\tfrac12
+  \end{gathered}
+$}
+\end{equation}
+\subsection*{The ladder: weak and strong coupling, and the gap}
+The weak-coupling limit of the spectrum from two coupled oscillators (the harmonic argument that also gives the weak-coupling geometry of Section~\ref{qg:sec:ladder}), the exact strong-coupling splitting, and the gap against the one-plaquette gap. A spectral gap of a lattice gauge theory on two plaquettes: it says nothing about a gap of any field theory.
+
+\noindent Weak-coupling limit of the ladder spectrum and the strip of N plaquettes.
+\begin{equation}\label{qg:ceq:su2_ladder_weak}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \begin{gathered}
+    {}\Delta_{g\to0}=2\omega_s=\sqrt6,\ \ \omega_s=\sqrt{\tfrac32},\ \ \omega_d=\sqrt{\tfrac52},\quad \text{next levels }\ \omega_s+\omega_d\ (\text{odd}),\ \ 2\omega_d=\sqrt{10},\ \ 4\omega_s \\
+    {}\text{strip of }N\text{ plaquettes (prediction): }\ \Delta_{g\to0}=2\sqrt{2-\cos\tfrac{\pi}{N+1}}\ \xrightarrow{N\to\infty}\ 2
+  \end{gathered}
+$}
+\end{equation}
+\noindent Strong-coupling splitting of the first excited level of the ladder.
+\begin{equation}\label{qg:ceq:su2_ladder_strong}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \Delta_\pm=\frac32\,g^{2}+\frac{c_\pm}{g^{6}}+O(g^{-14}),\qquad c_+=\frac{26}{35},\ \ c_-=\frac{14}{15}\ \ (\text{one plaquette: }\tfrac{14}{15})
+$}
+\end{equation}
+\noindent The ladder gap against the one-plaquette gap.
+\begin{equation}\label{qg:ceq:su2_ladder_gap}
+\adjustbox{max width=0.9\linewidth}{$\displaystyle
+  \Delta_{\mathrm{ladder}}(g)\le\Delta_{\mathrm{plaquette}}(g),\qquad \frac{\Delta_{\mathrm{ladder}}}{\Delta_{\mathrm{plaquette}}}\ \to\ \frac{\sqrt3}{2}\ (g\to0),\quad \to 1\ (g\to\infty)
+$}
+\end{equation}
+
+
 \footnotesize
 
 \section*{Declarations}
@@ -1740,10 +2660,6 @@ Combin.\ Theory \textbf{4}(1) (2024); arXiv:2303.10798.
 
 \bibitem{SmithEtAl2} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{A chiral aperiodic monotile},
 Combin.\ Theory \textbf{4}(2) (2024); arXiv:2305.17743.
-
-
-\bibitem{BangNote} B.~Hartshorn and T.~Romanov, \emph{A flat initial surface? A speculative reading of the Spectre and
-Chair44 tilings}, companion note (2026), \code{spectre\_bigbang\_note.tex} in~\url{https://github.com/brentharts/spectre}.
 
 \bibitem{Tsiokos1} I.~Tsiokos, \emph{A strongly aperiodic monotile in three dimensions} (2026),
 arXiv:2609.19214.  Code and data:
@@ -1776,8 +2692,6 @@ tilings}, Discrete Comput.\ Geom.\ \textbf{78} (2026) 739--762; arXiv:2411.15503
 \emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023),
 \url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
 
-
-
 \bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions} (2026), arXiv:2610.00916.
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody, \emph{Lattice substitution systems and model
@@ -1801,6 +2715,100 @@ diffraction spectra for multiset substitution systems}, Discrete Comput.\ Geom.\
 Phys.\ Rev.\ Lett.\ \textbf{113} (2014) 181101; arXiv:1409.0917;
 \url{https://doi.org/10.1103/PhysRevLett.113.181101}
 
+
+\bibitem{SocolarTaylor} J.~E.~S.~Socolar and J.~M.~Taylor, \emph{An aperiodic hexagonal tile}, J.\ Combin.\ Theory Ser.\ A
+\textbf{118} (2011) 2207--2231; arXiv:1003.4279.
+
+\bibitem{LeeMoodyTS} J.-Y.~Lee and R.~V.~Moody, \emph{Taylor--Socolar hexagonal tilings as model sets}, Symmetry
+\textbf{5} (2013) 1--46; arXiv:1207.6237.
+
+
+\bibitem{HassanRosen} S.~F.~Hassan and R.~A.~Rosen, \emph{Bimetric gravity from ghost-free massive gravity},
+J.\ High Energy Phys.\ \textbf{2012} (2012) 126; \url{https://link.springer.com/article/10.1007/JHEP02(2012)126}
+
+\bibitem{PreGeometric} A.~Addazi et al., \emph{Pre-geometric origin of ghost-free massive bigravity}, Phys.\ Lett.\ B
+\textbf{882} (2026) 140989; \url{https://doi.org/10.1016/j.physletb.2026.140989}
+
+\bibitem{hartshorn2026} B.~Hartshorn,
+\emph{Gravity from relative entropy: Jackiw--Teitelboim dynamics on the Nariai horizon}, preprint (2026),
+\url{https://doi.org/10.21203/rs.3.rs-10426867/v1}
+
+\bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From quantum relative entropy to the semiclassical Einstein equations}, Phys.\ Rev.\ Lett.\ \textbf{136} (2026) 091602; arXiv:2510.24491;
+\url{https://doi.org/10.1103/lmq8-nsty}
+
+
+% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)
+
+\bibitem{oai-tiling} OpenAI. \emph{A translational tile with no fully periodic tiling in dimension three}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/A-translational-tile-with-no-fully-periodic-tiling-in-dimension-three-September-23-2026/paper.pdf}
+\bibitem{oai-einstein-gap} OpenAI. \emph{An L$^2$ Einstein Gap for Nonnegatively Curved Four-Manifolds}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/An-L2-Einstein-Gap-for-Nonnegatively-Curved-Four-Manifolds-October-5-2026/einstein-gap.pdf}
+\bibitem{oai-fk-sub} OpenAI. \emph{Canonical conformal limits of subcritical FK planar maps}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/Canonical-conformal-limits-of-subcritical-FK-planar-maps-September-24-2026/main.pdf}
+\bibitem{oai-o4-mass} OpenAI. \emph{Exact mass asymptotics for the two-dimensional O(4) lattice model}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Exact-mass-asymptotics-for-the-two-dimensional-O4-lattice-model-October-5-2026/exact-mass-o4.pdf}
+\bibitem{oai-kerr-c1} OpenAI. \emph{Generic C$^1$ Future Inextendibility Near Rotating Subextremal Kerr Spacetimes}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Generic-C1-Future-Inextendibility-Near-Rotating-Subextremal-Kerr-Spacetimes-September-23-2026/paper.pdf}
+\bibitem{oai-kerr-w12} OpenAI. \emph{Generic Future Inextendibility with Square-Integrable Connection Near a Fixed Kerr Spacetime}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Generic-Future-Inextendibility-with-Square-Integrable-Connection-Near-a-Fixed-Kerr-Spacetime-September-23-2026/paper.pdf}
+\bibitem{oai-fk-metric} OpenAI. \emph{Metric-measure limits of subcritical FK and spanning-tree planar maps}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/Metric-measure-limits-of-subcritical-FK-and-spanning-tree-planar-maps-September-24-2026/main.pdf}
+\bibitem{oai-einstein4} OpenAI. \emph{Positively curved Einstein four-manifolds}. OpenAI Math Release preprint, 2026. \url{https://github.com/openai/math/blob/main/preprints/Positively-curved-Einstein-four-manifolds-September-23-2026/paper.pdf}
+\bibitem{oai-kerr-c2} OpenAI. \emph{Quantitative Near-Kerr Evolution and Generic C$^2$ Future Inextendibility}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Quantitative-Near-Kerr-Evolution-and-Generic-C2-Future-Inextendibility-September-23-2026/paper.pdf}
+\bibitem{oai-fk-walk} OpenAI. \emph{Random Walks on Critical FK--Ising Maps and Liouville Brownian Motion}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Random-Walks-on-Critical-FK-Ising-Maps-and-Liouville-Brownian-Motion-October-5-2026/fk-ising-walk-limit.pdf}
+\bibitem{oai-penrose} OpenAI. \emph{Spacetime Penrose inequalities: enclosing area, charge, and rigidity}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Spacetime-Penrose-inequalities-enclosing-area-charge-and-rigidity-October-5-2026/paper.pdf}
+\bibitem{oai-fk-spectral} OpenAI. \emph{Spectral convergence for critical FK--Ising planar maps}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Spectral-convergence-for-critical-FK-Ising-planar-maps-October-5-2026/spectral-convergence-critical-fk-ising-planar-maps.pdf}
+\bibitem{oai-o3-limit} OpenAI. \emph{The canonical massive continuum limit of the two-dimensional O(3) model}. OpenAI Math Release preprint, October 4, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-canonical-massive-continuum-limit-of-the-two-dimensional-O3-model-October-4-2026/massive-continuum-o3.pdf}
+\bibitem{oai-fk-q4} OpenAI. \emph{The critical Liouville quantum sphere and geometric limits of FK maps at q=4}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-critical-Liouville-quantum-sphere-and-geometric-limits-of-FK-maps-at-q-equals-4-September-24-2026/main.pdf}
+\bibitem{oai-zero-plane} OpenAI. \emph{Zero-Plane Rigidity for Einstein Four-Manifolds}. OpenAI Math Release preprint, October 4, 2026. \url{https://github.com/openai/math/blob/main/preprints/Zero-Plane-Rigidity-for-Einstein-Four-Manifolds-October-4-2026/einstein-boundary.pdf}
+\bibitem{rovelli-1996} C. Rovelli. \emph{Black hole entropy from loop quantum gravity}. 1996. arXiv:gr-qc/9603063. Counting with spin-1/2 punctures. \textit{Standard reference; later counts differ (see DL).} \url{https://arxiv.org/abs/gr-qc/9603063}
+\bibitem{domagala-lewandowski-2004} M. Domagala and J. Lewandowski. \emph{Black hole entropy from quantum geometry}. 2004. arXiv:gr-qc/0407051. The count over all spins. \textit{Quoted, not rederived.} \url{https://arxiv.org/abs/gr-qc/0407051}
+\bibitem{rovelli-smolin-1995} C. Rovelli and L. Smolin. \emph{Discreteness of area and volume in quantum gravity}. 1994. arXiv:gr-qc/9411005. The area and volume spectra. \textit{Standard reference; quoted, not rederived beyond the closed form of the area.} \url{https://arxiv.org/abs/gr-qc/9411005}
+\bibitem{bbll-forest-4d} D. Bhattacharjee, U. Bhattacharya, J. M. Lockwood and T. Romanov. \emph{Explicit Lattice Yang-Mills Mass Gap for Every Compact Simple Group Reducing the Continuum Gap to One Cube}. Dated 30 October 2026; supplied to the fork as the file eb95ffa3-YangMillsForestGauge.pdf (98 pages), which gives its earlier version as the Hexagon preprint 2610.00341v4 and its code and certificates as github.com/creelie/4Y-M, release v4.28.0. The fork read pages 1-6 and Appendix A and rebuilt the finite statements in models/forest\_gauge\_4d\_theorems.py; it did not read the proofs. Strong-coupling lattice results at fixed spacing; the paper lists the cube condition, the slice ratio and the tree bounds as open. \textit{Unrefereed as far as the fork knows; the paper reports computer-assisted inputs and AI-assisted drafting.} \url{https://github.com/creelie/4Y-M}
+\bibitem{dhmn-2026} M. R. Douglas, S. Hoback, A. Mei and R. Nissim. \emph{Formalization of QFT}. arXiv:2603.15770v1, 16 Mar 2026 (hep-th, cs.LO, math-ph, math.MP). Per its abstract: the free bosonic QFT in four-dimensional Euclidean spacetime, built and shown to satisfy the Glimm-Jaffe axioms in Lean 4, with AI coding assistants. Summarised from the arXiv abstract page only; the paper has not been read in full by the fork. \textit{arXiv preprint; not peer reviewed as far as the fork knows.} \url{https://arxiv.org/abs/2603.15770}
+\bibitem{kogut-susskind-1975} J. Kogut and L. Susskind. \emph{Hamiltonian formulation of Wilson's lattice gauge theories}. Phys. Rev. D 11, 395 (1975), as cited in SU2\_LATTICE\_GAP.md. The fork did not retrieve the paper, and the DOI link is formed from the journal reference, not checked. \textit{Standard reference; the Hamiltonian of the ladder.} \url{https://doi.org/10.1103/PhysRevD.11.395}
+\bibitem{eprl-2008} J. Engle, E. Livine, R. Pereira and C. Rovelli. \emph{LQG vertex with finite Immirzi parameter}. 2007. arXiv:0711.0146. The spin-foam vertex in which the SU(2)\_+ and SU(2)\_- spins are tied to one SU(2) spin through the Immirzi parameter. Cited for that context only; the fork did not read it. \textit{Cited for context; the fork matched the arXiv identifier to the title only.} \url{https://arxiv.org/abs/0711.0146}
+\bibitem{gursky-lebrun-1999} M. J. Gursky and C. LeBrun. \emph{On Einstein manifolds of positive sectional curvature}. 1999. arXiv:math/9807055. The gap E v\textasciicircum{}2 \textgreater{}= 1 on a nonzero Weyl block, as the paper of entry 348 quotes it; the fork did not read this paper. \textit{Cited as the paper of entry 348 cites it; the fork matched the arXiv identifier to the title only.} \url{https://arxiv.org/abs/math/9807055}
+\bibitem{barbieri-1998} A. Barbieri. \emph{Quantum tetrahedra and simplicial spin networks}. 1997. arXiv:gr-qc/9707010. The four-valent intertwiner as a quantum tetrahedron. \textit{Standard reference; the fork checks the operator's spectrum on four spin-1/2 only.} \url{https://arxiv.org/abs/gr-qc/9707010}
+\bibitem{ashtekar-lewandowski-1997} A. Ashtekar and J. Lewandowski. \emph{Quantum theory of geometry I: Area operators}. 1996. arXiv:gr-qc/9602046. The area operator on spin networks. \textit{Standard reference; quoted.} \url{https://arxiv.org/abs/gr-qc/9602046}
+\bibitem{zenodo-23783316} T. Romanov. \emph{Three-dimensional lattice Yang-Mills theory in a forest gauge: a Dobrushin range and a certified curvature bound}. 2026. Supplied by the author of the fork as DOI 10.5281/zenodo.23783316, with the paper attached as a file named 2610.0069v1.pdf; the fork read that file. The paper itself cites its code, certificates and Lean files as Zenodo v1.0.0, doi:10.5281/zenodo.23783317; whether ...316 is the concept record of the same deposit was not checked. Wilson SU(2) at strong coupling on Z\textasciicircum{}3 in a period-3 forest gauge: Dobrushin range beta\_W \textless{} 4/7 and transfer-matrix gap m \textgreater{}= -log(7 beta\_W/4); Hessian bound h = 9.599991. DOI \href{https://doi.org/10.5281/zenodo.23783316}{10.5281/zenodo.23783316}. \textit{Unrefereed; the paper says its Dobrushin result depends on unrefereed inputs.} \url{https://doi.org/10.5281/zenodo.23783316}
+
+\bibitem{OAI:An-Isolated-Particle-Pole-for-the-Two-Dimensional-O3-Spin-Field-October-4-2026} OpenAI. \emph{An Isolated Particle Pole for the Two-Dimensional O(3) Spin Field}. OpenAI Math Release preprint, October 4, 2026. \url{https://github.com/openai/math/blob/main/preprints/An-Isolated-Particle-Pole-for-the-Two-Dimensional-O3-Spin-Field-October-4-2026/o3-particle-pole.pdf}
+
+\bibitem{OAI:Exponential-decay-in-two-dimensional-classical-On-models-September-23-2026} OpenAI. \emph{Exponential decay in two-dimensional classical O(n) models}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Exponential-decay-in-two-dimensional-classical-On-models-September-23-2026/paper.pdf}
+
+\bibitem{OAI:Sharp-mass-bounds-for-the-two-dimensional-O4-model-September-23-2026} OpenAI. \emph{Sharp mass bounds for the two-dimensional O(4) model}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Sharp-mass-bounds-for-the-two-dimensional-O4-model-September-23-2026/paper.pdf}
+
+\bibitem{OAI:A-Linear-Clock-for-Random-Walk-on-Tree-Weighted-Planar-Maps-October-5-2026} OpenAI. \emph{A Linear Clock for Random Walk on Tree-Weighted Planar Maps}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/A-Linear-Clock-for-Random-Walk-on-Tree-Weighted-Planar-Maps-October-5-2026/linear-clock-random-walk-tree-weighted-planar-maps.pdf}
+
+\bibitem{OAI:Brownian-continuum-random-tree-limits-of-finite-Fortuin-Kasteleyn-maps-above-four-September-24-2026} OpenAI. \emph{Brownian continuum random tree limits of finite Fortuin–Kasteleyn maps above four}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/Brownian-continuum-random-tree-limits-of-finite-Fortuin-Kasteleyn-maps-above-four-September-24-2026/main.pdf}
+
+\bibitem{OAI:A-Charged-Reduction-of-the-Spacetime-Penrose-Inequality-in-Spatial-Dimensions-at-Least-Four-October-5-2026} OpenAI. \emph{A Charged Reduction of the Spacetime Penrose Inequality in Spatial Dimensions at Least Four}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/A-Charged-Reduction-of-the-Spacetime-Penrose-Inequality-in-Spatial-Dimensions-at-Least-Four-October-5-2026/paper.pdf}
+
+\bibitem{OAI:A-local-Penrose-inequality-for-conformal-perturbations-of-Schwarzschild-anti-de-Sitter-data-October-5-2026} OpenAI. \emph{A local Penrose inequality for conformal perturbations of Schwarzschild–anti-de Sitter data}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/A-local-Penrose-inequality-for-conformal-perturbations-of-Schwarzschild-anti-de-Sitter-data-October-5-2026/paper.pdf}
+
+\bibitem{OAI:Area-controlled-end-replacement-and-the-Bondi-Penrose-inequality-in-the-CKS-class-September-27-2026} OpenAI. \emph{Area-controlled end replacement and the Bondi Penrose inequality in the CKS class}. OpenAI Math Release preprint, September 27, 2026. \url{https://github.com/openai/math/blob/main/preprints/Area-controlled-end-replacement-and-the-Bondi-Penrose-inequality-in-the-CKS-class-September-27-2026/paper.pdf}
+
+\bibitem{OAI:Boundary-graph-deformations-for-the-spacetime-Penrose-inequality-September-27-2026} OpenAI. \emph{Boundary graph deformations for the spacetime Penrose inequality}. OpenAI Math Release preprint, September 27, 2026. \url{https://github.com/openai/math/blob/main/preprints/Boundary-graph-deformations-for-the-spacetime-Penrose-inequality-September-27-2026/paper.pdf}
+
+\bibitem{OAI:Conformal-flow-and-the-Riemannian-Penrose-inequality-with-minimizing-frontiers-September-27-2026} OpenAI. \emph{Conformal flow and the Riemannian Penrose inequality with minimizing frontiers}. OpenAI Math Release preprint, September 27, 2026. \url{https://github.com/openai/math/blob/main/preprints/Conformal-flow-and-the-Riemannian-Penrose-inequality-with-minimizing-frontiers-September-27-2026/paper.pdf}
+
+\bibitem{OAI:Electromagnetic-tails-and-the-Kerr-Newman-Penrose-inequality-October-5-2026} OpenAI. \emph{Electromagnetic tails and the Kerr–Newman Penrose inequality}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Electromagnetic-tails-and-the-Kerr-Newman-Penrose-inequality-October-5-2026/paper.pdf}
+
+\bibitem{OAI:Equality-and-rigidity-in-the-spacetime-Penrose-inequality-September-27-2026} OpenAI. \emph{Equality and rigidity in the spacetime Penrose inequality}. OpenAI Math Release preprint, September 27, 2026. \url{https://github.com/openai/math/blob/main/preprints/Equality-and-rigidity-in-the-spacetime-Penrose-inequality-September-27-2026/paper.pdf}
+
+\bibitem{OAI:The-Kerr-Newman-Penrose-Inequality-for-Axisymmetric-Electrovacuum-Exteriors-October-5-2026} OpenAI. \emph{The Kerr–Newman Penrose Inequality for Axisymmetric Electrovacuum Exteriors}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-Kerr-Newman-Penrose-Inequality-for-Axisymmetric-Electrovacuum-Exteriors-October-5-2026/paper.pdf}
+
+\bibitem{OAI:The-nonmaximal-anti-de-Sitter-Penrose-Inequality-and-original-data-rigidity-October-5-2026} OpenAI. \emph{The nonmaximal anti-de Sitter Penrose Inequality and original-data rigidity}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-nonmaximal-anti-de-Sitter-Penrose-Inequality-and-original-data-rigidity-October-5-2026/paper.pdf}
+
+\bibitem{OAI:The-Penrose-inequality-for-maximal-asymptotically-hyperbolic-initial-data-October-5-2026} OpenAI. \emph{The Penrose inequality for maximal asymptotically hyperbolic initial data}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-Penrose-inequality-for-maximal-asymptotically-hyperbolic-initial-data-October-5-2026/paper.pdf}
+
+\bibitem{OAI:The-spacetime-Penrose-inequality-and-enclosing-area-September-27-2026} OpenAI. \emph{The spacetime Penrose inequality and enclosing area}. OpenAI Math Release preprint, September 27, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-spacetime-Penrose-inequality-and-enclosing-area-September-27-2026/paper.pdf}
+
+\bibitem{OAI:The-spacetime-Penrose-inequality-with-charge-and-original-data-rigidity-October-5-2026} OpenAI. \emph{The spacetime Penrose inequality with charge and original-data rigidity}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-spacetime-Penrose-inequality-with-charge-and-original-data-rigidity-October-5-2026/paper.pdf}
+
+\bibitem{OAI:Positive-eigenvalues-of-the-relative-SU-2-BFSS-Hamiltonian-October-5-2026} OpenAI. \emph{Positive eigenvalues of the relative SU(2) BFSS Hamiltonian}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Positive-eigenvalues-of-the-relative-SU-2-BFSS-Hamiltonian-October-5-2026/positive-eigenvalues-relative-su2-bfss.pdf}
+
+\bibitem{OAI:The-unique-threshold-bound-state-of-the-SU-N-BFSS-model-September-24-2026} OpenAI. \emph{The unique threshold bound state of the SU(N) BFSS model}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/The-unique-threshold-bound-state-of-the-SU-N-BFSS-model-September-24-2026/paper.pdf}
+
+\bibitem{OAI:Determination-of-a-metric-and-a-unitary-connection-from-one-boundary-patch-October-5-2026} OpenAI. \emph{Determination of a metric and a unitary connection from one boundary patch}. OpenAI Math Release preprint, October 5, 2026. \url{https://github.com/openai/math/blob/main/preprints/Determination-of-a-metric-and-a-unitary-connection-from-one-boundary-patch-October-5-2026/paper.pdf}
+
+\bibitem{OAI:Nonuniqueness-for-Bounded-Measurable-Scalar-Conductivities-in-Three-Dimensions-September-23-2026} OpenAI. \emph{Nonuniqueness for bounded measurable scalar conductivities in three dimensions}. OpenAI Math Release preprint, September 23, 2026. \url{https://github.com/openai/math/blob/main/preprints/Nonuniqueness-for-Bounded-Measurable-Scalar-Conductivities-in-Three-Dimensions-September-23-2026/paper.pdf}
+
+\bibitem{OAI:Smooth-Anisotropic-Uniqueness-in-the-Calderon-Problem-from-One-Boundary-Patch-September-24-2026} OpenAI. \emph{Smooth anisotropic uniqueness in the Calder\'on problem from one boundary patch}. OpenAI Math Release preprint, September 24, 2026. \url{https://github.com/openai/math/blob/main/preprints/Smooth-Anisotropic-Uniqueness-in-the-Calderon-Problem-from-One-Boundary-Patch-September-24-2026/paper.pdf}
 \end{thebibliography}
 
 \end{document}
