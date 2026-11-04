@@ -19,9 +19,20 @@ fact, and the Lean layer that certifies the closed ones.
 import math
 import os
 import sys
+import sympy as sp
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+OUTPUT = os.path.join(HERE, 'spectre_substrate.tex')
+print('imports from openai_math_yang_mills')
+sys.path.append( os.path.join(HERE, '../openai_math_yang_mills/tools') )
+import oai_tree
+print(oai_tree)
+
+sys.path.append( os.path.join(HERE, '../openai_math_yang_mills/sympy_models') )
+import qgravity
+print(qgravity)
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import sympy as sp
 
 import spectrefacts as F
 import spectrelean as L
@@ -36,9 +47,6 @@ import orientation_spectra as OS
 import contact_operators as CO
 import lift4d as L4
 import lift4d_matrix as LM
-
-HERE = os.path.dirname(os.path.abspath(__file__))
-OUTPUT = os.path.join(HERE, 'spectre_substrate.tex')
 
 
 
@@ -1616,6 +1624,7 @@ NOTE_OUTPUT = os.path.join(HERE, 'spectre_bigbang_note.tex')
 NOTE_TITLE = 'A Flat Initial Surface? A Speculative Reading of the Spectre and Chair44 Tilings'
 
 
+
 def note_document():
     """The companion physics note: the conjecture, its background and the Weyl remark, split out of the paper."""
     abstract_ = r'''
@@ -2206,6 +2215,67 @@ Right: the tail $\Pr(h\ge k)$ for pairs $1$ to $2\ell$ apart, with $0.538^{k-1}$
 about supertile centres.  (c) Outline-signature distance between same-type supertiles one and two levels apart, by
 rotation only and with reflection.""")
 
+def phys_section():
+    return r'''
+\section{Discussion: The Big Bang Pancake Conjecture}
+    This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
+two-dimensional singularity, connected to the planar Spectre monotile ~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
+connected to Tsiokos's Chair44 \cite{Tsiokos1}.  Two classical background facts, a reading through the inflation arithmetic of the two
+tilings, and a proposal on the Weyl tensor are given.  Nothing is derived; what would support or retire the reading is
+stated.
+
+\begin{conj}[The initial surface]
+\label{conj:bang}
+The Big Bang was not a point-like singularity but a flat two-dimensional one.  That flat surface is connected to the
+Spectre monotile, and the emergence of three-dimensional space from it is connected to the Chair44.
+\end{conj}
+
+\noindent
+Two background facts are kept apart from the conjecture.  The first is classical and exact.  An infinite uniform flat sheet
+of surface density $\sigma$ produces a gravitational field $g=2\pi G\sigma$ that does not depend on the distance from the
+sheet, because the mass in view grows as $r^{2}$ exactly as the force per unit mass falls as $r^{-2}$ (equivalently, by
+Gauss's law on a pillbox).  Fields of parallel sheets are uniform and superpose, so sheets of equal and opposite density
+cancel outside, and two equal sheets cancel between them.  The second concerns the setting.  Ghost-free bimetric gravity
+of Hassan and Rosen~\cite{HassanRosen} gives dynamics to a second metric, and a pre-geometric origin for it has been
+proposed~\cite{PreGeometric}; a picture in which the initial state consists of two sheets, one for each metric, and the Big
+Bang is their separation is the kind of reading that such a setting invites.  No such model is built here, and no claim
+is made about the dual-sheet cosmologies themselves.  The earlier observation that the area law
+$S_{\rm rel}=\delta A/4G$ is consistent with the $s$-wave dynamics of the Nariai horizon~\cite{hartshorn2026}, the converse
+of the result of Dorau and Much~\cite{DorauMuch}, is the setting in which the question arose.
+
+What the computations of this paper offer is a precise form of the contrast the conjecture needs.  A planar tile with a unimodular
+inflation, here the Spectre, has an internal space of dimension two and a window; a tile with an integer inflation, here the
+Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
+second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
+result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
+passage between the two kinds of inflation is not constructed.  The hierarchy section of ~\ref{sec:hull} tried the substitution hierarchy as that quantity, and it does not
+supply the map.  The reading would
+be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
+that the dichotomy is an artefact of the two examples, for instance by a three-dimensional tile with a unimodular
+inflation.  A planar counterexample of the other kind already exists: the hexagonal monotile of Socolar and
+Taylor~\cite{SocolarTaylor} inflates by $2$, and its tilings are model sets with a $2$-adic internal
+space~\cite{LeeMoodyTS}.  Its matching rules are carried by decorations, or by a shape that is not a connected region, so
+the dichotomy can survive it only as a statement about connected tiles whose shape alone forces aperiodicity; this
+narrowing is part of the reading, not a consequence of it.
+
+\begin{remark}[A proposal on the Weyl tensor]
+\label{rem:weyl}
+In three spacetime dimensions the Weyl tensor vanishes identically, the Riemann tensor is fixed by the Ricci tensor, and
+vacuum general relativity has no local gravitational degrees of freedom: gravitational waves need a third spatial
+dimension.  That is classical.  The \emph{proposal}, the first author's and not a derived result, is that this is the form in which
+a flat two-dimensional initial surface would have vanishing Weyl curvature (compare Penrose's Weyl curvature hypothesis, that
+the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
+degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
+Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
+$3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of ~\ref{sec:hull} leaves open what
+the hierarchy depth is: if it is the
+third spatial dimension, a separate time is needed, and if it is look-back time, gravitational waves need a propagation rule that
+the tiling does not supply.
+\end{remark}
+
+
+
+    '''
 
 def thesis_section():
     return r"""
@@ -2353,8 +2423,16 @@ J.\ High Energy Phys.\ \textbf{2012} (2012) 126; \url{https://link.springer.com/
 \bibitem{DorauMuch} P.~Dorau and A.~Much, \emph{From quantum relative entropy to the semiclassical Einstein equations}, Phys.\ Rev.\ Lett.\ \textbf{136} (2026) 091602; arXiv:2510.24491;
 \url{https://doi.org/10.1103/lmq8-nsty}
 
-
 """
+
+BIB_EXTRA = r'''
+\bibitem{SocolarTaylor} J.~E.~S.~Socolar and J.~M.~Taylor, \emph{An aperiodic hexagonal tile}, J.\ Combin.\ Theory Ser.\ A
+\textbf{118} (2011) 2207--2231; arXiv:1003.4279.
+
+\bibitem{LeeMoodyTS} J.-Y.~Lee and R.~V.~Moody, \emph{Taylor--Socolar hexagonal tilings as model sets}, Symmetry
+\textbf{5} (2013) 1--46; arXiv:1207.6237.
+
+''' + NOTE_MOVED_BIB
 
 
 BIBLIOGRAPHY = r"""
@@ -2401,8 +2479,6 @@ tilings}, Discrete Comput.\ Geom.\ \textbf{78} (2026) 739--762; arXiv:2411.15503
 \emph{4D lift of the tilings by the Smith et al.\ aperiodic monotile} (2023),
 \url{https://www.math.univ-toulouse.fr/~cheritat/2023-monotile/4D-lift/}
 
-
-
 \bibitem{Kamenetsky} D.~Kamenetsky, \emph{Towards Strongly Aperiodic Monotiles in Higher Dimensions} (2026), arXiv:2610.00916.
 
 \bibitem{LeeMoody} J.-Y.~Lee and R.~V.~Moody, \emph{Lattice substitution systems and model
@@ -2426,27 +2502,41 @@ diffraction spectra for multiset substitution systems}, Discrete Comput.\ Geom.\
 Phys.\ Rev.\ Lett.\ \textbf{113} (2014) 181101; arXiv:1409.0917;
 \url{https://doi.org/10.1103/PhysRevLett.113.181101}
 
+%s
 \end{thebibliography}
 
 \end{document}
-"""
+""" % BIB_EXTRA
+
 
 
 def document():
     text = '\n'.join([
-        PREAMBLE.replace('@TITLE@', TITLE), abstract(), introduction(),
+        PREAMBLE.replace('@TITLE@', TITLE), 
+        abstract(),
+        
+        qgravity.physics_figure()[-1],
+        qgravity.quantum_geometry_figure()[-1],
+        qgravity.einstein_figure()[-1],
+        
+        introduction(),
         spectral_section(), census_section(), charges_section(), twist_subsection(),
-        boundary_operator_section(), lift_section(),
-        chair_section(), unfolding_section(), exact_section(), hierarchy_section(),
+        boundary_operator_section(), boundary_additions(),
+        lift_section(),
+        chair_section(), hull_subsection(), lines_subsection(),
+        unfolding_section(), exact_section(), hierarchy_section(),
+
+        phys_section(),
+
         conclusion_section(),
         supplement_pointer(), BIBLIOGRAPHY,
     ])
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
     text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
-    text = inject_before(text, '\\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}',
-                         hull_subsection() + lines_subsection())
-    return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
-
+    #text = inject_before(text, '\\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}',
+    #                     hull_subsection() + lines_subsection())
+    #return inject_before(text, '\\subsection{What the golden appearance is not}', boundary_additions())
+    return text
 
 def certificate_numbers():
     """The numbers the paper quotes from certificates that its build does not rerun, read from their committed outputs
@@ -2667,9 +2757,10 @@ def selftest():
           and ('$%d$ nonzero' % ct['chair']['support']) in text)
     note = note_document()
     nflat = ' '.join(note.split())
-    check('the paper is purely mathematical: the conjecture and the Weyl remark are in the companion note',
-          not any(w in text for w in ('Big Bang', 'Weyl', r'\label{conj:bang}', r'\label{sec:thesis}', 'bimetric'))
-          and r'\cite{BangNote}' in text and r'\bibitem{BangNote}' in text)
+    ## the paper is no longer purely mathematical
+    #check('the paper is purely mathematical: the conjecture and the Weyl remark are in the companion note',
+    #      not any(w in text for w in ('Big Bang', 'Weyl', r'\label{conj:bang}', r'\label{sec:thesis}', 'bimetric'))
+    #      and r'\cite{BangNote}' in text and r'\bibitem{BangNote}' in text)
     check('the note states the thesis as a labelled conjecture that nothing computed tests',
           r'\label{conj:bang}' in note and 'Nothing computed there depends' in nflat and 'does not' in nflat
           and r'g=2\pi G\sigma' in note and r'\cite{HartshornRomanov}' in note)
