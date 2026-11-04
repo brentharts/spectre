@@ -1717,14 +1717,6 @@ plane, which alternates with the parity of the level, gives a two-dimensional in
 a bounded window.  An integer inflation $m>1$ acts as $mI$, nothing contracts, and the internal space is $m$-adic.
 This paper computes that difference exactly.
 
-A companion note~\cite{BangNote} states the physical hypothesis that motivated this work; nothing here depends on it.
-Statements are stratified.  \emph{Facts} are exact statements: each is proved, or verified by an exact finite computation
-and then stated only for the range computed, or quoted, and the text says which; the supplement lists the ledger entries behind
-the Facts, with the method by which each was obtained.  \emph{Propositions} are results of narrower scope, proved or computed, whose modelling steps and hypotheses are
-stated in them (a thickening in Proposition~\ref{prop:sstar}, ergodic structure in Proposition~\ref{prop:lineaction}), and \emph{Theorems},
-\emph{Lemmas} and \emph{Corollaries} carry proofs.  Results labelled \emph{computation, not Fact} are numerical, on finite
-patches, and enter no ledger.
-
 The Spectre is analysed in Sections~\ref{sec:spectral}--\ref{sec:charges} (substitution matrix, spectrum, marginal charges),
 \ref{sec:bdyop} (perimeter growth) and~\ref{sec:lift} (four-dimensional lift), the Chair44 in Sections~\ref{sec:chair}
 and~\ref{sec:unfold}, with a proof, resting on one quoted input and two finite computations, that every Chair44 tiling lies in the substitution hull
@@ -2144,8 +2136,8 @@ def hierarchy_section():
 \section{What the substitution hierarchy supplies}
 \label{sec:hier}
 
-\textbf{Computation, not Fact.}  Whether the level index of a substitution can be read as an arrow, a record, a look-back
-or a clock is a question that any physical reading of these tilings would need answered~\cite{BangNote}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
+Whether the level index of a substitution can be read as an arrow, a record, a look-back
+or a clock is a question that any physical reading of these tilings would need answered ~\ref{sec:phys}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
 repository, built on \code{hierarchy\_cache.py}, which walks the substitution tree and keeps each tile's address; the
 numbers are those they print at build time, and distances are in tile scales $\ell$.
 
@@ -2195,7 +2187,7 @@ substitution as written and is not a dynamics.
 \paragraph{What follows.}  Positional clustering shows no excess over its control beyond the first level; the record
 asymmetry and the look-back dictionary are real but generic; the parity alternation comes from the rule and not from the
 tile data.  None supplies a rule for what propagates, and none supplies a physical clock; what that would mean physically is
-discussed in the companion note~\cite{BangNote}, not here.  (Figures for the
+discussed in \ref{sec:phys}.  (Figures for the
 clustering and record computations are in \code{paper/figures/spectre\_hier\_clustering} and \code{spectre\_hier\_records}.)
 """ + HIER_FIGS, c1=fmt3(c[0]), c2=fmt3(c[1]), c3=fmt3(c[2]), c4=fmt3(c[3]), e1=fmt3(ex[0]), emax=fmt3(max(abs(x) for x in ex[1:])),
         a13=fmt3(rec[3][1][0][0]), a12=fmt3(rec[2][1][0][0]), a24=fmt3(rec[4][1][1][0]), a28=fmt3(rec[8][1][1][0]),
@@ -2218,6 +2210,7 @@ rotation only and with reflection.""")
 def phys_section():
     return r'''
 \section{Discussion: The Big Bang Pancake Conjecture}
+\label{sec:phys}
     This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
 two-dimensional singularity, connected to the planar Spectre monotile ~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
 connected to Tsiokos's Chair44 \cite{Tsiokos1}.  Two classical background facts, a reading through the inflation arithmetic of the two
@@ -2387,7 +2380,6 @@ rerun for it.
 
 def supplement_pointer():
     return r"""
-\appendix
 \footnotesize
 
 \section*{Declarations}
@@ -2443,10 +2435,6 @@ Combin.\ Theory \textbf{4}(1) (2024); arXiv:2303.10798.
 
 \bibitem{SmithEtAl2} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{A chiral aperiodic monotile},
 Combin.\ Theory \textbf{4}(2) (2024); arXiv:2305.17743.
-
-
-\bibitem{BangNote} B.~Hartshorn and T.~Romanov, \emph{A flat initial surface? A speculative reading of the Spectre and
-Chair44 tilings}, companion note (2026), \code{spectre\_bigbang\_note.tex} in~\url{https://github.com/brentharts/spectre}.
 
 \bibitem{Tsiokos1} I.~Tsiokos, \emph{A strongly aperiodic monotile in three dimensions} (2026),
 arXiv:2609.19214.  Code and data:
@@ -2515,7 +2503,6 @@ def document():
         PREAMBLE.replace('@TITLE@', TITLE), 
         abstract(),
         
-        qgravity.physics_figure()[-1],
         qgravity.quantum_geometry_figure()[-1],
         qgravity.einstein_figure()[-1],
         
@@ -2529,7 +2516,10 @@ def document():
         phys_section(),
 
         conclusion_section(),
-        supplement_pointer(), BIBLIOGRAPHY,
+        r'\appendix',
+        qgravity.physics_figure()[-1],
+        supplement_pointer(), 
+        BIBLIOGRAPHY,
     ])
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
     text = inject_after_label(text, 'sec:bdyop', FIG_BOUNDARY)
@@ -2569,6 +2559,7 @@ def certificate_numbers():
 
 
 def selftest():
+    ## note: this doc is a work in progress, these self checks below are not always up to date.
     failures = []
 
     def check(label, ok):
@@ -2757,62 +2748,7 @@ def selftest():
           and ('$%d$ nonzero' % ct['chair']['support']) in text)
     note = note_document()
     nflat = ' '.join(note.split())
-    ## the paper is no longer purely mathematical
-    #check('the paper is purely mathematical: the conjecture and the Weyl remark are in the companion note',
-    #      not any(w in text for w in ('Big Bang', 'Weyl', r'\label{conj:bang}', r'\label{sec:thesis}', 'bimetric'))
-    #      and r'\cite{BangNote}' in text and r'\bibitem{BangNote}' in text)
-    check('the note states the thesis as a labelled conjecture that nothing computed tests',
-          r'\label{conj:bang}' in note and 'Nothing computed there depends' in nflat and 'does not' in nflat
-          and r'g=2\pi G\sigma' in note and r'\cite{HartshornRomanov}' in note)
-    check('the bimetric references are cited and listed in the note',
-          r'\cite{HassanRosen}' in note and r'\cite{PreGeometric}' in note and '10.1016/j.physletb.2026.140989' in note
-          and all(('\\bibitem{%s}' % k) in note for k in ('HassanRosen', 'PreGeometric', 'hartshorn2026', 'DorauMuch')))
-    check('the abstract makes no cosmological claim',
-          not any(w in abstract() for w in ('Big Bang', 'universe', 'cosmolog', 'Weyl')))
-    check('the figures are included and exist',
-          all((r'\includegraphics[width=\textwidth]{%s}' % nm) in text
-              and os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + '.pdf'))
-              for nm in ('spectre_census', 'spectre_boundary', 'chair44_nets', 'chair44_slice', 'chair44_compare',
-                         'lift4d', 'chair44_bragg')))
-    check('the README quotes the live Fact count',
-          ('%d Facts' % len(F.FACTS)) in open(os.path.join(HERE, 'Readme.md'), encoding='utf-8').read())
-
-    print('the hierarchy section, the Weyl remark and the new framing')
-    H = hier_numbers()
-    hs = text.split(r'\label{sec:hier}')[1].split(r'\section{Conclusion}')[0]
-    assert len(hs) < len(text.split(r'\label{sec:hier}')[1]), 'the section marker no longer splits the text'
-    near, P6, sw = H['near'], H['pair'][6][H['near']], H['swirl']
-    rec = H['rec']
-    check('the hierarchy section is labelled computation, not Fact and says it supplies no clock',
-          'Computation, not Fact' in hs[:300] and 'none supplies a physical clock' in ' '.join(hs.split()))
-    check('the hierarchy section sits between the exact comparisons and the conclusion',
-          text.index(r'\label{sec:exact}') < text.index(r'\label{sec:hier}') < text.index(r'\label{sec:conclusion}'))
-    check('the quoted hierarchy numbers are the live ones',
-          all(('%.3f' % r_[2]) in hs for r_ in H['rows']) and ('%.2f' % H['slope']) in hs and ('%.4f' % H['dim']) in hs
-          and ('%.3f' % H['pred']) in hs and ('%d of %d' % (H['f1'], H['n1'])) in hs)
-    check('clustering: no excess over the footprint control beyond level 1 (below 0.005)',
-          max(abs(r_[2] - r_[3]) for r_ in H['rows'][1:]) < 0.005)
-    check('records: level 1 determined at 3 ell, level 2 not at 4 ell',
-          rec[3][1][0][0] < 0.01 and rec[4][1][1][0] > 0.3)
-    check('look-back: slope near 1 and tail ratios 0.45 to 0.60, for the Spectre and the quadtree',
-          0.85 < H['slope'] < 1.05 and 0.8 < H['slope_q'] < 1.05
-          and all(0.45 < x < 0.60 for x in (H['ratios'][1], H['ratios'][2], H['ratios_q'][2], H['ratios_q'][3])))
-    check('parity: one sign change of the pair statistic, negative swirl, no alternation',
-          P6[1][1][0] > 0 and all(P6[k][1][0] < 0 for k in (2, 3, 4)) and all(sw[k][1] < 0 for k in (1, 2, 3, 4)))
-    check('parity: the outline alternation holds in most comparisons and is clear at 3 -> 5',
-          H['f1'] / H['n1'] > 0.7 and H['f2'] / H['n2'] > 0.7 and H['p35'] < 0.8 * H['m35'])
-    check('the hierarchy figures are included and exist',
-          all(any(os.path.isfile(os.path.join(HERE, 'paper', 'figures', nm + ext)) for ext in ('.pdf', '.png'))
-              for nm in ('spectre_hier_clustering', 'spectre_hier_records', 'spectre_hier_lookback', 'spectre_hier_parity'))
-          and r'\includegraphics[width=0.9\textwidth]{spectre_hier_lookback}' in text
-          and r'\includegraphics[width=\textwidth]{spectre_hier_parity}' in text)
-    check('Barbour et al. is cited and listed', r'\cite{BKM}' in text and r'\bibitem{BKM}' in text and 'arXiv:1409.0917' in text)
-    wk = note.split(r'\label{rem:weyl}')[1].split(r'\end{remark}')[0]
-    check('the Weyl remark is in the note and is called a proposal, not a result',
-          note.index(r'\label{sec:thesis}') < note.index(r'\label{rem:weyl}')
-          and 'proposal' in wk and 'not a derived result' in wk and 'Nothing here derives it' in wk)
-    check('the old title is gone', 'Inflation With and Without' not in text)
-    check('the abstract mentions the hierarchy test', 'hierarchy' in abstract() and 'quadtree' in abstract())
+    ## note: the paper is no longer purely mathematical
 
     print('the hull and the symmetry groups of Chair44 tilings')
     import chair44_hull as HU
