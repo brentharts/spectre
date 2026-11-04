@@ -7,7 +7,9 @@ and Hobson as ported in pyCICY (pancake.py, horizons.py): a collapsing circle fi
 
 1. THE FIBRE CLOCK (exact, given the horizon law).  A null ray along the collapsing fibre accumulates the comoving
    angle  h(t) = (2/a0) ln(t/t_in)  (the logarithmic horizon coefficient 2/a0 of horizons.fibre_log_coefficient), and
-   the Euler angle psi has period 4 pi on the standard S^3 (pyCICY marks that identification as not checked).  So
+   the Euler angle psi has period 4 pi on the standard S^3 (pyCICY marks that identification as not checked; Quantum_Gravity_Lab's
+   tests/test_s3_identifications.py checks it for the standard S^3 from the embedding in C^2.  Whether the pancake paper's slices are
+   S^3 or the quotient SO(3), where the period is 2 pi and every count below halves or doubles, is still not checked).  So
         turns(t) = h / 4 pi = ln(t/t_in) / (2 pi a0).
    One level of the Spectre substitution rescales lengths by lambda = sqrt(4 + sqrt15), so n levels are the clock
         turns(n) = n ln(lambda) / (2 pi a0),   levels per turn  N(a0) = 2 pi a0 / ln(lambda).
@@ -17,6 +19,15 @@ and Hobson as ported in pyCICY (pancake.py, horizons.py): a collapsing circle fi
 2. NUMEROLOGY, LABELLED.  At a0 = 1 (the pyCICY default) N = 6.0900..., a tempting 6 = |Z/6|.  It is 1.5% off, a0
    is initial data and not fixed by anything in the tiling, and N = 6 exactly would need a0 = 3 ln(lambda)/pi, a
    number chosen to give the answer.  The selftest asserts the miss.  This is not a Fact.
+
+   Three further facts weaken the temptation (checked below, or Counted from Quantum_Gravity_Lab's numerical solution):
+   (a) The closed form is the small-t value.  Along the pancake solution R_1 = a0 t only near the pancake; the local value
+       N_loc(t) = 2 pi R_1(t) / (t ln lambda) equals N(a0) as t -> 0 and then moves.  For a0 = 1, b0 = 3, f0 = 2, m = 0.5 (t up to 6)
+       it rises to 8.48 near t = 3.1, crosses 6 at t = 4.8 and is 3.58 at t = 6, so "6" is merely passed on the way.
+   (b) a0 is initial data: with the values Quantum_Gravity_Lab records for the paper (a0 = 1.2, b0 = 18000) N is 7.308, flat to 1e-7
+       over 1e-4 <= t <= 3, not 6.09.
+   (c) On the quotient SO(3) the period is 2 pi and N(1) = 3.0450..., 1.5% off |Z/3| = 3 by the same ratio.  A number that moves
+       to another near-integer when the identification changes is not evidence for either.
 
 3. THE ORBIFOLD (exact, and unrelated to the pancake's dynamics).  The rotation R of spectre_torsion has order 6 on
    the cusp torus T = C/Z[zeta_3].  Its stabilisers on the six site classes (orbit-stabiliser, computed from R) are
@@ -42,7 +53,9 @@ import spectre_torsion as TO              # noqa: E402
 
 LAMBDA2 = 4 + sp.sqrt(15)                 # the Spectre inflation squared, the unit of Z[sqrt15]
 LAMBDA = sp.sqrt(LAMBDA2)
-FIBRE_PERIOD = 4 * sp.pi                  # period of the Euler angle on the standard S^3 (identification not checked)
+FIBRE_PERIOD = 4 * sp.pi                  # period of the Euler angle on the standard S^3 (checked for S^3 in Quantum_Gravity_Lab's
+#                                         # tests/test_s3_identifications.py; S^3 versus SO(3) in the paper is not checked)
+SO3_FIBRE_PERIOD = 2 * sp.pi              # the same angle on the quotient SO(3) = S^3/{+-1}: only used to show the number moves
 
 
 # --------------------------------------------------------------------------
@@ -61,6 +74,18 @@ def turns_per_level(a0):
 def levels_per_turn(a0):
     """2 pi a0 / ln(lambda)."""
     return 1 / turns_per_level(a0)
+
+
+def levels_per_turn_so3(a0):
+    """On the quotient SO(3) the fibre period is 2 pi, so there are half as many levels per turn: pi a0 / ln(lambda)."""
+    return 2 * sp.pi * sp.sympify(a0) / sp.log(LAMBDA) * (SO3_FIBRE_PERIOD / FIBRE_PERIOD)
+
+
+def levels_per_turn_local(R1, t):
+    """Local levels per turn 2 pi R_1(t) / (t ln lambda) (floats or sympy): the number of Spectre levels in the time a null ray
+    takes to go once round the fibre of the standard S^3, when the fibre scale is R_1 at time t.  Equals levels_per_turn(a0)
+    when R_1 = a0 t, i.e. at leading order near the pancake."""
+    return 2 * sp.pi * R1 / (t * sp.log(LAMBDA))
 
 
 def a0_for_levels_per_turn(N):
@@ -83,6 +108,16 @@ def clock_checks():
     # the a0 that would give exactly 6 is a tuned value, not 1
     assert sp.simplify(levels_per_turn(a0_for_levels_per_turn(6)) - 6) == 0
     assert abs(sp.N(a0_for_levels_per_turn(6)) - 1) > 0.01
+    # the local clock is the closed form when R_1 = a0 t, so N(a0) is the t -> 0 value of the local number
+    t = sp.Symbol("t", positive=True)
+    assert sp.simplify(levels_per_turn_local(a0 * t, t) - levels_per_turn(a0)) == 0
+    # on SO(3) the period is 2 pi: half as many levels per turn, 3.0450... at a0 = 1, off 3 by the same 1.5%
+    assert sp.simplify(levels_per_turn_so3(a0) - levels_per_turn(a0) / 2) == 0
+    N3 = sp.N(levels_per_turn_so3(1), 30)
+    assert 3.04 < N3 < 3.05 and abs(N3 - 3) > 0.04
+    # the paper values quoted by Quantum_Gravity_Lab (a0 = 1.2): 7.308, not 6.09
+    N12 = sp.N(levels_per_turn(sp.Rational(6, 5)), 30)
+    assert 7.30 < N12 < 7.32
     return True
 
 
@@ -139,6 +174,27 @@ def cross_check_horizon(a0=1.0):
     return "d(fibre)/d ln t = %.4f against 2/a0 = %.4f" % (slope, 2 / a0)
 
 
+def cross_check_qgl(a0=1.0, b0=3.0, f0=2.0, m=0.5, t_max=6.0):
+    """Optional float check against Quantum_Gravity_Lab (CC0), if importable (set QGL_PATH or put the clone next to this one):
+    the local levels per turn along its numerical pancake solution, and its start at N(a0)."""
+    cands = [os.environ.get("QGL_PATH", ""), os.path.join(HERE, "..", "Quantum_Gravity_Lab"), "/home/claude/Quantum_Gravity_Lab"]
+    for cand in cands:
+        if cand and os.path.isfile(os.path.join(cand, "qgl_pancake.py")):
+            sys.path.insert(0, cand)
+            break
+    try:
+        import numpy as np
+        import qgl_pancake as qp
+    except Exception as e:                            # noqa: BLE001
+        return "skipped (%s)" % e
+    sol = qp.pancake_solution(a0, b0, f0, m, t_max=t_max, n=1200)
+    pos = sol["t"] > 0
+    t, R1 = sol["t"][pos], sol["R"][pos, 0]
+    N = 2 * np.pi * R1 / (t * float(sp.log(LAMBDA)))
+    return ("local levels per turn: %.4f at t = %.0e (closed form %.4f), max %.3f at t = %.2f, %.3f at t = %.1f"
+            % (N[0], t[0], float(levels_per_turn(a0)), N.max(), t[int(np.argmax(N))], N[-1], t[-1]))
+
+
 if __name__ == "__main__":
     print("selftest:", selftest())
     if "--check" in sys.argv:
@@ -147,3 +203,6 @@ if __name__ == "__main__":
     print("a0 giving exactly 6:             %s" % sp.N(a0_for_levels_per_turn(6), 8))
     print("orbifold cone orders:            %s" % orbifold_checks())
     print("pyCICY cross-check:              %s" % cross_check_horizon())
+    print("Quantum_Gravity_Lab cross-check: %s" % cross_check_qgl())
+    print("levels per turn on SO(3), a0 = 1: %s   (period 2 pi, half the S^3 value)" % sp.N(levels_per_turn_so3(1), 8))
+    print("levels per turn on S^3, a0 = 1.2: %s   (the value QGL records for the paper)" % sp.N(levels_per_turn(sp.Rational(6, 5)), 8))

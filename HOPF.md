@@ -167,9 +167,39 @@ fibre collapses while the base stays finite. [`spectre_pancake.py`](spectre_panc
 states what can be proved about pairing this fibre with the Spectre's ℤ/6:
 
 * the fibre clock turns(n) = n·ln λ / (2π a₀) is a closed form (given the horizon law);
+* its 4π period for the fibre angle is **Exact** on the standard S³ (checked from the
+  embedding S³ ⊂ ℂ² in Quantum_Gravity_Lab's `tests/test_s3_identifications.py`: ψ = 2π is the
+  antipode, the first return is at 4π, the fibre has length 2πR₁). Whether the pancake paper's
+  slices are S³ or the quotient SO(3) = S³/{±1}, where the period is 2π, is **not checked**;
 * at the default a₀ = 1 it gives N = 6.0900… levels per turn — a tempting 6 = |ℤ/6| that
   is **1.5 % off**, and exact 6 would need a₀ chosen to give the answer. **Numerology.**
-  The script asserts the miss. It is not a Fact in the registry.
+  The script asserts the miss. It is not a Fact in the registry. Three more reasons not to
+  read it as evidence:
+  * N(a₀) is the small-t value. Along the numerical pancake solution the local number
+    2πR₁/(t ln λ) moves: for a₀ = 1, b₀ = 3, f₀ = 2, m = 0.5 it rises from 6.09 to 8.48 near
+    t = 3.1, passes 6 at t = 4.8 and is 3.58 at t = 6 (**Counted**, Quantum_Gravity_Lab's
+    `qgl_pancake.py`; its model is the leading-order pancake, not a solution of the field
+    equations);
+  * a₀ is initial data: with the values Quantum_Gravity_Lab records for the paper (a₀ = 1.2,
+    b₀ = 18000) N is 7.308, not 6.09;
+  * on SO(3) the period is 2π and N(1) = 3.0450…, 1.5 % off |ℤ/3| = 3 by the same ratio.
+
+### What the Berger-sphere reading adds (Exact, from the companion repositories)
+
+None of this links the tilings to the pancake; it only fixes what the pancake side is.
+
+* The slice (1/4)[R₁²(dψ + cos θ dφ)² + R₂²(dθ² + sin²θ dφ²)] has Ricci curvatures
+  (2s², 4 − 2s², 4 − 2s²)/R₂² with s = R₁/R₂, scalar curvature (8 − 2s²)/R₂² and volume
+  2π² R₁R₂². So as the fibre collapses the slice curvature stays finite (scalar → 8/b₀²).
+  Rederived independently in HopfFibration (`hopf_berger.py`, `hopf_pancake.py`) and in
+  Quantum_Gravity_Lab (`qgl_bkl.ricci3`, `qgl_hopf.py`); the two agree.
+* Its Laplace spectrum is a quantum symmetric top, 4[(j(j+1) − m′²)/R₂² + m′²/R₁²]: the
+  fibre-constant levels (m′ = 0) are those of the base S² of radius R₂/2 and survive the
+  collapse, the fibre-momentum levels grow like 1/s², and the first nonzero eigenvalue is
+  min(8, 2 + 1/s²)/R₂² (symbolic checks in `SU2_BERGER_TOP.md` of the openai_math_yang_mills
+  fork). A statement about one slice at one time, not about dynamics.
+* In the numerical solution the squashing s = R₁/R₂ is not monotone: it overshoots the round
+  sphere (peak ≈ 1.44 near t = 3.7 for the parameters above) and falls back (**Counted**).
 
 ## 7. Background that explains why S³ keeps turning up (Standard)
 
@@ -205,3 +235,6 @@ Start with the first two; the rest are for depth.
 5. <https://www.sciencedirect.com/science/article/abs/pii/S0393044002001213> — supplied by the repository owner; **could not be retrieved** by our tools (the site blocks automated access), so its title and claims are not quoted here. *(not read)*
 6. H. Hopf, *Über die Abbildungen der dreidimensionalen Sphäre auf die Kugelfläche*, Math. Ann. **104** (1931) 637–665. The original. *(cited, not read)*
 7. C. W. Misner, *Mixmaster universe*, Phys. Rev. Lett. **22** (1969) 1071; V. A. Belinsky, I. M. Khalatnikov, E. M. Lifshitz, Adv. Phys. **19** (1970) 525. *(cited from memory)*
+8. [brentharts/HopfFibration](https://github.com/brentharts/HopfFibration): `hopf_berger.py`, `hopf_pancake.py`, `hopf_knots.py`, with a README that ranks its own links to other work. The Berger-sphere facts of §6. *(cloned and read; its self-tests were run)*
+9. [brentharts/Quantum_Gravity_Lab](https://github.com/brentharts/Quantum_Gravity_Lab): `qgl_pancake.py`, `qgl_hopf.py`, `tests/test_s3_identifications.py`. The numerical pancake solution and the S³ identifications of §6. *(cloned and read; its test suite was run)*
+10. [brentharts/openai_math_yang_mills](https://github.com/brentharts/openai_math_yang_mills), `SU2_BERGER_TOP.md`: the Laplace spectrum of the Berger sphere. It states that nothing there bears on Yang–Mills existence or a mass gap. *(cloned and read; its checks were run)*

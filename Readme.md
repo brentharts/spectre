@@ -225,6 +225,18 @@ here would have caught that, because the question is about knot diagrams and
 this kernel sees arithmetic. A machine-checked Fact layer is worth having and
 does not insure against everything.
 
+## Related repositories
+
+Three sibling repositories have been read against this one. Each row says what is shared and how strong the link is, in the vocabulary of [`CONNECTIONS.md`](CONNECTIONS.md), which has the full tables. None of them establishes a map from these tilings to cosmology, gauge theory or the physics of a sensor: the physical readings are **Not claimed**, and the 6-coincidences are **Numerology**.
+
+| repository (licence) | shared with this one | where here | status |
+|---|---|---|---|
+| [HopfFibration](https://github.com/brentharts/HopfFibration) (GPL-2.0) | its `hopf_rotations.py` and `hopf_berger.py` came from a study of the Spectre: the 60° rotation of the four-dimensional lift acts as the Hopf circle action on two complex planes; the pancake cosmology's slice is a Berger sphere whose fibre collapses. Newer scripts there (`hopf_knots.py`, `hopf_pancake.py`) concern the Hopf invariant and the pancake, not the tilings | [`HOPF.md`](HOPF.md) §5–§6, `lift4d.py`, `spectre_pancake.py` | 60° statement **Exact**, **Elementary**; "≈ 6 levels per turn" **Numerology** |
+| [Quantum_Gravity_Lab](https://github.com/brentharts/Quantum_Gravity_Lab) (CC0-1.0) | a Jaynes–Cummings sensor driven by the Chair44 pyramid height along a line (`qgl_tiling*.py`); the numerical pancake solution and the S³ identifications behind the fibre clock | [`CONNECTIONS.md`](CONNECTIONS.md) §2, `spectre_pancake.py` (`cross_check_qgl`) | sensor **Counted**, one prediction **Falsified** and recorded; S³ identification **Exact**, S³ versus SO(3) in the pancake paper **not checked** |
+| [openai_math_yang_mills](https://github.com/brentharts/openai_math_yang_mills) (Apache-2.0) | a fork of OpenAI's mathematics release whose own notes (`MONOTILES.md`, `SPECTRE_CHAIR44.md`, `SPECTRE_CLOCK_AND_CHAIR44.md`) discuss this repository and Chair44 (titles only; not reviewed here); and `SU2_BERGER_TOP.md`, the Laplace spectrum of the Berger sphere | [`HOPF.md`](HOPF.md) §6, §9 | spectrum **Exact** (symbolic, there); its Yang–Mills material is unrelated to the tilings and states that it does not bear on existence or a mass gap |
+
+The licences differ (this repository has no licence file). No code is copied between repositories; what is shared is results and cross-references, plus one optional import (`spectre_pancake.py` can call Quantum_Gravity_Lab if it is on the path).
+
 # einstein3d — forms of the monotile (Spectre/Hat)
 
 ## Modules

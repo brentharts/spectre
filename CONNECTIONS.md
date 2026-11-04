@@ -30,7 +30,7 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md),
 | 5 | 60° rotation of the Spectre lift acts as diag(ω,ω) on two complex planes; ℤ/6 ⊂ the Hopf circle; 30° swaps the planes | **Exact**, **Elementary** | `lift4d.py`, [`HOPF.md`](HOPF.md) §5 |
 | 6 | The six Mystic classes form one ℤ/6 = ℤ/3 × ℤ/2 orbit on the torsion points of the hexagonal torus | **Exact** (group; classes = rotations that occur, ≤ 6; six for every n ≥ 3, with registration at every level proved by an exact finite-state induction in `mystic_exact/`) | `spectre_torsion.py`, `spectre_mystic_fibres.py` |
 | 7 | The ℤ/6 of direction mod 180° (boundary-edge histogram) is the same group as in 6 | **Exact** as a group; not shown to be the same *action* | `chair44_spectre_link.py` |
-| 8 | Pancake cosmology: fibre clock gives N = 6.0900… levels per turn, "≈ 6 = |ℤ/6|" | **Numerology** (1.5 % off; a₀ is free) | `spectre_pancake.py` |
+| 8 | Pancake cosmology: fibre clock gives N = 6.0900… levels per turn, "≈ 6 = |ℤ/6|" | **Numerology** (1.5 % off; a₀ is free; N is the small-t value and moves along the numerical solution, 7.308 for a₀ = 1.2, 3.0450… on SO(3)) | `spectre_pancake.py`, [`HOPF.md`](HOPF.md) §6 |
 | 9 | Spectre pure-point diffraction via the internal contracting plane | **Exact** for the integer lift and bounded contracting plane; diffraction plots are computation, not Facts | `lift4d.py`, `spectre_diffraction.py` |
 | 10 | Chair44 pure-point, limit-periodic, internal space ℤ₂³ | **Quoted** (Lee–Moody/Schlottmann) + **Exact** finite part (primitivity, coincidence at M = 3) | `chair44_twoadic.py` |
 | 11 | Chair44 hull theorem: every atlas tiling is in the hull; Sym ∈ {1, C₂(diag), C₄, D₄}; only 30 of 44 contacts occur | **Exact** (computer-assisted, independently repeated) for atlas tilings; for the solid, via Tsiokos's registration theorem (R), **Quoted** and independently audited (`chair44_independent/`) | Romanov; `chair44_hull*.py` |
@@ -72,6 +72,17 @@ Alpöge six-sphere module, and a Chair44 nested-automaton module.
 (Hopf's *problem*, a complex structure on S⁶, is unrelated to the Hopf fibration; they
 share a name. See [`HOPF.md`](HOPF.md) §8.)
 
+### Pancake side, from the Quantum Gravity Lab and HopfFibration forks
+
+What the pancake half of row 8 rests on. None of these rows links a tiling to the pancake.
+
+| result | status |
+|---|---|
+| The fibre angle of the standard S³ has period 4π, the fibre length 2πR₁, the base S² radius R₂/2 | **Exact** (Quantum_Gravity_Lab `tests/test_s3_identifications.py`, from the embedding S³ ⊂ ℂ²). Whether the pancake paper's slices are S³ or SO(3) is **not checked** |
+| The biaxial slice is a Berger sphere: Ricci (2s², 4 − 2s², 4 − 2s²)/R₂², scalar 8/b₀² at the pancake | **Exact**, rederived in two repositories that agree (HopfFibration `hopf_berger.py`, Quantum_Gravity_Lab `qgl_hopf.py`) |
+| Local levels per turn 2πR₁/(t ln λ) along the numerical solution: 6.09 at small t, 8.48 near t = 3.1, 3.58 at t = 6 (a₀ = 1, b₀ = 3, f₀ = 2, m = 0.5) | **Counted** (float run of a leading-order model; `spectre_pancake.py` prints it when Quantum_Gravity_Lab is importable) |
+| Laplace spectrum of the squashed S³ is a symmetric top; base-S² levels survive the collapse | **Exact** (symbolic, openai_math_yang_mills `SU2_BERGER_TOP.md`) |
+
 ## 4. To cosmology and quantum information
 
 | link | status |
@@ -90,4 +101,5 @@ State: (a) the two objects; (b) the map between them, as a formula or a function
 
 Flicker authorship; the Romanov arXiv identifier and bibitem in the joint paper; the
 AI-use statement; the "44" sentence of row 4; a stale supplement PDF and ledger figure; a
-ring-identity off-by-3 check in CICY; an optional QGL results section.
+ring-identity off-by-3 check in CICY; an optional QGL results section; whether the pancake
+paper's slices are S³ or SO(3) (it changes N in row 8 by a factor 2).
