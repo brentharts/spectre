@@ -44,7 +44,7 @@ for (fk, S), (A, Y, Z) in groups.items():
     assert res < 1e-8 and np.abs(R.T @ R - s2 * np.eye(2)).max() < 1e-8, (res, R.T @ R)
     FR.append((S, A, R / np.sqrt(s2), c, np.sqrt(s2)))
 scale = FR[0][4]; assert all(abs(f[4] - scale) < 1e-9 for f in FR)
-print('window classes (shape, frame):', len(FR), ' tiles', sum(len(g[1]) for g in groups.values()), ' similarity ratio', scale)
+print('window classes (shape, frame):', len(FR), ' tiles', sum(len(g[1]) for g in groups.values()), ' similarity ratio', scale, flush=True)
 LEAVES = {'O': [IDENT], 'G': [IDENT, mul(ttrans(SPECTRE[8]), trot(1))]}
 def shape(S, A, t):
     return unary_union([Polygon([(lambda w: (w.real, w.imag))(to_c(apply(mul((A, t), L), v))) for v in SPECTRE])
@@ -57,11 +57,11 @@ V = np.array(list(itertools.product(rng, rng, rng, rng)))
 ph, it = V @ PH.T, V @ STAR.T
 DPH = 12.0                                         # > twice the Mystic's diameter, in edge units
 cand = V[(np.linalg.norm(ph, axis=1) < DPH) & (np.linalg.norm(it, axis=1) < 2 * RAD * scale + 1e-9 + 2 * max(np.linalg.norm(f[3]) for f in FR))]
-print('lattice candidates', len(cand), ' (box edge %d; boundary hits %d)' % (K, int((np.abs(cand) == K).any(1).sum())))
-seeds = {}
+print('lattice candidates', len(cand), ' (box edge %d; boundary hits %d)' % (K, int((np.abs(cand) == K).any(1).sum())), flush=True)
 z4 = np.zeros(4, dtype=object)
-for (S1, A1, R1, c1, _), (S2, A2, R2, c2, _) in itertools.product(FR, FR):
-    P1 = shape(S1, A1, z4)
+def pair_seeds(ab):
+    (S1, A1, R1, c1, _), (S2, A2, R2, c2, _) = FR[ab[0]], FR[ab[1]]
+    P1 = shape(S1, A1, z4); out = []
     for v in cand:
         d = R1.T @ ((c2 - c1 - STAR @ v) / scale)
         if np.linalg.norm(d) > 2 * RAD + 1e-9:
@@ -69,19 +69,28 @@ for (S1, A1, R1, c1, _), (S2, A2, R2, c2, _) in itertools.product(FR, FR):
         vo = np.array([int(x) for x in v], dtype=object)
         if shape(S2, A2, vo).intersection(P1).area < 1e-6:
             continue
-        B = R1.T @ R2
-        t = (S1, S2, 0, mp.matrix(B.tolist()), mp.matrix(d.tolist()))
-        seeds[sw.tkey(*t)] = t
-print('competitor seeds (overlapping placements, windows within 2 RAD):', len(seeds))
+        out.append((S1, S2, (R1.T @ R2).tolist(), d.tolist()))
+    return out
+import multiprocessing as mpr, time
+t0 = time.time()
+with mpr.Pool(int(sys.argv[3]) if len(sys.argv) > 3 else 1) as pool:
+    res = pool.map(pair_seeds, [(a, b) for a in range(len(FR)) for b in range(len(FR))])
+seeds = {}
+for S1, S2, B, d in (x for r in res for x in r):
+    t = (S1, S2, 0, mp.matrix(B), mp.matrix(d))
+    seeds[sw.tkey(*t)] = t
+print('seed search %.0fs' % (time.time() - t0), flush=True)
+print('competitor seeds (overlapping placements, windows within 2 RAD):', len(seeds), flush=True)
 I2 = sw.key2(mp.eye(2))
-print('identity seeds (would mean two windows coincide):', sum(1 for t in seeds.values() if t[0] == t[1] and sw.key2(t[3]) == I2 and mp.norm(t[4]) < 1e-6))
+print('identity seeds (would mean two windows coincide):', sum(1 for t in seeds.values() if t[0] == t[1] and sw.key2(t[3]) == I2 and mp.norm(t[4]) < 1e-6), flush=True)
 live, stack = {}, list(seeds.values())
 while stack:
     t = stack.pop()
     if mp.norm(t[4]) > 2 * sw.RAD + mp.mpf(10) ** -20: continue
     k = sw.tkey(*t)
     if k in live: continue
-    live[k] = t; stack.extend(sw.children(*t)); assert len(live) < 200000
+    live[k] = t; stack.extend(sw.children(*t)); assert len(live) < 2000000
+    if len(live) % 20000 == 0: print('closure', len(live), flush=True)
 keys = list(live); idx = {k: n for n, k in enumerate(keys)}
 Nm = np.zeros((len(keys), len(keys)))
 for a, k in enumerate(keys):
