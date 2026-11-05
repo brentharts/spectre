@@ -1,0 +1,4 @@
+('O', 0) local slopes [1.0848 1.1204 1.1167] fit 1.1086 pred seam 1.111 dim1 1.0
+('O', 1) local slopes [1.0809 1.1214 1.1024] fit 1.1035 pred seam 1.111 dim1 1.0
+('G', 0) local slopes [1.1099 1.0842 1.129 ] fit 1.1054 pred seam 1.111 dim1 1.0
+('G', 1) local slopes [1.1581 1.1026 1.1336] fit 1.1286 pred seam 1.111 dim1 1.0
