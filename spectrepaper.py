@@ -27,14 +27,14 @@ import sympy as sp
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUTPUT = os.path.join(HERE, 'spectre_substrate.tex')
-print('imports from openai_math_yang_mills')
-sys.path.append( os.path.join(HERE, '../openai_math_yang_mills/tools') )
-import oai_tree
-print(oai_tree)
-
-sys.path.append( os.path.join(HERE, '../openai_math_yang_mills/sympy_models') )
-import qgravity
-print(qgravity)
+OAI = os.path.join(HERE, '..', 'openai_math_yang_mills')
+sys.path.append(os.path.join(OAI, 'tools'))
+sys.path.append(os.path.join(OAI, 'sympy_models'))
+try:
+    import oai_tree   # Part III: the release catalogue
+    import qgravity   # Part II: the quantum-gravity body
+except ModuleNotFoundError as e:
+    sys.exit(f'spectrepaper: {e.name} not found; Parts II and III need the sibling repo {os.path.normpath(OAI)}')
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -2347,6 +2347,26 @@ similar copies of $Z_{p'}(S')$ for all four choices of $S'$ and $p'$, so the low
 $\partial Z_{p}(S)$.  The computation is \code{boundary\_certificate/spectre\_window.py}.
 \end{proof}
 
+\begin{cor}
+\label{cor:hausdorff}
+$\dim_{H}\Sigma_{p}(S)=\dim_{B}\Sigma_{p}(S)=\log(\sqrt2+\sqrt3)/\log\lam$, and $\dim_{H}\partial Z_{p}(S)\ge1.110977\ldots$ for every $S$ and $p$.
+\end{cor}
+
+\begin{proof}
+$\dim_{H}\le\underline{\dim}_{B}$ gives the upper bound.  For the lower bound let $s$ be the stated value and take the
+irreducible block of the contact graph that carries $x^{4}-10x^{2}+1$, and a pair $q_{0}$ in it, reached from a
+sibling pair.  A path $q_{0}q_{1}\cdots q_{m}$ in the block is a pair of meeting pieces of depth $m$, nested in the pair of its prefix, and
+distinct paths give distinct pairs.  The two pieces of an infinite path are within $\delta\lam^{-m}$ of each other and have
+diameter $O(\lam^{-m})$, so both shrink to one point, which lies in $\Sigma_{p}(S)$.  With $v$ the right Perron
+vector of the block, the cylinder of a path of length $m$ gets mass $v_{q_{m}}(\sqrt2+\sqrt3)^{-m}/v_{q_{0}}$, which is
+consistent since $Mv=(\sqrt2+\sqrt3)v$ and defines a probability measure $\mu$ on infinite paths, pushed to $\Sigma_{p}(S)$.  Given a disc $D$ of radius
+$r\in(\lam^{-m-1},\lam^{-m}]$, the paths whose point lies in $D$ have, at depth $m$, both pieces meeting a disc of radius
+$O(\lam^{-m})$ about $D$.  That disc meets boundedly many pieces of depth $m$ (proof of Theorem~\ref{thm:window}), so
+boundedly many pairs, and $\mu(D)\le C(\sqrt2+\sqrt3)^{-m}\le C'r^{s}$.  The mass distribution principle gives
+$\dim_{H}\ge s$.  The bound for $\partial Z_{p}(S)$ follows as in the theorem: the seam points of the block lie on the boundaries of
+similar copies of each $Z_{p'}(S')$, and similarities preserve Hausdorff dimension.
+\end{proof}
+
 \noindent
 The theorem bounds the dimension of $\partial W$ from below and not from above, because a point of $\partial W$ need
 not lie near a seam.  An upper bound needs the pieces of the windows that neighbour $W$ in a covering of internal space,
@@ -2354,10 +2374,14 @@ the role played in Theorem~\ref{thm:frac} by the neighbouring supertiles of a ti
 Sadun show that the window of the self-similar member CASPr of the family and its lattice translates tile internal
 space~\cite{BaakeSpectre}.  The Spectre is mutually locally derivable from a reprojection of CASPr with the same lattice.
 Identifying $W$ with their window, and showing that the neighbour placements of that tiling lie among the $1192$ types,
-would give $\dim_{B}\partial W=1.110977\ldots$; this is not done here.  They obtain the same value for CASPr as a
+would give $\dim_{B}\partial W=1.110977\ldots$; this is not done here.  Numerically the equality looks right.  A box
+count of $\partial Z_{p}(S)$ taken directly from the graph-directed system (depth-$7$ point clouds, boxes from
+$\lam^{-2}$ to $\lam^{-4}$ of the diameter, \texttt{boundary\_certificate/window\_boxcount.py}) fits slopes $1.109$,
+$1.104$, $1.105$ and $1.129$ for $(S,p)=(O,0),(O,1),(G,0),(G,1)$, with local slopes between $1.08$ and $1.16$; this is
+evidence, not a proof, and we state $\dim_{B}\partial W=\log(\sqrt2+\sqrt3)/\log\lam$ only as a conjecture.  They obtain the same value for CASPr as a
 Hausdorff dimension, extracted from its orbit separation dimension, and remark that whether the dimension is the same
 everywhere along the boundary deserves a closer analysis~\cite{BaakeSpectre}.  Theorem~\ref{thm:window} derives the value
-for the seams of the Spectre's own window from the substitution, as a box dimension.  The image in the fitted plane is
+for the seams of the Spectre's own window from the substitution, as a box dimension, and Corollary~\ref{cor:hausdorff} as a Hausdorff dimension.  The image in the fitted plane is
 bounded, and its boundary cell count (a level-$5$ patch, holes from finite sampling filled; Figure~\ref{fig:lift} shows
 level $4$) grows by $2^{@e1@}$ and $2^{@e2@}$ at the successive halvings of the cell size from $0.2$, against $2^{1}$
 for a smooth curve, while the area grows by $2^{@ea@}$.  The boundary is not a smooth curve, since by
@@ -2588,7 +2612,7 @@ def hierarchy_section():
 \label{sec:hier}
 
 Whether the level index of a substitution can be read as an arrow, a record, a look-back
-or a clock is a question that any physical reading of these tilings would need answered ~\ref{sec:phys}.  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
+or a clock is a question that any physical reading of these tilings would need answered (Section~\ref{sec:phys}).  Four readings are tested on finite patches against controls.  The programs are in the \code{spectre}
 repository, built on \code{hierarchy\_cache.py}, which walks the substitution tree and keeps each tile's address; the
 numbers are those they print at build time, and distances are in tile scales $\ell$.
 
@@ -2663,7 +2687,7 @@ def phys_section():
 \section{Discussion: The Big Bang Pancake Conjecture}
 \label{sec:phys}
     This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
-two-dimensional singularity, connected to the planar Spectre monotile ~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
+two-dimensional singularity, connected to the planar Spectre monotile~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
 connected to Tsiokos's Chair44 \cite{Tsiokos1}.  Two classical background facts, a reading through the inflation arithmetic of the two
 tilings, and a proposal on the Weyl tensor are given.  Nothing is derived; what would support or retire the reading is
 stated.
@@ -2692,7 +2716,7 @@ inflation, here the Spectre, has an internal space of dimension two and a window
 Chair44, has none and is $2$-adic.  The conjecture would then say that the surface is of the first kind and the bulk of the
 second, and that the passage from one to the other is the emergence of the third dimension.  That is a reading and not a
 result: no map from tile data to a physical quantity is given, the dichotomy is not derived from any dynamics, and the
-passage between the two kinds of inflation is not constructed.  The hierarchy section of ~\ref{sec:hull} tried the substitution hierarchy as that quantity, and it does not
+passage between the two kinds of inflation is not constructed.  Section~\ref{sec:hier} tried the substitution hierarchy as that quantity, and it does not
 supply the map.  The reading would
 be supported by a physical quantity computed from the tile data that distinguishes the two cases, and retired by showing
 that the dichotomy is an artefact of the two examples, for instance by a three-dimensional tile with a unimodular
@@ -2711,7 +2735,7 @@ a flat two-dimensional initial surface would have vanishing Weyl curvature (comp
 the Weyl tensor vanishes at the initial singularity): a $2{+}1$ substrate has no Weyl tensor to set to zero, and the Weyl
 degrees of freedom would first appear with the third spatial dimension, the step the conjecture assigns to the Chair44.
 Nothing here derives it.  No map from tile data to a metric is given; it is not shown that a $2{+}1$ substrate can acquire
-$3{+}1$ Weyl degrees of freedom as space emerges; and the hierarchy section of ~\ref{sec:hull} leaves open what
+$3{+}1$ Weyl degrees of freedom as space emerges; and Section~\ref{sec:hier} leaves open what
 the hierarchy depth is: if it is the
 third spatial dimension, a separate time is needed, and if it is look-back time, gravitational waves need a propagation rule that
 the tiling does not supply.
