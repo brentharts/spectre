@@ -2355,8 +2355,9 @@ $\dim_{H}\Sigma_{p}(S)=\dim_{B}\Sigma_{p}(S)=\log(\sqrt2+\sqrt3)/\log\lam$, and 
 \begin{proof}
 $\dim_{H}\le\underline{\dim}_{B}$ gives the upper bound.  For the lower bound let $s$ be the stated value and take the
 irreducible block of the contact graph that carries $x^{4}-10x^{2}+1$, and a pair $q_{0}$ in it, reached from a
-sibling pair.  A path $q_{0}q_{1}\cdots q_{m}$ in the block is a pair of meeting pieces of depth $m$, nested in the pair of its prefix, and
-distinct paths give distinct pairs.  The two pieces of an infinite path are within $\delta\lam^{-m}$ of each other and have
+sibling pair.  A path of length $m$ in the block, read as a sequence of edges (each edge being a choice of child pieces, so that
+an entry $M_{qq'}>1$ gives $M_{qq'}$ distinct edges), is a pair of meeting pieces of depth $m$, nested in the pair of its
+prefix, and distinct paths give distinct pairs.  The two pieces of an infinite path are within $\delta\lam^{-m}$ of each other and have
 diameter $O(\lam^{-m})$, so both shrink to one point, which lies in $\Sigma_{p}(S)$.  With $v$ the right Perron
 vector of the block, the cylinder of a path of length $m$ gets mass $v_{q_{m}}(\sqrt2+\sqrt3)^{-m}/v_{q_{0}}$, which is
 consistent since $Mv=(\sqrt2+\sqrt3)v$ and defines a probability measure $\mu$ on infinite paths, pushed to $\Sigma_{p}(S)$.  Given a disc $D$ of radius
@@ -2375,8 +2376,8 @@ Sadun show that the window of the self-similar member CASPr of the family and it
 space~\cite{BaakeSpectre}.  The Spectre is mutually locally derivable from a reprojection of CASPr with the same lattice.
 Identifying $W$ with their window, and showing that the neighbour placements of that tiling lie among the $1192$ types,
 would give $\dim_{B}\partial W=1.110977\ldots$; this is not done here.  Numerically the equality looks right.  A box
-count of $\partial Z_{p}(S)$ taken directly from the graph-directed system (depth-$7$ point clouds, boxes from
-$\lam^{-2}$ to $\lam^{-4}$ of the diameter, \texttt{boundary\_certificate/window\_boxcount.py}) fits slopes $1.109$,
+count of $\partial Z_{p}(S)$ taken directly from the graph-directed system (depth-$7$ point clouds, box sides $\lam^{-k}/2$ of the larger side of the bounding box for
+$k=2,\dots,5$, \texttt{boundary\_certificate/window\_boxcount.py}) fits slopes $1.109$,
 $1.104$, $1.105$ and $1.129$ for $(S,p)=(O,0),(O,1),(G,0),(G,1)$, with local slopes between $1.08$ and $1.16$; this is
 evidence, not a proof, and we state $\dim_{B}\partial W=\log(\sqrt2+\sqrt3)/\log\lam$ only as a conjecture.  They obtain the same value for CASPr as a
 Hausdorff dimension, extracted from its orbit separation dimension, and remark that whether the dimension is the same
