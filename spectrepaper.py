@@ -2118,9 +2118,9 @@ tiles.
 """, perron=tex(F.get('perron').value))
 
 def abstract_new(full=True):
-    return r'''
-This paper joins exact spectral, geometric, and gauge-theoretic computations on aperiodic tilings and loop quantum gravity, dynamically verified during compilation. Part I compares the planar Spectre monotile ($\lambda^2 = 4 + \sqrt{15}$ inflation, boundary dimension $\log(2+\sqrt{5})/\log\lambda \approx 1.3993$, internal window seam dimension $\approx 1.1110$) with the 3D Chair44 (integer inflation 2, 2-adic internal space, substitution hull proof, and classification of tiling symmetries as $1, C_2^{\text{diag}}, C_4, D_4$). Incorporating the 2D Big Bang Pancake Model, we propose that the vanishing of Weyl curvature at the initial singularity corresponds to a flat, 2D Spectre substrate phase—where 2D internal space, chiral parity flips, and aperiodic substitution encode initial-state degrees of freedom prior to 3D bulk emergence. Part II applies loop quantum gravity to a two-plaquette $SU(2)$ lattice gauge theory, deriving exact strong/weak coupling area spectra ($2/(3g^8)$ and $3/(\sqrt{10}g^2)$), fixing the Immirzi parameter $\gamma_I = \ln 2 / (\pi\sqrt{3})$ via spin-$\frac{1}{2}$ puncture counts, and evaluating intertwiner volume spectra and related OpenAI release entries. 
-    '''
+    return (r'''
+This paper joins exact spectral, geometric, and gauge-theoretic computations on aperiodic tilings and loop quantum gravity, dynamically verified during compilation. Part I compares the planar Spectre monotile ($\lambda^2 = 4 + \sqrt{15}$ inflation, boundary dimension $\log(2+\sqrt{5})/\log\lambda \approx 1.3993$, internal window seam dimension $\approx 1.1110$) with the 3D Chair44 (integer inflation 2, 2-adic internal space, substitution hull proof, and classification of tiling symmetries as $1, C_2^{\text{diag}}, C_4, D_4$). Incorporating the 2D Big Bang Pancake Model, we conjecture, without deriving it from the computations of Parts I and II, that the vanishing of Weyl curvature at the initial singularity corresponds to a flat, 2D Spectre substrate phase—where 2D internal space, the mirror-parity flips of the substitution, and aperiodic substitution would encode initial-state kinematical degrees of freedom prior to 3D bulk emergence. Part II uses the spin-network states and the area and volume operators of loop quantum gravity on a two-plaquette $SU(2)$ lattice gauge theory, a fixed graph with a gauge-theory Hamiltonian, deriving exact strong/weak coupling area spectra ($2/(3g^8)$ and $3/(\sqrt{10}g^2)$), fixing the Immirzi parameter $\gamma_I = \ln 2 / (\pi\sqrt{3})$ via spin-$\frac{1}{2}$ puncture counts, and evaluating intertwiner volume spectra and related OpenAI release entries. It does not construct the Hamiltonian constraint of gravity, does not address the problem of time, and couples no matter fields.@SCOPE@
+    '''.replace('@SCOPE@', ' Section~\\ref{sec:scope} says what is and is not covered.' if full else ''))
 
 def abstract(full=True):
     """The abstract: Part I's (the abstract this paper had) alone, or joined with those of Parts II and III."""
@@ -2690,7 +2690,7 @@ def phys_pancake():
     return r'''
 \section{Weyl Curvature and Internal Space Dynamics}
 
-In canonical quantum gravity, defining a globally background-independent state at $t=0$ faces severe measure-theoretic and constraint-algebraic obstacles. We propose restricting the initial state to a single 2D spatial slice $\Sigma_0$ whose kinematic degrees of freedom are fully locked by an aperiodic monotile inflation algebra.
+In canonical quantum gravity, defining a globally background-independent state at $t=0$ faces severe measure-theoretic and constraint-algebraic obstacles. This paper does not meet those obstacles, and Section~\ref{sec:scope} lists what it leaves open. It restricts attention to kinematics: a single 2D spatial slice $\Sigma_0$ whose kinematical degrees of freedom are encoded by an aperiodic monotile inflation algebra, with no dynamics, constraint or time evolution defined on it.
 
 Let the 2D initial surface $\Sigma_0$ be discretized by unit edge directions $z^k = e^{ik\pi/6}$ for $k \in \mathbb{Z}/12\mathbb{Z}$. Every vertex $x \in \Sigma_0$ maps to a point in the rank-four integer module:
 \begin{equation}
@@ -2761,7 +2761,7 @@ D_b = \frac{\log \nu}{\log \lambda} = \frac{\log(2 + \sqrt{5})}{\log \left(\frac
 
 \section{Bifurcated Double-Sided Surface Geometry (\texorpdfstring{$\pm$}{+/-} Parity)}
 
-To model charge and matter/antimatter duality across the pancake singularity $\Sigma_0$, we introduce a dual normal orientation vector field $\mathbf{n}^\pm = \pm \hat{\mathbf{z}}$ perpendicular to the 2D surface.
+To model a charge-like duality across the pancake singularity $\Sigma_0$ (a sign attached to the two faces; no matter field is coupled and no matter or antimatter is constructed), we introduce a dual normal orientation vector field $\mathbf{n}^\pm = \pm \hat{\mathbf{z}}$ perpendicular to the 2D surface.
 
 \subsection{Mystic Parity Charges and Rotation Twist}
 
@@ -2780,11 +2780,11 @@ On the upper face $\Sigma_0^+$ ($\mathbf{n}^+ = +\hat{\mathbf{z}}$) and lower fa
 \begin{equation}
 \langle \mathcal{S}^\pm \rangle = \left\langle \sin(\theta - \phi) \right\rangle_{\Sigma_0^\pm} = \pm \mathcal{S}_0 \approx \mp 0.43
 \end{equation}
-Mapping the self-dual Ashtekar connection components $SU(2)_+$ and $SU(2)_-$ to the top and bottom surface boundaries yields symmetric chiral potential states:
+Mapping the self-dual Ashtekar connection components $SU(2)_+$ and $SU(2)_-$ to the top and bottom surface boundaries yields symmetric potential states, a formal assignment, since this paper defines no connection on the slice:
 \begin{equation}
 \Psi_{\text{universe}} = \left| \Sigma_0^+ ,\, \mathbf{n}^+ ,\, + \theta_S \right\rangle \;\otimes\; \left| \Sigma_0^- ,\, \mathbf{n}^- ,\, - \theta_S \right\rangle
 \end{equation}
-This constructs an initial, globally entangled state where attractive and repulsive potential fields originate from dual boundary pairings across the $2D$ horizon.
+This writes down an initial, globally entangled state where attractive and repulsive potential fields would originate from dual boundary pairings across the $2D$ horizon; it is a notation for the proposal, and no field, Hamiltonian or evolution is defined on it.
 
 \section{Mathematics of the Pancake Monotile Horizon}
 
@@ -2844,7 +2844,7 @@ def phys_section():
 \label{sec:phys}
 
     The ``Big Bang Pancake'' concept (Kip Thorne 1967 "pancake" singularity): 
-    is an initial state of the universe modeled as a flat, two-dimensional spatial singularity ($\Sigma_0$) carrying aperiodic monotile geometry. By embedding the 2D Spectre/Mystic substitution rules into a 4D rank-four module $\mathbb{Z}[\zeta_{12}]$, we isolate the bounded internal-space window $W$ that encodes structural degrees of freedom without requiring continuous background metrics. We demonstrate how the identical vanishing of the 3D spacetime Weyl tensor ($C_{\alpha\beta\gamma\delta}^{(2+1)} \equiv 0$) models an initial zero-entropy state. Finally, we formalize the double-sided surface geometry, where Mystic parity flips ($\Gamma_1, \Gamma_2$) and dual surface-normal orientations ($\mathbf{n}^\pm$) establish symmetric chiral states across the singularity boundary.
+    is an initial state of the universe modeled as a flat, two-dimensional spatial singularity ($\Sigma_0$) carrying aperiodic monotile geometry. By embedding the 2D Spectre/Mystic substitution rules into a 4D rank-four module $\mathbb{Z}[\zeta_{12}]$, we isolate the bounded internal-space window $W$ that encodes structural degrees of freedom without requiring continuous background metrics. We demonstrate how the identical vanishing of the 3D spacetime Weyl tensor ($C_{\alpha\beta\gamma\delta}^{(2+1)} \equiv 0$) models an initial zero-entropy state. Finally, we formalize the double-sided surface geometry, where Mystic parity flips ($\Gamma_1, \Gamma_2$) and dual surface-normal orientations ($\mathbf{n}^\pm$) establish mirror-symmetric states across the singularity boundary; ``chiral'' here refers to the handedness of the tiles and the parity flips of the substitution, not to the chirality of fermions (Section~\ref{sec:scope}).
 This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
 two-dimensional singularity, connected to the planar Spectre monotile~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
 connected to Tsiokos's Chair44 \cite{Tsiokos1}.
@@ -2962,6 +2962,54 @@ the tiling does not supply.
 """
 
 
+def scope_section():
+    return r"""
+\section{What Part II does not address: the constraint, time and matter}
+\label{sec:scope}
+
+Three obstacles of quantum gravity are not met by the computations of this paper, and the conjecture of
+Section~\ref{sec:phys} does not remove them.  The references below are cited for what they claim, and a claim made by an author is
+reported as the author's.
+
+\paragraph{The Hamiltonian constraint.}  The Hamiltonian of Part II is that of an $SU(2)$ lattice gauge theory on a fixed graph.
+Canonical loop quantum gravity has a different object, a constraint operator.  Thiemann constructed one from holonomies around
+small loops and a volume operator, and claims it to be anomaly free~\cite{ThiemannQSD}.  The Master Constraint
+programme replaces the family of smeared constraints by a single operator; its author presented it as a proposal whose
+mathematical conditions were still to be proved~\cite{ThiemannMaster}, showed that the quadratic form is
+closable~\cite{ThiemannQSDVIII}, and a test programme on solvable models followed~\cite{DittrichThiemann}.  Algebraic quantum
+gravity is a further formulation, with a single Master Constraint on an algebra over algebraic graphs~\cite{GieselThiemannAQGI}.
+Critics state that the commutator of two constraints is shown to vanish only on a restricted set of states, that closure
+without that restriction had not been shown with explicit operators, and that the classical limit is far from
+understood~\cite{NicolaiEtAl}; that is the position of one paper from 2005 and is cited as such.  A fixed graph without
+diffeomorphism invariance cannot test closure, which depends on the graph-changing action of the constraint.  The plaquette
+operators $W_a$ and $W_b$ of Part II are traces of holonomies around small loops, the kind of operator such a constraint is built
+from, and that is the only point of contact: no constraint operator is constructed here.
+
+\paragraph{Time.}  The coupling $g$ of Part II is a parameter of the Hamiltonian and not a clock, and the energy gaps computed there are
+gaps of that Hamiltonian, not statements about evolution in a background-independent theory.  The only time-like variable in this
+paper is the depth of the substitution hierarchy, and Section~\ref{sec:hier} tests whether it can serve as a clock with negative or generic results.  Relational
+approaches define time by conditioning on a clock subsystem: the proposal of Page and Wootters~\cite{PageWootters}, later
+formulations with interacting clocks~\cite{SmithAhmadi, Woods}, an experiment with entangled photons in which one subsystem
+serves as a clock for another~\cite{MorevaEtAl}, and a related treatment of relational quantum dynamics~\cite{HoehnSmithLock}.
+In gravity, coupling to dust gives a preferred time and lets the constraints be solved~\cite{BrownKuchar}; that model has been quantised
+in loop quantum gravity with a non-vanishing physical Hamiltonian and the dust field as clock~\cite{GieselThiemannAQGIV}, and a massless
+scalar field has been used as an internal time in a loop quantisation with all local gravitational degrees of
+freedom~\cite{DomagalaEtAl}.  The Hamiltonian of Part II is not an operator of that kind, and the problem of time of vacuum
+quantum gravity is not addressed.
+
+\paragraph{Matter and the gauge group of the standard model.}  The group $SU(2)$ of Part II is the structure group of the lattice
+gauge theory and, in the part on Einstein four-manifolds, a factor of the frame group $Spin(4)=SU(2)_{+}\times SU(2)_{-}$.  It is not the weak
+isospin group of the electroweak theory, no matter field is coupled to the spin networks, and the word chiral in this paper means the
+handedness of tiles and the parity flips of the substitution; Part I records only weak evidence of a link between the alternating charge
+$Q_{-}$ and a chirality channel and does not claim one.  Loop quantum gravity with matter has been treated elsewhere: fermions in the loop
+representation~\cite{MoralesRovelli}, the claim that the standard model Hamiltonian coupled to quantum gravity has well-defined
+operators without renormalisation~\cite{ThiemannQSDV}, a unification with gauge group $SU(N)$ in place of $SU(2)$ whose Lorentzian version
+is reported as problematic~\cite{GambiniOlsonPullin}, and excitations of ribbon-graph quantum spacetime matched to first-generation
+fermions through braiding~\cite{BilsonThompson}, each with the limits its authors state.  None of this is used here, and
+no part of this paper derives the group $SU(3)\times SU(2)\times U(1)$ or the matter content of the standard model.
+"""
+
+
 def conclusion_section():
     return r"""
 \section{Conclusion}
@@ -2974,7 +3022,8 @@ and face contacts that are not bipartite.  The main new result is the hull theor
 groups of Chair44 tilings in Section~\ref{sec:hull}; for tilings by the solid it is conditional on one quoted,
 unrefereed input, Tsiokos's registration theorem (R), and it rests on the finite computations of
 Lemmas~\ref{lem:hier} and~\ref{lem:blocks}.  The hierarchy tests of
-Section~\ref{sec:hier} are negative or generic.
+Section~\ref{sec:hier} are negative or generic.  In Part II the Hamiltonian constraint, the problem of time and
+matter coupling are not addressed (Section~\ref{sec:scope}).
 
 What the Facts do not reach is as follows.  The Spectre results take the published substitution rule (matrix and placement
 transforms) as input, and the Chair44 results Tsiokos's solid and substitution.  The einstein property and aperiodicity of
@@ -3059,6 +3108,60 @@ BIB_EXTRA = r'''
 \textbf{5} (2013) 1--46; arXiv:1207.6237.
 
 ''' + NOTE_MOVED_BIB
+
+
+BIB_SCOPE = r"""
+\bibitem{ThiemannQSD} T.~Thiemann, \emph{Quantum Spin Dynamics (QSD)}, arXiv:gr-qc/9606089 (1996); DOI 10.1088/0264-9381/15/4/011.
+
+\bibitem{ThiemannMaster} T.~Thiemann, \emph{The Phoenix Project: Master Constraint Programme for Loop Quantum Gravity},
+arXiv:gr-qc/0305080 (2003); DOI 10.1088/0264-9381/23/7/002.
+
+\bibitem{ThiemannQSDVIII} T.~Thiemann, \emph{Quantum Spin Dynamics VIII. The Master Constraint}, arXiv:gr-qc/0510011.
+
+\bibitem{DittrichThiemann} B.~Dittrich and T.~Thiemann, \emph{Testing the Master Constraint Programme for Loop Quantum Gravity
+I. General Framework}, arXiv:gr-qc/0411138 (2004); DOI 10.1088/0264-9381/23/4/001 (Parts II--V follow).
+
+\bibitem{GieselThiemannAQGI} K.~Giesel and T.~Thiemann, \emph{Algebraic Quantum Gravity (AQG) I. Conceptual Setup},
+arXiv:gr-qc/0607099 (2006); DOI 10.1088/0264-9381/24/10/003.
+
+\bibitem{NicolaiEtAl} H.~Nicolai, K.~Peeters and M.~Zamaklar, \emph{Loop quantum gravity: an outside view}, arXiv:hep-th/0501114 (2005).
+
+\bibitem{PageWootters} D.~N.~Page and W.~K.~Wootters, \emph{Evolution without evolution: Dynamics described by stationary
+observables}, Phys.\ Rev.\ D \textbf{27} (1983) 2885; DOI 10.1103/PhysRevD.27.2885.
+
+\bibitem{SmithAhmadi} A.~R.~H.~Smith and M.~Ahmadi, \emph{Quantizing time: Interacting clocks and systems}, Quantum \textbf{3} (2019) 160.
+
+\bibitem{Woods} M.~Woods, \emph{The Page-Wootters mechanism 36 years on: a consistent formulation which accounts for interacting
+systems}, Quantum Views \textbf{3} (2019) 16; DOI 10.22331/qv-2019-07-21-16.
+
+\bibitem{MorevaEtAl} E.~Moreva, G.~Brida, M.~Gramegna, V.~Giovannetti, L.~Maccone and M.~Genovese, \emph{The time as an emergent
+property of quantum mechanics, a synthetic description of a first experimental approach}, J.\ Phys.: Conf.\ Ser.\ \textbf{626} (2015)
+012019; arXiv:1502.03264.
+
+\bibitem{HoehnSmithLock} P.~A.~H\"ohn, A.~R.~H.~Smith and M.~P.~E.~Lock, \emph{The trinity of relational quantum dynamics}, arXiv:1912.00033.
+\url{https://arxiv.org/abs/1912.00033}
+
+\bibitem{BrownKuchar} J.~D.~Brown and K.~V.~Kucha\v{r}, \emph{Dust as a standard of space and time in canonical quantum gravity},
+arXiv:gr-qc/9409001 (1994); Phys.\ Rev.\ D \textbf{51}, 5600 (DOI 10.1103/PhysRevD.51.5600).
+
+\bibitem{GieselThiemannAQGIV} K.~Giesel and T.~Thiemann, \emph{Algebraic Quantum Gravity (AQG) IV. Reduced Phase Space Quantisation of
+Loop Quantum Gravity}, arXiv:0711.0119 (2007).
+
+\bibitem{DomagalaEtAl} M.~Domaga{\l}a, K.~Giesel, W.~Kami\'nski and J.~Lewandowski, \emph{Gravity quantized: Loop Quantum Gravity with
+a Scalar Field}, arXiv:1009.2445 (2010).
+
+\bibitem{MoralesRovelli} H.~A.~Morales-T\'ecotl and C.~Rovelli, \emph{Fermions in quantum gravity}, Phys.\ Rev.\ Lett.\ \textbf{72}
+(1994) 3642; arXiv:gr-qc/9401011.
+
+\bibitem{ThiemannQSDV} T.~Thiemann, \emph{QSD V: Quantum Gravity as the Natural Regulator of Matter Quantum Field Theories},
+arXiv:gr-qc/9705019 (1997); DOI 10.1088/0264-9381/15/5/012.
+
+\bibitem{GambiniOlsonPullin} R.~Gambini, S.~J.~Olson and J.~Pullin, \emph{Unified model of loop quantum gravity and matter},
+arXiv:gr-qc/0409045 (2004).
+
+\bibitem{BilsonThompson} S.~O.~Bilson-Thompson, F.~Markopoulou and L.~Smolin, \emph{Quantum gravity and the standard model},
+arXiv:hep-th/0603022 (2006); DOI 10.1088/0264-9381/24/16/002.
+"""
 
 
 BIBLIOGRAPHY = r"""
@@ -3192,7 +3295,9 @@ def document(full=True, toc=False, overview=False):
         qg_bib_all, _ = qg_bibliography(keys | release_keys)
         spectre_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', BIBLIOGRAPHY))
         new_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', qg_bib_all + release_bib))
+        scope_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', BIB_SCOPE))
         assert not (spectre_keys & new_keys), sorted(spectre_keys & new_keys)
+        assert not (scope_keys & (spectre_keys | new_keys)), sorted(scope_keys & (spectre_keys | new_keys))
         if toc: pieces += [r'\tableofcontents'] 
         if overview: pieces += [overview_section()]
     pieces += [
@@ -3209,6 +3314,7 @@ def document(full=True, toc=False, overview=False):
             r'\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}', 
             phys_section(),
             phys_pancake(),
+            scope_section(),
             conclusion_section(),
             r'\appendix',
             r'\footnotesize',
@@ -3224,8 +3330,8 @@ def document(full=True, toc=False, overview=False):
         assert bibliography.count('\\end{thebibliography}') == 1
         bibliography = bibliography.replace(
             '\\end{thebibliography}',
-            '%% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)\n\n%s\n\n%s\n\\end{thebibliography}'
-            % (qg_bib_all, release_bib))
+            '%% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)\n\n%s\n\n%s\n\n%% the scope section of Part II\n%s\n\\end{thebibliography}'
+            % (qg_bib_all, release_bib, BIB_SCOPE))
     pieces.append(bibliography)
     text = '\n'.join(pieces)
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
