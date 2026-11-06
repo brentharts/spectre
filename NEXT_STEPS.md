@@ -8,6 +8,15 @@ These are research bets, not edits to the paper. Each one says what would count 
 - the measured swirl, negative at every level;
 - the Lean and certificate pipeline.
 
+## Status after the literature check (2026-11-06)
+- **Items 1–3 are already published** in Baake–Gähler–Mazáč–Sadun, arXiv:2411.15503. They prove pure point spectrum, give a 4:2 cut-and-project scheme with Rauzy-fractal windows, compute Ȟ¹ = ℤ⁴ and Ȟ² = ℤ¹⁰, and give the subwindow boundary dimension log(5+2√6)/log(4+√15) in their Eq. (7), via arXiv:2311.03541. The paper must cite this; the boundary dimension is not a conjecture.
+- **Still open:** whether the boundary dimension is uniform along ∂W (their open question), and items 5, 7 and 8.
+- **Prior work to cite:**
+  - item 4: Hat tight-binding, arXiv:2307.11054; polariton monotile, arXiv:2605.29023;
+  - item 6: Ising on the Hat, arXiv:2402.11331; percolation, arXiv:2604.21165;
+  - item 10: 3D monotile in Lean, arXiv:2609.19214.
+- **Running:** doubler experiment (items 8 and 6).
+
 ## 1. The exact fractal geometry of the window boundary
 - **Breakthrough:** a proof that dim_H(∂W) = dim_B(∂W) = log(√2+√3)/log λ. This would be the first exact fractal description of the window of an aperiodic monotile.
 - **Approach:**
@@ -44,7 +53,7 @@ These are research bets, not edits to the paper. Each one says what would count 
 - **First run:** compute ω exactly. Then run Monte Carlo and transfer-matrix studies of the Ising model on level-4/5 patches, and measure ν and the specific-heat exponent against the Onsager values.
 
 ## 7. Why √2+√3? Number theory of the lift
-- **Breakthrough:** a structural explanation of why the seams grow like √2+√3, which lies in ℚ(√2,√3), while the inflation lies in ℚ(√15), and the factor x⁴−8x²+1 appears in χ.
+- **Breakthrough:** a structural explanation of why the seams grow like √2+√3, which lies in ℚ(√2,√3), while λ² = 4+√15 lies in ℚ(√15) (λ itself lies in ℚ(√6,√10)), and the factor x⁴−8x²+1 appears in χ.
 - **Approach:** use the Galois action on Φ to explain this. The goal is a general theorem: seam dimension = log(largest Galois-twisted eigenvalue)/log λ, for all substitution tilings in a class.
 - **Test:** check it on the Hat, the Tile(1,1) family and the chair. If the same formula predicts the other tilings' seam dimensions, it is a theorem worth a paper of its own.
 
