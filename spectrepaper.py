@@ -123,7 +123,7 @@ def inject_after_label(text, label, block):
 
 # ---------------------------------------------------------------- Part II: the quantum gravity paper
 #
-# qgravity.py of openai_math_yang_mills writes its paper from the results that fifteen sympy models register: the body,
+# qgravity.py of openai_math_yang_mills writes its paper from the results that seventeen sympy models register: the body,
 # the bibliography and the counts, with the two pictures.  The same call is made here, into paper/qgravity/.  The models
 # take about three and a half minutes (su2_lattice_stripn alone takes 150 s), so the fragments are kept together with a
 # hash of every source that makes them, and are rebuilt when any source changes or when `--rebuild-qg` is given.
@@ -132,7 +132,7 @@ OAI_ROOT = os.path.normpath(os.path.join(HERE, '..', 'openai_math_yang_mills'))
 QG_DIR = os.path.join(HERE, 'paper', 'qgravity')
 QG_MODELS_RUN = ('su2_lattice_ladder', 'qg_spin_network', 'qg_einstein4', 'su2_lattice_strip', 'su2_peter_weyl',
                  'su2_lattice_stripn', 'qg_volume', 'qg_penrose', 'su2_lattice_lshape', 'forest_gauge_4d_theorems',
-                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom', 'qg_su3_intertwiners', 'qg_su2u1_matter')
+                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom', 'qg_su3_intertwiners', 'qg_su2u1_matter', 'qg_relational_clock', 'qg_thiemann_trick')
 QG_PARTS = ('body', 'bibliography', 'numbers')
 _QG = {}
 
@@ -2980,10 +2980,17 @@ closable~\cite{ThiemannQSDVIII}, and a test programme on solvable models followe
 gravity is a further formulation, with a single Master Constraint on an algebra over algebraic graphs~\cite{GieselThiemannAQGI}.
 Critics state that the commutator of two constraints is shown to vanish only on a restricted set of states, that closure
 without that restriction had not been shown with explicit operators, and that the classical limit is far from
-understood~\cite{NicolaiEtAl}; that is the position of one paper from 2005 and is cited as such.  A fixed graph without
+understood~\cite{NicolaiEtAl}; that is the position of one paper from 2005 and is cited as such.  A 2021 review by Ashtekar and Bianchi
+describes the quantum kinematics as settled and the Hamiltonian dynamics of the full theory as far from complete, reports that Thiemann's constraint
+operators are well defined but that their algebra does not faithfully reproduce the classical Poisson algebra, and says that the mathematical definition of the
+spin-foam sum is a key open issue~\cite{AshtekarBianchi}; the covariant approach is reviewed in~\cite{PerezSpinFoam}.  A numerical implementation of the full graph-changing action
+of the constraint on three- and four-valent spin networks has been reported, with a finding that expectation values of the volume under the graph-changing dynamics
+differ from those under a graph-preserving approximation~\cite{GuedesEtAl}; that bears directly on a fixed-graph model such as the ladder.  A fixed graph without
 diffeomorphism invariance cannot test closure, which depends on the graph-changing action of the constraint.  The plaquette
 operators $W_a$ and $W_b$ of Part II are traces of holonomies around small loops, the kind of operator such a constraint is built
-from, and that is the only point of contact: no constraint operator is constructed here.
+from.  Section~\ref{qg:sec:time} checks exactly the classical identities by which the constraint is written with holonomies and the volume, and
+that the volume, and with it any constraint of that form, vanishes at a trivalent vertex; the quantum operator itself is not constructed, because it changes
+the graph and needs recoupling coefficients whose phases are not guessed, and nothing here tests whether its algebra closes.
 
 \paragraph{Time.}  The coupling $g$ of Part II is a parameter of the Hamiltonian and not a clock, and the energy gaps computed there are
 gaps of that Hamiltonian, not statements about evolution in a background-independent theory.  The only time-like variable in this
@@ -2994,8 +3001,9 @@ serves as a clock for another~\cite{MorevaEtAl}, and a related treatment of rela
 In gravity, coupling to dust gives a preferred time and lets the constraints be solved~\cite{BrownKuchar}; that model has been quantised
 in loop quantum gravity with a non-vanishing physical Hamiltonian and the dust field as clock~\cite{GieselThiemannAQGIV}, and a massless
 scalar field has been used as an internal time in a loop quantisation with all local gravitational degrees of
-freedom~\cite{DomagalaEtAl}.  The Hamiltonian of Part II is not an operator of that kind, and the problem of time of vacuum
-quantum gravity is not addressed.
+freedom~\cite{DomagalaEtAl}.  The Hamiltonian of Part II is not an operator of that kind.  Section~\ref{qg:sec:time} adds a clock register to the ladder by hand and verifies that the physical states of
+a constraint linear in the lattice Hamiltonian are history states, so that conditioning on the clock returns the Schr\"odinger evolution; that is a toy model of relational
+time for a gauge theory, with a discretised clock, and the problem of time of vacuum quantum gravity is not addressed.
 
 \paragraph{Matter and the gauge group of the standard model.}  The group $SU(2)$ of Part II is the structure group of the lattice
 gauge theory and, in the part on Einstein four-manifolds, a factor of the frame group $Spin(4)=SU(2)_{+}\times SU(2)_{-}$.  It is not the weak
@@ -3142,8 +3150,17 @@ systems}, Quantum Views \textbf{3} (2019) 16; DOI 10.22331/qv-2019-07-21-16.
 property of quantum mechanics, a synthetic description of a first experimental approach}, J.\ Phys.: Conf.\ Ser.\ \textbf{626} (2015)
 012019; arXiv:1502.03264.
 
-\bibitem{HoehnSmithLock} P.~A.~H\"ohn, A.~R.~H.~Smith and M.~P.~E.~Lock, \emph{The trinity of relational quantum dynamics}, arXiv:1912.00033.
+\bibitem{HoehnSmithLock} P.~A.~H\"ohn, A.~R.~H.~Smith and M.~P.~E.~Lock, \emph{The trinity of relational quantum dynamics}, arXiv:1912.00033; Front.\ Phys.\ \textbf{9}, 587083 (2021), DOI 10.3389/fphy.2021.587083.
 \url{https://arxiv.org/abs/1912.00033}
+
+\bibitem{AshtekarBianchi} A.~Ashtekar and E.~Bianchi, \emph{A short review of loop quantum gravity}, arXiv:2104.04394 (2021).
+\url{https://arxiv.org/abs/2104.04394}
+
+\bibitem{GuedesEtAl} T.~L.~M.~Guedes, G.~A.~Mena~Marug\'an, F.~Vidotto and M.~M\"uller, \emph{Computing the graph-changing dynamics of loop quantum gravity},
+arXiv:2412.20257 (v. of Nov.\ 2025).
+\url{https://arxiv.org/abs/2412.20257}
+
+\bibitem{PerezSpinFoam} A.~Perez, \emph{The spin-foam approach to quantum gravity}, Living Rev.\ Relativ.\ \textbf{16}, 3 (2013), DOI 10.12942/lrr-2013-3.
 
 \bibitem{BrownKuchar} J.~D.~Brown and K.~V.~Kucha\v{r}, \emph{Dust as a standard of space and time in canonical quantum gravity},
 arXiv:gr-qc/9409001 (1994); Phys.\ Rev.\ D \textbf{51}, 5600 (DOI 10.1103/PhysRevD.51.5600).
