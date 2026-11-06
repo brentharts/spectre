@@ -195,7 +195,7 @@ QG_PATCHES = (
     ('Two things join this entry to the paper.', 'Two things join this entry to this part.'),
     ('the one the paper already uses', 'the one this part already uses'),
     ('The ladder equations on which the paper rests', r'The ladder equations on which Part~\ref{part:qg} rests'),
-    (r'\section{Introduction}\label{sec:intro}', r'\section{Introduction to the quantum geometry part}\label{sec:intro}'),
+    (r'\section{Introduction}\label{sec:intro}', r'\section{Quantum Geometry and LQG}\label{sec:intro}'),
     # a fuller read-through: sentences that a paper of its own could say and a part of this one cannot
     ('\\paragraph{What this is not.} It is not a model of quantum gravity.',
      '\\paragraph{What this part is not.} It is not a model of quantum gravity.'),
@@ -993,7 +993,7 @@ Goodman-Strauss~\cite{GoodmanStrauss}, simpler equivalent matching rules to Flic
 certificate for the unique hierarchy to Kamenetsky~\cite{Kamenetsky}.  Flicker argues informally that no slide plane is
 possible and states that only $30$ of the $44$ contacts appear in an infinite tiling; Theorem~\ref{thm:hull} and
 Corollary~\ref{cor:contacts} are the rigorous form.  This subsection answers the two questions.  The proofs are due to the
-second author~\cite{Romanov}; they combine one level of the hierarchy with a finite computation on the eight unit cells
+second author Romanov; they combine one level of the hierarchy with a finite computation on the eight unit cells
 around a lattice vertex.
 
 \paragraph{Set-up.}  A chair \emph{pose} is $x\mapsto gx+t$ with $g$ one of the $24$ proper rotations $O$ and
@@ -1019,7 +1019,7 @@ certificate that is checked independently.
 feature is in a relative pose among the legal contacts~\cite[Thm~5.6, Lemma~5.3]{Tsiokos1}; every shared unit face carries
 features.  This is the geometric half of~\cite{Tsiokos1}.  Its written proof has been audited step by step by the second
 author, and all of its finite inputs recomputed in exact arithmetic, including each of the $5{,}273$ collision witnesses
-(\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md})~\cite{Romanov}; no gap was found.
+(\code{chair44\_independent/registration\_audit.py}, \code{REGISTRATION\_AUDIT.md}) Romanov (2026); no gap was found.
 Tsiokos's formal proof of it~\cite{Tsiokos1} has also been rebuilt from source in an independent build.  The build
 succeeds, and the dependency report of the theorem lists only the three standard axioms of the proof assistant and named
 decision steps evaluated by its compiler, whose results are trusted as well as its kernel; the $162$ reports printed by the
@@ -1044,8 +1044,7 @@ Call two chairs compatible if their interiors are disjoint and, if they share a 
 the $44$ legal contacts.  An enclosure of a chair $A$ is a set of pairwise compatible chairs, compatible with $A$, covering
 its $24$ unit faces; it is live if the chairs of $A$ and the enclosure can all have their faces covered again by pairwise
 compatible chairs.  Kamenetsky's three finite conditions (C1)--(C3) are checked by
-\code{hierarchy\_certificate/check\_chair44\_hierarchy.py}, written independently of~\cite{Kamenetsky}
-and~\cite{Romanov}.
+\code{hierarchy\_certificate/check\_chair44\_hierarchy.py}, written independently of~\cite{Kamenetsky}.
 (C1) The relative poses of touching children in the supertiles of all levels are $30$.  The poses of a level-$1$
 supertile that are admissible next to a reference supertile, with all $64$ child pairs compatible, are all aligned; they
 are exactly the doubles $(g,2t)$ of the $44$ legal contacts $(g,t)$.  The coarsening closure of the $30$ is therefore the
@@ -1077,7 +1076,7 @@ in its substitution, a $4\times4\times4$ block, are legal.
 The count is the second author's computation, with \code{chair44\_vertex\_blocks.py} and \code{chair44\_hull\_prune.py} on the atlas
 published with~\cite{Tsiokos1}.  It is repeated by an independent implementation that derives the atlas from the pyramid
 geometry and, separately, from the eight children alone, and published as a certificate of $O$-orbit representatives with a
-stand-alone verifier~\cite{Romanov}.  \code{chair44\_hull\_admissible.py} repeats the count with the $44$ contacts that
+stand-alone verifier (Romanov 2026).  \code{chair44\_hull\_admissible.py} repeats the count with the $44$ contacts that
 \code{symchair44.py} derives from its own labels; this is independent code on the same eight children, which define the
 tile.  A further implementation, written from the definitions during a referee review of this paper and sharing no code with the
 others, derives the $44$ contacts from Tsiokos's pyramid data and reproduces @adm@ admissible blocks, $15{,}214$ orbits and
@@ -2185,7 +2184,7 @@ einstein property of the Chair44 rests on Tsiokos's claimed proof~\cite{Tsiokos1
 adds is that, given his registration theorem, no tiling by the solid is periodic.  The hull theorem of
 Section~\ref{sec:hull} is proved for tilings obeying the contact rules, using Kamenetsky's unique-hierarchy
 criterion~\cite{Kamenetsky} with its finite certificate checked independently (Lemma~\ref{lem:hier}), and for the solid it rests in addition on Tsiokos's registration
-theorem~\cite{Tsiokos1}, quoted; that proof has been audited by the second author~\cite{Romanov} but has not been refereed.
+theorem~\cite{Tsiokos1}, quoted; that proof has been audited by the second author (Romanov 2026) but has not been refereed.
 That the Spectre diffraction is pure point is a published theorem~\cite{BaakeHat,BaakeSpectre}, not re-proved here, and
 the centre set of the Chair44 is that of the classical three-dimensional chair~\cite{LeeMoody,Robinson}.
 Section~\ref{sec:conclusion} lists the rest.
@@ -2689,7 +2688,7 @@ rotation only and with reflection.""")
 
 def phys_pancake():
     return r'''
-\section{Weyl Curvature, Internal Space Dynamics, and Parity Bifurcation}
+\section{Weyl Curvature and Internal Space Dynamics}
 
 In canonical quantum gravity, defining a globally background-independent state at $t=0$ faces severe measure-theoretic and constraint-algebraic obstacles. We propose restricting the initial state to a single 2D spatial slice $\Sigma_0$ whose kinematic degrees of freedom are fully locked by an aperiodic monotile inflation algebra.
 
@@ -2787,7 +2786,7 @@ Mapping the self-dual Ashtekar connection components $SU(2)_+$ and $SU(2)_-$ to 
 \end{equation}
 This constructs an initial, globally entangled state where attractive and repulsive potential fields originate from dual boundary pairings across the $2D$ horizon.
 
-\section{Deep Dive: Deep Mathematics of the Pancake Monotile Horizon}
+\section{Mathematics of the Pancake Monotile Horizon}
 
 In this section, we present an exhaustive formulation of the Pancake Monotile Horizon ($\Sigma_0$), treating it as a non-perturbative, self-assembling topological boundary at $t=0$.
 
@@ -3030,6 +3029,8 @@ All source code and data supporting this study are available at:
 \url{https://github.com/brentharts/spectre-monotile-py/}
 \newline
 \url{https://github.com/brentharts/six-birds-tiles/}
+\newline
+\url{https://github.com/brentharts/openai_math_yang_mills}
 
 """
 
@@ -3078,14 +3079,6 @@ arXiv:2609.24779.
 
 \bibitem{Flicker} F.~Flicker, \emph{Matching rules for a three-dimensional strongly aperiodic monotile} (2026),
 arXiv:2609.23783.
-
-\bibitem{Romanov} T.~Romanov, \emph{The hull and the symmetry groups of Chair44 tilings}, draft (2026).  The
-computations are \code{chair44\_vertex\_blocks.py}, \code{chair44\_hull\_prune.py} and \code{chair44\_symmetry\_census.py},
-run on commit \code{d53d224} of~\cite{Tsiokos1} and merged into
-\href{https://github.com/brentharts/six-birds-tiles/tree/main/verify/hull}{six-birds-tiles, \code{verify/hull}}; an independent
-implementation, the reproduction of Kamenetsky's finite conditions, the $O$-orbit certificate of the lemma
-(\code{c44lemma\_cert.py}, \code{lemmaA\_orbits.json}) and the audit of Tsiokos's registration theorem
-(\code{registration\_audit.py}, \code{REGISTRATION\_AUDIT.md}) are in the directory \code{chair44\_independent} of~\url{https://github.com/brentharts/spectre}.
 
 \bibitem{BaakeHat} M.~Baake, F.~G\"ahler, J.~Mazá\v{c} and A.~Mitchell, \emph{Diffraction of the Hat and Spectre tilings
 and some of their relatives}, J.\ Math.\ Phys.\ \textbf{66} (2025) 092707; arXiv:2502.03268.
@@ -3210,18 +3203,19 @@ def document(full=True, toc=False, overview=False):
         lift_section(),
         chair_section(), hull_subsection(), lines_subsection(),
         unfolding_section(), exact_section(), hierarchy_section(),
-        conclusion_section(),
     ]
     if full:
         pieces += [
             r'\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}', 
             phys_section(),
             phys_pancake(),
+            conclusion_section(),
+            r'\appendix',
+            r'\footnotesize',
             r'\label{part:qg}', qg_main,
             r'\part{The OpenAI release}', 
             r'\label{part:release}', 
             release]
-    pieces.append(r'\appendix')
     if full:
         pieces.append(qg_appendix)
     pieces.append(supplement_pointer())
