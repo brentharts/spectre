@@ -39,7 +39,9 @@ rec('Delta', N, IDENT, mp.matrix(2, 1))
 FR, FRm = [], []
 for (fk, S), (A, Y, Z) in groups.items():
     X = mp.matrix([[z[0], z[1], 1] for z in Z]); Ym = mp.matrix([[y[0], y[1]] for y in Y])
-    sol = mp.lu_solve(X.T * X, X.T * Ym)                  # 3x2: rows of R^T, then c
+    NX, B2 = X.T * X, X.T * Ym                            # lu_solve takes one column at a time
+    cols = [mp.lu_solve(NX, B2[:, k]) for k in range(2)]
+    sol = mp.matrix([[cols[k][i] for k in range(2)] for i in range(3)])  # 3x2: rows of R^T, then c
     R, c = sol[0:2, 0:2].T, sol[2, 0:2].T
     res = max(abs(x) for x in (X * sol - Ym)); G = R.T * R; s2 = G[0, 0]
     assert res < mp.mpf(10) ** -40 and max(abs(x) for x in (G - s2 * mp.eye(2))) < mp.mpf(10) ** -40, (res, G)
