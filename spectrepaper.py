@@ -123,7 +123,7 @@ def inject_after_label(text, label, block):
 
 # ---------------------------------------------------------------- Part II: the quantum gravity paper
 #
-# qgravity.py of openai_math_yang_mills writes its paper from the results that thirteen sympy models register: the body,
+# qgravity.py of openai_math_yang_mills writes its paper from the results that fifteen sympy models register: the body,
 # the bibliography and the counts, with the two pictures.  The same call is made here, into paper/qgravity/.  The models
 # take about three and a half minutes (su2_lattice_stripn alone takes 150 s), so the fragments are kept together with a
 # hash of every source that makes them, and are rebuilt when any source changes or when `--rebuild-qg` is given.
@@ -132,7 +132,7 @@ OAI_ROOT = os.path.normpath(os.path.join(HERE, '..', 'openai_math_yang_mills'))
 QG_DIR = os.path.join(HERE, 'paper', 'qgravity')
 QG_MODELS_RUN = ('su2_lattice_ladder', 'qg_spin_network', 'qg_einstein4', 'su2_lattice_strip', 'su2_peter_weyl',
                  'su2_lattice_stripn', 'qg_volume', 'qg_penrose', 'su2_lattice_lshape', 'forest_gauge_4d_theorems',
-                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom')
+                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom', 'qg_su3_intertwiners', 'qg_su2u1_matter')
 QG_PARTS = ('body', 'bibliography', 'numbers')
 _QG = {}
 
@@ -3005,8 +3005,12 @@ $Q_{-}$ and a chirality channel and does not claim one.  Loop quantum gravity wi
 representation~\cite{MoralesRovelli}, the claim that the standard model Hamiltonian coupled to quantum gravity has well-defined
 operators without renormalisation~\cite{ThiemannQSDV}, a unification with gauge group $SU(N)$ in place of $SU(2)$ whose Lorentzian version
 is reported as problematic~\cite{GambiniOlsonPullin}, and excitations of ribbon-graph quantum spacetime matched to first-generation
-fermions through braiding~\cite{BilsonThompson}, each with the limits its authors state.  None of this is used here, and
-no part of this paper derives the group $SU(3)\times SU(2)\times U(1)$ or the matter content of the standard model.
+fermions through braiding~\cite{BilsonThompson}, each with the limits its authors state.  None of this is used here.  What Part II does contain
+(Section~\ref{qg:sec:gauge}) is two exact counts that do not involve gravity: the vertex invariants of $SU(3)$, and Gauss's law for static
+doublets with a weak isospin and hypercharge on the ladder, together with the anomaly sums, the $\mathbb{Z}_6$ and the three Yukawa
+invariants of one generation of fields.  They show that the representation theory of the standard model group can be counted on a graph;
+they do not couple a field to the spin networks, and no part of this paper derives the group $SU(3)\times SU(2)\times U(1)$, the number of
+generations or the matter content of the standard model.
 """
 
 
