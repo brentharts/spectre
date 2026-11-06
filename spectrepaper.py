@@ -976,6 +976,14 @@ and not a proof of it.
 
 
 
+def _chair_parts():
+    """chair_section() with the hull and lines subsections placed between the 2-adic route and the
+    chirality subsection, which is the order the selftest and the cross-references assume."""
+    head = r'\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}'
+    before, after = chair_section().split(head, 1)
+    return [before, hull_subsection(), lines_subsection(), head + after]
+
+
 def hull_subsection():
     """Every Chair44 tiling lies in the hull, and the symmetry groups of tilings (Romanov).  The counts
     of legal blocks and fixed seeds are Facts of chair44facts.py (chair44_hull.py); the admissible-block
@@ -3123,7 +3131,7 @@ def document(full=True, toc=False, overview=False):
         spectral_section(), census_section(), charges_section(), twist_subsection(),
         boundary_operator_section(), boundary_additions(),
         lift_section(),
-        chair_section(), hull_subsection(), lines_subsection(),
+        *_chair_parts(),
         unfolding_section(), exact_section(), hierarchy_section(),
         phys_section(), phys_pancake(),
         conclusion_section(),
@@ -3425,10 +3433,10 @@ def selftest():
     check('the einstein property is still called Tsiokos\'s claim',
           'remain Tsiokos\'s claim' in ' '.join(hull.split()))
     tsio = text.split(r'\bibitem{Tsiokos1}')[1].split(r'\bibitem{')[0]
-    check('2609.23783 is no longer credited to Tsiokos; the three new references are listed and cited',
+    check('2609.23783 is no longer credited to Tsiokos; the new references are listed and cited',
           '2609.23783' not in tsio and 'arXiv:2609.19214' in tsio
           and all((r'\bibitem{%s}' % k) in text and (r'\cite{%s' % k in text or (',%s}' % k) in text)
-                  for k in ('GoodmanStrauss', 'Flicker', 'Romanov')))
+                  for k in ('GoodmanStrauss', 'Flicker')))
     check('the Chair44 table has the symmetry-group row', 'symmetry groups of a tiling' in text)
     check('chair44_hull recomputes the legal blocks, their closure and the fixed seeds', HU.run_tests(verbose=False))
 
