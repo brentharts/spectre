@@ -9,3 +9,16 @@ What’s still open.
 Twist direction: whether each half twist is +π or -π is not fixed by the 2D data, so it is a free choice per flip. --twist-sign sets it to +1, -1, or alternating with level; alternating is where an arrow of time could enter.
 Ribbon appearance: the width direction (--ribbon-angle) and the height-per-level scale are rendering choices, not properties of the tiling.
 Sealed surface: every node stores its four corner points, which could serve as a patch for the NURBS stage.
+
+![fig2](spectre_holonomy.png)
+
+## 1. The derived normal holds. 
+Any orientation-preserving extension of a placement to 3D that keeps the plane fixed is blockdiag(L, ε), and orientation preservation forces ε = det L. So n = det(L)·ẑ with no choice left, and n_z is constant on each level (+1, -1, +1, -1 from the root down at depth 3). One consequence for the paper: the two normals n± are tiles of opposite level parity, equivalently a patch and its mirror image, not two faces of one patch.
+
+## 2. The connection exists, but I got one thing wrong earlier.
+
+Finite group: the edge quaternions generate a group of order 48. Its element orders (26 of order 4, 8 of order 24) match the binary dihedral group, and the group is the same for any twist sign.
+Twist sign is gauge: changing the twist sign only multiplies node holonomies by ±1. I said earlier that the sign was the nontrivial Z2 datum. For the holonomies it is not.
+Where the Z2 data actually lives: in a local rule that needs only the relative orientation of two touching tiles. Going once round a vertex, the SU(2) holonomy is (-1)^w, where w is the winding number of the orientation field.
+Convention-dependent vortices: at depth 3, 220 of 2976 interior vertices have flux -1. Most of these (192) involve a 180° relative rotation, whose sign is a convention. The map shows them as short hollow chains.
+Convention-independent vortices: 28 at depth 3 and 372 at depth 4. All are valence-3 vertices where three tiles meet with orientations 120° apart, mostly Pi/Psi/Phi triples. None touch a Mystic tile, though about 30% of all vertices do. So the flux does not localise on the Mystic, and the Mystic carries only the separate 30° rotation.
