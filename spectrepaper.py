@@ -2946,7 +2946,7 @@ All source code and data supporting this study are available at:
 \newline
 \url{https://github.com/brentharts/six-birds-tiles/}
 \newline
-\url{https://github.com/brentharts/openai_math_yang_mills}
+\url{https://github.com/brentharts/openai_math_yang_mills/tree/a794569ea08b24222ebab7a4c838c1c3ee375657} (commit \code{a794569})
 
 """
 
