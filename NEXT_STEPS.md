@@ -92,3 +92,9 @@ These are research bets, not edits to the paper. Each one says what would count 
 - **Start now:** item 1 (it continues the contact-closure run) and item 3. Both are cheap exact computations, and their results feed items 2, 5 and 7.
 - **In parallel:** items 4 and 6, which are numerical.
 - **Later:** items 8 and 9 are long-horizon, and item 10 needs a dedicated effort.
+- **Result, swirl recursion (2026-11-06): item 5 resolved numerically to k = 16.**
+  - The moment recursion (`research/swirl_recursion.py`, 120-digit arithmetic, 1.4 s) reproduces the enumerated Z_k exactly for k ≤ 5, then gives Z_k for k ≤ 16 (2.5·10¹⁴ tiles at k = 16).
+  - Im Z_k < 0 at every k = 1..16, with arg Z_k → about −63°, oscillating with decreasing amplitude.
+  - Z_k satisfies an order-6 linear recurrence, with relative residual 1e−11. Its roots are λ² = 4+√15 (double), −λ², +1, −1 and a spurious near-0 root. The drifting |Z| ratio is explained: Z_k ≈ (A k + B) λ^{2k} + C(−λ²)^k + …, so the ratio tends to λ² like (k+1)/k.
+  - The double root means a 2×2 Jordan block at λ² in the moment recursion. The sign of Im Z_k is eventually that of Im A < 0.
+  - Next: identify A in closed form in ℚ(√3, √15, i) from the 9-label linear system. That proves the sign for all k (the finite range is covered by this computation). Then the swirl normalised by Σ|r| ~ k λ^{2k} / λ^{3k} still → 0, so the invariant is Im A, not the swirl itself.
