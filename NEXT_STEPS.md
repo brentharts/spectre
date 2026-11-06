@@ -1,69 +1,77 @@
-# Next steps after "phys rev II/III"
+# Next steps: research directions
 
-This plan reviews upstream commits `0fe4f43` and `bddcf47`, which change only `spectrepaper.py`. Line numbers refer to `spectrepaper.py` at `bddcf47`. No build or selftests have been run yet.
+These are research bets, not edits to the paper. Each one says what would count as a breakthrough, the first computation to run, and when to stop. Each builds on results the paper already has:
+- the 16×16 lift Φ, with characteristic polynomial χ = (x−1)⁴(x+1)⁴(x⁴−8x²+1)²;
+- the seam growth rate √2+√3;
+- the perimeter formula P(k) = 2F_{3k+5}+4;
+- the charges Q_− and the twist θ_S;
+- the measured swirl, negative at every level;
+- the Lean and certificate pipeline.
 
-## A. Claims in `phys_pancake` that need correcting
+## 1. The exact fractal geometry of the window boundary
+- **Breakthrough:** a proof that dim_H(∂W) = dim_B(∂W) = log(√2+√3)/log λ. This would be the first exact fractal description of the window of an aperiodic monotile.
+- **Approach:**
+  1. Make the contact-closure graph exact, and certify that its spectral radius equals √2+√3, which gives the upper bound.
+  2. Present ∂W as a graph-directed IFS and check the open set condition (Mauldin–Williams). Hausdorff dimension then equals box dimension.
+- **Stop if:** the closure's spectral radius is above √2+√3. In that case the boundary is genuinely larger than the seams, and that becomes the new result.
 
-1. **The boundary dimension is stated as an equality (l.2721–2723).** The section says dim_B(∂W) = log(√2+√3)/log λ. Only a lower bound is proved, and l.2375–2385 calls the equality a conjecture. Write "≥" or mark the statement as a conjecture.
-2. **dim_H(∂W) ≥ 1.110977 (l.2830) is not proved.** Hausdorff dimension can be smaller than lower box dimension, so the box-dimension bound does not give it. Remove the claim, or prove it separately (see E3).
-3. **The theorem "dim_H = dim_B of the seams" appears twice.** Cite the existing theorem in the tilings part instead of restating it.
-4. **The swirl sign contradicts itself (l.2781).** It reads "±S₀ ≈ ∓0.43". Pick one sign convention, then check the value 0.43 against the script that produced it.
-5. **The tile area formula has no derivation (l.2800).** The formula is Area = √3/2(a²+b²+ab√3). Check it against the exact Spectre area as a function of (a, b), and add a selftest.
-6. **Check the 16×16 matrix Φ and its companion matrix C_Φ.** The constant term of χ is 1, so C_Φ is in GL(16,ℤ). Still to check:
-   - that χ = (x−1)⁴(x+1)⁴(x⁴−8x²+1)²;
-   - that Φ is conjugate to the substitution matrix the paper uses.
-7. **"Configurational entropy ~ c ln L" has no derivation.** Derive it, or label it a conjecture.
-8. **The "Kip Thorne 1967 pancake" attribution (l.2846) looks wrong.** "Pancakes" are Zel'dovich (1970), and the singularity work is Belinsky–Khalatnikov–Lifshitz. Find the correct reference.
-9. **Several physics statements have no support in the tiling results:**
-   - the Ashtekar SU(2)± mapping;
-   - the entangled Ψ_universe;
-   - the "holographic horizon" wording (l.2838);
-   - the 2+1 Weyl tensor vanishing. It is a standard fact, but it has no connection to the tiling.
+## 2. Is the Spectre hull pure point? (a Pisot-type conjecture for a monotile)
+- **Breakthrough:** a proof that the Spectre dynamical system has pure point spectrum, which would make it a model set, with a computable diffraction pattern.
+- **Approach:** run the balanced-pair or overlap coincidence algorithm on the substitution. Coincidence is equivalent to pure point spectrum, and a finite overlap graph is a certificate that Lean can check.
+- **Unknown:** whether the window is a regular model set (∂W of measure zero). Item 1 settles this.
 
-   Move these to a clearly labelled speculative subsection, or cut them.
-10. **Restore the disclaimer that "nothing is derived".** It was removed from `phys_section`.
+## 3. Cohomology, K-theory and gap labelling
+- **Breakthrough:** compute the Čech cohomology Ȟ*(Ω) of the hull (Anderson–Putnam complex built from the substitution) and the K-theory, and with them the gap-labelling group: every spectral gap of every Schrödinger operator on the Spectre tiling gets a label.
+- **Why it matters:** cohomology is a topological invariant of the tiling space. It would show whether the Spectre is "new" or equivalent to a known cut-and-project tiling, and it tests whether Q_− and θ_S are cohomology classes.
+- **First run:** build the collared Anderson–Putnam complex and compute ranks over ℤ. This is integer linear algebra.
 
-## B. Abstract (`abstract_new`)
+## 4. Quantum mechanics on the Spectre: critical states and topology
+- **Breakthrough:** for the tight-binding Hamiltonian on Spectre vertices or tiles, find:
+  - multifractal (critical) eigenstates;
+  - the Hofstadter butterfly in a magnetic field;
+  - Chern numbers or edge modes inherited from the 4D lift, i.e. a topological phase that exists only because the tiling is chiral.
+- **First run:** exact diagonalisation on supertiles of levels 3–5 with periodic approximants, then the level-spacing statistics, the fractal dimension D₂ of the states, and Bott indices.
+- **Physics payoff:** a concrete prediction for chiral photonic or acoustic metamaterials.
 
-11. **"Dynamically verified during compilation" overstates what the selftests do.** The selftests check text and a few identities, not the physics.
-12. **The Big Bang Pancake, Weyl and Immirzi material reads as results.** Remove it from the abstract, or mark it as speculative.
-13. **Make the abstract match what is proved.** This covers the dimension statement (see A1) and P(k) = 2F_{3k+5}+4.
+## 5. The swirl as a topological invariant
+- **Breakthrough:** a proof that the measured swirl has a nonzero limit with a fixed sign, given by an exact algebraic number from the Perron eigenvectors of the substitution, and identified with a cohomology class (item 3). This would be a rigorous "handedness charge" for a tiling with no mirror images.
+- **First run:** compute the swirl exactly at levels 1–8 in ℚ(√15) arithmetic, fit a linear recurrence, and prove the recurrence from the substitution matrix.
 
-## C. Structure of `document()`
+## 6. Critical behaviour of statistical models on the Spectre
+- **Breakthrough:** decide whether Spectre aperiodicity changes the universality class of the 2D Ising, Potts and dimer models.
+  - The Harris–Luck criterion turns on the wandering exponent ω = log|λ₂|/log λ₁, which can be read off χ.
+  - If ω is at the marginal value, the outcome is new.
+- **First run:** compute ω exactly. Then run Monte Carlo and transfer-matrix studies of the Ising model on level-4/5 patches, and measure ν and the specific-heat exponent against the Onsager values.
 
-14. **Three sections sit in the wrong place.** `phys_section`, `phys_pancake` and `conclusion_section` come between `\part{Quantum geometry…}` and `\label{part:qg}`. As a result the label points to the wrong place, and the conclusion sits inside Part II.
-15. **`\appendix` and `\footnotesize` come before the quantum-geometry material.** So all of Part II becomes appendix, set in footnotesize.
-16. **`full=False` drops the conclusion and physics sections.** References to `sec:conclusion` (l.2190) would then dangle.
-17. **The new `toc` and `overview` flags are both off by default.** The overview figure (l.433) references `part:qg`. Test that every combination of the two flags compiles.
-18. **Two open items for the OpenAI-release part:**
-    - decide where it goes in the paper;
-    - check the new `brentharts/openai_math_yang_mills` link (is it public, and does it match what we cite?) and pin it to a commit.
+## 7. Why √2+√3? Number theory of the lift
+- **Breakthrough:** a structural explanation of why the seams grow like √2+√3, which lies in ℚ(√2,√3), while the inflation lies in ℚ(√15), and the factor x⁴−8x²+1 appears in χ.
+- **Approach:** use the Galois action on Φ to explain this. The goal is a general theorem: seam dimension = log(largest Galois-twisted eigenvalue)/log λ, for all substitution tilings in a class.
+- **Test:** check it on the Hat, the Tile(1,1) family and the chair. If the same formula predicts the other tilings' seam dimensions, it is a theorem worth a paper of its own.
 
-## D. References and selftests
+## 8. Lattice gauge theory on a monotile lattice
+- **Breakthrough:** discretise SU(2) or SU(3) Yang–Mills on the Spectre tiling, a lattice with no translational symmetry and no mirror images, and measure whether:
+  - the cubic-lattice artefacts disappear (restoring rotation invariance faster);
+  - chirality yields a lattice θ-term or affects fermion doubling.
+- **Link:** this connects the Spectre work to the Yang–Mills repository.
+- **First run:**
+  1. Wilson-loop area law and string tension in 2D and 3D (Spectre × ℤ).
+  2. Count fermion doublers for a naive Dirac operator.
 
-19. **The `Romanov` bibitem is gone.** It was replaced with inline "Romanov (2026)". Make the citation style consistent, and confirm that no `\cite{Romanov}` remains.
-20. **Run the selftests on the new master.** Check `tan θ_S` (l.3321) and the conjecture wording. Add tests for the new claims in section A.
-21. **Build and log check.** Build the PDF and run all selftests there, then read the LaTeX log for undefined references.
+  A missing doubler would be the headline result.
 
-## E. Window boundary (our own work)
+## 9. Gravity, made testable
+- **Breakthrough:** replace the pancake narrative with a model whose predictions can be checked: Regge calculus or causal dynamical triangulations restricted to Spectre-derived 2+1 triangulations.
+  - Compute the spectral dimension and the Hausdorff dimension of the emergent geometry.
+  - Check whether the scale-dependent spectral dimension tends to dim ∂W or to 2.
+- **Stop if:** it reproduces standard CDT numbers. That is a null result; publish it briefly and drop the direction.
 
-22. **The closure run is in progress.**
-    - If it gives ρ = √2+√3 to 1e-8 with no seeds on the edge of the search box, add a paragraph to the paper as numerical evidence for the upper bound. Then rebase `window-boundary-closure` onto upstream master and open the upstream PR.
-    - Otherwise, report the result before any rerun.
-23. **Prove the upper bound.** If the closure works, turn it into an exact certificate of the contact graph. That would prove dim_B(∂W) = log(√2+√3)/log λ.
-24. **Prove the Hausdorff-dimension lower bound by mass distribution.** This is only needed if A2 stays in the paper.
-25. **Package the boundary-certificate scripts** into one reproducible run, with output hashes.
+## 10. Machine-checked aperiodicity
+- **Breakthrough:** a full Lean proof that the Spectre tiles only aperiodically.
+  - The existing pipeline (SpectreFacts.lean, the certificates) already checks the finite part.
+  - What is missing is the combinatorial-hierarchy argument.
+- **Payoff:** the first formally verified aperiodic monotile, which would also make items 1–3 checkable by machine.
 
-## F. Process
-
-26. **Split the work into two PRs:**
-    - one for the structural, reference and test fixes (C and D), which should be uncontroversial;
-    - one for the claims and the abstract (A and B), so the physics discussion does not block the first.
-27. **Agree on a label for every claim:**
-    - theorem with certificate;
-    - numerical evidence;
-    - conjecture or speculation.
-
-## Order
-
-Do items 21 and 20 first, then the C+D PR, then the A+B PR. Item 22 depends on the contact-closure run finishing.
+## Order and resources
+- **Start now:** item 1 (it continues the contact-closure run) and item 3. Both are cheap exact computations, and their results feed items 2, 5 and 7.
+- **In parallel:** items 4 and 6, which are numerical.
+- **Later:** items 8 and 9 are long-horizon, and item 10 needs a dedicated effort.
