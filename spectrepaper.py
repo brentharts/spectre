@@ -123,7 +123,7 @@ def inject_after_label(text, label, block):
 
 # ---------------------------------------------------------------- Part II: the quantum gravity paper
 #
-# qgravity.py of openai_math_yang_mills writes its paper from the results that thirteen sympy models register: the body,
+# qgravity.py of openai_math_yang_mills writes its paper from the results that seventeen sympy models register: the body,
 # the bibliography and the counts, with the two pictures.  The same call is made here, into paper/qgravity/.  The models
 # take about three and a half minutes (su2_lattice_stripn alone takes 150 s), so the fragments are kept together with a
 # hash of every source that makes them, and are rebuilt when any source changes or when `--rebuild-qg` is given.
@@ -132,7 +132,7 @@ OAI_ROOT = os.path.normpath(os.path.join(HERE, '..', 'openai_math_yang_mills'))
 QG_DIR = os.path.join(HERE, 'paper', 'qgravity')
 QG_MODELS_RUN = ('su2_lattice_ladder', 'qg_spin_network', 'qg_einstein4', 'su2_lattice_strip', 'su2_peter_weyl',
                  'su2_lattice_stripn', 'qg_volume', 'qg_penrose', 'su2_lattice_lshape', 'forest_gauge_4d_theorems',
-                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom')
+                 'qg_kerr', 'qg_planar_maps', 'ym_asymptotic_freedom', 'qg_su3_intertwiners', 'qg_su2u1_matter', 'qg_relational_clock', 'qg_thiemann_trick')
 QG_PARTS = ('body', 'bibliography', 'numbers')
 _QG = {}
 
@@ -2141,7 +2141,8 @@ would carry Spectre-like structure, with three-dimensional space emerging in a C
 $SU(2)$ lattice gauge theory in the language of loop quantum gravity, with exact strong- and weak-coupling area spectra
 $2/(3g^8)$ and $3/(\sqrt{10}g^2)$, the Immirzi value $\gamma_I = \ln 2 / (\pi\sqrt{3})$ from spin-$\tfrac12$ puncture counting,
 and intertwiner volume spectra, and relates them to entries of the OpenAI math release; that material is fork-level and is not
-an official OpenAI document.
+an official OpenAI document.  It does not construct the Hamiltonian constraint of gravity, does not address the problem of
+time, and couples no matter fields; Section~\ref{sec:scope} says what is and is not covered.
 \end{abstract}
 """
     return text if full else tilings_abstract()
@@ -2721,6 +2722,8 @@ This section restates the reading of Section~\ref{sec:phys} in the quantities of
 pointers to results proved elsewhere in this paper; the physical identifications are proposals, as in
 Section~\ref{sec:phys}, and nothing in this section is derived.
 
+In canonical quantum gravity, defining a globally background-independent state at $t=0$ faces severe measure-theoretic and constraint-algebraic obstacles. This paper does not meet those obstacles, and Section~\ref{sec:scope} lists what it leaves open. It restricts attention to kinematics: a single 2D spatial slice $\Sigma_0$ whose kinematical degrees of freedom are encoded by an aperiodic monotile inflation algebra, with no dynamics, constraint or time evolution defined on it.
+
 \paragraph{The vertex module and the internal plane (exact).}  The vertices of a Spectre tiling lie in the rank-four module
 $\mathbb{Z}[\zeta_{12}]$, $x=p+q\omega+z(r+s\omega)$ with $\omega=e^{i\pi/3}$, $z=e^{i\pi/6}$.  One level of the inflation is
 the $16\times16$ integer matrix $\Phi$ of Fact~\ref{fact:lift}, whose characteristic polynomial is
@@ -2886,6 +2889,66 @@ the tiling does not supply.
 """
 
 
+def scope_section():
+    return r"""
+\section{What Part II does not address: the constraint, time and matter}
+\label{sec:scope}
+
+Three obstacles of quantum gravity are not met by the computations of this paper, and the conjecture of
+Section~\ref{sec:phys} does not remove them.  The references below are cited for what they claim, and a claim made by an author is
+reported as the author's.
+
+\paragraph{The Hamiltonian constraint.}  The Hamiltonian of Part II is that of an $SU(2)$ lattice gauge theory on a fixed graph.
+Canonical loop quantum gravity has a different object, a constraint operator.  Thiemann constructed one from holonomies around
+small loops and a volume operator, and claims it to be anomaly free~\cite{ThiemannQSD}.  The Master Constraint
+programme replaces the family of smeared constraints by a single operator; its author presented it as a proposal whose
+mathematical conditions were still to be proved~\cite{ThiemannMaster}, showed that the quadratic form is
+closable~\cite{ThiemannQSDVIII}, and a test programme on solvable models followed~\cite{DittrichThiemann}.  Algebraic quantum
+gravity is a further formulation, with a single Master Constraint on an algebra over algebraic graphs~\cite{GieselThiemannAQGI}.
+Critics state that the commutator of two constraints is shown to vanish only on a restricted set of states, that closure
+without that restriction had not been shown with explicit operators, and that the classical limit is far from
+understood~\cite{NicolaiEtAl}; that is the position of one paper from 2005 and is cited as such.  A 2021 review by Ashtekar and Bianchi
+describes the quantum kinematics as settled and the Hamiltonian dynamics of the full theory as far from complete, reports that Thiemann's constraint
+operators are well defined but that their algebra does not faithfully reproduce the classical Poisson algebra, and says that the mathematical definition of the
+spin-foam sum is a key open issue~\cite{AshtekarBianchi}; the covariant approach is reviewed in~\cite{PerezSpinFoam}.  A numerical implementation of the full graph-changing action
+of the constraint on three- and four-valent spin networks has been reported, with a finding that expectation values of the volume under the graph-changing dynamics
+differ from those under a graph-preserving approximation~\cite{GuedesEtAl}; that bears directly on a fixed-graph model such as the ladder.  A fixed graph without
+diffeomorphism invariance cannot test closure, which depends on the graph-changing action of the constraint.  The plaquette
+operators $W_a$ and $W_b$ of Part II are traces of holonomies around small loops, the kind of operator such a constraint is built
+from.  Section~\ref{qg:sec:time} checks exactly the classical identities by which the constraint is written with holonomies and the volume, and
+that the volume, and with it any constraint of that form, vanishes at a trivalent vertex; the quantum operator itself is not constructed, because it changes
+the graph and needs recoupling coefficients whose phases are not guessed, and nothing here tests whether its algebra closes.
+
+\paragraph{Time.}  The coupling $g$ of Part II is a parameter of the Hamiltonian and not a clock, and the energy gaps computed there are
+gaps of that Hamiltonian, not statements about evolution in a background-independent theory.  The only time-like variable in this
+paper is the depth of the substitution hierarchy, and Section~\ref{sec:hier} tests whether it can serve as a clock with negative or generic results.  Relational
+approaches define time by conditioning on a clock subsystem: the proposal of Page and Wootters~\cite{PageWootters}, later
+formulations with interacting clocks~\cite{SmithAhmadi, Woods}, an experiment with entangled photons in which one subsystem
+serves as a clock for another~\cite{MorevaEtAl}, and a related treatment of relational quantum dynamics~\cite{HoehnSmithLock}.
+In gravity, coupling to dust gives a preferred time and lets the constraints be solved~\cite{BrownKuchar}; that model has been quantised
+in loop quantum gravity with a non-vanishing physical Hamiltonian and the dust field as clock~\cite{GieselThiemannAQGIV}, and a massless
+scalar field has been used as an internal time in a loop quantisation with all local gravitational degrees of
+freedom~\cite{DomagalaEtAl}.  The Hamiltonian of Part II is not an operator of that kind.  Section~\ref{qg:sec:time} adds a clock register to the ladder by hand and verifies that the physical states of
+a constraint linear in the lattice Hamiltonian are history states, so that conditioning on the clock returns the Schr\"odinger evolution; that is a toy model of relational
+time for a gauge theory, with a discretised clock, and the problem of time of vacuum quantum gravity is not addressed.
+
+\paragraph{Matter and the gauge group of the standard model.}  The group $SU(2)$ of Part II is the structure group of the lattice
+gauge theory and, in the part on Einstein four-manifolds, a factor of the frame group $Spin(4)=SU(2)_{+}\times SU(2)_{-}$.  It is not the weak
+isospin group of the electroweak theory, no matter field is coupled to the spin networks, and the word chiral in this paper means the
+handedness of tiles and the parity flips of the substitution; Part I records only weak evidence of a link between the alternating charge
+$Q_{-}$ and a chirality channel and does not claim one.  Loop quantum gravity with matter has been treated elsewhere: fermions in the loop
+representation~\cite{MoralesRovelli}, the claim that the standard model Hamiltonian coupled to quantum gravity has well-defined
+operators without renormalisation~\cite{ThiemannQSDV}, a unification with gauge group $SU(N)$ in place of $SU(2)$ whose Lorentzian version
+is reported as problematic~\cite{GambiniOlsonPullin}, and excitations of ribbon-graph quantum spacetime matched to first-generation
+fermions through braiding~\cite{BilsonThompson}, each with the limits its authors state.  None of this is used here.  What Part II does contain
+(Section~\ref{qg:sec:gauge}) is two exact counts that do not involve gravity: the vertex invariants of $SU(3)$, and Gauss's law for static
+doublets with a weak isospin and hypercharge on the ladder, together with the anomaly sums, the $\mathbb{Z}_6$ and the three Yukawa
+invariants of one generation of fields.  They show that the representation theory of the standard model group can be counted on a graph;
+they do not couple a field to the spin networks, and no part of this paper derives the group $SU(3)\times SU(2)\times U(1)$, the number of
+generations or the matter content of the standard model.
+"""
+
+
 def conclusion_section():
     return r"""
 \section{Conclusion}
@@ -2898,7 +2961,8 @@ and face contacts that are not bipartite.  The main new result is the hull theor
 groups of Chair44 tilings in Section~\ref{sec:hull}; for tilings by the solid it is conditional on one quoted,
 unrefereed input, Tsiokos's registration theorem (R), and it rests on the finite computations of
 Lemmas~\ref{lem:hier} and~\ref{lem:blocks}.  The hierarchy tests of
-Section~\ref{sec:hier} are negative or generic.
+Section~\ref{sec:hier} are negative or generic.  In Part II the Hamiltonian constraint, the problem of time and
+matter coupling are not addressed (Section~\ref{sec:scope}).
 
 What the Facts do not reach is as follows.  The Spectre results take the published substitution rule (matrix and placement
 transforms) as input, and the Chair44 results Tsiokos's solid and substitution.  The einstein property and aperiodicity of
@@ -2983,6 +3047,69 @@ BIB_EXTRA = r'''
 \textbf{5} (2013) 1--46; arXiv:1207.6237.
 
 ''' + NOTE_MOVED_BIB
+
+
+BIB_SCOPE = r"""
+\bibitem{ThiemannQSD} T.~Thiemann, \emph{Quantum Spin Dynamics (QSD)}, arXiv:gr-qc/9606089 (1996); DOI 10.1088/0264-9381/15/4/011.
+
+\bibitem{ThiemannMaster} T.~Thiemann, \emph{The Phoenix Project: Master Constraint Programme for Loop Quantum Gravity},
+arXiv:gr-qc/0305080 (2003); DOI 10.1088/0264-9381/23/7/002.
+
+\bibitem{ThiemannQSDVIII} T.~Thiemann, \emph{Quantum Spin Dynamics VIII. The Master Constraint}, arXiv:gr-qc/0510011.
+
+\bibitem{DittrichThiemann} B.~Dittrich and T.~Thiemann, \emph{Testing the Master Constraint Programme for Loop Quantum Gravity
+I. General Framework}, arXiv:gr-qc/0411138 (2004); DOI 10.1088/0264-9381/23/4/001 (Parts II--V follow).
+
+\bibitem{GieselThiemannAQGI} K.~Giesel and T.~Thiemann, \emph{Algebraic Quantum Gravity (AQG) I. Conceptual Setup},
+arXiv:gr-qc/0607099 (2006); DOI 10.1088/0264-9381/24/10/003.
+
+\bibitem{NicolaiEtAl} H.~Nicolai, K.~Peeters and M.~Zamaklar, \emph{Loop quantum gravity: an outside view}, arXiv:hep-th/0501114 (2005).
+
+\bibitem{PageWootters} D.~N.~Page and W.~K.~Wootters, \emph{Evolution without evolution: Dynamics described by stationary
+observables}, Phys.\ Rev.\ D \textbf{27} (1983) 2885; DOI 10.1103/PhysRevD.27.2885.
+
+\bibitem{SmithAhmadi} A.~R.~H.~Smith and M.~Ahmadi, \emph{Quantizing time: Interacting clocks and systems}, Quantum \textbf{3} (2019) 160.
+
+\bibitem{Woods} M.~Woods, \emph{The Page-Wootters mechanism 36 years on: a consistent formulation which accounts for interacting
+systems}, Quantum Views \textbf{3} (2019) 16; DOI 10.22331/qv-2019-07-21-16.
+
+\bibitem{MorevaEtAl} E.~Moreva, G.~Brida, M.~Gramegna, V.~Giovannetti, L.~Maccone and M.~Genovese, \emph{The time as an emergent
+property of quantum mechanics, a synthetic description of a first experimental approach}, J.\ Phys.: Conf.\ Ser.\ \textbf{626} (2015)
+012019; arXiv:1502.03264.
+
+\bibitem{HoehnSmithLock} P.~A.~H\"ohn, A.~R.~H.~Smith and M.~P.~E.~Lock, \emph{The trinity of relational quantum dynamics}, arXiv:1912.00033; Front.\ Phys.\ \textbf{9}, 587083 (2021), DOI 10.3389/fphy.2021.587083.
+\url{https://arxiv.org/abs/1912.00033}
+
+\bibitem{AshtekarBianchi} A.~Ashtekar and E.~Bianchi, \emph{A short review of loop quantum gravity}, arXiv:2104.04394 (2021).
+\url{https://arxiv.org/abs/2104.04394}
+
+\bibitem{GuedesEtAl} T.~L.~M.~Guedes, G.~A.~Mena~Marug\'an, F.~Vidotto and M.~M\"uller, \emph{Computing the graph-changing dynamics of loop quantum gravity},
+arXiv:2412.20257 (v. of Nov.\ 2025).
+\url{https://arxiv.org/abs/2412.20257}
+
+\bibitem{PerezSpinFoam} A.~Perez, \emph{The spin-foam approach to quantum gravity}, Living Rev.\ Relativ.\ \textbf{16}, 3 (2013), DOI 10.12942/lrr-2013-3.
+
+\bibitem{BrownKuchar} J.~D.~Brown and K.~V.~Kucha\v{r}, \emph{Dust as a standard of space and time in canonical quantum gravity},
+arXiv:gr-qc/9409001 (1994); Phys.\ Rev.\ D \textbf{51}, 5600 (DOI 10.1103/PhysRevD.51.5600).
+
+\bibitem{GieselThiemannAQGIV} K.~Giesel and T.~Thiemann, \emph{Algebraic Quantum Gravity (AQG) IV. Reduced Phase Space Quantisation of
+Loop Quantum Gravity}, arXiv:0711.0119 (2007).
+
+\bibitem{DomagalaEtAl} M.~Domaga{\l}a, K.~Giesel, W.~Kami\'nski and J.~Lewandowski, \emph{Gravity quantized: Loop Quantum Gravity with
+a Scalar Field}, arXiv:1009.2445 (2010).
+
+\bibitem{MoralesRovelli} H.~A.~Morales-T\'ecotl and C.~Rovelli, \emph{Fermions in quantum gravity}, Phys.\ Rev.\ Lett.\ \textbf{72}
+(1994) 3642; arXiv:gr-qc/9401011.
+
+\bibitem{ThiemannQSDV} T.~Thiemann, \emph{QSD V: Quantum Gravity as the Natural Regulator of Matter Quantum Field Theories},
+arXiv:gr-qc/9705019 (1997); DOI 10.1088/0264-9381/15/5/012.
+
+\bibitem{GambiniOlsonPullin} R.~Gambini, S.~J.~Olson and J.~Pullin, \emph{Unified model of loop quantum gravity and matter},
+arXiv:gr-qc/0409045 (2004).
+
+\bibitem{BilsonThompson} S.~O.~Bilson-Thompson, F.~Markopoulou and L.~Smolin, \emph{Quantum gravity and the standard model},
+arXiv:hep-th/0603022 (2006); DOI 10.1088/0264-9381/24/16/002.
+"""
 
 
 BIBLIOGRAPHY = r"""
@@ -3122,7 +3249,9 @@ def document(full=True, toc=False, overview=False):
         qg_bib_all, _ = qg_bibliography(keys | release_keys)
         spectre_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', BIBLIOGRAPHY))
         new_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', qg_bib_all + release_bib))
+        scope_keys = set(re.findall(r'\\bibitem\{([^}]*)\}', BIB_SCOPE))
         assert not (spectre_keys & new_keys), sorted(spectre_keys & new_keys)
+        assert not (scope_keys & (spectre_keys | new_keys)), sorted(scope_keys & (spectre_keys | new_keys))
         if toc: pieces += [r'\tableofcontents'] 
         if overview: pieces += [overview_section()]
     pieces += [
@@ -3133,7 +3262,7 @@ def document(full=True, toc=False, overview=False):
         lift_section(),
         *_chair_parts(),
         unfolding_section(), exact_section(), hierarchy_section(),
-        phys_section(), phys_pancake(),
+        phys_section(), phys_pancake(), scope_section(),
         conclusion_section(),
     ]
     if full:
@@ -3149,8 +3278,8 @@ def document(full=True, toc=False, overview=False):
         assert bibliography.count('\\end{thebibliography}') == 1
         bibliography = bibliography.replace(
             '\\end{thebibliography}',
-            '%% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)\n\n%s\n\n%s\n\\end{thebibliography}'
-            % (qg_bib_all, release_bib))
+            '%% Parts II and III: kbdoc.py (knowledge base) and oai_tree.py (the release catalogue)\n\n%s\n\n%s\n\n%% the scope section of Part II\n%s\n\\end{thebibliography}'
+            % (qg_bib_all, release_bib, BIB_SCOPE))
     pieces.append(bibliography)
     text = '\n'.join(pieces)
     text = inject_after_label(text, 'sec:spectral', FIG_CENSUS)
