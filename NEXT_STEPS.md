@@ -224,3 +224,10 @@ The literature search (2026-11-07) found no Spectre-specific frequency module or
 - The Z-module spanned by u·λ^{−2k} is ℤ + ℤ·(5+√15)/10. Since N(5+√15) = 10, this equals **(5−√15)⁻¹·ℤ[√15]**, a principal fractional ideal of index 10 in (1/10)ℤ[√15].
 - This confirms prediction C for the uncollared submodule.
 Next: build the collared-tile substitution, either from spectre_patch neighbourhoods or from the 10 Čech H² generators. Check whether the collared frequencies enlarge the module. Then test gap positions in the IDS of the item-4 tight-binding Hamiltonian against this module.
+
+### C, step 2 result (job 1697446, exact)
+`research/gap_collared.py` (K=6, 242047 tiles) uses this collared descriptor: the label plus every vertex-sharing neighbour, with the touching child-slot pairs. Output: `research/gap_collared.json`.
+- There are 38 collared types, closed under substitution. All transitions are consistent (0 conflicts).
+- The Perron vector is exact over Q(√15), and its label projection is proportional to the uncollared u.
+- The frequency module has basis {1, 1/2 + √15/10}, with covolume 1/10. Its **index over step 1 is 1**. Collaring at this radius adds nothing, so the module stays (5−√15)⁻¹ℤ[√15].
+Next (step 3): compare the IDS gap positions of the item-4 tight-binding Hamiltonian with this module.
