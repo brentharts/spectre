@@ -296,15 +296,23 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 
 **R9 (carry-over). C step 3:** gap positions of the plain tight-binding IDS against (5−√15)⁻¹ℤ[√15], on level-4/5 patches.
 
+**R11. Gauge theory on the Spectre graph: the Part I to Part II link.**
+- Goal: one shared object that is both monotile structure and quantum-geometry structure, plus a result that depends on the Spectre. Stated goal of the project: small steps linking the monotile with quantum gravity.
+- Step 1 (Z₂): Brent's holonomy is already a Z₂ gauge field on the tiling. Run Z₂ lattice gauge theory on Spectre patches (plaquettes = tiles). Compare the Wilson loops and the vortex free energy with periodic controls (hexagonal, square).
+- Step 2 (SU(2)): replace the two-plaquette model of Part II by the Spectre graph. Compute strong- and weak-coupling area spectra and intertwiner volume spectra at valence-3/4 vertices. Compare with a periodic control graph of matched mean valence.
+- Step 3 (spin networks): treat the Spectre graph as a spin-network graph. Ask whether the area/volume densities fall in the gap-labelling module ℤ + ℤ(5+√15)/10 (the same test as R1, R9).
+- Literature check first: quasicrystalline spin networks (Amaral, Aschheim, Irwin et al.).
+- A null result is still useful. If the Spectre behaves like a generic graph, that is publishable, and it says which monotile features matter.
+
 **R10 (carry-over). E:** a Galois-conjugate formula for seam dimensions. **F:** Chair44, a 3D counterpart. **B:** an exact GIFS from the self-similar control points.
 
-### Recommended order
-1. **Now:** R9 (C step 3), which is already scripted infrastructure.
-2. **Next:** R1, which reuses `gap_collared.py` and is the strongest link to Brent's figure. Then R5 and R4, which are short exact proofs.
-3. **Then:** R3 (cohomology with Z₂ coefficients) and R2 (vortex window), which together could give the "flux is topological" theorem.
-4. **Parallel numerics:** R6 (linking) and R8 (flux Hamiltonian).
-5. **Last:** R7 (genus robustness, cheap but low value), then E and F.
+### Recommended order (revised: everything gets done; ordered toward the QG link)
+1. **Now:** selftest of the merged paper (cluster), then R9 (C step 3).
+2. **Next:** R1 (vortex density in the C module), then R4 and R5 (exact Z₂ structure and parity clock).
+3. **Then:** R3 and R2 (is the flux topological?), with R8 (flux Hamiltonian) moved up as the first part of R11.
+4. **Then:** R11 steps 1–3, the first real link between Part I and Part II.
+5. **Afterwards:** R6 (ribbon linking), R7 (genus robustness), E, F, B.
 
 ### Notes for syncing
-- PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolve that by hand with Brent before merging; it was not merged here.
+- PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolved in merge 9f63b7d (2026-11-07): our abstract and pointers kept, Brent's scope disclaimers and scope section added.
 - `spectre_holonomy.py` is referenced in the figures README but not committed upstream. Ask for it before starting R1–R4, so that the vortex classification matches his conventions exactly.
