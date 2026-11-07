@@ -316,3 +316,19 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 ### Notes for syncing
 - PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolved in merge 9f63b7d (2026-11-07): our abstract and pointers kept, Brent's scope disclaimers and scope section added.
 - `spectre_holonomy.py` is now upstream (test_flux: 28 vortices at depth 3, 372 at depth 4). R1 uses its flux rule exactly; see `research/vortex_density.py`.
+
+## Progress log (2026-11-07, evening)
+
+### Jobs in the queue
+- Submitted, waiting to run: gap-ids (R9, 1698583), holonomy-baseline (1698605), R1 (1699051), R4 (1699394), R5 (1699432), R3 (1699761), R2 (1699881), R8 (1700304).
+- Selftest (1698557) failed for an infrastructure reason: the sibling repo `oai_tree` was missing, so Parts II–III could not run.
+- Scripts: `research/holonomy_group.py` (R4), `parity_clock.py` (R5), `flux_cohomology.py` (R3), `vortex_window.py` (R2), `flux_hamiltonian.py` (R8).
+
+### R11 step 1 (Z2 gauge theory): settled exactly, negative as a probe
+- Natural set-up: the gauge field lives on dual edges (tile adjacencies), the plaquettes are interior tiling vertices, and Brent's flux eta_v = flux(v) is the background: S = -beta * sum_v eta_v * prod_{e around v} s_e.
+- On any simply-connected patch (open boundary) the plaquette variables are independent: fix the gauge on a spanning tree; each remaining edge then sets exactly one plaquette. So Z = prod_v 2cosh(beta), up to a constant gauge-volume factor.
+  - The free energy does not depend on eta: the vortex free energy is exactly 0. The flux is a pure gauge on a disc, consistent with R3: it is a coboundary, just not a local one.
+  - Every Wilson loop is W(C) = prod_{v inside C} eta_v * tanh(beta)^{N_C}, where N_C is the number of enclosed vertices. This is a pure area law with string tension -ln tanh(beta) per vertex.
+  - The only Spectre-dependent quantities are the vertex density per unit area and the sign prod eta_v. That sign is the R1 vortex count mod 2 inside C.
+- Periodic controls (hexagonal, square) give the same formula with their own vertex densities. Nothing here distinguishes the Spectre beyond R1.
+- Consequence: a real Spectre signal needs a model that is not exactly solvable. Options are Z2 gauge-Higgs (matter on tiles, which R8 already is in the free limit), the tiling × time (2+1D, which has a deconfinement transition), or a periodic approximant with non-contractible loops. Step 2 (SU(2) area and volume spectra) goes ahead as planned.
