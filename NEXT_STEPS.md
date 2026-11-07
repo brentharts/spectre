@@ -217,3 +217,10 @@ Key points evolve linearly in 16D (Q_{k+1} = P Q_k). But the Spectre is not self
 
 ### C, step 1 started
 The literature search (2026-11-07) found no Spectre-specific frequency module or gap labels. Pinwheel analogue: 1/264·Z[1/5]. Step 1, `research/gap_freq.py`: the uncollared supertile-frequency module, computed exactly in Q(√15).
+
+### C, step 1 result (job 1697010, exact)
+- charpoly(M) = x⁵(x−1)(x+1)(x²−8x+1).
+- The per-spectre supertile frequencies u are all positive and lie in Q(√15), e.g. u_Γ = 1/2 − √15/10. (Γ, the mystic, counts as 2 spectres.)
+- The Z-module spanned by u·λ^{−2k} is ℤ + ℤ·(5+√15)/10. Since N(5+√15) = 10, this equals **(5−√15)⁻¹·ℤ[√15]**, a principal fractional ideal of index 10 in (1/10)ℤ[√15].
+- This confirms prediction C for the uncollared submodule.
+Next: build the collared-tile substitution, either from spectre_patch neighbourhoods or from the 10 Čech H² generators. Check whether the collared frequencies enlarge the module. Then test gap positions in the IDS of the item-4 tight-binding Hamiltonian against this module.
