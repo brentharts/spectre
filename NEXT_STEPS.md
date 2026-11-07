@@ -71,6 +71,15 @@ Items 1–3 are published and item 6 is closed, so this section asks what would 
 - **Why the project can answer it:** the discrepancy is controlled by the non-Perron spectrum of the substitution acting on counts and on positions. χ(Φ) has eigenvalues ±1 in 2×2 Jordan blocks, which predicts discrepancy growing like log R for balls of radius R. That would make the Spectre **not** BD-equivalent to a lattice, unlike the Penrose and Ammann–Beenker tilings. The Hat is the natural comparison.
 - **First run:** the moment recursion with N alone per label, together with the Jordan structure at ±1, gives exact counts in supertiles. Then prove the log R lower bound along the supertile sequence, following Solomon's criteria for substitution tilings.
 - **Payoff:** a clean yes/no theorem, and a structural distinction between the Spectre and the classical cut-and-project tilings.
+- **Resolution (2026-11-07): the prediction above is wrong. The answer is yes, BD-equivalent to a lattice (modulo two hypotheses below).**
+  - The count matrix M (9×9, `spectre_figures.py`) has spectrum λ², λ⁻², 1, −1, 0⁵. So the non-Perron part has modulus at most 1.
+  - Solomon (2011, *Discrete Comput. Geom.* 45, "Substitution tilings and separated nets with similarities to the integer lattice") proves: if every non-Perron eigenvalue θ of a primitive self-similar tiling in ℝᵈ satisfies |θ| < (λ²)^{(d−1)/d}, then the tile set is BD to a lattice. Here d = 2 and the threshold is λ ≈ 2.81 > 1.
+  - The ±1 eigenvalues make supertile counts deviate from ρ·area by O(k) = O(log R). That is far below the perimeter scale R permitted by Laczkovich's criterion. The earlier heuristic confused "discrepancy grows" with "discrepancy exceeds the perimeter".
+  - The Jordan blocks at ±1 belong to χ(Φ) on the 4D lift, not to M. They do not change the conclusion: polynomial growth in k is still o(λᵏ).
+  - **Hypotheses still to check before calling this a theorem:**
+    1. Solomon's theorem applies to the self-similar version (fractal-boundary tiles of Baake–Gähler–Mazáč–Sadun). His proof needs only boundaries of measure zero and a supertile boundary count of order λ^{D_b k} with D_b > 0, which holds.
+    2. The Spectre itself differs from that version by a linear map plus a bounded displacement. BD-to-lattice is invariant under both.
+  - **Consequence:** the Spectre does **not** differ from Penrose, Ammann–Beenker or the Hat (spectrum φ⁴, φ⁻⁴, ±1) on this point. The structural distinction must be sought elsewhere, for example in items B and E.
 
 ### E. A Galois-conjugate formula for seam dimensions (sharpens item 7)
 - **Observation to explain:** (√2+√3)² = 5+2√6. The seam rate is the Perron root of the boundary-word substitution, and log(5+2√6)/log(4+√15) has a numerator from ℚ(√6) and a denominator from ℚ(√15).
