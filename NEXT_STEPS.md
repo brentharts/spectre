@@ -203,3 +203,11 @@ Exact test over Q(sqrt15). Let F be the even-level frame and F·Mi the odd-level
 - zeta (30°) fails in every pairing, which matches step 1. Placements never use it.
 Consequence: the GIFS states are label × 6 orientations × 2 chiralities, and each internal map is R(rotation)·(the star image of the child offset), with the frame alternating by level.
 Next: build the GIFS, close the neighbour graph, and compute the SCC spectral radii against 5+2√6.
+
+### B, box-counting check (job 1696914, heuristic)
+Boundary box-counting on the star images of the Delta tile positions:
+- Fitted slope: 1.220 at level 6 (2.7e5 points) and 1.222 at level 7 (2.1e6 points).
+- Local slopes at the finest well-sampled scales, level 7: 1.247, 1.196, 1.178. They are drifting down.
+- BGMS predict log(5+2√6)/log(4+√15) = 1.111.
+Reading: the boundary is clearly fractal and the frame is plausible, since the slope is nowhere near 1.0 or 1.5. The estimate is still 6–10% high. Sampling holes counted as boundary bias it upward, so it is consistent with 1.111 but does not confirm it.
+The exact GIFS / neighbour-graph route stays open. It needs the internal contraction taken from the 16D PHI rather than from Z⁴, because no linear T on Z⁴ exists.
