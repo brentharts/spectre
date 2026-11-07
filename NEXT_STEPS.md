@@ -211,3 +211,9 @@ Boundary box-counting on the star images of the Delta tile positions:
 - BGMS predict log(5+2√6)/log(4+√15) = 1.111.
 Reading: the boundary is clearly fractal and the frame is plausible, since the slope is nowhere near 1.0 or 1.5. The estimate is still 6–10% high. Sampling holes counted as boundary bias it upward, so it is consistent with 1.111 but does not confirm it.
 The exact GIFS / neighbour-graph route stays open. It needs the internal contraction taken from the 16D PHI rather than from Z⁴, because no linear T on Z⁴ exists.
+
+### B, why the exact GIFS is blocked here
+Key points evolve linearly in 16D (Q_{k+1} = P Q_k). But the Spectre is not self-similar, so no Z-linear inflation acts on the Z⁴ tile positions. That explains why no T exists and why star images stay bounded instead of contracting. A contractive GIFS needs the control points of the self-similar (fractal-tile) version, as in BGMS Remark 8, with 5 types × 6 orientations. Building it means reconstructing their control-point recursion. B is parked there. Its heuristic support is the box-counting result above.
+
+### C, step 1 started
+The literature search (2026-11-07) found no Spectre-specific frequency module or gap labels. Pinwheel analogue: 1/264·Z[1/5]. Step 1, `research/gap_freq.py`: the uncollared supertile-frequency module, computed exactly in Q(√15).
