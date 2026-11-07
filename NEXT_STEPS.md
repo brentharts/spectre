@@ -38,6 +38,23 @@ Items 1–3 are published and item 6 is closed, so this section asks what would 
   4. Optionally certify the Jordan form and the sign of A in Lean, reusing the certificate pipeline.
 - **Stretch:** identify A with a pattern-equivariant cohomology class, that is, show that the linear functional p ↦ A is the projection of a class in Ȟ¹(Ω; ℂ) = ℂ⁴ onto the λ²-eigenspace. That would make "handedness" a topological invariant rather than a numerical one.
 - **Stop if:** the conjugate-mode fit (K = 20) still leaves residuals. Then T has a further block, and the exact Jordan form of step 1 replaces fitting.
+- **Result (2026-11-07), scripts `research/handedness.py`, `research/handedness_closed.py`, data `research/handedness_k900.json`:**
+  - **Exact arithmetic.** The moment recursion runs exactly in ℤ[ζ₁₂] (positions scaled by 28), with no floating point.
+  - **Sign check, 1 ≤ k ≤ 900.** Im Z_k < 0 holds exactly at every level in this range. The chirality of the Delta supertile alternates, starting unmirrored at k = 1.
+  - **Certified recurrences** (Berlekamp–Massey, checked exactly on all terms, K ≥ D + L):
+    - N, order 2: x²−8x+1
+    - M0, order 4: x⁴−8x²+1
+    - S, order ≤ 12: adds x²+8x+1 and x⁴−488x²+1
+    - M1, order ≤ 14: (x∓1), (x²∓8x+1)², x⁴−8x²+1
+    - W = N·M1 − conj(S)·M0, order ≤ 14, checked on 120 terms ≥ 76 + 14: dominant factor (x²−62x+1)², λ⁴ = 31+8√15, so the Jordan block is double.
+  - **Theorem (exact).** Z_k = A·k + O(1), with the same A for both parities:
+    **A = (27/100)(√5+√15)(1 − 2i)**, so Im A = −(27/50)(√5+√15) ≈ −3.29889 < 0 and arg A = −arctan 2.
+    The measured slope (Z_k − Z_{k−2})/2 agrees with A to about 10⁻¹⁴ at k = 60 to 119.
+  - **Correction.** The earlier fitted value Im A ≈ −3.78 was a fitting artifact.
+  - **Still open:**
+    - Step 3 as a written proof: an explicit envelope for Z_k − A·k − B (other poles are smaller by at least λ⁻², so for k > 900 the remainder is negligible next to −3.3k, but B and the envelope are not yet stated).
+    - Step 4 (Lean).
+    - Stretch goal: explain the factor 1−2i (arg A = −arctan 2) cohomologically.
 
 ### B. Local dimension and multifractal spectrum of ∂W (answers the open question of Baake–Gähler–Mazáč–Sadun)
 - **Statement:** compute the local dimension d(x) at every point of ∂W from the graph-directed IFS. Either prove it is constant (= log(5+2√6)/log(4+√15)), or compute the full multifractal spectrum f(α) of the natural measure on ∂W.

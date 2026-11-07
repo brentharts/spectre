@@ -38,10 +38,16 @@ def double_pole_coeff(P, Q, rho):
     coefficient of k rho^k in s_k (sequence indexed k = 1, 2, ...)."""
     x0 = sp.nsimplify(1 / rho)
     # Q(x) = (1 - rho x)^2 H(x)
-    H = sp.Poly(sp.cancel(Q.as_expr() / (1 - rho * x) ** 2), x)
+    # divide by the rational factor (1 - t x + x^2)^2, t = rho + 1/rho = +-62, then restore (1 - x/rho)^2
+    t = sp.Integer(62) if rho.is_positive else sp.Integer(-62)
+    H0, r = sp.div(Q, sp.Poly((1 - t * x + x ** 2) ** 2, x))
+    if not r.is_zero:  # pole at 1/rho is at most simple: no k rho^k term in this coordinate
+        return sp.Integer(0)
+    H = H0.as_expr() * (1 - x / rho) ** 2
+
     # s_{n} (n = index from 0 in the series, s_n = term k = n+1) ~ (n+1) rho^n P(x0)/H(x0)
     # so term_k ~ k rho^{k-1} P/H = k rho^k (P/H)/rho
-    v = sp.simplify(P.as_expr().subs(x, x0) / H.as_expr().subs(x, x0) / rho)
+    v = sp.simplify(P.as_expr().subs(x, x0) / H.subs(x, x0) / rho)
     return sp.radsimp(v)
 
 def main():
