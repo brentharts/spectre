@@ -185,3 +185,13 @@ Each item ends in either a theorem or a documented negative result. For any run 
 > This is expected in hindsight, because lambda is not in Q(zeta12).
 > The internal space exists only in the 16D lift (PHI acting on the 4 key points). The GIFS therefore has to be built there, exactly as in the revised method's step 1: restrict `phi_matrix()` to its contracting eigenspace.
 > Scripts: `research/window_gifs.py`, `research/window_gifs_plane.py`.
+
+> **B, star map identified (job 1696527).** The previous progress note was too pessimistic: a 2D window does exist. Its star map depends on the level's parity, like the frame mirroring.
+> - On even levels, the annihilator F from `exact_bounded_plane()` (ring order, before the patch mirror) keeps every Delta tile position bounded: rmax 15.33, 16.10, 16.20 at k = 2, 4, 6.
+> - On odd levels, F∘Mirror does the same: rmax 10.84, 15.33, 16.10 at k = 1, 3, 5.
+> - Each one grows by about λ² per level in the wrong parity.
+> - The Galois conjugations ζ ↦ ζ⁵, ζ⁷ grow like λ per level, so they give no window.
+> - Script: `research/window_star.py`.
+> **Next:** test whether F intertwines rotation by ζ and conjugation with fixed 2×2 maps.
+> - If yes, the GIFS has 9 labels × 12 orientations × 2 chiralities as states, with internal maps R(a)·φ*.
+> - If no, the states must carry the full 16D key-point data.
