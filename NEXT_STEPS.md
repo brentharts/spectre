@@ -241,7 +241,7 @@ Next (step 3): compare the IDS gap positions of the item-4 tight-binding Hamilto
 - At depth 3: 567 placements have det −1 and 126 have det +1, and the +1 ones are exactly the Γ₁/Γ₂ pairs. So parity is one global clock per level, and the per-tile information is the rotation angle; the 30° angles come only from Γ₂.
 - **`spectre_flip.py`** checks that `trot_inv()`'s ±1 agrees with sign(det).
 - **`spectreseal.py`** thickens the ribbons into ellipsoid chains, takes a smooth union, and extracts a closed mesh by marching cubes. It reports whether the mesh is sealed, its Euler characteristic and its genus. The genus depends on thickness and blending, which are render choices.
-- **Holonomy figure** (`paper/figures/spectre_holonomy.png`; the script is not on master yet):
+- **Holonomy figure** (`paper/figures/spectre_holonomy.png`):
   - The normal is forced: n = det(L)·ẑ.
   - The edge quaternions generate a group of order 48 with binary-dihedral element orders, the same for every twist sign.
   - Changing the twist sign only multiplies node holonomies by ±1, so it is a gauge choice.
@@ -315,4 +315,4 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 
 ### Notes for syncing
 - PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolved in merge 9f63b7d (2026-11-07): our abstract and pointers kept, Brent's scope disclaimers and scope section added.
-- `spectre_holonomy.py` is referenced in the figures README but not committed upstream. Ask for it before starting R1–R4, so that the vortex classification matches his conventions exactly.
+- `spectre_holonomy.py` is now upstream (test_flux: 28 vortices at depth 3, 372 at depth 4). R1 uses its flux rule exactly; see `research/vortex_density.py`.
