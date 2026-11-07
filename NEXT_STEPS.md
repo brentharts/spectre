@@ -320,7 +320,7 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 ## Progress log (2026-11-07, evening)
 
 ### Jobs in the queue
-- Submitted, waiting to run: gap-ids (R9, 1698583), holonomy-baseline (1698605), R1 (1699051), R4 (1699394), R5 (1699432), R3 (1699761), R2 (1699881), R8 (1700304).
+- Submitted, waiting to run: gap-ids (R9, 1698583), holonomy-baseline (1698605), R1 (1699051), R4 (1699394), R5 (1699432), R3 (1699761), R2 (1699881), R8 (1700304), R11 step 2 (1701292, `research/su2_graph.py`).
 - Selftest (1698557) failed for an infrastructure reason: the sibling repo `oai_tree` was missing, so Parts II–III could not run.
 - Scripts: `research/holonomy_group.py` (R4), `parity_clock.py` (R5), `flux_cohomology.py` (R3), `vortex_window.py` (R2), `flux_hamiltonian.py` (R8).
 
