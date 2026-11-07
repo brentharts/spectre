@@ -26,3 +26,18 @@ Twist sign is gauge: changing the twist sign only multiplies node holonomies by 
 Where the Z2 data actually lives: in a local rule that needs only the relative orientation of two touching tiles. Going once round a vertex, the SU(2) holonomy is (-1)^w, where w is the winding number of the orientation field.
 Convention-dependent vortices: at depth 3, 220 of 2976 interior vertices have flux -1. Most of these (192) involve a 180° relative rotation, whose sign is a convention. The map shows them as short hollow chains.
 Convention-independent vortices: 28 at depth 3 and 372 at depth 4. All are valence-3 vertices where three tiles meet with orientations 120° apart, mostly Pi/Psi/Phi triples. None touch a Mystic tile, though about 30% of all vertices do. So the flux does not localise on the Mystic, and the Mystic carries only the separate 30° rotation.
+
+---
+
+# spectreseal.py
+
+![fig3](spectreseal.png)
+
+## Sealed surface
+
+Construction: Each lifted ribbon is thickened into a chain of flat ellipsoids that follow its frame, so a flip is a half turn of the cross-section. The ellipsoids are merged with a smooth union and the surface is extracted.
+
+Result at depth 3: The mesh is sealed (every edge in exactly two faces, oriented, one connected piece, outward normals). It has 693 ribbons, 2.5 million faces, Euler characteristic 2 and genus 0. The self-tests (--test) pass, including a hole and an inside-out surface to confirm the checker can fail.
+
+Not NURBS for the whole surface: Added the exact NURBS form of a single thickened ribbon, and its sections are verified to be ellipses to 1e-12. Joining 693 of them into one NURBS manifold would need trimmed boolean unions (not attempted yet).
+Genus depends on the blend length: It is 0 at blend 3.0 and 7 at blend 5.0, where nearly touching ribbons join. It also flickered between 0 and 1 across grid sizes at depth 3. reported in the figure’s table and do not claim it as an invariant. What is stable is that the surface is sealed.
