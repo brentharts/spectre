@@ -231,3 +231,80 @@ Next: build the collared-tile substitution, either from spectre_patch neighbourh
 - The Perron vector is exact over Q(√15), and its label projection is proportional to the uncollared u.
 - The frequency module has basis {1, 1/2 + √15/10}, with covolume 1/10. Its **index over step 1 is 1**. Collaring at this radius adds nothing, so the module stays (5−√15)⁻¹ℤ[√15].
 Next (step 3): compare the IDS gap positions of the item-4 tight-binding Hamiltonian with this module.
+
+---
+
+## Plan after Brent's ribbon and holonomy work (2026-11-07)
+
+### What upstream added (master 63c83db)
+- **`spectrespace.py`** keeps the full substitution tree: for every node, its local placement (including the mirror diag(−1,1) applied to every slot), its global transform, its 4 corners and its centre. It lifts O(2) → SO(3) via L ↦ diag(L, det L), so each 2D flip becomes a half twist about its mirror axis and every parent→child edge becomes a twisted ribbon.
+- At depth 3: 567 placements have det −1 and 126 have det +1, and the +1 ones are exactly the Γ₁/Γ₂ pairs. So parity is one global clock per level, and the per-tile information is the rotation angle; the 30° angles come only from Γ₂.
+- **`spectre_flip.py`** checks that `trot_inv()`'s ±1 agrees with sign(det).
+- **`spectreseal.py`** thickens the ribbons into ellipsoid chains, takes a smooth union, and extracts a closed mesh by marching cubes. It reports whether the mesh is sealed, its Euler characteristic and its genus. The genus depends on thickness and blending, which are render choices.
+- **Holonomy figure** (`paper/figures/spectre_holonomy.png`; the script is not on master yet):
+  - The normal is forced: n = det(L)·ẑ.
+  - The edge quaternions generate a group of order 48 with binary-dihedral element orders, the same for every twist sign.
+  - Changing the twist sign only multiplies node holonomies by ±1, so it is a gauge choice.
+  - The Z₂ flux around a vertex is (−1)^w, where w is the winding number of the orientation field.
+  - Convention-independent vortices (−1 flux, not from a 180° pair): 28 at depth 3 and 372 at depth 4. All are valence-3 vertices where three tiles meet at 120°, mostly Π/Ψ/Φ triples, and none touches a Mystic.
+
+### Why this matters for our programme
+The vortices are a **local pattern** (a vertex star). Their density is therefore a patch frequency, which item C predicts must lie in the module (5−√15)⁻¹ℤ[√15]. The twist-sign gauge result and the forced normal settle the "arrow of time" question for holonomies, and leave writhe/linking as the only place where a twist sign could still be physical. Together these give exact, falsifiable statements to put in place of the figures' descriptive claims.
+
+### Big plan: research tasks, in priority order
+Each task ends in a theorem, an exact number, or a documented negative result. Cluster runs only.
+
+**R1. Exact vortex density (links Brent's holonomy to C).** *Cheap, high value.*
+- Extend `research/gap_collared.py` to classify vertex stars (valence, labels, relative orientations), and mark the convention-independent −1 vortices.
+- Compute the exact frequency per tile from the collared Perron vector over Q(√15).
+- Prediction: it lies in ℤ + ℤ(5+√15)/10.
+- Check: the ratio 372/28 ≈ 13.3, against λ² ≈ 7.87 per level. Expected agreement after boundary correction, because depth 4 has more interior.
+- Deliverable: "vortex density = exact number", which places the flux in the gap-labelling group.
+
+**R2. Vortices as a model set.**
+- Map the vortex positions into the internal space using the star map from item B (F on even levels, F∘Mirror on odd levels).
+- Determine whether they fill a sub-window W_v ⊂ W. If so, the vortex set is a model set and its density equals area(W_v)/area(W), which cross-checks R1.
+- Find which supertile slots carry vortices; this gives the substitution rule for vortices.
+
+**R3. The Z₂ flux as a cohomology class.**
+- The vertex flux is a Z₂ 2-cochain on the tiling. Decide whether its class in Ȟ²(Ω; Z₂) is nonzero. Use BGMS: Ȟ²(Ω; ℤ) = ℤ¹⁰, which gives Ȟ²(Ω; Z₂) by the universal coefficient theorem.
+- A nonzero class means the vortices cannot be removed by any local re-gauging, which turns "convention-independent" into a theorem.
+- Approach: Anderson–Putnam complex on collared tiles (the item-3 first run, now with Z₂ coefficients). This is integer linear algebra.
+
+**R4. Identify the order-48 group exactly.**
+- Prove which group the edge holonomies generate. The candidates are the binary dihedral group of order 48 (Dic₁₂) and the binary group lifting D₁₂. Check the element orders against the counts 26 and 8 by exact quaternion arithmetic in Q(√2, √3).
+- Prove that it is independent of the twist sign: the sign change is a coboundary. Short, and suitable for the paper's holonomy section.
+
+**R5. Parity clock in closed form.**
+- Derive the counts of det = ±1 placements per level from the 9×9 substitution matrix, for example 567/126 at depth 3: det +1 exactly for the Γ₁/Γ₂ pair, det −1 for the rest.
+- Relate this to the −1 left eigenvector Q₋ already in the paper. Exact, a few lines.
+
+**R6. Ribbon linking, twist and writhe.**
+- For the twisted ribbons with each choice of twist sign (+1, −1, alt), compute twist and writhe exactly and check Călugăreanu: Lk = Tw + Wr.
+- Holonomy cannot see the twist sign (gauge), but Lk can. Measure whether Lk or its density grows like λ^{2k}, whether it differs between the sign choices, and whether it relates to the exact swirl slope A = (27/100)(√5+√15)(1−2i) from item A.
+- This is the only remaining candidate for a physical arrow of time in the ribbon picture: either a positive result or a clean negative.
+
+**R7. Genus of the sealed surface: robust or artefact?**
+- Sweep `spectreseal.py` over the thickness and blending radius at depths 2–4, and record the plateaus of genus.
+- Fit genus(depth) against node counts (N_k ~ λ^{2k}).
+- If a plateau exists, the plateau genus is a combinatorial invariant of the tree. The candidate formula is genus = (number of independent ribbon contacts) − (number of components) + 1. Otherwise, document it as a render artefact so the paper does not claim it.
+
+**R8. Tight-binding with π-flux at vortices (joins item 4 and C step 3).**
+- Put the Z₂ flux into the item-4 Hamiltonian as π-flux at each vortex, and compare the IDS and gaps with and without it.
+- Gap labels must still lie in the C module (gap labelling is gauge-covariant). A violation would show a numerical or modelling error.
+- Run Bott-index tests for flux-induced topological gaps.
+
+**R9 (carry-over). C step 3:** gap positions of the plain tight-binding IDS against (5−√15)⁻¹ℤ[√15], on level-4/5 patches.
+
+**R10 (carry-over). E:** a Galois-conjugate formula for seam dimensions. **F:** Chair44, a 3D counterpart. **B:** an exact GIFS from the self-similar control points.
+
+### Recommended order
+1. **Now:** R9 (C step 3), which is already scripted infrastructure.
+2. **Next:** R1, which reuses `gap_collared.py` and is the strongest link to Brent's figure. Then R5 and R4, which are short exact proofs.
+3. **Then:** R3 (cohomology with Z₂ coefficients) and R2 (vortex window), which together could give the "flux is topological" theorem.
+4. **Parallel numerics:** R6 (linking) and R8 (flux Hamiltonian).
+5. **Last:** R7 (genus robustness, cheap but low value), then E and F.
+
+### Notes for syncing
+- PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolve that by hand with Brent before merging; it was not merged here.
+- `spectre_holonomy.py` is referenced in the figures README but not committed upstream. Ask for it before starting R1–R4, so that the vortex classification matches his conventions exactly.
