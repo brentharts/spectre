@@ -195,3 +195,11 @@ Each item ends in either a theorem or a documented negative result. For any run 
 > **Next:** test whether F intertwines rotation by ζ and conjugation with fixed 2×2 maps.
 > - If yes, the GIFS has 9 labels × 12 orientations × 2 chiralities as states, with internal maps R(a)·φ*.
 > - If no, the states must carry the full 16D key-point data.
+
+### B, equivariance settled (job 1696630)
+Exact test over Q(sqrt15). Let F be the even-level frame and F·Mi the odd-level frame.
+- zeta^2 (60°) intertwines each frame with itself. R = [[2.5108, -2.8514], [1.6811, -1.5108]] has trace 1 and det 1, so it is a rotation of order 6 in a skew basis.
+- conj and the mirror swap the two frames, with R = -I and R = I.
+- zeta (30°) fails in every pairing, which matches step 1. Placements never use it.
+Consequence: the GIFS states are label × 6 orientations × 2 chiralities, and each internal map is R(rotation)·(the star image of the child offset), with the frame alternating by level.
+Next: build the GIFS, close the neighbour graph, and compute the SCC spectral radii against 5+2√6.
