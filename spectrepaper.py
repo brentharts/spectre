@@ -976,6 +976,14 @@ and not a proof of it.
 
 
 
+def _chair_parts():
+    """chair_section() with the hull and lines subsections placed between the 2-adic route and the
+    chirality subsection, which is the order the selftest and the cross-references assume."""
+    head = r'\subsection{Why Three Dimensions Do Not Automatically Resolve Chirality}'
+    before, after = chair_section().split(head, 1)
+    return [before, hull_subsection(), lines_subsection(), head + after]
+
+
 def hull_subsection():
     """Every Chair44 tiling lies in the hull, and the symmetry groups of tilings (Romanov).  The counts
     of legal blocks and fixed seeds are Facts of chair44facts.py (chair44_hull.py); the admissible-block
@@ -2118,9 +2126,26 @@ tiles.
 """, perron=tex(F.get('perron').value))
 
 def abstract_new(full=True):
-    return (r'''
-This paper joins exact spectral, geometric, and gauge-theoretic computations on aperiodic tilings and loop quantum gravity, dynamically verified during compilation. Part I compares the planar Spectre monotile ($\lambda^2 = 4 + \sqrt{15}$ inflation, boundary dimension $\log(2+\sqrt{5})/\log\lambda \approx 1.3993$, internal window seam dimension $\approx 1.1110$) with the 3D Chair44 (integer inflation 2, 2-adic internal space, substitution hull proof, and classification of tiling symmetries as $1, C_2^{\text{diag}}, C_4, D_4$). Incorporating the 2D Big Bang Pancake Model, we conjecture, without deriving it from the computations of Parts I and II, that the vanishing of Weyl curvature at the initial singularity corresponds to a flat, 2D Spectre substrate phase—where 2D internal space, the mirror-parity flips of the substitution, and aperiodic substitution would encode initial-state kinematical degrees of freedom prior to 3D bulk emergence. Part II uses the spin-network states and the area and volume operators of loop quantum gravity on a two-plaquette $SU(2)$ lattice gauge theory, a fixed graph with a gauge-theory Hamiltonian, deriving exact strong/weak coupling area spectra ($2/(3g^8)$ and $3/(\sqrt{10}g^2)$), fixing the Immirzi parameter $\gamma_I = \ln 2 / (\pi\sqrt{3})$ via spin-$\frac{1}{2}$ puncture counts, and evaluating intertwiner volume spectra and related OpenAI release entries. It does not construct the Hamiltonian constraint of gravity, does not address the problem of time, and couples no matter fields.@SCOPE@
-    '''.replace('@SCOPE@', ' Section~\\ref{sec:scope} says what is and is not covered.' if full else ''))
+    """The abstract.  Proved results, numerical evidence and the speculative physical reading are kept apart."""
+    text = r"""
+\begin{abstract}
+This paper joins exact spectral, geometric and gauge-theoretic computations on aperiodic tilings and loop quantum gravity;
+every number quoted is generated when the paper is built, and \nChecks{} registered checks test that stated formulas agree
+with one another and with independent computation (they do not re-prove the theorems).  Part~I compares the planar Spectre
+monotile (inflation $\lambda^2 = 4 + \sqrt{15}$, supertile boundary of box dimension $\log(2+\sqrt{5})/\log\lambda \approx 1.3993$,
+internal-window seams of dimension $\log(\sqrt2+\sqrt3)/\log\lambda\approx 1.1110$, a lower bound for the dimension of the
+window boundary) with the three-dimensional Chair44 (integer inflation $2$, $2$-adic internal space, a substitution hull
+theorem, and tiling symmetry groups $1$, $C_2$, $C_4$, $D_4$).  A separate, clearly marked section states a speculative
+reading, not derived here: that a flat two-dimensional initial surface, on which the $2{+}1$ Weyl tensor vanishes identically,
+would carry Spectre-like structure, with three-dimensional space emerging in a Chair44-like step.  Part~II reads a two-plaquette
+$SU(2)$ lattice gauge theory in the language of loop quantum gravity, with exact strong- and weak-coupling area spectra
+$2/(3g^8)$ and $3/(\sqrt{10}g^2)$, the Immirzi value $\gamma_I = \ln 2 / (\pi\sqrt{3})$ from spin-$\tfrac12$ puncture counting,
+and intertwiner volume spectra, and relates them to entries of the OpenAI math release; that material is fork-level and is not
+an official OpenAI document.  It does not construct the Hamiltonian constraint of gravity, does not address the problem of
+time, and couples no matter fields; Section~\ref{sec:scope} says what is and is not covered.
+\end{abstract}
+"""
+    return text if full else tilings_abstract()
 
 def abstract(full=True):
     """The abstract: Part I's (the abstract this paper had) alone, or joined with those of Parts II and III."""
@@ -2687,164 +2712,66 @@ about supertile centres.  (c) Outline-signature distance between same-type super
 rotation only and with reflection.""")
 
 def phys_pancake():
+    '''The speculative reading of Section~sec:phys, written in terms of the results of Part I.  Every exact statement here is
+    a pointer to a result proved elsewhere in the paper; everything else is labelled as a proposal.'''
     return r'''
-\section{Weyl Curvature and Internal Space Dynamics}
+\section{The pancake surface in terms of Part~I}
+\label{sec:pancake}
+
+This section restates the reading of Section~\ref{sec:phys} in the quantities of Part~I.  The exact statements in it are
+pointers to results proved elsewhere in this paper; the physical identifications are proposals, as in
+Section~\ref{sec:phys}, and nothing in this section is derived.
 
 In canonical quantum gravity, defining a globally background-independent state at $t=0$ faces severe measure-theoretic and constraint-algebraic obstacles. This paper does not meet those obstacles, and Section~\ref{sec:scope} lists what it leaves open. It restricts attention to kinematics: a single 2D spatial slice $\Sigma_0$ whose kinematical degrees of freedom are encoded by an aperiodic monotile inflation algebra, with no dynamics, constraint or time evolution defined on it.
 
-Let the 2D initial surface $\Sigma_0$ be discretized by unit edge directions $z^k = e^{ik\pi/6}$ for $k \in \mathbb{Z}/12\mathbb{Z}$. Every vertex $x \in \Sigma_0$ maps to a point in the rank-four integer module:
-\begin{equation}
-x(p,q,r,s) = p + q\omega + z(r + s\omega) \;\in\; \mathbb{Z}[\zeta_{12}], \quad \omega = e^{i\pi/3}, \; z = e^{i\pi/6}
-\end{equation}
+\paragraph{The vertex module and the internal plane (exact).}  The vertices of a Spectre tiling lie in the rank-four module
+$\mathbb{Z}[\zeta_{12}]$, $x=p+q\omega+z(r+s\omega)$ with $\omega=e^{i\pi/3}$, $z=e^{i\pi/6}$.  One level of the inflation is
+the $16\times16$ integer matrix $\Phi$ of Fact~\ref{fact:lift}, whose characteristic polynomial is
+$(x-1)^{4}(x+1)^{4}(x^{4}-8x^{2}+1)^{2}$, with expanding eigenvalues $\pm\lambda$, $\lambda=\tfrac12(\sqrt6+\sqrt{10})$,
+contracting $\pm\lambda^{-1}$ and marginal $\pm1$.  Projecting along the expanding plane gives a two-dimensional internal space and
+a window $W$ (Theorem~\ref{thm:window}).  The seams of $W$ have box dimension $\log(\sqrt2+\sqrt3)/\log\lambda\approx1.110977$,
+and this is a \emph{lower} bound for the box dimension of $\partial W$; the equality is conjectured
+(Section~\ref{sec:lift}), and no bound on the Hausdorff dimension of $\partial W$ is claimed.
 
-\section{Internal Space Window and Scale Invariance}
+\paragraph{Area and perimeter (exact).}  Supertile areas grow by $\lambda^{2}$, a unit of $\mathbb{Z}[\sqrt{15}]$, while the
+perimeter is $P(k)=2F_{3k+5}+4$ at every order (Theorem~\ref{thm:bdy}), growing by $\nu=2+\sqrt5=\varphi^{3}$, and the limiting
+boundary has box dimension $\log\nu/\log\lambda\approx1.399253$ (Theorem~\ref{thm:frac}).  The two growth rates lie in different
+quadratic fields, so area and perimeter do not scale together at any order.
 
-Under inflation, one level of supertile substitution operates as a $16 \times 16$ integer matrix $\Phi$ acting on four quadrilateral key-points $q_k \in \mathbb{Z}^{16}$.
+\paragraph{Parity and twist (exact).}  The construction mirrors at every level: the charge $Q_{-}$ of
+Fact~\ref{fact:charges} is a left eigenvector of the species matrix for $-1$, and the determinant of the placements alternates.
+The supertile is turned by $\theta_{S}$ with $\tan\theta_{S}=(5\sqrt3-6)/13$, $\theta_{S}\approx11.565^{\circ}$
+(Fact~\ref{fact:twist}).
 
-\subsection{Inflation Eigenvalues and Pisot Decomposition}
+\paragraph{Configurational entropy (known in general).}  A substitution tiling is linearly repetitive, so the number of
+distinct patches of radius $L$ grows like $L^{2}$~\cite{LagariasPleasants}, and $k_{B}\ln\Omega(L)\sim2k_{B}\ln L$: the
+configurational entropy per unit area vanishes.  This holds for every such planar tiling and does not single out the Spectre.
 
-The characteristic polynomial of the inflation operator factorizes as:
-\begin{equation}
-\chi_{\Phi}(x) = (x-1)^4 (x+1)^4 \left(x^4 - 8x^2 + 1\right)^2
-\end{equation}
-The roots of the quadratic factor $x^2 - 8x + 1 = 0$ yield the fundamental Perron eigenvalue $\lambda^2 = 4 + \sqrt{15}$ of $\mathbb{Z}[\sqrt{15}]$ and its Pisot conjugate $\lambda^{-2} = 4 - \sqrt{15}$:
-\begin{equation}
-\lambda = \frac{1}{2}\left(\sqrt{6} + \sqrt{10}\right) \approx 2.80588, \quad \lambda^{-1} = \frac{1}{2}\left(\sqrt{10} - \sqrt{6}\right) \approx 0.35638
-\end{equation}
+\paragraph{Weyl curvature (classical).}  In $2{+}1$ dimensions the Weyl tensor vanishes identically; Remark~\ref{rem:weyl} states the
+proposal that connects this with Penrose's Weyl curvature hypothesis and lists what it would need.
 
-\subsection{Projection onto Bounded Internal Space}
-
-Projecting $\mathbb{Z}[\zeta_{12}]$ along the expanding eigenplane defines a bounded internal space $\mathbb{E}_{\text{int}} \cong \mathbb{R}^2$. The spatial coordinates fill an internal window $W \subset \mathbb{E}_{\text{int}}$ defined as the compact attractor of graph-directed similarities:
-\begin{equation}
-Z_p(S) = \bigcup_{i} \overline{A}_i^{-1} \left( \gamma_{i,p} + \lambda^{-1} \bigcup_{S'} Z_{p+1}(S') \right)
-\end{equation}
-where $p \in \{0, 1\}$ represents the level parity. The boundary $\partial W$ is fractal with lower box dimension:
-\begin{equation}
-\dim_B(\partial W) = \frac{\log\left(\sqrt{2} + \sqrt{3}\right)}{\log \lambda} = \frac{\log(5 + 2\sqrt{6})}{\log(4 + \sqrt{15})} \approx 1.110977
-\end{equation}
-
-\section{The Weyl Curvature Hypothesis at the Singularity}
-
-In $3D$ spacetime ($2+1$ dimensions), the Riemann curvature tensor $R_{\alpha\beta\gamma\delta}$ is completely determined by the Ricci tensor $R_{\alpha\beta}$ and scalar $R$:
-\begin{equation}
-R_{\alpha\beta\gamma\delta} = g_{\alpha\gamma}R_{\beta\delta} - g_{\alpha\delta}R_{\beta\gamma} - g_{\beta\gamma}R_{\alpha\delta} + g_{\beta\delta}R_{\alpha\gamma} - \frac{1}{2}R \left(g_{\alpha\gamma}g_{\beta\delta} - g_{\alpha\delta}g_{\beta\gamma}\right)
-\end{equation}
-Consequently, the Weyl conformal curvature tensor vanishes identically:
-\begin{equation}
-C_{\alpha\beta\gamma\delta}^{(2+1)} \equiv 0
-\end{equation}
-This offers a precise mathematical mechanism for Penrose's Weyl Curvature Hypothesis ($C_{\alpha\beta\gamma\delta} \to 0$ at initial singularities). The local gravitational degrees of freedom (free gravitational radiation) first emerge when transitioning to $3+1$ dimensions ($\mathbb{R}^3 \times \mathbb{R}$), associated with the three-dimensional Chair44 substitution structure.
-
-\section{Thermodynamic vs. Configurational Entropy}
-
-The monotile surface exhibits an inherent duality between informational complexity and physical order:
-
-\subsection{Configurational Entropy}
-Due to the non-periodic hierarchical structure, the count of distinct legal local patches of diameter $L$ scales polynomially:
-\begin{equation}
-S_{\text{config}}(L) = k_B \ln \Omega(L) \sim k_B \cdot c \ln L
-\end{equation}
-In the infinite-volume limit, the thermodynamic configurational entropy per unit area vanishes:
-\begin{equation}
-s_{\text{config}} = \lim_{A \to \infty} \frac{S_{\text{config}}(A)}{A} = 0
-\end{equation}
-
-\subsection{Boundary Growth and Area-Perimeter Separation}
-For a supertile of order $k$, the area $A(k)$ and perimeter $P(k)$ obey distinct algebraic field extensions:
-\begin{equation}
-A(k) \propto \lambda^{2k} \in \mathbb{Q}(\sqrt{15}), \quad P(k) = 2F_{3k+5} + 4 \propto \nu^k \in \mathbb{Q}(\sqrt{5})
-\end{equation}
-where $\nu = 2 + \sqrt{5} = \varphi^3 \approx 4.236068$. The fractal dimension of the physical supertile boundary is:
-\begin{equation}
-D_b = \frac{\log \nu}{\log \lambda} = \frac{\log(2 + \sqrt{5})}{\log \left(\frac{\sqrt{6}+\sqrt{10}}{2}\right)} \approx 1.399253
-\end{equation}
-
-\section{Bifurcated Double-Sided Surface Geometry (\texorpdfstring{$\pm$}{+/-} Parity)}
-
-To model a charge-like duality across the pancake singularity $\Sigma_0$ (a sign attached to the two faces; no matter field is coupled and no matter or antimatter is constructed), we introduce a dual normal orientation vector field $\mathbf{n}^\pm = \pm \hat{\mathbf{z}}$ perpendicular to the 2D surface.
-
-\subsection{Mystic Parity Charges and Rotation Twist}
-
-The tile substitution requires a reflection mirror at each level. We define the conserved charge $Q_+$ and alternating parity charge $Q_-$ as left eigenvectors of the species transition matrix $M$:
-\begin{equation}
-Q_+ M = Q_+, \quad Q_- M = -Q_-
-\end{equation}
-where $Q_- = (-1, -1, 2, 0, 1, -1, 0, 1, 0)$. Under consecutive levels, key points undergo a complex dilation-rotation with an irrational twist angle $\theta_S$:
-\begin{equation}
-F(w) = D\bar{w}, \quad \tan \theta_S = \frac{5\sqrt{3} - 6}{13} \implies \theta_S \approx 11.565^\circ
-\end{equation}
-
-\subsection{Chiral Swirl and Field Bifurcation}
-
-On the upper face $\Sigma_0^+$ ($\mathbf{n}^+ = +\hat{\mathbf{z}}$) and lower face $\Sigma_0^-$ ($\mathbf{n}^- = -\hat{\mathbf{z}}$), tile orientations $\theta_j$ induce opposite rotational swirls about supertile centers:
-\begin{equation}
-\langle \mathcal{S}^\pm \rangle = \left\langle \sin(\theta - \phi) \right\rangle_{\Sigma_0^\pm} = \pm \mathcal{S}_0 \approx \mp 0.43
-\end{equation}
-Mapping the self-dual Ashtekar connection components $SU(2)_+$ and $SU(2)_-$ to the top and bottom surface boundaries yields symmetric potential states, a formal assignment, since this paper defines no connection on the slice:
-\begin{equation}
-\Psi_{\text{universe}} = \left| \Sigma_0^+ ,\, \mathbf{n}^+ ,\, + \theta_S \right\rangle \;\otimes\; \left| \Sigma_0^- ,\, \mathbf{n}^- ,\, - \theta_S \right\rangle
-\end{equation}
-This writes down an initial, globally entangled state where attractive and repulsive potential fields would originate from dual boundary pairings across the $2D$ horizon; it is a notation for the proposal, and no field, Hamiltonian or evolution is defined on it.
-
-\section{Mathematics of the Pancake Monotile Horizon}
-
-In this section, we present an exhaustive formulation of the Pancake Monotile Horizon ($\Sigma_0$), treating it as a non-perturbative, self-assembling topological boundary at $t=0$.
-
-\subsection{Algebraic Geometry of the 4D Rank-Four Module}
-The spatial vertices $V(\Sigma_0)$ reside strictly in the integer cyclotomic ring $\mathbb{Z}[\zeta_{12}]$, spanned by the basis $\{1, \omega, z, zw\}$ where $\omega = e^{i\pi/3}$ and $z = e^{i\pi/6}$. The physical location $X \in \mathbb{R}^2 \cong \mathbb{C}$ and internal coordinate $Y \in \mathbb{E}_{\text{int}} \cong \mathbb{C}$ of any vertex $(p,q,r,s) \in \mathbb{Z}^4$ are extracted via orthogonal algebraic projections:
-\begin{equation}
-X(p,q,r,s) = a(p + q\omega) + b z(r + s\omega), \quad a,b \in \mathbb{R}
-\end{equation}
-The quadratic tile area form is homogeneous in $(a,b)$:
-\begin{equation}
-\text{Area}(Tile) = \frac{\sqrt{3}}{2}\left(a^2 + b^2 + ab\sqrt{3}\right)
-\end{equation}
-
-\subsection{\texorpdfstring{The $16 \times 16$ Inflation Transfer Matrix and Pisot Spectrum}{The 16x16 Inflation Transfer Matrix and Pisot Spectrum}}
-A single substitution step maps the four key points of a quadrilateral supertile $q_k = (v_1, v_2, v_3, v_4)^T \in (\mathbb{Z}[\zeta_{12}])^4 \cong \mathbb{Z}^{16}$ via the unimodular transformation matrix $\Phi \in \text{GL}(16, \mathbb{Z})$. The cyclic subspace generated by $q_0$ carries the companion operator $C_\Phi$:
-\begin{equation}
-C_\Phi = \begin{bmatrix}
-0 & 0 & 0 & -1 \\
-1 & 0 & 0 & 0 \\
-0 & 1 & 0 & 8 \\
-0 & 0 & 1 & 0
-\end{bmatrix}, \quad \det(C_\Phi) = 1, \quad \text{Tr}(C_\Phi) = 0
-\end{equation}
-The characteristic polynomial decomposes cleanly over $\mathbb{Q}$:
-\begin{equation}
-P(x) = x^4 - 8x^2 + 1 = \left(x^2 - (4+\sqrt{15})\right)\left(x^2 - (4-\sqrt{15})\right)
-\end{equation}
-yielding the two expanding eigenvalues $\pm \lambda = \pm \frac{1}{2}(\sqrt{6}+\sqrt{10})$ and two contracting Pisot conjugate eigenvalues $\pm \lambda^{-1} = \pm \frac{1}{2}(\sqrt{10}-\sqrt{6})$.
-
-\subsection{Exact Seam Dimensions and Graph-Directed Attractor Windows}
-The internal window $W \subset \mathbb{E}_{\text{int}}$ is the unique fixed attractor of the graph-directed system of contracting similarities $Z_p(S)$ with ratio $\lambda^{-1}$. The seams $\Sigma_p(S)$ where distinct internal window sub-pieces intersect carry a contact transition matrix $M_{\text{seam}}$ of size $1192 \times 1192$ whose spectral radius is $\rho(M_{\text{seam}}) = \sqrt{2} + \sqrt{3}$.
-
-\begin{thm}[Exact Seam Box and Hausdorff Dimension]
-The Hausdorff and box dimensions of the internal window seams $\Sigma_p(S)$ are strictly equal and given by:
-\begin{equation}
-\dim_H(\Sigma_p) = \dim_B(\Sigma_p) = \frac{\ln\left(\sqrt{2} + \sqrt{3}\right)}{\ln \lambda} = \frac{\ln(5 + 2\sqrt{6})}{\ln(4 + \sqrt{15})} \approx 1.110977\dots
-\end{equation}
-\end{thm}
-This establishes a rigorous lower bound for the boundary dimension of the internal space window:
-\begin{equation}
-\dim_H(\partial W) \ge \frac{\ln(\sqrt{2}+\sqrt{3})}{\ln \lambda} \approx 1.110977
-\end{equation}
-
-\subsection{Parity-Coupled Field Equations and Topological Singularities}
-We formulate the initial state vector $|\Psi(\Sigma_0)\rangle$ as a topological superposition over the dual faces of the pancake surface:
-\begin{equation}
-|\Psi(\Sigma_0)\rangle = \frac{1}{\sqrt{2}} \left( |\Gamma_1\rangle \otimes |+\mathbf{n}, +\theta_S\rangle + |\Gamma_2\rangle \otimes |-\mathbf{n}, -\theta_S\rangle \right)
-\end{equation}
-where $\Gamma_1$ and $\Gamma_2 = \text{Tile}(b,a)$ represent the Mystic pair related by spatial mirror reflections. Because the boundary perimeter grows as $P(k) = 2F_{3k+5} + 4 \in \mathbb{Q}(\sqrt{5})$ while the internal area grows as $A(k) \sim \lambda^{2k} \in \mathbb{Q}(\sqrt{15})$, the initial state enforces a complete structural separation between physical spatial expansion and holographic horizon boundary states.
-    '''
+\begin{remark}[A two-sided surface; proposal, not derived]
+\label{rem:twosided}
+The first author proposes giving the initial surface $\Sigma_{0}$ two faces with normals $\pm\hat{\mathbf z}$, assigning the
+mirror pair of the construction (Tile$(a,b)$ and Tile$(b,a)$) and the twists $\pm\theta_{S}$ to the two faces, and assigning
+the self-dual and anti-self-dual parts $SU(2)_{\pm}$ of the Ashtekar connection to them, so that the initial state would be a
+superposition such as
+$\tfrac1{\sqrt2}\bigl(|\Gamma_{1}\rangle\otimes|{+}\hat{\mathbf z},{+}\theta_{S}\rangle+|\Gamma_{2}\rangle\otimes|{-}\hat{\mathbf z},{-}\theta_{S}\rangle\bigr)$.
+None of this is constructed: no Hilbert space, connection or dynamics is defined on the tiling.  What Part~I does measure is
+weaker: the swirl $\langle\sin(\theta-\phi)\rangle$ of tile orientations about supertile centres has one sign, negative, at every
+level computed (Section~\ref{sec:hier}), and reflection-odd pair statistics do not alternate with level, so the computed
+patches show no face-dependent sign that this assignment could be checked against.
+\end{remark}
+'''
 
 def phys_section():
     return r'''
 \section{The Big Bang Pancake Conjecture}
 \label{sec:phys}
 
-    The ``Big Bang Pancake'' concept (Kip Thorne 1967 "pancake" singularity): 
-    is an initial state of the universe modeled as a flat, two-dimensional spatial singularity ($\Sigma_0$) carrying aperiodic monotile geometry. By embedding the 2D Spectre/Mystic substitution rules into a 4D rank-four module $\mathbb{Z}[\zeta_{12}]$, we isolate the bounded internal-space window $W$ that encodes structural degrees of freedom without requiring continuous background metrics. We demonstrate how the identical vanishing of the 3D spacetime Weyl tensor ($C_{\alpha\beta\gamma\delta}^{(2+1)} \equiv 0$) models an initial zero-entropy state. Finally, we formalize the double-sided surface geometry, where Mystic parity flips ($\Gamma_1, \Gamma_2$) and dual surface-normal orientations ($\mathbf{n}^\pm$) establish mirror-symmetric states across the singularity boundary; ``chiral'' here refers to the handedness of the tiles and the parity flips of the substitution, not to the chirality of fermions (Section~\ref{sec:scope}).
+Nothing in this section or in Section~\ref{sec:pancake} is derived; both state a speculative reading, kept apart from the
+results of Part~I.  The name echoes Zel'dovich's ``pancakes''~\cite{Zeldovich1970}, the flattened sheets in which matter first
+collapses in his approximation for gravitational instability; the conjecture below borrows the image, not that theory.
 This conjecture about the initial state of the universe is stated so that it can be argued with: the Big Bang was a flat
 two-dimensional singularity, connected to the planar Spectre monotile~\cite{SmithEtAl2}, and the emergence of three-dimensional space is
 connected to Tsiokos's Chair44 \cite{Tsiokos1}.
@@ -3091,7 +3018,7 @@ All source code and data supporting this study are available at:
 \newline
 \url{https://github.com/brentharts/six-birds-tiles/}
 \newline
-\url{https://github.com/brentharts/openai_math_yang_mills}
+\url{https://github.com/brentharts/openai_math_yang_mills/tree/a794569ea08b24222ebab7a4c838c1c3ee375657} (commit \code{a794569})
 
 """
 
@@ -3187,6 +3114,12 @@ arXiv:hep-th/0603022 (2006); DOI 10.1088/0264-9381/24/16/002.
 
 BIBLIOGRAPHY = r"""
 \begin{thebibliography}{99}
+
+\bibitem{Zeldovich1970} Ya.~B.~Zel'dovich, \emph{Gravitational instability: an approximate theory for large density
+perturbations}, Astron.\ Astrophys.\ \textbf{5} (1970) 84--89.
+
+\bibitem{LagariasPleasants} J.~C.~Lagarias and P.~A.~B.~Pleasants, \emph{Repetitive Delone sets and quasicrystals},
+Ergodic Theory Dynam.\ Systems \textbf{23} (2003) 831--867.
 
 \bibitem{SmithEtAl} D.~Smith, J.~S.~Myers, C.~S.~Kaplan and C.~Goodman-Strauss, \emph{An aperiodic monotile},
 Combin.\ Theory \textbf{4}(1) (2024); arXiv:2303.10798.
@@ -3327,22 +3260,16 @@ def document(full=True, toc=False, overview=False):
         spectral_section(), census_section(), charges_section(), twist_subsection(),
         boundary_operator_section(), boundary_additions(),
         lift_section(),
-        chair_section(), hull_subsection(), lines_subsection(),
+        *_chair_parts(),
         unfolding_section(), exact_section(), hierarchy_section(),
+        phys_section(), phys_pancake(), scope_section(),
+        conclusion_section(),
     ]
     if full:
         pieces += [
-            r'\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}', 
-            phys_section(),
-            phys_pancake(),
-            scope_section(),
-            conclusion_section(),
-            r'\appendix',
-            r'\footnotesize',
-            r'\label{part:qg}', qg_main,
-            r'\part{The OpenAI release}', 
-            r'\label{part:release}', 
-            release]
+            r'\part{Quantum geometry on the \texorpdfstring{$SU(2)$}{SU(2)} ladder}', r'\label{part:qg}', qg_main,
+            r'\part{The OpenAI release}', r'\label{part:release}', release]
+    pieces.append(r'\appendix')
     if full:
         pieces.append(qg_appendix)
     pieces.append(supplement_pointer())
@@ -3635,10 +3562,10 @@ def selftest():
     check('the einstein property is still called Tsiokos\'s claim',
           'remain Tsiokos\'s claim' in ' '.join(hull.split()))
     tsio = text.split(r'\bibitem{Tsiokos1}')[1].split(r'\bibitem{')[0]
-    check('2609.23783 is no longer credited to Tsiokos; the three new references are listed and cited',
+    check('2609.23783 is no longer credited to Tsiokos; the new references are listed and cited',
           '2609.23783' not in tsio and 'arXiv:2609.19214' in tsio
           and all((r'\bibitem{%s}' % k) in text and (r'\cite{%s' % k in text or (',%s}' % k) in text)
-                  for k in ('GoodmanStrauss', 'Flicker', 'Romanov')))
+                  for k in ('GoodmanStrauss', 'Flicker')))
     check('the Chair44 table has the symmetry-group row', 'symmetry groups of a tiling' in text)
     check('chair44_hull recomputes the legal blocks, their closure and the fixed seeds', HU.run_tests(verbose=False))
 
@@ -3672,6 +3599,20 @@ def selftest():
           document_problems(full) == [])
     check('the title is the combined one', (r'\title{%s}' % TITLE) in full)
     check('the three parts are there', all(('\\label{%s}' % k) in full for k in ('part:tilings', 'part:qg', 'part:release')))
+    pos = lambda k: full.index(k)
+    check('each part label follows its own \\part, and the appendix follows all three',
+          pos(r'\part{Quantum geometry') < pos(r'\label{part:qg}') < pos(r'\part{The OpenAI release}')
+          < pos(r'\label{part:release}') < pos(r'\appendix')
+          and full[pos(r'\part{Quantum geometry'):pos(r'\label{part:qg}')].count(r'\section') == 0)
+    check('the physics reading and the conclusion are in Part I',
+          pos(r'\label{sec:phys}') < pos(r'\label{sec:pancake}') < pos(r'\label{sec:conclusion}') < pos(r'\part{Quantum geometry'))
+    check('the abstract is an abstract environment', full.count(r'\begin{abstract}') == 1 and full.count(r'\end{abstract}') == 1)
+    pancake = full[pos(r'\label{sec:pancake}'):pos(r'\label{sec:conclusion}')]
+    check('the window boundary dimension is stated only as a lower bound',
+          'lower} bound' in pancake and r'\dim_H(\partial W)' not in full and r'\dim_B(\partial W) =' not in full)
+    check('the speculative sections say they are not derived',
+          'Nothing in this section' in full and 'nothing in this section is derived' in pancake and 'not derived' in pancake)
+    check('no swirl of both signs is claimed', r'\mp 0.43' not in full and 'Thorne' not in full)
     check('every section of the quantum gravity paper is in Part II',
           all(('\\label{qg:sec:%s}' % k) in full for k in ('physics', 'geometry', 'intertwiners', 'ladder', 'strip', 'entropy',
                                                           'einstein', 'penrose', 'kerr', 'maps', 'forest', 'transmutation',
