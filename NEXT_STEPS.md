@@ -178,3 +178,10 @@ Each item ends in either a theorem or a documented negative result. For any run 
   - The double root means a 2×2 Jordan block at λ² in the moment recursion. The sign of Im Z_k is eventually that of Im A < 0.
   - Next: identify A in closed form in ℚ(√3, √15, i) from the 9-label linear system. That proves the sign for all k (the finite range is covered by this computation). Then the swirl normalised by Σ|r| ~ k λ^{2k} / λ^{3k} still → 0, so the invariant is Im A, not the swirl itself.
 - **Result, swirl closed-form fit (2026-11-06):** the 5-term form (Ak+B)λ^{2k} + C(−λ²)^k + D + E(−1)^k fitted exactly on k = 11..15 does **not** reproduce the other levels: the residuals shrink by about 7 per level (0.099 at k = 1, 4e−9 at k = 10, 3e−7 at k = 16), which is the signature of missing (4−√15)^k terms, the Galois conjugate of λ². With that omission Im A ≈ −3.779 (approximate only). Rerun with ±(4−√15)^k terms added and a 7-level exact fit (K = 20).
+
+> **B, progress (2026-11-07).** Two preliminary checks failed, and they narrow the construction.
+> (1) Projecting the supertile translations b_k (ring coordinates in Z[zeta12]) by `exact_bounded_plane()` gives expansion by lambda^2 every two levels and no zeta/conj equivariance.
+> (2) No exact linear map T has b_{k+2} = T b_k. The best fit has eigenvalues ~1, 1, lambda^2, lambda^2, so Z^4 has no contracting direction.
+> This is expected in hindsight, because lambda is not in Q(zeta12).
+> The internal space exists only in the 16D lift (PHI acting on the 4 key points). The GIFS therefore has to be built there, exactly as in the revised method's step 1: restrict `phi_matrix()` to its contracting eigenspace.
+> Scripts: `research/window_gifs.py`, `research/window_gifs_plane.py`.
