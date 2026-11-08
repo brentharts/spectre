@@ -482,3 +482,12 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - The jump in U (0 → 2/3) sharpens and moves down with size: its midpoint is ≈ 0.0862 at N = 4401 and ≈ 0.0855 at N = 34649, rising within Δβ ≈ 0.001.
   - Estimate: β_c ≈ 0.0855 ± 0.0007. A jump this abrupt without a crossing may point to a weakly first-order transition or to strong boundary effects (open spatial boundary). That is a question for later, not a blocker.
 - Remaining follow-up: R8 with complex π/2 flux.
+
+### Item F, why X_k vanishes (2026-11-08, from the recorded tensors)
+
+- For every k ≤ 7 the recorded tensor satisfies T_k = −P T_k Pᵀ, where P is the mirror that swaps x and y. Check: P T Pᵀ = [[a, b, −b], [−b, −a, b], [a+b, −(a+b), 0]] = −T.
+  - That is the transformation rule of an axial-vector correlation under a mirror symmetry of the configuration. So the level-k identity-frame chair supertile is invariant under the x ↔ y mirror (positions reflected, frames conjugated) at every level checked.
+- Consequence: X_k = tr T_k = 0 is forced by symmetry and says nothing about the dynamics.
+  - If the substitution commutes with this mirror, then the Chair44 hull is mirror-closed and every pseudoscalar observable of it vanishes. Unlike the Spectre, the Chair44 hull is achiral.
+  - The recorded tensors confirm the mirror relation numerically at levels 0–7. A proof needs the substitution rule to be checked for equivariance in `symchair44.py`. That is a finite check and a small next step.
+- Item F status: the handedness question is answered negatively (no chirality to find). The traceless tensor is a shape correlation, not a handedness, and is parked.
