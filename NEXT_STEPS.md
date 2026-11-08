@@ -730,3 +730,8 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Then extend the check to the decorations, which proves PC.
 - This turns the computations of items F and G2 into theorems.
 - **Result 2026-11-08: mirror half done.** The check didn't need the collared types; the uncollared cell substitution was enough. `research/chair44_mirror_proof.py` defines the x ↔ y mirror on the 168 labels (24 frames × 7 cells) by (f, k) ↦ (P f P, P c_k), and on octants by b ↦ P b. It checks that sigma[m(l)][P b] = m(sigma[l][b]) for all 1344 pairs: there are 0 failures. The identity-frame seed is also mirror-invariant. By induction, every level-k supertile equals its mirror image. So the achirality of the Chair44 hull (item F) is now a theorem, not just a check up to k ≤ 6. **Still open:** the decoration half (PC).
+
+### H1/H2 status (2026-11-08)
+- H1 (`research/graph_dilation.py`, K=5,6, 8 CPUs) submitted 20:26 UTC.
+- H2 (`research/entanglement_h2.py`, K=3,4, 32 CPUs) submitted 21:25 UTC.
+- Results pending; will fill COMPARISON_TABLE.md H1/H2 rows.
