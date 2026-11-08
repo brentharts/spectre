@@ -491,3 +491,9 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - If the substitution commutes with this mirror, then the Chair44 hull is mirror-closed and every pseudoscalar observable of it vanishes. Unlike the Spectre, the Chair44 hull is achiral.
   - The recorded tensors confirm the mirror relation numerically at levels 0–7. A proof needs the substitution rule to be checked for equivariance in `symchair44.py`. That is a finite check and a small next step.
 - Item F status: the handedness question is answered negatively (no chirality to find). The traceless tensor is a shape correlation, not a handedness, and is parked.
+
+### Submitted 2026-11-08 (sixth batch)
+
+- **R7 genus sweep, third attempt (job 1715742).** Installs scikit-image with `pip --target` into a side directory on PYTHONPATH. The second attempt (1715015) failed because `pip --user` is refused inside the virtualenv. Depths 2–3.
+- **Item F mirror check (`research/chair44_mirror.py`).** Tests directly whether the level-k supertile (k ≤ 6) equals its x ↔ y mirror image with frames conjugated. All True: the Chair44 hull is recorded as achiral and F is closed.
+- Still open: R8 with complex π/2 flux.
