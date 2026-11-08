@@ -422,3 +422,9 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - **Candidate E″:** the seam unit comes from the rotation group of the tile edges, not from the inflation field.
   - **Test:** take Hat-family tiles Tile(a,b), whose inflation factors vary, and check whether the seam unit stays in ℚ(√3) as the inflation field changes. BGS treat the whole family.
 - **Action for the paper.** Drop E′ as a conjecture. If anything is said, present the two seam units side by side as an observation.
+
+### Submitted 2026-11-08 (third batch)
+
+- Step 2, exact vortex density (`research/vortex_density2.py 6`): job 1708335.
+- Step 4, Z₂ deconfinement on the Spectre graph against honeycomb and square controls (`research/z2_deconfinement.py`): job 1709080.
+- Still queued: R8 (1703968), R7 (1703987), R9 (1698583).
