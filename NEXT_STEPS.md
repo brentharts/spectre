@@ -505,3 +505,62 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - This explains X_k ≡ 0: the Chair44 supertiles are achiral, so every pseudoscalar of them vanishes. The Spectre's handedness (item A) has no analogue in Chair44.
   - What would upgrade this to a proof: show that the substitution commutes with the mirror on the 3888 collared types. The check above is the computational evidence for that.
 - **R7 (job 1715742): running.** The scikit-image install succeeded this time.
+
+## Next ideas (2026-11-08, from the discussion with Brent after PR #14)
+
+These ideas turn points from the discussion into tests that can be computed. The tests come first. The most speculative physics is kept apart.
+
+### G. Connect the shapes, not only the expansion rates (top priority)
+
+So far the Spectre and Chair44 are connected only through their expansion rates. Brent's `chair_fibers.py` places the Spectre's 28 Bézier handles against the tips of the chair pyramid, but this is a geometric construction and is not yet a model.
+
+- **Constraint from item F.** The Chair44 hull is achiral, and the Spectre hull is chiral (item A). A construction that commutes with the mirror cannot produce Spectre handedness from Chair44. So any real bridge must break the x ↔ y mirror. That is a quick test to run on every candidate map.
+- **G1.** Read `models/chair_fibers.py` and `GEOMETRY_BRIDGE.md`. Write the proposed correspondence down as an explicit map, from points on the chair tips to vertices or handles of the Spectre.
+- **G2.** Apply the mirror test of `chair44_mirror.py` to that map. If the map commutes with the mirror, it cannot carry the Spectre's handedness, and we record that as a negative result.
+- **G3.** If the map breaks the mirror, check whether it intertwines the substitutions, up to the matching of expansion rates. If it does, it is a genuine shape-level link.
+
+### H. "Space is defined by interactions": compare graph distance with Euclidean distance
+
+The claim is that space is defined by interactions. A version we can test is to ask whether graph distance on the Spectre graph reproduces Euclidean distance.
+
+- **H1, dilation.** Over many vertex pairs, compute the ratio (graph distance)/(Euclidean distance). On periodic lattices this ratio tends to a direction-dependent constant. Does it on the Spectre, and is the limit isotropic? Run square and honeycomb controls.
+- **H2, correlations.** For free fermions at half filling on the Spectre graph:
+  - Compute the mutual information between two small regions. Does it decay with graph distance or with Euclidean distance? (H1 tells us whether these differ.)
+  - Compute the entanglement entropy of discs. Does it follow the area law, or the area law plus a log term? Run the same controls.
+- If the Spectre matches the controls, that is a clean null result (see I).
+
+### I. A table comparing the Spectre with periodic controls
+
+As noted in an earlier review, "the Spectre behaves like any other graph" would itself be a publishable answer. Collect every observable so far in one table, with the Spectre value next to the square and honeycomb values. The observables are:
+
+- vortex density;
+- valence-4 density;
+- β_c for Z₂ deconfinement;
+- Bott indices;
+- gap labels;
+- H1 and H2, once they have run.
+
+The table shows which properties actually depend on the monotile. It would be the central figure of the paper.
+
+### J. Any flow model must obey Bell's inequality limits (a constraint, not a test)
+
+Quantum predictions are statistical. That is a fact about quantum theory, not a gap that a model can fill. Any deterministic, local "energy flow on the tiling" model satisfies CHSH ≤ 2, but experiments reach about 2.8.
+
+So a flow model on the monotile background must give up at least one of the following:
+
+- locality in the tiling metric. This links to the idea in H that there is "no space between" entangled particles;
+- independence of the measurement settings;
+- single outcomes.
+
+Before Part II makes claims about entanglement, it should state which one it gives up.
+
+### K. Turn the speculative documents into tests
+
+Read Brent's `QUANTUM_GRAVITY.md` (in spectre-monotile-py). For each claim, write down a quantity that can be computed on the tiling, and say what result would refute it. Defer any claim with no such quantity. Keep the "12 directions" count (±X, ±Y, ±Z with twists) as a counting statement, and compare it with the Dic12 holonomy group (order 48) from R4.
+
+### Priority
+
+1. G1–G2. They are cheap and use the existing mirror code.
+2. I. A local table of results we already have.
+3. H1, then H2. These are cluster jobs of up to 64 CPUs.
+4. K, then J. These are writing tasks.
