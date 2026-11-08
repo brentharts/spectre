@@ -42,7 +42,7 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 - **π-flux Hamiltonian:**
   - The main spectral gap survives the vortex flux.
   - All Bott indices vanish, as time-reversal symmetry requires.
-- **Chair44 handedness (`research/chair44_handedness.py`):** the natural rotation-invariant pseudoscalar vanishes exactly up to level 7 (14.7M cells), so it shows no chirality. The recorded tensors show why: the supertiles are symmetric under the x ↔ y mirror, so the 3D hull is achiral, unlike the Spectre.
+- **Chair44 handedness (`research/chair44_handedness.py`):** the natural rotation-invariant pseudoscalar vanishes exactly up to level 7 (14.7M cells), so it shows no chirality. The recorded tensors show why: the supertiles are symmetric under the x ↔ y mirror. A direct check confirms they equal their mirror image at every level up to 6 (1.8M cells), so the 3D hull is achiral, unlike the Spectre (`research/chair44_mirror.py`).
 - **Gap labels (R9):** the vertex Hamiltonian has four stable gap edges near IDS 0.315 and 0.685 at levels 3 and 4.
 
 ## Still running

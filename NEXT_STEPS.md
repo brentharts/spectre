@@ -497,3 +497,11 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 - **R7 genus sweep, third attempt (job 1715742).** Installs scikit-image with `pip --target` into a side directory on PYTHONPATH. The second attempt (1715015) failed because `pip --user` is refused inside the virtualenv. Depths 2–3.
 - **Item F mirror check (job 1715771, `research/chair44_mirror.py`).** Tests directly whether the level-k supertile (k ≤ 6) equals its x ↔ y mirror image with frames conjugated. All True: the Chair44 hull is recorded as achiral and F is closed.
 - Still open: R8 with complex π/2 flux.
+
+### Results 2026-11-08 (sixth batch)
+
+- **Item F mirror check (job 1715771): passed. Item F is closed.**
+  - For k = 0..6 (up to 1,835,008 cells), the level-k identity-frame Chair44 supertile equals its image under the x ↔ y mirror, with tile frames conjugated. This was tested as exact set equality.
+  - This explains X_k ≡ 0: the Chair44 supertiles are achiral, so every pseudoscalar of them vanishes. The Spectre's handedness (item A) has no analogue in Chair44.
+  - What would upgrade this to a proof: show that the substitution commutes with the mirror on the 3888 collared types. The check above is the computational evidence for that.
+- **R7 (job 1715742): running.** The scikit-image install succeeded this time.
