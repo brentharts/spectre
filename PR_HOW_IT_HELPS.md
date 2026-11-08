@@ -35,11 +35,13 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 
 ## Still running
 
-These jobs are still running or queued: the exact vortex density (R1, `research/vortex_density2.py`), the Z₂ deconfinement study of plan step 4 (`research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), Their results will be added to this PR as follow-up commits:
+These jobs are still running or queued: the exact vortex density (R1, `research/vortex_density2.py`), the Z₂ deconfinement study of plan step 4 (`research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), and the rational Čech cohomology of the 3D Chair44 hull (item F, `research/chair44_cohomology.py`). Also queued:
 
 - the R8 rerun (Bott index of the flux Hamiltonian)
 - R7 (genus sweep)
 - R9 (gap-ids)
+
+Their results will be added to this PR as follow-up commits.
 
 ## Reproducing
 
