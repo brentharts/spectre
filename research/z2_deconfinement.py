@@ -11,7 +11,7 @@ two system sizes, for the Spectre (K levels) and for honeycomb and square contro
 The square control checks the code against the 3D Ising value beta_c = 0.22165 (open spatial boundaries shift the
 crossing a little).  The crossing must lie where max(U) > 0.15, to reject noise at U ~ 0.  A crossing is reported only if U(small) - U(large) changes sign on the beta grid.
 
-    python research/z2_deconfinement.py OUT.json
+    python research/z2_deconfinement.py OUT.json [spectre5]
 """
 import sys, json
 sys.path.insert(0, "."); sys.path.insert(0, "research")
@@ -83,18 +83,25 @@ def main():
     # honeycomb 0.16-0.17, square 0.22-0.23)
     grids = {"spectre": np.linspace(0.080, 0.095, 16), "honeycomb": np.linspace(0.158, 0.172, 15),
              "square": np.linspace(0.214, 0.230, 17)}
+    sweeps, therm = 2000, 300
+    if len(sys.argv) > 2 and sys.argv[2] == "spectre5":
+        # three Spectre sizes on a narrow grid around the jump at beta ~ 0.086 (fine scan of 2026-11-08)
+        systems = {"spectre": [lambda: spectre_faces(3), lambda: spectre_faces(4), lambda: spectre_faces(5)]}
+        grids = {"spectre": np.linspace(0.0845, 0.0875, 7)}; sweeps, therm = 400, 100
     res = {}
     for name, makers in systems.items():
         runs = []
         for mk in makers:
             nv, faces = mk(); N, E, W = dual_edges(faces)
-            Lt, data = simulate(N, E, W, grids[name], 2000, 300, rng)
+            Lt, data = simulate(N, E, W, grids[name], sweeps, therm, rng)
             zc = float(2 * W.sum() / N)
             runs.append(dict(N=N, Lt=Lt, mean_spatial_coupling=zc, weights=dict(Counter(W.astype(int).tolist())), data=data))
             print(name, N, Lt, "mean weighted coordination", round(zc, 3), flush=True)
-        bc = crossing(runs[0]["data"], runs[1]["data"])
+        bc = crossing(runs[-2]["data"], runs[-1]["data"])
+        if len(runs) > 2:
+            print(name, "crossing of the two smaller sizes", crossing(runs[0]["data"], runs[1]["data"]), flush=True)
         res[name] = dict(runs=runs, beta_c=bc,
-                         beta_c_times_coordination_plus2=None if bc is None else bc * (runs[1]["mean_spatial_coupling"] + 2))
+                         beta_c_times_coordination_plus2=None if bc is None else bc * (runs[-1]["mean_spatial_coupling"] + 2))
         print(name, "beta_c", bc, flush=True)
     json.dump(res, open(out, "w"), indent=1)
 
