@@ -564,3 +564,20 @@ Read Brent's `QUANTUM_GRAVITY.md` (in spectre-monotile-py). For each claim, writ
 2. I. A local table of results we already have.
 3. H1, then H2. These are cluster jobs of up to 64 CPUs.
 4. K, then J. These are writing tasks.
+
+### Results 2026-11-08: G1 and G2
+
+- **G1. What `chair_fibers.py` actually is.**
+  - It hangs one flat Spectre at a placement that is freely chosen.
+  - It pairs the Spectre's 42 attachment points (14 vertices and 28 handles) with 42 of the 192 Chair44 pyramid tips. The pairing is the minimum-energy assignment (Hungarian algorithm) over smoothest cubic fibres.
+  - Its own docstring says the pairing is "not a canonical correspondence". It is a construction for a single tile. It does not map one hull to the other, and it does not act on the substitutions, so G3 does not apply to it yet.
+- **G2. The x ↔ y mirror on the decorated tile** (`research/chair44_decoration_symmetry.py`, exact, run locally):
+  - Under the x ↔ y mirror, all 192 pyramid features land on features of the opposite height. Every bump +j lands on a dent −j and every dent on a bump.
+  - The other two mirrors give 144 opposite and 48 unmatched.
+  - The two non-trivial rotations about the diagonal give 144 matched and 48 unmatched, so the decorated tile has no proper rotational symmetry.
+  - **Conclusion.** The decorated Chair44 tile is chiral as a tile: its mirror image is not one of its rotations. However, mirror ∘ C is an exact symmetry of the tile, where C swaps every bump with the dent of the same depth. Bumps and dents are complementary (+j fits −j), so C maps any valid tiling to a valid tiling. Together with the frame-level mirror invariance (job 1715771), the hull is symmetric under PC, the mirror combined with bump/dent exchange. It is not symmetric under P alone at the level of decorations. That is a CP-like structure.
+  - **What this means for a bridge.**
+    - The Spectre tiles without reflections, and it has no analogue of C.
+    - Fibres attach to tips, so a bridge that respects PC must send the mirror to "Spectre reflection plus something", and that something must play the role of C.
+    - The candidate for that role is the twist sign of the lifted ribbons: R4 found the twist signs coboundary-equivalent, and R6 found no arrow of time. This is the next thing to test for G.
+- **Not yet checked.** Whether C by itself, which swaps bumps and dents, preserves the substitution. If it does not, then PC is the full mirror-type symmetry of the hull.
