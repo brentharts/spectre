@@ -24,6 +24,7 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
    - Fixes:
      - The Bott index in `research/flux_hamiltonian.py` is now computed from eigenvalue phases; before this fix it returned NaN.
      - `research/holonomy_group.py` now records quaternion-convention mismatches instead of aborting.
+   - **R4 independently confirms Brent's holonomy group:** Dic12 of order 48 with 0 mismatches for every twist sign, and the twist signs are coboundary-equivalent. An earlier report of 96 was an encoding bug in my script, now fixed.
    - New tools:
      - `research/genus_sweep.py` checks how stable the genus of `spectreseal` is.
      - `research/parity_clock.py`: its characteristic polynomial is λ⁵(λ−1)(λ+1)(λ²−8λ+1).
@@ -37,7 +38,6 @@ These jobs are still running or queued. Their results will be added to this PR a
 
 - the R8 rerun (Bott index of the flux Hamiltonian)
 - R7 (genus sweep)
-- the R4 rerun, which confirms a bug fix: my script's order 96 came from an encoding error, so Brent's order 48 is correct
 - R9 (gap-ids)
 
 ## Reproducing

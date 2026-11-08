@@ -392,4 +392,4 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 - **R4 holonomy group (1704004): the order 96 was a bug in `research/holonomy_group.py`.** The bug is now fixed.
   - **Cause.** The integer encoding took w = exp(15°·k) to have order 48 with −1 = w²⁴. In fact w has order 24 and w¹² = −1. As a result the closure doubled the group, and multiplying by the "central sign" (0,24) was the identity, so the twist sign was dropped.
   - **Evidence.** Every one of the 66464 mismatches at N=5 is a flip edge with mode −1, where q = −q_e.
-  - **Status.** Brent's order 48 stands. The rerun with m mod 24 and −1 = w¹² is job 1705331. Expected: Dic12 for every twist sign, with zero mismatches.
+  - **Confirmed (1705331).** At N=5 (43027 nodes), the twist signs 1, −1 and alt all give Dic12 of order 48, the dicyclic presentation holds, and there are **0** edge mismatches against upstream. All three sign choices are coboundary-equivalent. Brent's order 48 stands.
