@@ -14,7 +14,7 @@ Each row is an observable already computed in this project. "n/c" means the cont
 | Gap labels (vertex Hamiltonian) | stable edges at IDS 0.315/0.316 ([−5, 6]) and 0.684/0.685 ([6, −6]) | band edges only, IDS ∈ {0, 1} | IDS 1/2 (Dirac point, no gap) | **Yes**: labels from the Spectre's K-theory |
 | Ribbon linking vs. twist sign (R6) | zero writhe; no sign change | n/a | n/a | No arrow of time either way |
 | Mirror-type symmetry | PC holds with axis-relative twist; maps hull to the mirror hull (G4) | hull achiral | hull achiral | **Yes**: the Spectre hull is chiral |
-| H1 graph/Euclidean dilation | pending | pending | pending | pending |
+| H1 graph/Euclidean dilation (r→∞; far-field anisotropy) | 1.50 (1.507 K=5, 1.499 K=6); anisotropy 0.06 | 1.273; 0.22 (lattice directions) | 1.273; 0.078 | Value yes (tile geometry); limit exists and is the most isotropic of the three |
 | H2 mutual information / entanglement | pending | pending | pending | pending |
 
 ## Reading

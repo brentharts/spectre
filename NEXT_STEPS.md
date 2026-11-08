@@ -735,4 +735,8 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - H1 (`research/graph_dilation.py`, K=5,6, 8 CPUs) submitted 20:26 UTC.
 - H2 (`research/entanglement_h2.py`, K=3,4, 32 CPUs) submitted 21:25 UTC.
 - First attempts (jobs 1718217, 1718996) failed at import: `research/handedness.py` missing from bundle. Resubmitted with it: H1 job 1719878, H2 job 1719943.
-- Results pending; will fill COMPARISON_TABLE.md H1/H2 rows.
+- **H1 result (job 1719878): the Spectre graph has a limiting dilation, and it is nearly isotropic.**
+  - Mean d_G/r by radius bin (K=6, 1.67M vertices, 128 sources): 1.614 (r 4–8), 1.562, 1.535, 1.518, 1.505, 1.498, 1.495, 1.499 (r 512–1024). K=5 agrees to 0.01. The ratio converges to ≈ 1.50 from above; the spread over pairs stays ≈ 0.05 rather than shrinking.
+  - Far-field anisotropy: Spectre 0.06, honeycomb 0.078, square 0.22. Square and honeycomb sit at 1.273 for all r.
+  - Reading: the Spectre graph metric is a constant multiple of the Euclidean one at large scale, with less direction dependence than either periodic lattice. That supports "space emerges from the graph", but it is generic behaviour for a quasi-isotropic tiling, not a Spectre-specific signal.
+- H2 (job 1719943) still running; R8 π/2 flux (`research/flux_complex.py`) submitted.
