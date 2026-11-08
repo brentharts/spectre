@@ -591,3 +591,121 @@ G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
 3. **I: the table comparing the Spectre with ordinary lattices.** Done locally from results we already have.
 4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
 5. **K, then J.** Writing tasks.
+
+## Giants (long-horizon, uncertain, deliberately more than we can finish)
+
+Each giant could take weeks or months, and may come to nothing. For each one we record a **foothold**, meaning a first step small enough for a single job or script. We also record what would count as **interesting** and what would count as **dead**. Pick from this list when the short items above run out, and don't expect to clear it.
+
+### Γ1. A spin liquid of Kitaev type whose ground-state flux is the holonomy vortices
+
+Lieb's theorem fixes the flux sector that minimises the energy on bipartite lattices. On the Spectre graph, the R1/R2 holonomy vortices are a natural candidate flux pattern.
+- **Foothold.** For free Majoranas hopping on the Spectre graph, compare the ground-state energy with all fluxes zero, with π flux exactly at the holonomy vortices, and with π flux on random sets of the same density. Use the same patch sizes as R1.
+- **Interesting.** The vortex pattern wins. The holonomy would then be selected by energy, not only by geometry.
+- **Dead.** The vortex pattern sits in the middle of the random ensemble.
+
+### Γ2. Substitution as renormalisation: a tensor network built from the supertile tree
+
+The supertile hierarchy behaves like a bulk direction: each inflation step coarse-grains. This is close in spirit to the "conformal quasicrystals" programme of Boyle, Dickens and Flicker (arXiv:1805.02665), where aperiodic tilings appear on the boundary of hyperbolic tilings.
+- **Foothold.**
+  - Build a tree tensor network or MERA whose isometries follow the Spectre substitution.
+  - Compute the entanglement entropy of boundary regions against the number of tree levels the region cuts.
+  - Compare with the Fibonacci 1D case, which is understood.
+- **Interesting.** A Ryu–Takayanagi-like count: the entropy equals the minimal cut through the supertile tree.
+
+### Γ3. The whole Spectre tiling as a cut-and-project set
+
+R2 suggests that the vortex set is a model set. The Hat has been shown to be a model set by Baake, Gähler, Mazáč and Sadun. **Check the literature for the Spectre first.**
+- **Foothold.** Take the internal space from the gap-labelling module ℤ + ℤ(5+√15)/10 and the field ℚ(√6, √10). Plot the star-map images of the vertices of all types, and see whether they form windows with fractal boundaries.
+- **Interesting.**
+  - An explicit window.
+  - A box-counting dimension for the window boundary. This could tie to the seam rate in item E.
+
+### Γ4. 2+1D SU(2) lattice gauge theory on Spectre × time
+
+This extends the Z₂ deconfinement result and R11.
+- **Foothold.** Heat-bath SU(2) Monte Carlo on level-3 patches, measuring:
+  - Polyakov loops;
+  - the isotropy of the string tension, using Wilson loops along different directions of the tiling.
+- **Interesting.**
+  - The string tension is anisotropic in a way the controls are not.
+  - Or β_c, scaled by coordination as for Z₂, deviates from the periodic lattices.
+- **Dead.** Everything is fitted by the mean coordination.
+
+### Γ5. Emergent Lorentz invariance from a quantum walk
+
+- **Foothold.** Run a discrete-time quantum walk on the Spectre graph, using the coin from the Dic12 holonomy of R4. Measure the light cone after T steps: the spread of the walk, and whether that spread is the same in every direction (anisotropy against angle).
+- **Interesting.**
+  - The light cone becomes isotropic faster than on the square or honeycomb lattice, because aperiodicity averages out the directions.
+  - That would be a concrete sense in which the monotile is "better spacetime".
+
+### Γ6. Curvature from the tiling: Ollivier–Ricci curvature and deficits from the holonomy
+
+- **Foothold.** Compute the Ollivier–Ricci curvature of every edge of the Spectre graph, then look at:
+  - its distribution;
+  - its correlation with the holonomy vortices;
+  - its sum over patches.
+- **Interesting.** The curvature concentrates on the vortices. That would make the vortices discrete point masses, which is the Regge picture.
+- **Dead.** The curvature is uncorrelated with the vortices.
+
+### Γ7. Spectral type of the Spectre Hamiltonian
+
+Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
+- **Foothold.** For the R8/R9 Hamiltonians at levels 3–5, compute:
+  - level-spacing statistics (Poisson, GOE, or critical);
+  - the inverse participation ratio and its scaling with N;
+  - box-counting of the integrated density of states.
+- **Interesting.** A clean multifractal spectrum f(α) that differs from the controls and from Penrose.
+
+### Γ8. Diffraction of the Spectre, the vortex set and Chair44
+
+- **Foothold.** Compute the FFT diffraction of large patches of each: the Spectre vertices, the vortex set, and a Chair44 cut.
+- **Interesting.** Index the Bragg peaks by the gap-labelling module. If the vortex set shows pure-point diffraction, that would support Γ3.
+
+### Γ9. Time from the hierarchy: causal sets built from substitution
+
+- **Foothold.**
+  - Make a poset from the supertiles, ordered by containment and adjacency across levels.
+  - Estimate its Myrheim–Meyer dimension.
+  - Compare it with the clock eigenvalues from `research/parity_clock.py`.
+- **Interesting.** The dimension is not an integer, or it is exactly 2+1.
+- This is the concrete form of "each particle has its own time": the time of a tile is its depth in the hierarchy.
+
+### Γ10. Locality in the hierarchy and Bell's inequality
+
+This takes J further. Suppose that "no space in between" means that two tiles with a common supertile ancestor at level k are neighbours at hierarchy distance k.
+- **Foothold.** Build a hidden-variable model in which outcomes depend on local settings plus shared state from a common ancestor. Ask whether the hierarchy distance permits CHSH > 2 while staying local in the hierarchy.
+- **Expected.** It does, because this is a non-local model in ordinary space.
+- **Interesting.** The minimal hierarchy depth needed, or a natural cutoff at the Tsirelson bound 2√2.
+
+### Γ11. K-theory and gap labels of the 3D Chair44 hull
+
+- **Foothold.**
+  - Turn the Čech cohomology 1, 3, 17, 21 into K₀ and K₁ of the tiling C*-algebra.
+  - Predict the gap labels of a 3D Chair44 Hamiltonian.
+  - Test them numerically on cubes, as R9 did in 2D.
+- **Interesting.**
+  - The labels from torsion.
+  - Whether PC (mirror plus bump/dent swap) acts on them non-trivially.
+
+### Γ12. A real substitution-level bridge between Spectre and Chair44, or a proof that there is none
+
+The goal is a 3D substitution whose 2D sections or projections are MLD to the Spectre (mutually locally derivable: each can be read off from the other by a local rule). Chair44 is the candidate.
+- **Constraints already found.**
+  - Matching expansion rates.
+  - PC symmetry against a Spectre without reflections.
+  - The fields differ: Spectre ℚ(√6, √10), Chair44 dyadic.
+- **Foothold.** Compare the fields of the two hulls, using cohomology and gap labels.
+  - Differing fields would rule out an MLD relation. This might be provable quickly.
+  - It would leave only weaker relations, such as factor maps or orbit equivalence.
+- **Interesting either way.** A no-go theorem is publishable.
+
+### Γ13. The Hat/Spectre family Tile(a, b): physics as a function of shape
+
+- **Foothold.** Take every observable from table I and recompute it along the family Tile(a, b) where the tilings exist. Only Tile(1, 1), the Spectre, needs no reflections, so it is a singular point of the family.
+- **Interesting.** An observable that jumps exactly at the Spectre point. That would be the cleanest "monotile-specific" signal possible.
+
+### Γ14. A proof of Chair44 mirror invariance, and of PC
+
+- **Foothold.** Act with the mirror on the 3888 collared types, and verify that it commutes with the substitution on the collared level. This is finite and exact.
+- Then extend the check to the decorations, which proves PC.
+- This turns the computations of items F and G2 into theorems.
