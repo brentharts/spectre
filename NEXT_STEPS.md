@@ -453,3 +453,13 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - The zero is forced: the hoppings ±1 are real, so the Hamiltonian is time-reversal symmetric and its Chern/Bott index vanishes. A topological test needs complex flux (for example π/2), not π.
   - The fitted module labels use large integers (such as (−8, 10)), with residuals up to 0.04 at level 3. That is not a test of the C module.
   - Job 1703968.
+
+### Submitted 2026-11-08 (fifth batch)
+
+- **Item F, handedness invariant: submitted (job 1713919, `research/chair44_handedness.py`).**
+  - Definition: X_k = Σ_c (N p_c − S)·w(R_c) over the cells of the level-k chair supertile, where w(R) is the axial vector of the tile's rotation.
+  - Properties: X_k is rotation invariant, changes sign under a mirror, and is an exact integer. Its normalised form is χ_k = X_k/(N²2^k).
+  - Decision: a nonzero χ_k limit with fixed sign is a handedness of the Chair44 hull, the 3D analogue of A. If X_k ≡ 0, move to the traceless tensor part (also recorded) or to higher moments.
+- Follow-ups from the fourth batch (not yet submitted):
+  - R8 with complex flux (π/2), which allows a nonzero Bott index;
+  - Z₂ deconfinement on a level-5 patch, to get a true Binder crossing for the Spectre.
