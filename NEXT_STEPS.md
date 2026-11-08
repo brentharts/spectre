@@ -428,3 +428,5 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 - Step 2, exact vortex density (`research/vortex_density2.py 6`): job 1708335.
 - Step 4, Z₂ deconfinement on the Spectre graph against honeycomb and square controls (`research/z2_deconfinement.py`): job 1709080.
 - Still queued: R8 (1703968), R7 (1703987), R9 (1698583).
+
+- chair44_cohomology (item F, rational Cech H* of the Chair44 hull): job 1710452
