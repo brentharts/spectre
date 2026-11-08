@@ -596,6 +596,12 @@ Read from `brentharts/spectre-monotile-py`. That file already separates Exact / 
 | Twist hopping `L` (1.012–1.709) | dependence of L on the Z₂ vortex density (R1) | no correlation across k | Could feed the comparison table; low priority. |
 | "12 directions" (±X, ±Y, ±Z with twists) | counting statement | n/a | Kept as a count. Dic12 has order 48 = 4 × 12, and its cyclic subgroup of order 24 holds the rotations; the 12 directions match neither the order-48 group nor a coset count without an extra choice, so record it as a coincidence unless a map is written down. |
 
+### J draft (2026-11-08): the Bell constraint, paragraph for Part II
+
+> Any model in which a classical quantity flows locally along the tiling and fixes measurement outcomes satisfies the CHSH bound |S| ≤ 2, whatever the tiling. Experiments reach S ≈ 2√2. A flow model on the monotile background must therefore drop locality in the tiling metric, independence of measurement settings, or single outcomes. Our results bear on the first option only: H1 measures how far the tiling's graph metric is from the Euclidean one, and the R3 result shows the Z₂ flux is not a local edge assignment out to radius 50. Neither makes the graph metric non-local in the sense CHSH needs: graph distance between distant regions still grows linearly (H1). So the tiling by itself does not supply the needed non-locality; Part II must state which assumption it drops, and should not suggest the tiling evades Bell.
+
+The choice of which assumption to drop is the authors' (Brent's), not ours; this is a draft for them to edit.
+
 ### Updated priority (2026-11-08, after G1–G2)
 
 G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
@@ -604,7 +610,7 @@ G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
 2. ~~**G4: can the twist sign play the role of C?**~~ **DONE (2026-11-08), `research/spectre_pc_twist.py`.** Result: yes, with an intrinsic sign. Mirroring a depth-3 patch and taking ribbon angle g → −g reproduces every lifted ribbon exactly (all centre lines, all rotation edges, all 567 reflection edges). Reflection edges need twist sign s → −s, except the 72 edges at the atan2 branch a = 180°, which need s → +s: `atan2` returns +π for both the edge and its mirror, so the code's axis u is not mirror-covariant there, and R(−u, θ) = R(u, −θ) absorbs the flip. Defining the half-twist handedness relative to the reflection axis makes PC an exact symmetry. Structural difference from Chair44: the Spectre mirror maps the hull to the *mirror* hull, while for Chair44 P is an automorphism of the hull itself (Γ14). Original item:  Test whether flipping every ribbon twist sign, combined with reflecting the Spectre, maps lifted Spectre patches to lifted patches, using the R4 and R6 code. If it does, the Spectre has its own PC and the bridge has a target to respect. If it does not, this asymmetry is the first real structural difference between the two tiles.
 3. ~~**I: the table comparing the Spectre with ordinary lattices.**~~ **DONE (2026-11-08): `COMPARISON_TABLE.md`.** Follow-up: honeycomb β_c control; fill H1/H2 rows.
 4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
-5. **K, then J.** Writing tasks. **K done** (table above); J next.
+5. **K, then J.** Writing tasks. **K done** (table above); **J drafted** (needs Brent's choice; the linearity claim awaits H1).
 
 ## Giants (long-horizon, uncertain, deliberately more than we can finish)
 
