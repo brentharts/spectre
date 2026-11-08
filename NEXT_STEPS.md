@@ -353,3 +353,10 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 
 - 2026-11-08: R8 resubmitted with eigenvalue-phase Bott index (job 1703968); R7 genus sweep submitted (job 1703987); R4 rerun with mismatch diagnostics submitted (job 1704004).
 - 2026-11-08: R11 step 3 submitted (research/spin_densities.py, K=6, job 1704295): exact per-spectre valence-3/4 vertex and link densities via level-1 collared types, tested against Z + Z(5+sqrt15)/10.
+
+### E, first test on the Spectre (2026-11-08, exact, no computation needed)
+- The boundary-word operator of `spectre_boundary.py` is an integer matrix with charpoly (x−1)(x²−4x−1), spectrum {1, 2±√5} ⊂ ℚ(√5).
+- A Galois automorphism acts on an integer matrix trivially, so "B twisted by Galois" has the same spectrum; at best the twist re-labels which root is "physical". Neither 2+√5 nor |2−√5| equals the seam rate √2+√3 (per level), and ℚ(√5) ∩ ℚ(√2,√3) = ℚ. **E in its literal form is refuted for the Spectre.**
+- The seam rate comes from a different object: the internal contact matrix (1192 types, Theorem thm:window) with factor (x⁴−10x²+1)², roots ±√2±√3. It is not a twist of Φ either: Φ's factor is x⁴−8x²+1, roots ±λ^{±1}.
+- Revised conjecture E′: dim(seams) = log ρ(C_int)/log λ, where C_int is the contact matrix of the internal GIFS, and ρ(C_int)² = 5+2√6 is a unit of ℚ(√6) with N(5+2√6)=1, as λ² = 4+√15 is a unit of ℚ(√15). The question becomes why the contact unit lies in ℚ(√6) = the third quadratic subfield of ℚ(√6,√10) ∌ ... (ℚ(√6,√10) has subfields ℚ(√6), ℚ(√10), ℚ(√15); λ ∈ ℚ(√6,√10)). Observation: λ² ∈ ℚ(√15), ν ∈ ℚ(√5), contact unit ∈ ℚ(√6): note 5+2√6 = (√2+√3)², and λ = (√6+√10)/2, so λ = √2·(√3+√5)/2.
+- Next for E′: compute ρ(C_int) for the Hat (internal space ℝ², BGMS), where the prediction is a unit of the analogous subfield; Chair44 is 2-adic and needs a separate contact-matrix construction (part of F).
