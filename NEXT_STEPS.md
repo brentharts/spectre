@@ -734,4 +734,5 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 ### H1/H2 status (2026-11-08)
 - H1 (`research/graph_dilation.py`, K=5,6, 8 CPUs) submitted 20:26 UTC.
 - H2 (`research/entanglement_h2.py`, K=3,4, 32 CPUs) submitted 21:25 UTC.
+- First attempts (jobs 1718217, 1718996) failed at import: `research/handedness.py` missing from bundle. Resubmitted with it: H1 job 1719878, H2 job 1719943.
 - Results pending; will fill COMPARISON_TABLE.md H1/H2 rows.
