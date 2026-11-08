@@ -358,5 +358,22 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 - The boundary-word operator of `spectre_boundary.py` is an integer matrix with charpoly (x−1)(x²−4x−1), spectrum {1, 2±√5} ⊂ ℚ(√5).
 - A Galois automorphism acts on an integer matrix trivially, so "B twisted by Galois" has the same spectrum; at best the twist re-labels which root is "physical". Neither 2+√5 nor |2−√5| equals the seam rate √2+√3 (per level), and ℚ(√5) ∩ ℚ(√2,√3) = ℚ. **E in its literal form is refuted for the Spectre.**
 - The seam rate comes from a different object: the internal contact matrix (1192 types, Theorem thm:window) with factor (x⁴−10x²+1)², roots ±√2±√3. It is not a twist of Φ either: Φ's factor is x⁴−8x²+1, roots ±λ^{±1}.
-- Revised conjecture E′: dim(seams) = log ρ(C_int)/log λ, where C_int is the contact matrix of the internal GIFS, and ρ(C_int)² = 5+2√6 is a unit of ℚ(√6) with N(5+2√6)=1, as λ² = 4+√15 is a unit of ℚ(√15). λ = (√6+√10)/2 lies in ℚ(√6,√10), whose quadratic subfields are ℚ(√6), ℚ(√10) and ℚ(√15): the area unit λ² sits in ℚ(√15) and the seam unit in ℚ(√6), so both come from the field of λ, while the outline rate ν sits in ℚ(√5), outside it. Observation: λ² ∈ ℚ(√15), ν ∈ ℚ(√5), contact unit ∈ ℚ(√6): note 5+2√6 = (√2+√3)², and λ = (√6+√10)/2, so λ = √2·(√3+√5)/2.
+- Revised conjecture E′: dim(seams) = log ρ(C_int)/log λ, where C_int is the contact matrix of the internal GIFS, and ρ(C_int)² = 5+2√6 is a unit of ℚ(√6) with N(5+2√6)=1, as λ² = 4+√15 is a unit of ℚ(√15). λ = (√6+√10)/2 lies in ℚ(√6,√10), whose quadratic subfields are ℚ(√6), ℚ(√10) and ℚ(√15): the area unit λ² sits in ℚ(√15) and the seam unit in ℚ(√6), so both come from the field of λ, while the outline rate ν sits in ℚ(√5), outside it. Note that 5+2√6 = (√2+√3)² and λ = √2·(√3+√5)/2.
 - Next for E′: compute ρ(C_int) for the Hat (internal space ℝ², BGMS), where the prediction is a unit of the analogous subfield; Chair44 is 2-adic and needs a separate contact-matrix construction (part of F).
+
+## Revised plan (2026-11-08, after the first round of results)
+The "Recommended order" sections above are out of date. Most of R1–R8 and R11 steps 1–2 have run. The current priorities follow.
+
+### Open problems in the record
+- **Order 48 or 96.** The holonomy baseline reports an edge group of order 48. The R4 run found order 96 (Dic24) and then hit a convention mismatch. The R4 rerun (1704004) must settle which convention gives which group before any order is quoted in the paper.
+- **The R1 and R11 step 3 density limits.** R1 stopped because level-1 collared types do not close. R11 step 3 (1704295) uses the same machinery, so it can fail in the same way. Fallback: collar at level 2, or take transitions from level 3 to level 2, at K=7 on the cluster.
+- **R11 step 2 at K=4.** The dense `eigh` ran out of memory. Switch to sparse `eigsh`, or use the strong-coupling spectrum, which is exact, and spectral moments.
+- **The paper selftest (1698557).** It failed because the sibling repo `oai_tree` was missing. It has never been rerun, and it gates any edit to the paper.
+
+### Priority order
+1. **Assess the pending jobs:** 1704295 (R11 step 3), 1703968 (R8), 1703987 (R7), 1704004 (R4) and 1698583 (R9). Record every result here, including negatives.
+2. **Exact vortex density.** Finish R1 with the level-2 collaring fallback. Of all these tasks, this has the best chance of an exact theorem: the vortex density lies in the gap-labelling module.
+3. **E′ on the Hat.** Compute ρ(C_int) for the Hat. This is a cheap and decisive test of the revised conjecture.
+4. **A Spectre-specific gauge model.** R11 step 1 showed that the Z₂ theory on a disc is exactly solvable and generic. The next model must not be: either Z₂ gauge–Higgs, or 2+1D Z₂ on tiling × time, with deconfinement compared against the honeycomb.
+5. **Literature check for R11,** on quasicrystalline spin networks (Amaral, Aschheim, Irwin et al.). This must happen before any QG claim goes into the paper.
+6. **Afterwards:** F (Chair44: 2-adic model set and contact matrix), B (the exact GIFS), and a rerun of the selftest once `oai_tree` is available.
