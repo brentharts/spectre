@@ -435,3 +435,73 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 
 - **Step 2, exact vortex density: done.** The density of vortices (flux −1 vertices of valence 3) is exactly **4 − √15 ≈ 0.1270 per spectre**, i.e. (4 − √15)/6 ≈ 0.0212 per vertex, and lies in the gap-labelling module ℤ + ℤ(5+√15)/10. All flux −1 vertices together have density 2 − 2√15/5. The level-1 collared types (38) are closed with 0 inconsistent, so the level-2 fallback is not needed. The finite-patch values of R1 (0.019 per vertex at depth 6) approach the exact value from below, as boundary losses predict. Job 1708335.
 - **Step 4, Z₂ deconfinement: coarse scan done, fine scan submitted.** The Binder curves show the ordering transition of the dual 3D Ising model clearly: Spectre at β ≈ 0.08–0.09, honeycomb 0.16–0.17, square 0.22–0.23 (3D Ising: 0.2217, so the control agrees). The automatic crossing detector reported spurious values (0.047, 0.098, 0.166) taken from noise where U ≈ 0. The script now accepts only crossings with max U > 0.15, and the rerun uses fine grids and 2000 sweeps. Job 1709080; fine rerun job 1712312.
+
+### Results 2026-11-08 (fourth batch)
+
+- **Item F, Chair44 cohomology: done.** The collared Anderson–Putnam complex has 3888 cube types and cells (1506, 6708, 9084, 3888). The 4×4×4 language is closed under σ at depth 6 (0 missing; depth 5 missed 108, so depth 6 is needed), every child is found, and f is a chain map. The ranks stabilise from m = 3, giving **dim Ȟ^k(Ω_Chair44; ℚ) = 1, 3, 17, 21 for k = 0..3**, with Euler characteristic −6. The values agree at depths 5 and 6. Top eigenvalues of f are 8 on C₃, 4 (×3) on C₂ and 2 (×3) on C₁. These match the volume, the 2-forms and the translations, so Ȟ¹ = ℚ³ is just the translation module, as it should be for a limit-periodic tiling. Job 1710452. Still open for F: pure point spectrum (cited, via `chair44_twoadic.py`) and the handedness invariant.
+- **Step 4, Z₂ deconfinement fine scan: control passes; Spectre value not yet sharp.**
+  - Square: β_c = 0.2229, within 0.005 of 3D Ising (0.2217), so the method is validated.
+  - Honeycomb: β_c = 0.1614.
+  - Spectre: the curves for N = 559 and N = 4401 do not cross inside 0.080–0.095. Both are flat at U ≈ 0 up to β = 0.085, and the larger lattice jumps more steeply (N = 4401: U goes 0.13 → 0.65 between 0.086 and 0.087; N = 559 rises over 0.086–0.091).
+  - Interpretation: the transition is at **β_c ≈ 0.086 ± 0.001**, located by the jump and not by a crossing. β_c·(z̄+2) ≈ 1.3, close to the square value (1.30) and the honeycomb value (1.26), which fits the mean-field-like scaling with coordination.
+  - Job 1712312. A crossing would need a third size, a level-5 patch.
+- **R8, π-flux tight-binding: inconclusive.**
+  - Results:
+    - The main gap survives the flux. At level 4 it sits at IDS ≈ 0.117, with width 1.68 without flux and 1.29 with it.
+    - The flux opens new gaps at IDS 0.124, 0.161, 0.674, 0.856, 0.884 and 0.985.
+    - Every Bott index is 0 (|B| < 2·10⁻⁹).
+  - The zero is forced: the hoppings ±1 are real, so the Hamiltonian is time-reversal symmetric and its Chern/Bott index vanishes. A topological test needs complex flux (for example π/2), not π.
+  - The fitted module labels use large integers (such as (−8, 10)), with residuals up to 0.04 at level 3. That is not a test of the C module.
+  - Job 1703968.
+
+### Submitted 2026-11-08 (fifth batch)
+
+- **Item F, handedness invariant: submitted (job 1713919, `research/chair44_handedness.py`).**
+  - Definition: X_k = Σ_c (N p_c − S)·w(R_c) over the cells of the level-k chair supertile, where w(R) is the axial vector of the tile's rotation.
+  - Properties: X_k is rotation invariant, changes sign under a mirror, and is an exact integer. Its normalised form is χ_k = X_k/(N²2^k).
+  - Decision: a nonzero χ_k limit with fixed sign is a handedness of the Chair44 hull, the 3D analogue of A. If X_k ≡ 0, move to the traceless tensor part (also recorded) or to higher moments.
+- Follow-ups from the fourth batch (not yet submitted):
+  - R8 with complex flux (π/2), which allows a nonzero Bott index;
+  - Z₂ deconfinement on a level-5 patch, to get a true Binder crossing for the Spectre.
+
+### Results 2026-11-08 (fifth batch)
+
+- **Item F, handedness (job 1713919): null.**
+  - X_k = 0 exactly for every k = 0..7 (N up to 14,680,064 cells), so this pseudoscalar detects no chirality of the Chair44 hull.
+  - The tensor T_k = Σ_c (N p_c − S) ⊗ w(R_c) is not zero. It always has the form [[−a, −b, b], [b, a, −b], [−(a+b), a+b, 0]]: traceless, with growing antisymmetric and symmetric parts. For example, k = 7 gives a = 1.257e12 and b = 1.296e14.
+  - Next (per the decision rule): explain why X_k vanishes identically (look for an improper symmetry of the identity-frame supertile), then test whether the traceless part, normalised by N²2^k, has a limit.
+- **R9, gap labels (job 1698583): partial.**
+  - Tile Hamiltonian: no gaps at levels 3–5.
+  - Vertex Hamiltonian: the same 4 gap edges at levels 3 and 4: IDS 0.315/0.316 with label [−5, 6], and 0.684/0.685 with label [6, −6].
+  - The level-5 vertex run is not in the log.
+- **R7, genus sweep (job 1703987): failed (infrastructure).**
+  - `skimage` is missing on the cluster, so every setting errored. Depth 4 then ran out of memory.
+  - Resubmitted as job 1715015: installs scikit-image, depths 2–3 only.
+- **Z₂ on a level-5 patch (job 1714510): heuristic β_c.**
+  - No Binder crossing between any pair of levels 3/4/5.
+  - The jump in U (0 → 2/3) sharpens and moves down with size: its midpoint is ≈ 0.0862 at N = 4401 and ≈ 0.0855 at N = 34649, rising within Δβ ≈ 0.001.
+  - Estimate: β_c ≈ 0.0855 ± 0.0007. A jump this abrupt without a crossing may point to a weakly first-order transition or to strong boundary effects (open spatial boundary). That is a question for later, not a blocker.
+- Remaining follow-up: R8 with complex π/2 flux.
+
+### Item F, why X_k vanishes (2026-11-08, from the recorded tensors)
+
+- For every k ≤ 7 the recorded tensor satisfies T_k = −P T_k Pᵀ, where P is the mirror that swaps x and y. Check: P T Pᵀ = [[a, b, −b], [−b, −a, b], [a+b, −(a+b), 0]] = −T.
+  - That is the transformation rule of an axial-vector correlation under a mirror symmetry of the configuration. So the level-k identity-frame chair supertile is invariant under the x ↔ y mirror (positions reflected, frames conjugated) at every level checked.
+- Consequence: X_k = tr T_k = 0 is forced by symmetry and says nothing about the dynamics.
+  - If the substitution commutes with this mirror, then the Chair44 hull is mirror-closed and every pseudoscalar observable of it vanishes. Unlike the Spectre, the Chair44 hull is achiral.
+  - The recorded tensors confirm the mirror relation numerically at levels 0–7. A proof needs the substitution rule to be checked for equivariance in `symchair44.py`. That is a finite check and a small next step.
+- Item F status: the handedness question is answered negatively (no chirality to find). The traceless tensor is a shape correlation, not a handedness, and is parked.
+
+### Submitted 2026-11-08 (sixth batch)
+
+- **R7 genus sweep, third attempt (job 1715742).** Installs scikit-image with `pip --target` into a side directory on PYTHONPATH. The second attempt (1715015) failed because `pip --user` is refused inside the virtualenv. Depths 2–3.
+- **Item F mirror check (job 1715771, `research/chair44_mirror.py`).** Tests directly whether the level-k supertile (k ≤ 6) equals its x ↔ y mirror image with frames conjugated. All True: the Chair44 hull is recorded as achiral and F is closed.
+- Still open: R8 with complex π/2 flux.
+
+### Results 2026-11-08 (sixth batch)
+
+- **Item F mirror check (job 1715771): passed. Item F is closed.**
+  - For k = 0..6 (up to 1,835,008 cells), the level-k identity-frame Chair44 supertile equals its image under the x ↔ y mirror, with tile frames conjugated. This was tested as exact set equality.
+  - This explains X_k ≡ 0: the Chair44 supertiles are achiral, so every pseudoscalar of them vanishes. The Spectre's handedness (item A) has no analogue in Chair44.
+  - What would upgrade this to a proof: show that the substitution commutes with the mirror on the 3888 collared types. The check above is the computational evidence for that.
+- **R7 (job 1715742): running.** The scikit-image install succeeded this time.
