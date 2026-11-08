@@ -30,11 +30,12 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
      - `research/parity_clock.py`: its characteristic polynomial is λ⁵(λ−1)(λ+1)(λ²−8λ+1).
 5. **It sharpens the number-theory question (item E).**
    - **The literal conjecture is refuted.** Twisting the integer boundary-word matrix by a Galois automorphism cannot give the seam rate √2+√3, because the matrix's spectrum, {1, 2±√5}, lies in ℚ(√5).
-   - **Revised conjecture E′.** The seam rate comes from the internal contact matrix. Its unit 5+2√6 and the area unit 4+√15 both lie in subfields of ℚ(λ) = ℚ(√6, √10).
+   - **Revised conjecture E′, now also refuted.** E′ said the seam rate comes from the internal contact matrix, whose unit 5+2√6 and area unit 4+√15 lie in subfields of ℚ(λ) = ℚ(√6, √10). But the Hat, the sister tiling, has published dimension log(2+√3)/log φ², and its seam unit 2+√3 is not in ℚ(√5). So E′ cannot hold in the form stated. A candidate replacement, E″, ties the seam unit to the √3 rotation geometry; the proposed test is the Hat-family Tile(a,b). For the paper we drop E′.
+6. **Literature check for R11.** We found no earlier gauge-theory or spin-network work on the Spectre or Hat tilings. The closest work is the quasicrystal quantum-gravity papers arXiv:1903.10851 and arXiv:2306.01964, which use other quasicrystals. So the R11 result appears to be new.
 
 ## Still running
 
-These jobs are still running or queued. Their results will be added to this PR as follow-up commits:
+These jobs are still running or queued: the exact vortex density (R1, `research/vortex_density2.py`), the Z₂ deconfinement study of plan step 4 (`research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), Their results will be added to this PR as follow-up commits:
 
 - the R8 rerun (Bott index of the flux Hamiltonian)
 - R7 (genus sweep)
