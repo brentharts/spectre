@@ -393,3 +393,19 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - **Cause.** The integer encoding took w = exp(15°·k) to have order 48 with −1 = w²⁴. In fact w has order 24 and w¹² = −1. As a result the closure doubled the group, and multiplying by the "central sign" (0,24) was the identity, so the twist sign was dropped.
   - **Evidence.** Every one of the 66464 mismatches at N=5 is a flip edge with mode −1, where q = −q_e.
   - **Confirmed (1705331).** At N=5 (43027 nodes), the twist signs 1, −1 and alt all give Dic12 of order 48, the dicyclic presentation holds, and there are **0** edge mismatches against upstream. All three sign choices are coboundary-equivalent. Brent's order 48 stands.
+
+## Literature check for R11 (2026-11-08, plan step 5)
+- **Prior art on quasicrystalline spin networks** comes from a single group, Quantum Gravity Research.
+  - Amaral, Aschheim and Irwin, *Quantum Gravity at the Fifth Root of Unity* (arXiv:1903.10851).
+  - Amaral, Fang, Hammock and Irwin, *Geometric State Sum Models from Quasicrystals* (2021).
+  - Amaral, Clawson and Irwin, *Quasicrystalline Spin Foam with Matter* (arXiv:2306.01964). It defines quasicrystalline spin networks as a subspace of the LQG Hilbert space, made of EPRL coherent states, with examples from the 4D Elser–Sloane (E8) quasicrystal.
+  - These are mostly preprints. None of them uses a planar monotile.
+- **No prior work** was found that puts spin networks or lattice gauge theory on the Hat or the Spectre.
+- **Consequence for the paper.** R11 step 3 (the valence-4 density in the gap-labelling module) is new as far as this search reaches. It must:
+  - cite the works above as the quasicrystal-to-LQG precedent;
+  - make no claim that the result is physical quantum gravity, since it is a kinematical, strong-coupling statement only.
+- **Search depth.** This was a web search only. Before submission, do a full arXiv search on "aperiodic tiling" together with "spin network", "gauge", and "gap labelling" together with "lattice gauge".
+
+## E′ on the Hat: blocked on construction (plan step 3)
+- **Missing code.** The repo has no Hat implementation: no metatile substitution, no window, no internal GIFS. The test is therefore not cheap. It needs the Hat metatile inflation (H, T, P, F; factor φ²) and its window, which is a Rauzy fractal in ℝ² (Baake–Gähler–Sadun, arXiv:2305.05639). The contact matrix must then be built the way the Spectre's was in `research/window_gifs*.py`.
+- **A shortcut to try first.** BGS / BGMM (arXiv:2502.03268) state that some boundaries of the Hat windows have non-integer Hausdorff dimension. If either paper gives that dimension d, E′ predicts that φ^{2d} is a unit of a quadratic subfield of ℚ(φ) = ℚ(√5). That field has no proper quadratic subfield, so E′ forces φ^{2d} ∈ ℚ(√5). This can be checked from the published number without new code.
