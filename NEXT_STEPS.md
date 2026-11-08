@@ -435,3 +435,21 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 
 - **Step 2, exact vortex density: done.** The density of vortices (flux −1 vertices of valence 3) is exactly **4 − √15 ≈ 0.1270 per spectre**, i.e. (4 − √15)/6 ≈ 0.0212 per vertex, and lies in the gap-labelling module ℤ + ℤ(5+√15)/10. All flux −1 vertices together have density 2 − 2√15/5. The level-1 collared types (38) are closed with 0 inconsistent, so the level-2 fallback is not needed. The finite-patch values of R1 (0.019 per vertex at depth 6) approach the exact value from below, as boundary losses predict. Job 1708335.
 - **Step 4, Z₂ deconfinement: coarse scan done, fine scan submitted.** The Binder curves show the ordering transition of the dual 3D Ising model clearly: Spectre at β ≈ 0.08–0.09, honeycomb 0.16–0.17, square 0.22–0.23 (3D Ising: 0.2217, so the control agrees). The automatic crossing detector reported spurious values (0.047, 0.098, 0.166) taken from noise where U ≈ 0. The script now accepts only crossings with max U > 0.15, and the rerun uses fine grids and 2000 sweeps. Job 1709080; fine rerun job 1712312.
+
+### Results 2026-11-08 (fourth batch)
+
+- **Item F, Chair44 cohomology: done.** The collared Anderson–Putnam complex has 3888 cube types and cells (1506, 6708, 9084, 3888). The 4×4×4 language is closed under σ at depth 6 (0 missing; depth 5 missed 108, so depth 6 is needed), every child is found, and f is a chain map. The ranks stabilise from m = 3, giving **dim Ȟ^k(Ω_Chair44; ℚ) = 1, 3, 17, 21 for k = 0..3**, with Euler characteristic −6. The values agree at depths 5 and 6. Top eigenvalues of f are 8 on C₃, 4 (×3) on C₂ and 2 (×3) on C₁. These match the volume, the 2-forms and the translations, so Ȟ¹ = ℚ³ is just the translation module, as it should be for a limit-periodic tiling. Job 1710452. Still open for F: pure point spectrum (cited, via `chair44_twoadic.py`) and the handedness invariant.
+- **Step 4, Z₂ deconfinement fine scan: control passes; Spectre value not yet sharp.**
+  - Square: β_c = 0.2229, within 0.005 of 3D Ising (0.2217), so the method is validated.
+  - Honeycomb: β_c = 0.1614.
+  - Spectre: the curves for N = 559 and N = 4401 do not cross inside 0.080–0.095. Both are flat at U ≈ 0 up to β = 0.085, and the larger lattice jumps more steeply (N = 4401: U goes 0.13 → 0.65 between 0.086 and 0.087; N = 559 rises over 0.086–0.091).
+  - Interpretation: the transition is at **β_c ≈ 0.086 ± 0.001**, located by the jump and not by a crossing. β_c·(z̄+2) ≈ 1.3, close to the square value (1.30) and the honeycomb value (1.26), which fits the mean-field-like scaling with coordination.
+  - Job 1712312. A crossing would need a third size, a level-5 patch.
+- **R8, π-flux tight-binding: inconclusive.**
+  - Results:
+    - The main gap survives the flux. At level 4 it sits at IDS ≈ 0.117, with width 1.68 without flux and 1.29 with it.
+    - The flux opens new gaps at IDS 0.124, 0.161, 0.674, 0.856, 0.884 and 0.985.
+    - Every Bott index is 0 (|B| < 2·10⁻⁹).
+  - The zero is forced: the hoppings ±1 are real, so the Hamiltonian is time-reversal symmetric and its Chern/Bott index vanishes. A topological test needs complex flux (for example π/2), not π.
+  - The fitted module labels use large integers (such as (−8, 10)), with residuals up to 0.04 at level 3. That is not a test of the C module.
+  - Job 1703968.

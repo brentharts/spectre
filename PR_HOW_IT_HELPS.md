@@ -33,15 +33,19 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
    - **Revised conjecture E′, now also refuted.** E′ said the seam rate comes from the internal contact matrix, whose unit 5+2√6 and area unit 4+√15 lie in subfields of ℚ(λ) = ℚ(√6, √10). But the Hat, the sister tiling, has published dimension log(2+√3)/log φ², and its seam unit 2+√3 is not in ℚ(√5). So E′ cannot hold in the form stated. A candidate replacement, E″, ties the seam unit to the √3 rotation geometry; the proposed test is the Hat-family Tile(a,b). For the paper we drop E′.
 6. **Literature check for R11.** We found no earlier gauge-theory or spin-network work on the Spectre or Hat tilings. The closest work is the quasicrystal quantum-gravity papers arXiv:1903.10851 and arXiv:2306.01964, which use other quasicrystals. So the R11 result appears to be new.
 
+## Further results
+
+- **Chair44 cohomology (item F):** dim Ȟ^k(Ω; ℚ) = 1, 3, 17, 21 (Euler characteristic −6). This is the first computed Čech cohomology of the 3D Chair44 hull (`research/chair44_cohomology.py`).
+- **Z₂ deconfinement:**
+  - The square-lattice control reproduces 3D Ising (β_c = 0.2229 against 0.2217).
+  - On the Spectre graph the transition is at β_c ≈ 0.086 (`research/z2_deconfinement.py`).
+- **π-flux Hamiltonian:**
+  - The main spectral gap survives the vortex flux.
+  - All Bott indices vanish, as time-reversal symmetry requires.
+
 ## Still running
 
-These jobs are still running or queued: the Z₂ deconfinement study of plan step 4 (a fine-grid rerun; the coarse scan places the Spectre transition at β ≈ 0.08–0.09; `research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), and the rational Čech cohomology of the 3D Chair44 hull (item F, `research/chair44_cohomology.py`). Also queued:
-
-- the R8 rerun (Bott index of the flux Hamiltonian)
-- R7 (genus sweep)
-- R9 (gap-ids)
-
-Their results will be added to this PR as follow-up commits.
+R7 (genus sweep) and R9 (gap-ids). Their results will be added to this PR as follow-up commits.
 
 ## Reproducing
 
