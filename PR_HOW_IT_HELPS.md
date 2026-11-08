@@ -1,0 +1,43 @@
+# How this PR helps
+
+This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spectrespace.py`, `spectreseal.py`). It turns the Z₂ vertex flux and the lifted ribbons into research results that can be tested. Every result below is recorded in `NEXT_STEPS.md` under "Results 2026-11-08", together with the job that produced it.
+
+## What it adds to the project
+
+1. **It explains what the holonomy vortices are.**
+   - The flux −1 vertices are the vortices; all of them have valence 3, and they don't depend on the convention.
+   - **Density.** Their share of interior vertices is 0.009, 0.015, 0.018 and 0.019 at depths 3–6 (R1, `research/vortex_density.py`).
+   - **Window.** Under the star map they fall in a sub-region of the window: a vortex's nearest neighbour is another vortex 27% of the time, against a base rate of about 2% (R2, `research/vortex_window.py`). That is evidence that the vortex set is a cut-and-project set.
+2. **It shows what the flux is not.**
+   - **Not a local edge assignment.** No choice of edge signs depending on local edge type, out to radius 50, reproduces the flux. The obstruction is a single valence-2 star (R3, `research/flux_cohomology.py`).
+   - **Not a source of handedness.** The lifted ribbons have zero writhe, so their linking number equals their twist. That linking number does not change sign with the twist sign, so the ribbons carry no arrow of time (R6, `research/ribbon_linking.py`).
+   - Negative results like these keep the paper from overclaiming.
+3. **It is a first step from Part I to Part II, the quantum-gravity side.**
+   - **SU(2) gauge theory on the Spectre graph** (R11 step 2, `research/su2_graph.py`):
+     - every plaquette is a 14-gon, and the strong-coupling area is uniform;
+     - 2.95% of bulk vertices have valence 4, against the square-grid and honeycomb controls, which give 100% and 0%.
+   - **R11 step 3** (`research/spin_densities.py`) computes the exact spin-network densities per spectre over ℚ(√15). It tests whether they lie in the gap-labelling module ℤ + ℤ(5+√15)/10. That would directly link the tiling's K-theory to the volume spectrum.
+4. **It fixes the existing analysis tools and adds two new ones.**
+   - Fixes:
+     - The Bott index in `research/flux_hamiltonian.py` is now computed from eigenvalue phases; before this fix it returned NaN.
+     - `research/holonomy_group.py` now records quaternion-convention mismatches instead of aborting.
+   - New tools:
+     - `research/genus_sweep.py` checks how stable the genus of `spectreseal` is.
+     - `research/parity_clock.py`: its characteristic polynomial is λ⁵(λ−1)(λ+1)(λ²−8λ+1).
+5. **It sharpens the number-theory question (item E).**
+   - **The literal conjecture is refuted.** Twisting the integer boundary-word matrix by a Galois automorphism cannot give the seam rate √2+√3, because the matrix's spectrum, {1, 2±√5}, lies in ℚ(√5).
+   - **Revised conjecture E′.** The seam rate comes from the internal contact matrix. Its unit 5+2√6 and the area unit 4+√15 both lie in subfields of ℚ(λ) = ℚ(√6, √10).
+
+## Still running
+
+These jobs are still running or queued. Their results will be added to this PR as follow-up commits:
+
+- R11 step 3 (spin-network densities)
+- the R8 rerun (Bott index of the flux Hamiltonian)
+- R7 (genus sweep)
+- the R4 rerun (holonomy group order, 96 vs 48)
+- R9 (gap-ids)
+
+## Reproducing
+
+Each script documents its own usage at the top of the file, for example `python research/spin_densities.py 6 out.json`.
