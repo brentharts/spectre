@@ -463,3 +463,22 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 - Follow-ups from the fourth batch (not yet submitted):
   - R8 with complex flux (π/2), which allows a nonzero Bott index;
   - Z₂ deconfinement on a level-5 patch, to get a true Binder crossing for the Spectre.
+
+### Results 2026-11-08 (fifth batch)
+
+- **Item F, handedness (job 1713919): null.**
+  - X_k = 0 exactly for every k = 0..7 (N up to 14,680,064 cells), so this pseudoscalar detects no chirality of the Chair44 hull.
+  - The tensor T_k = Σ_c (N p_c − S) ⊗ w(R_c) is not zero. It always has the form [[−a, −b, b], [b, a, −b], [−(a+b), a+b, 0]]: traceless, with growing antisymmetric and symmetric parts. For example, k = 7 gives a = 1.257e12 and b = 1.296e14.
+  - Next (per the decision rule): explain why X_k vanishes identically (look for an improper symmetry of the identity-frame supertile), then test whether the traceless part, normalised by N²2^k, has a limit.
+- **R9, gap labels (job 1698583): partial.**
+  - Tile Hamiltonian: no gaps at levels 3–5.
+  - Vertex Hamiltonian: the same 4 gap edges at levels 3 and 4: IDS 0.315/0.316 with label [−5, 6], and 0.684/0.685 with label [6, −6].
+  - The level-5 vertex run is not in the log.
+- **R7, genus sweep (job 1703987): failed (infrastructure).**
+  - `skimage` is missing on the cluster, so every setting errored. Depth 4 then ran out of memory.
+  - Resubmitted as job 1715015: installs scikit-image, depths 2–3 only.
+- **Z₂ on a level-5 patch (job 1714510): heuristic β_c.**
+  - No Binder crossing between any pair of levels 3/4/5.
+  - The jump in U (0 → 2/3) sharpens and moves down with size: its midpoint is ≈ 0.0862 at N = 4401 and ≈ 0.0855 at N = 34649, rising within Δβ ≈ 0.001.
+  - Estimate: β_c ≈ 0.0855 ± 0.0007. A jump this abrupt without a crossing may point to a weakly first-order transition or to strong boundary effects (open spatial boundary). That is a question for later, not a blocker.
+- Remaining follow-up: R8 with complex π/2 flux.

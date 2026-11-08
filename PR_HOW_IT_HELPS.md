@@ -38,14 +38,16 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 - **Chair44 cohomology (item F):** dim Ȟ^k(Ω; ℚ) = 1, 3, 17, 21 (Euler characteristic −6). This is the first computed Čech cohomology of the 3D Chair44 hull (`research/chair44_cohomology.py`).
 - **Z₂ deconfinement:**
   - The square-lattice control reproduces 3D Ising (β_c = 0.2229 against 0.2217).
-  - On the Spectre graph the transition is at β_c ≈ 0.086 (`research/z2_deconfinement.py`).
+  - On the Spectre graph the transition is at β_c ≈ 0.0855 ± 0.0007, from the jump of the Binder cumulant across levels 3–5 (`research/z2_deconfinement.py`). There is no clean crossing, so this is a heuristic estimate.
 - **π-flux Hamiltonian:**
   - The main spectral gap survives the vortex flux.
   - All Bott indices vanish, as time-reversal symmetry requires.
+- **Chair44 handedness (`research/chair44_handedness.py`):** the natural rotation-invariant pseudoscalar vanishes exactly up to level 7 (14.7M cells), so it shows no chirality. A traceless tensor correlation remains.
+- **Gap labels (R9):** the vertex Hamiltonian has four stable gap edges near IDS 0.315 and 0.685 at levels 3 and 4.
 
 ## Still running
 
-R7 (genus sweep) and R9 (gap-ids). Their results will be added to this PR as follow-up commits.
+R7 (genus sweep). The first run failed on a missing dependency and has been rerun. Its result will be added to this PR as a follow-up commit.
 
 ## Reproducing
 
