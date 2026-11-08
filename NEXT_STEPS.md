@@ -241,7 +241,7 @@ Next (step 3): compare the IDS gap positions of the item-4 tight-binding Hamilto
 - At depth 3: 567 placements have det −1 and 126 have det +1, and the +1 ones are exactly the Γ₁/Γ₂ pairs. So parity is one global clock per level, and the per-tile information is the rotation angle; the 30° angles come only from Γ₂.
 - **`spectre_flip.py`** checks that `trot_inv()`'s ±1 agrees with sign(det).
 - **`spectreseal.py`** thickens the ribbons into ellipsoid chains, takes a smooth union, and extracts a closed mesh by marching cubes. It reports whether the mesh is sealed, its Euler characteristic and its genus. The genus depends on thickness and blending, which are render choices.
-- **Holonomy figure** (`paper/figures/spectre_holonomy.png`; the script is not on master yet):
+- **Holonomy figure** (`paper/figures/spectre_holonomy.png`):
   - The normal is forced: n = det(L)·ẑ.
   - The edge quaternions generate a group of order 48 with binary-dihedral element orders, the same for every twist sign.
   - Changing the twist sign only multiplies node holonomies by ±1, so it is a gauge choice.
@@ -315,4 +315,123 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 
 ### Notes for syncing
 - PR 13 (`swirl-paper-fixes`) conflicts with upstream master only in `spectrepaper.py`, in the abstract and the pancake section. Brent's phys rev IV–VI rewrote the same passages. Resolved in merge 9f63b7d (2026-11-07): our abstract and pointers kept, Brent's scope disclaimers and scope section added.
-- `spectre_holonomy.py` is referenced in the figures README but not committed upstream. Ask for it before starting R1–R4, so that the vortex classification matches his conventions exactly.
+- `spectre_holonomy.py` is now upstream (test_flux: 28 vortices at depth 3, 372 at depth 4). R1 uses its flux rule exactly; see `research/vortex_density.py`.
+
+## Progress log (2026-11-07, evening)
+
+### Jobs in the queue
+- Submitted, waiting to run: gap-ids (R9, 1698583), holonomy-baseline (1698605), R1 (1699051), R4 (1699394), R5 (1699432), R3 (1699761), R2 (1699881), R8 (1700304), R11 step 2 (1701292, `research/su2_graph.py`).
+- Selftest (1698557) failed for an infrastructure reason: the sibling repo `oai_tree` was missing, so Parts II–III could not run.
+- Scripts: `research/holonomy_group.py` (R4), `parity_clock.py` (R5), `flux_cohomology.py` (R3), `vortex_window.py` (R2), `flux_hamiltonian.py` (R8).
+
+### R11 step 1 (Z2 gauge theory): settled exactly, negative as a probe
+- Natural set-up: the gauge field lives on dual edges (tile adjacencies), the plaquettes are interior tiling vertices, and Brent's flux eta_v = flux(v) is the background: S = -beta * sum_v eta_v * prod_{e around v} s_e.
+- On any simply-connected patch (open boundary) the plaquette variables are independent: fix the gauge on a spanning tree; each remaining edge then sets exactly one plaquette. So Z = prod_v 2cosh(beta), up to a constant gauge-volume factor.
+  - The free energy does not depend on eta: the vortex free energy is exactly 0. The flux is a pure gauge on a disc, consistent with R3: it is a coboundary, just not a local one.
+  - Every Wilson loop is W(C) = prod_{v inside C} eta_v * tanh(beta)^{N_C}, where N_C is the number of enclosed vertices. This is a pure area law with string tension -ln tanh(beta) per vertex.
+  - The only Spectre-dependent quantities are the vertex density per unit area and the sign prod eta_v. That sign is the R1 vortex count mod 2 inside C.
+- Periodic controls (hexagonal, square) give the same formula with their own vertex densities. Nothing here distinguishes the Spectre beyond R1.
+- Consequence: a real Spectre signal needs a model that is not exactly solvable. Options are Z2 gauge-Higgs (matter on tiles, which R8 already is in the free limit), the tiling × time (2+1D, which has a deconfinement transition), or a periodic approximant with non-contractible loops. Step 2 (SU(2) area and volume spectra) goes ahead as planned.
+
+- 2026-11-08: all queued jobs still PENDING. R6 script `research/ribbon_linking.py` and R7 sweep `research/genus_sweep.py` written (82f18ac); R6 submitted as job 1702945 at 2 CPUs (lane now 64/64). R7 waits for budget.
+
+### Results 2026-11-08
+- **Holonomy baseline (1698605):** 18/18 checks pass. Edge group has order 48 for every twist sign; the twist sign is a Z2 gauge. At K=4: 1608 flux −1 vertices, 372 of them convention independent, all of valence 3.
+- **R1 vortex density (1699051):** convention-independent vortices number 28, 372 and 3604 at K=3, 4, 5. As a fraction of interior vertices that is 0.0094, 0.0150 and 0.0179 (R2 gives 0.0194 at K=6), still rising as the boundary shrinks. Every vortex has valence 3. The exact closed form was not reached: no closed level-1 types, so the script stopped with "cannot evaluate exactly". The limit is still open.
+- **R2 vortex window (1699881):** in the star map F at K=6 the vortices fill 5.3% of the window cells and their k=1 purity is 0.27, against a base rate of 0.019. Vortices therefore cluster in a sub-window. The mirror map shows no structure (purity 0). This is consistent with flux being a window (cut-and-project) function.
+- **R3 flux cohomology (1699761):** no assignment of local edge-type signs out to radius R=50 reproduces the flux at K=4 or K=5. The obstruction is a single valence-2 star in every run, so the flux is not a coboundary of local edge signs at these radii. Negative.
+- **R5 parity clock (1699432):** completed. The characteristic polynomial is λ⁵(λ−1)(λ+1)(λ²−8λ+1); all meta slots have the same det at each height.
+- **R6 ribbon linking (1702945):** Wr ≡ 0, because every centre line is a planar curve. So Lk ≈ Tw, with residual ≤0.26, apart from a numerical near-crossing outlier at depth 2. At depth 3 (693 ribbons) Lk is −16.8, −18.1 and −18.1 for twist signs +1, −1 and alt. Lk is nearly the same for all three choices and does not flip with the sign. |Tw| grows with the ribbon count (2.3, 13.7, 107 for 10, 87, 693 ribbons) with a near-constant per-ribbon value. **Clean negative:** no twist-sign arrow of time in Lk.
+- **R11 step 2 (1701292):** Spectre K=3 graph: 3734 vertices, 4292 links, 559 plaquettes, all of them 14-gons.
+  - Strong-coupling S is uniform (one distinct value).
+  - Weak-coupling √K takes 752 distinct values, with mean 0.513 ± 0.014.
+  - The bulk valence-4 fraction is 0.0295.
+  - Controls: square 1.0, honeycomb 0. K=4 segfaulted: the dense eigh is too large, and the K=3 result stands.
+- **R4 holonomy group (1699394):** the group computation succeeded (order 96, Dic24). **Correction (2026-11-08): 96 is a bug, see below.** It then failed an assertion comparing the edge quaternion with `spectre_holonomy.edge_quaternion`, which is a convention mismatch to fix.
+- **R8 flux Hamiltonian (1700304):** failed inside the Bott index, where `logm` produced NaN. I changed the code to use the eigenvalue phases instead and am resubmitting.
+- **gap-ids (1698583):** still pending.
+
+- 2026-11-08: R8 resubmitted with eigenvalue-phase Bott index (job 1703968); R7 genus sweep submitted (job 1703987); R4 rerun with mismatch diagnostics submitted (job 1704004).
+- 2026-11-08: R11 step 3 submitted (research/spin_densities.py, K=6, job 1704295): exact per-spectre valence-3/4 vertex and link densities via level-1 collared types, tested against Z + Z(5+sqrt15)/10.
+
+### E, first test on the Spectre (2026-11-08, exact, no computation needed)
+- The boundary-word operator of `spectre_boundary.py` is an integer matrix with charpoly (x−1)(x²−4x−1), spectrum {1, 2±√5} ⊂ ℚ(√5).
+- A Galois automorphism acts on an integer matrix trivially, so "B twisted by Galois" has the same spectrum; at best the twist re-labels which root is "physical". Neither 2+√5 nor |2−√5| equals the seam rate √2+√3 (per level), and ℚ(√5) ∩ ℚ(√2,√3) = ℚ. **E in its literal form is refuted for the Spectre.**
+- The seam rate comes from a different object: the internal contact matrix (1192 types, Theorem thm:window) with factor (x⁴−10x²+1)², roots ±√2±√3. It is not a twist of Φ either: Φ's factor is x⁴−8x²+1, roots ±λ^{±1}.
+- Revised conjecture E′: dim(seams) = log ρ(C_int)/log λ, where C_int is the contact matrix of the internal GIFS, and ρ(C_int)² = 5+2√6 is a unit of ℚ(√6) with N(5+2√6)=1, as λ² = 4+√15 is a unit of ℚ(√15). λ = (√6+√10)/2 lies in ℚ(√6,√10), whose quadratic subfields are ℚ(√6), ℚ(√10) and ℚ(√15): the area unit λ² sits in ℚ(√15) and the seam unit in ℚ(√6), so both come from the field of λ, while the outline rate ν sits in ℚ(√5), outside it. Note that 5+2√6 = (√2+√3)² and λ = √2·(√3+√5)/2.
+- Next for E′: compute ρ(C_int) for the Hat (internal space ℝ², BGMS), where the prediction is a unit of the analogous subfield; Chair44 is 2-adic and needs a separate contact-matrix construction (part of F).
+
+## Revised plan (2026-11-08, after the first round of results)
+The "Recommended order" sections above are out of date. Most of R1–R8 and R11 steps 1–2 have run. The current priorities follow.
+
+### Open problems in the record
+- **Order 48 or 96.** Resolved: 96 was an encoding bug in R4 (see the second batch below). Confirmation rerun: job 1705331.
+- **The R1 density limit.** R1 stopped because level-1 collared types do not close. R11 step 3 closed with the same machinery (38 types), so R1 can reuse `research/spin_densities.py`'s construction: classify vortices by collared supertile. Fallback: collar at level 2, or take transitions from level 3 to level 2, at K=7 on the cluster.
+- **R11 step 2 at K=4.** The dense `eigh` ran out of memory. Switch to sparse `eigsh`, or use the strong-coupling spectrum, which is exact, and spectral moments.
+- **The paper selftest (1698557).** It failed because the sibling repo `oai_tree` was missing. It has never been rerun, and it gates any edit to the paper.
+
+### Priority order
+1. **Assess the pending jobs:** 1704295 (R11 step 3), 1703968 (R8), 1703987 (R7), 1704004 (R4) and 1698583 (R9). Record every result here, including negatives.
+2. **Exact vortex density.** Finish R1 with the level-2 collaring fallback. Of all these tasks, this has the best chance of an exact theorem: the vortex density lies in the gap-labelling module.
+3. **E′ on the Hat.** Compute ρ(C_int) for the Hat. This is a cheap and decisive test of the revised conjecture.
+4. **A Spectre-specific gauge model.** R11 step 1 showed that the Z₂ theory on a disc is exactly solvable and generic. The next model must not be: either Z₂ gauge–Higgs, or 2+1D Z₂ on tiling × time, with deconfinement compared against the honeycomb.
+5. **Literature check for R11,** on quasicrystalline spin networks (Amaral, Aschheim, Irwin et al.). This must happen before any QG claim goes into the paper.
+6. **Afterwards:** F (Chair44: 2-adic model set and contact matrix), B (the exact GIFS), and a rerun of the selftest once `oai_tree` is available.
+
+## Results 2026-11-08 (second batch)
+- **R11 step 3, spin-network densities (1704295): positive and exact.** At K=6 there are 38 level-1 collared types, 0 of them inconsistent, and the transition system closes. The densities per spectre, all exact in ℚ(√15), are:
+  - valence-3 vertices: 2√15/5 ≈ 1.549;
+  - **valence-4 vertices: 1 − √15/5 = (5−√15)/5 ≈ 0.2254;**
+  - vertices: 6;
+  - links: 7.
+  - **Module test.** All four lie in the gap-labelling module ℤ + ℤ(5+√15)/10. For the valence-4 density the coefficients are n = −2 and m = 2: 2 − 2·(5+√15)/10 = 1 − √15/5.
+  - **Euler check.** V − E + F = 6 − 7 + 1 = 0 per spectre, as it must be for a planar tiling.
+  - **Meaning.** With spin 1/2 on every link, only valence-4 vertices carry volume. The density of volume-carrying nodes per spectre is therefore an element of the tiling's K-theory gap-labelling group. This is the first exact Part I to Part II link.
+  - **Consistency with step 2.** As a fraction of vertices this is (5−√15)/30 ≈ 0.0376. The K=3 bulk estimate in step 2 was 0.0295, low because of boundary effects.
+  - **Caveat.** Membership is a necessary condition only. Every frequency of a local pattern lies in the module, so this result shows that the spin-network data is of the expected type. It does not yet single out the Spectre. The Spectre-specific content is the exact value, (5−√15)/5.
+- **R4 holonomy group (1704004): the order 96 was a bug in `research/holonomy_group.py`.** The bug is now fixed.
+  - **Cause.** The integer encoding took w = exp(15°·k) to have order 48 with −1 = w²⁴. In fact w has order 24 and w¹² = −1. As a result the closure doubled the group, and multiplying by the "central sign" (0,24) was the identity, so the twist sign was dropped.
+  - **Evidence.** Every one of the 66464 mismatches at N=5 is a flip edge with mode −1, where q = −q_e.
+  - **Confirmed (1705331).** At N=5 (43027 nodes), the twist signs 1, −1 and alt all give Dic12 of order 48, the dicyclic presentation holds, and there are **0** edge mismatches against upstream. All three sign choices are coboundary-equivalent. Brent's order 48 stands.
+
+## Literature check for R11 (2026-11-08, plan step 5)
+- **Prior art on quasicrystalline spin networks** comes from a single group, Quantum Gravity Research.
+  - Amaral, Aschheim and Irwin, *Quantum Gravity at the Fifth Root of Unity* (arXiv:1903.10851).
+  - Amaral, Fang, Hammock and Irwin, *Geometric State Sum Models from Quasicrystals* (2021).
+  - Amaral, Clawson and Irwin, *Quasicrystalline Spin Foam with Matter* (arXiv:2306.01964). It defines quasicrystalline spin networks as a subspace of the LQG Hilbert space, made of EPRL coherent states, with examples from the 4D Elser–Sloane (E8) quasicrystal.
+  - These are mostly preprints. None of them uses a planar monotile.
+- **No prior work** was found that puts spin networks or lattice gauge theory on the Hat or the Spectre.
+- **Consequence for the paper.** R11 step 3 (the valence-4 density in the gap-labelling module) is new as far as this search reaches. It must:
+  - cite the works above as the quasicrystal-to-LQG precedent;
+  - make no claim that the result is physical quantum gravity, since it is a kinematical, strong-coupling statement only.
+- **Search depth.** This was a web search only. Before submission, do a full arXiv search on "aperiodic tiling" together with "spin network", "gauge", and "gap labelling" together with "lattice gauge".
+
+## E′ on the Hat: blocked on construction (plan step 3)
+- **Missing code.** The repo has no Hat implementation: no metatile substitution, no window, no internal GIFS. The test is therefore not cheap. It needs the Hat metatile inflation (H, T, P, F; factor φ²) and its window, which is a Rauzy fractal in ℝ² (Baake–Gähler–Sadun, arXiv:2305.05639). The contact matrix must then be built the way the Spectre's was in `research/window_gifs*.py`.
+- **A shortcut to try first.** BGS / BGMM (arXiv:2502.03268) state that some boundaries of the Hat windows have non-integer Hausdorff dimension. If either paper gives that dimension d, E′ predicts that φ^{2d} is a unit of a quadratic subfield of ℚ(φ) = ℚ(√5). That field has no proper quadratic subfield, so E′ forces φ^{2d} ∈ ℚ(√5). This can be checked from the published number without new code.
+
+## E′ on the Hat: decided from the literature, E′ refuted as stated (2026-11-08)
+- **Published value.** Baake–Gähler–Sadun (arXiv:2305.05639, §3) state that the Koch-type window boundaries of the Hat have d_H = log(2+√3)/(2 log φ) ≈ 1.368, computed from the induced edge IFS. The inflation factor is φ².
+- **E′ predicted** a seam unit in ℚ(φ²) = ℚ(√5).
+- **Actual.** The Hat's seam unit is 2+√3, a unit of ℚ(√3) of norm 1, and **it is not in ℚ(√5)**.
+  - So E′ fails for the Hat: "the seam unit lies in a subfield of the inflation field" holds for the Spectre only by coincidence, or because the Spectre's field ℚ(√6, √10) happens to contain ℚ(√6).
+- **Pattern that survives (heuristic, labelled as such):**
+  - Hat: seam unit 2+√3 = (1+√3)²/2, per inflation φ².
+  - Spectre: seam unit 5+2√6 = (√2+√3)², per inflation λ².
+  - Both seam rates involve √3 and are units of real quadratic fields. A natural source is the 6- and 12-fold rotational geometry of the two tiles, through cos 30° = √3/2.
+  - **Candidate E″:** the seam unit comes from the rotation group of the tile edges, not from the inflation field.
+  - **Test:** take Hat-family tiles Tile(a,b), whose inflation factors vary, and check whether the seam unit stays in ℚ(√3) as the inflation field changes. BGS treat the whole family.
+- **Action for the paper.** Drop E′ as a conjecture. If anything is said, present the two seam units side by side as an observation.
+
+### Submitted 2026-11-08 (third batch)
+
+- Step 2, exact vortex density (`research/vortex_density2.py 6`): job 1708335.
+- Step 4, Z₂ deconfinement on the Spectre graph against honeycomb and square controls (`research/z2_deconfinement.py`): job 1709080.
+- Still queued: R8 (1703968), R7 (1703987), R9 (1698583).
+
+- chair44_cohomology (item F, rational Cech H* of the Chair44 hull): job 1710452
+
+### Results 2026-11-08 (third batch)
+
+- **Step 2, exact vortex density: done.** The density of vortices (flux −1 vertices of valence 3) is exactly **4 − √15 ≈ 0.1270 per spectre**, i.e. (4 − √15)/6 ≈ 0.0212 per vertex, and lies in the gap-labelling module ℤ + ℤ(5+√15)/10. All flux −1 vertices together have density 2 − 2√15/5. The level-1 collared types (38) are closed with 0 inconsistent, so the level-2 fallback is not needed. The finite-patch values of R1 (0.019 per vertex at depth 6) approach the exact value from below, as boundary losses predict. Job 1708335.
+- **Step 4, Z₂ deconfinement: coarse scan done, fine scan submitted.** The Binder curves show the ordering transition of the dual 3D Ising model clearly: Spectre at β ≈ 0.08–0.09, honeycomb 0.16–0.17, square 0.22–0.23 (3D Ising: 0.2217, so the control agrees). The automatic crossing detector reported spurious values (0.047, 0.098, 0.166) taken from noise where U ≈ 0. The script now accepts only crossings with max U > 0.15, and the rerun uses fine grids and 2000 sweeps. Job 1709080; fine rerun job 1712312.
