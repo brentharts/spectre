@@ -16,7 +16,10 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
    - **SU(2) gauge theory on the Spectre graph** (R11 step 2, `research/su2_graph.py`):
      - every plaquette is a 14-gon, and the strong-coupling area is uniform;
      - 2.95% of bulk vertices have valence 4, against the square-grid and honeycomb controls, which give 100% and 0%.
-   - **R11 step 3** (`research/spin_densities.py`) computes the exact spin-network densities per spectre over ℚ(√15). It tests whether they lie in the gap-labelling module ℤ + ℤ(5+√15)/10. That would directly link the tiling's K-theory to the volume spectrum.
+   - **R11 step 3, spin-network densities. This is now an exact result** (`research/spin_densities.py`).
+     - The density of valence-4 vertices, the only ones that carry volume at spin 1/2, is exactly **1 − √15/5 per spectre**.
+     - The other densities: valence-3 vertices 2√15/5, vertices 6, and links 7.
+     - All of them lie in the gap-labelling module ℤ + ℤ(5+√15)/10. This is a concrete link between the tiling's K-theory and the volume structure of the spin network.
 4. **It fixes the existing analysis tools and adds two new ones.**
    - Fixes:
      - The Bott index in `research/flux_hamiltonian.py` is now computed from eigenvalue phases; before this fix it returned NaN.
@@ -32,10 +35,9 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 
 These jobs are still running or queued. Their results will be added to this PR as follow-up commits:
 
-- R11 step 3 (spin-network densities)
 - the R8 rerun (Bott index of the flux Hamiltonian)
 - R7 (genus sweep)
-- the R4 rerun (holonomy group order, 96 vs 48)
+- the R4 rerun, which confirms a bug fix: my script's order 96 came from an encoding error, so Brent's order 48 is correct
 - R9 (gap-ids)
 
 ## Reproducing

@@ -1,13 +1,15 @@
 """R4: exact identification of the holonomy group of spectre_holonomy.py.
 
 Every edge rotation angle a is a multiple of 30 degrees (checked), so a/2 is a multiple of 15 degrees.
-With w = cos 15 + k sin 15 (order 48 in SU(2), w^24 = -1) and i the unit quaternion:
+With w = cos 15 + k sin 15 (order 24 in SU(2), w^12 = -1) and i the unit quaternion:
     proper edge:  qz(a)                      = w^(a/30)
     flip edge:    s (0, cos a/2, sin a/2, 0)  = s i w^(-a/30)      (i k = -j)
-so every element is (f, m) := i^f w^m, f in {0,1}, m mod 48, with i^2 = w^24 and i w = w^-1 i.
+so every element is (f, m) := i^f w^m, f in {0,1}, m mod 24, with i^2 = w^12 and i w = w^-1 i.
 The script computes, in this exact integer encoding, the generated group, its order, element orders,
 centre, and checks the binary dihedral (dicyclic) presentation; it does this for twist modes +1, -1, alt
 and checks the sign change is a central coboundary on the tree (eq' = c(parent) eq c(child)^-1).
+Fix 2026-11-08: the encoding previously used m mod 48 and -1 = w^24; but w^24 = +1, so the group
+was doubled (reported 96) and the twist sign was dropped. Now m mod 24, -1 = w^12.
 Usage: python research/holonomy_group.py N OUT.json
 """
 import sys, json
@@ -17,7 +19,7 @@ import numpy as np
 import spectrespace as S
 import spectre_holonomy as H
 
-M = 48
+M = 24
 
 
 def mul(a, b):
@@ -25,12 +27,12 @@ def mul(a, b):
     if f2 == 0:
         return (f1, (m1 + m2) % M)
     # i^f1 w^m1 i w^m2 = i^f1 i w^-m1 w^m2
-    return ((f1 + 1) % 2, (-m1 + m2 + (24 if f1 else 0)) % M)
+    return ((f1 + 1) % 2, (-m1 + m2 + (12 if f1 else 0)) % M)
 
 
 def inv(a):
     f, m = a
-    return (0, -m % M) if f == 0 else (1, (m + 24) % M)  # (i w^m)^2 = -1
+    return (0, -m % M) if f == 0 else (1, (m + 12) % M)  # (i w^m)^2 = -1
 
 
 def order(a):
@@ -70,7 +72,7 @@ def edge(space, nd, mode):
         e = (0, k % M)
     else:
         e = (1, -k % M)
-        if H.twist_sign(space, nd, mode) < 0: e = mul((0, 24), e)
+        if H.twist_sign(space, nd, mode) < 0: e = mul((0, 12), e)
     q = H.edge_quaternion(space, nd, mode); d = np.abs(to_q(e) - q).max()
     if d > 1e-9:
         MISMATCH.append(dict(mode=mode, node=nd.id, e=list(e), det=float(S.det2(L)), angle=float(a),
@@ -111,7 +113,7 @@ def main():
         c = {0: (0, 0)}; ok = True
         for nd in space.nodes[1:]:
             ratio = mul(eqs[m2][nd.id], inv(eqs["1"][nd.id]))
-            ok &= ratio in ((0, 0), (0, 24))
+            ok &= ratio in ((0, 0), (0, 12))
             c[nd.id] = mul(c[nd.parent], ratio)
             ok &= mul(mul(c[nd.parent], eqs["1"][nd.id]), inv(c[nd.id])) == eqs[m2][nd.id]
         res[f"coboundary_1_to_{m2}"] = bool(ok)

@@ -347,7 +347,7 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
   - Weak-coupling √K takes 752 distinct values, with mean 0.513 ± 0.014.
   - The bulk valence-4 fraction is 0.0295.
   - Controls: square 1.0, honeycomb 0. K=4 segfaulted: the dense eigh is too large, and the K=3 result stands.
-- **R4 holonomy group (1699394):** the group computation succeeded (order 96, Dic24). It then failed an assertion comparing the edge quaternion with `spectre_holonomy.edge_quaternion`, which is a convention mismatch to fix.
+- **R4 holonomy group (1699394):** the group computation succeeded (order 96, Dic24). **Correction (2026-11-08): 96 is a bug, see below.** It then failed an assertion comparing the edge quaternion with `spectre_holonomy.edge_quaternion`, which is a convention mismatch to fix.
 - **R8 flux Hamiltonian (1700304):** failed inside the Bott index, where `logm` produced NaN. I changed the code to use the eigenvalue phases instead and am resubmitting.
 - **gap-ids (1698583):** still pending.
 
@@ -365,8 +365,8 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 The "Recommended order" sections above are out of date. Most of R1–R8 and R11 steps 1–2 have run. The current priorities follow.
 
 ### Open problems in the record
-- **Order 48 or 96.** The holonomy baseline reports an edge group of order 48. The R4 run found order 96 (Dic24) and then hit a convention mismatch. The R4 rerun (1704004) must settle which convention gives which group before any order is quoted in the paper.
-- **The R1 and R11 step 3 density limits.** R1 stopped because level-1 collared types do not close. R11 step 3 (1704295) uses the same machinery, so it can fail in the same way. Fallback: collar at level 2, or take transitions from level 3 to level 2, at K=7 on the cluster.
+- **Order 48 or 96.** Resolved: 96 was an encoding bug in R4 (see the second batch below). Confirmation rerun: job 1705331.
+- **The R1 density limit.** R1 stopped because level-1 collared types do not close. R11 step 3 closed with the same machinery (38 types), so R1 can reuse `research/spin_densities.py`'s construction: classify vortices by collared supertile. Fallback: collar at level 2, or take transitions from level 3 to level 2, at K=7 on the cluster.
 - **R11 step 2 at K=4.** The dense `eigh` ran out of memory. Switch to sparse `eigsh`, or use the strong-coupling spectrum, which is exact, and spectral moments.
 - **The paper selftest (1698557).** It failed because the sibling repo `oai_tree` was missing. It has never been rerun, and it gates any edit to the paper.
 
@@ -377,3 +377,19 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 4. **A Spectre-specific gauge model.** R11 step 1 showed that the Z₂ theory on a disc is exactly solvable and generic. The next model must not be: either Z₂ gauge–Higgs, or 2+1D Z₂ on tiling × time, with deconfinement compared against the honeycomb.
 5. **Literature check for R11,** on quasicrystalline spin networks (Amaral, Aschheim, Irwin et al.). This must happen before any QG claim goes into the paper.
 6. **Afterwards:** F (Chair44: 2-adic model set and contact matrix), B (the exact GIFS), and a rerun of the selftest once `oai_tree` is available.
+
+## Results 2026-11-08 (second batch)
+- **R11 step 3, spin-network densities (1704295): positive and exact.** At K=6 there are 38 level-1 collared types, 0 of them inconsistent, and the transition system closes. The densities per spectre, all exact in ℚ(√15), are:
+  - valence-3 vertices: 2√15/5 ≈ 1.549;
+  - **valence-4 vertices: 1 − √15/5 = (5−√15)/5 ≈ 0.2254;**
+  - vertices: 6;
+  - links: 7.
+  - **Module test.** All four lie in the gap-labelling module ℤ + ℤ(5+√15)/10. For the valence-4 density the coefficients are n = −2 and m = 2: 2 − 2·(5+√15)/10 = 1 − √15/5.
+  - **Euler check.** V − E + F = 6 − 7 + 1 = 0 per spectre, as it must be for a planar tiling.
+  - **Meaning.** With spin 1/2 on every link, only valence-4 vertices carry volume. The density of volume-carrying nodes per spectre is therefore an element of the tiling's K-theory gap-labelling group. This is the first exact Part I to Part II link.
+  - **Consistency with step 2.** As a fraction of vertices this is (5−√15)/30 ≈ 0.0376. The K=3 bulk estimate in step 2 was 0.0295, low because of boundary effects.
+  - **Caveat.** Membership is a necessary condition only. Every frequency of a local pattern lies in the module, so this result shows that the spin-network data is of the expected type. It does not yet single out the Spectre. The Spectre-specific content is the exact value, (5−√15)/5.
+- **R4 holonomy group (1704004): the order 96 was a bug in `research/holonomy_group.py`.** The bug is now fixed.
+  - **Cause.** The integer encoding took w = exp(15°·k) to have order 48 with −1 = w²⁴. In fact w has order 24 and w¹² = −1. As a result the closure doubled the group, and multiplying by the "central sign" (0,24) was the identity, so the twist sign was dropped.
+  - **Evidence.** Every one of the 66464 mismatches at N=5 is a flip edge with mode −1, where q = −q_e.
+  - **Status.** Brent's order 48 stands. The rerun with m mod 24 and −1 = w¹² is job 1705331. Expected: Dic12 for every twist sign, with zero mismatches.
