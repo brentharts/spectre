@@ -430,3 +430,8 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 - Still queued: R8 (1703968), R7 (1703987), R9 (1698583).
 
 - chair44_cohomology (item F, rational Cech H* of the Chair44 hull): job 1710452
+
+### Results 2026-11-08 (third batch)
+
+- **Step 2, exact vortex density: done.** The density of vortices (flux −1 vertices of valence 3) is exactly **4 − √15 ≈ 0.1270 per spectre**, i.e. (4 − √15)/6 ≈ 0.0212 per vertex, and lies in the gap-labelling module ℤ + ℤ(5+√15)/10. All flux −1 vertices together have density 2 − 2√15/5. The level-1 collared types (38) are closed with 0 inconsistent, so the level-2 fallback is not needed. The finite-patch values of R1 (0.019 per vertex at depth 6) approach the exact value from below, as boundary losses predict. Job 1708335.
+- **Step 4, Z₂ deconfinement: coarse scan done, fine scan submitted.** The Binder curves show the ordering transition of the dual 3D Ising model clearly: Spectre at β ≈ 0.08–0.09, honeycomb 0.16–0.17, square 0.22–0.23 (3D Ising: 0.2217, so the control agrees). The automatic crossing detector reported spurious values (0.047, 0.098, 0.166) taken from noise where U ≈ 0. The script now accepts only crossings with max U > 0.15, and the rerun uses fine grids and 2000 sweeps. Job 1709080; fine rerun job 1712312.

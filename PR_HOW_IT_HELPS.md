@@ -6,7 +6,7 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 
 1. **It explains what the holonomy vortices are.**
    - The flux −1 vertices are the vortices; all of them have valence 3, and they don't depend on the convention.
-   - **Density.** Their share of interior vertices is 0.009, 0.015, 0.018 and 0.019 at depths 3–6 (R1, `research/vortex_density.py`).
+   - **Density.** Their share of interior vertices is 0.009, 0.015, 0.018 and 0.019 at depths 3–6 (R1, `research/vortex_density.py`). The exact value is now known: **4 − √15 per spectre** (≈ 0.0212 per vertex), again in the gap-labelling module ℤ + ℤ(5+√15)/10 (`research/vortex_density2.py`).
    - **Window.** Under the star map they fall in a sub-region of the window: a vortex's nearest neighbour is another vortex 27% of the time, against a base rate of about 2% (R2, `research/vortex_window.py`). That is evidence that the vortex set is a cut-and-project set.
 2. **It shows what the flux is not.**
    - **Not a local edge assignment.** No choice of edge signs depending on local edge type, out to radius 50, reproduces the flux. The obstruction is a single valence-2 star (R3, `research/flux_cohomology.py`).
@@ -35,7 +35,7 @@ This PR builds on Brent's ribbon and holonomy work (`spectre_holonomy.py`, `spec
 
 ## Still running
 
-These jobs are still running or queued: the exact vortex density (R1, `research/vortex_density2.py`), the Z₂ deconfinement study of plan step 4 (`research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), and the rational Čech cohomology of the 3D Chair44 hull (item F, `research/chair44_cohomology.py`). Also queued:
+These jobs are still running or queued: the Z₂ deconfinement study of plan step 4 (a fine-grid rerun; the coarse scan places the Spectre transition at β ≈ 0.08–0.09; `research/z2_deconfinement.py`, a 2+1D Z₂ gauge theory on the Spectre graph compared with the honeycomb and square lattices), and the rational Čech cohomology of the 3D Chair44 hull (item F, `research/chair44_cohomology.py`). Also queued:
 
 - the R8 rerun (Bott index of the flux Hamiltonian)
 - R7 (genus sweep)
