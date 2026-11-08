@@ -352,3 +352,4 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 - **gap-ids (1698583):** still pending.
 
 - 2026-11-08: R8 resubmitted with eigenvalue-phase Bott index (job 1703968); R7 genus sweep submitted (job 1703987); R4 rerun with mismatch diagnostics submitted (job 1704004).
+- 2026-11-08: R11 step 3 submitted (research/spin_densities.py, K=6, job 1704295): exact per-spectre valence-3/4 vertex and link densities via level-1 collared types, tested against Z + Z(5+sqrt15)/10.
