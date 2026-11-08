@@ -59,6 +59,9 @@ def to_q(a):
     return H.qmul(np.array([0., 1, 0, 0]), w) if f else w
 
 
+MISMATCH = []
+
+
 def edge(space, nd, mode):
     L = nd.local[:, :2]
     a = np.rad2deg(np.arctan2(L[1, 0], L[0, 0]))
@@ -68,7 +71,10 @@ def edge(space, nd, mode):
     else:
         e = (1, -k % M)
         if H.twist_sign(space, nd, mode) < 0: e = mul((0, 24), e)
-    assert np.abs(to_q(e) - H.edge_quaternion(space, nd, mode)).max() < 1e-9
+    q = H.edge_quaternion(space, nd, mode); d = np.abs(to_q(e) - q).max()
+    if d > 1e-9:
+        MISMATCH.append(dict(mode=mode, node=nd.id, e=list(e), det=float(S.det2(L)), angle=float(a),
+                             q=[float(x) for x in q], q_e=[float(x) for x in to_q(e)]))
     return e
 
 
@@ -110,6 +116,8 @@ def main():
             ok &= mul(mul(c[nd.parent], eqs["1"][nd.id]), inv(c[nd.id])) == eqs[m2][nd.id]
         res[f"coboundary_1_to_{m2}"] = bool(ok)
         print("sign change 1 ->", m2, "is a central (+-1) coboundary:", ok, flush=True)
+    res["edge_quaternion_mismatches"] = len(MISMATCH); res["mismatch_examples"] = MISMATCH[:20]
+    print("mismatches", len(MISMATCH), json.dumps(MISMATCH[:5]), flush=True)
     json.dump(res, open(out, "w"), indent=1, default=str)
 
 
