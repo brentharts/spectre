@@ -351,4 +351,4 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 - **R8 flux Hamiltonian (1700304):** failed inside the Bott index, where `logm` produced NaN. I changed the code to use the eigenvalue phases instead and am resubmitting.
 - **gap-ids (1698583):** still pending.
 
-- 2026-11-08: R8 resubmitted with eigenvalue-phase Bott index (job 1703968); R7 genus sweep submitted (job 1703987); R4 rerun with mismatch diagnostics pending submission.
+- 2026-11-08: R8 resubmitted with eigenvalue-phase Bott index (job 1703968); R7 genus sweep submitted (job 1703987); R4 rerun with mismatch diagnostics submitted (job 1704004).
