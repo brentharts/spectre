@@ -334,3 +334,19 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 - Consequence: a real Spectre signal needs a model that is not exactly solvable. Options are Z2 gauge-Higgs (matter on tiles, which R8 already is in the free limit), the tiling × time (2+1D, which has a deconfinement transition), or a periodic approximant with non-contractible loops. Step 2 (SU(2) area and volume spectra) goes ahead as planned.
 
 - 2026-11-08: all queued jobs still PENDING. R6 script `research/ribbon_linking.py` and R7 sweep `research/genus_sweep.py` written (82f18ac); R6 submitted as job 1702945 at 2 CPUs (lane now 64/64). R7 waits for budget.
+
+### Results 2026-11-08
+- **Holonomy baseline (1698605):** 18/18 checks pass. Edge group has order 48 for every twist sign; the twist sign is a Z2 gauge. At K=4: 1608 flux −1 vertices, 372 of them convention independent, all of valence 3.
+- **R1 vortex density (1699051):** convention-independent vortices number 28, 372 and 3604 at K=3, 4, 5. As a fraction of interior vertices that is 0.0094, 0.0150 and 0.0179 (R2 gives 0.0194 at K=6), still rising as the boundary shrinks. Every vortex has valence 3. The exact closed form was not reached: no closed level-1 types, so the script stopped with "cannot evaluate exactly". The limit is still open.
+- **R2 vortex window (1699881):** in the star map F at K=6 the vortices fill 5.3% of the window cells and their k=1 purity is 0.27, against a base rate of 0.019. Vortices therefore cluster in a sub-window. The mirror map shows no structure (purity 0). This is consistent with flux being a window (cut-and-project) function.
+- **R3 flux cohomology (1699761):** no assignment of local edge-type signs out to radius R=50 reproduces the flux at K=4 or K=5. The obstruction is a single valence-2 star in every run, so the flux is not a coboundary of local edge signs at these radii. Negative.
+- **R5 parity clock (1699432):** completed. The characteristic polynomial is λ⁵(λ−1)(λ+1)(λ²−8λ+1); all meta slots have the same det at each height.
+- **R6 ribbon linking (1702945):** Wr ≡ 0, because every centre line is a planar curve. So Lk ≈ Tw, with residual ≤0.26, apart from a numerical near-crossing outlier at depth 2. At depth 3 (693 ribbons) Lk is −16.8, −18.1 and −18.1 for twist signs +1, −1 and alt. Lk is nearly the same for all three choices and does not flip with the sign. |Tw| grows with the ribbon count (2.3, 13.7, 107 for 10, 87, 693 ribbons) with a near-constant per-ribbon value. **Clean negative:** no twist-sign arrow of time in Lk.
+- **R11 step 2 (1701292):** Spectre K=3 graph: 3734 vertices, 4292 links, 559 plaquettes, all of them 14-gons.
+  - Strong-coupling S is uniform (one distinct value).
+  - Weak-coupling √K takes 752 distinct values, with mean 0.513 ± 0.014.
+  - The bulk valence-4 fraction is 0.0295.
+  - Controls: square 1.0, honeycomb 0. K=4 segfaulted: the dense eigh is too large, and the K=3 result stands.
+- **R4 holonomy group (1699394):** the group computation succeeded (order 96, Dic24). It then failed an assertion comparing the edge quaternion with `spectre_holonomy.edge_quaternion`, which is a convention mismatch to fix.
+- **R8 flux Hamiltonian (1700304):** failed inside the Bott index, where `logm` produced NaN. I changed the code to use the eigenvalue phases instead and am resubmitting.
+- **gap-ids (1698583):** still pending.

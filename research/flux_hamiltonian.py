@@ -11,7 +11,6 @@ Usage: python research/flux_hamiltonian.py OUT.json K [K ...]
 import sys, json, time
 sys.path.insert(0, "."); sys.path.insert(0, "research")
 import numpy as np
-from scipy.linalg import logm
 from gap_collared import build
 from vortex_density import star_data
 from gap_ids import distance_from, best_label, R_BULK, GMIN, WMIN, ALPHA
@@ -69,7 +68,8 @@ def bott(Q, pos, sel):
     W = np.exp(2j * np.pi * (y - y.min()) / (np.ptp(y) * 1.05))
     A = (Q * U) @ Q.conj().T; B = (Q * W) @ Q.conj().T
     M = A @ B @ A.conj().T @ B.conj().T
-    return float(np.imag(np.trace(logm(M))) / (2 * np.pi))
+    ev = np.linalg.eigvals(M)
+    return float(np.angle(ev[np.abs(ev) > 1e-8]).sum() / (2 * np.pi))
 
 
 def analyse(g, flux):
