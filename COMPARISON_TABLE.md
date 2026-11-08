@@ -8,7 +8,7 @@ Each row is an observable already computed in this project. "n/c" means the cont
 | Valence-4 vertex share (bulk) | 2.95%; density exactly 1 − √15/5 per spectre | 100% | 0% | **Yes**: intermediate, and an irrational density in the gap-labelling module |
 | Densities in gap-labelling module ℤ + ℤ(5+√15)/10 | all (vortices, valence 3/4, vertices, links) | trivially rational | trivially rational | **Yes** (by construction of the module) |
 | Plaquette type | all 14-gons, uniform strong-coupling area | 4-gons | 6-gons | No (uniform in all three) |
-| β_c, Z₂ deconfinement | ≈ 0.0855 ± 0.0007 (heuristic, no clean crossing) | 0.2229 (3D Ising 0.2217) | n/c | Unclear: shift is consistent with lower coordination; needs honeycomb control |
+| β_c, Z₂ deconfinement | ≈ 0.0855 ± 0.0007 (heuristic, no clean crossing) | 0.2229 (3D Ising 0.2217) | 0.1614 | No: β_c·(z̄+2) ≈ 1.3 for all three (z̄ = dual-lattice coordination), so the shift is explained by coordination |
 | Bott indices, π-flux Hamiltonian | all 0 | 0 (time-reversal symmetry) | 0 (time-reversal symmetry) | **No**: forced by time-reversal symmetry |
 | Main spectral gap under vortex flux | survives | n/a (no vortices) | n/a | n/a |
 | Gap labels (vertex Hamiltonian) | stable edges at IDS 0.315/0.316 ([−5, 6]) and 0.684/0.685 ([6, −6]) | band edges only, IDS ∈ {0, 1} | IDS 1/2 (Dirac point, no gap) | **Yes**: labels from the Spectre's K-theory |
@@ -21,4 +21,4 @@ Each row is an observable already computed in this project. "n/c" means the cont
 
 - The monotile matters for **combinatorial and K-theoretic** quantities: vortex density, valence mix, gap labels, chirality of the hull.
 - It does **not** matter for **symmetry-protected** quantities: Bott indices vanish for every graph with time-reversal symmetry.
-- The β_c value is not yet interpretable: a honeycomb control (coordination 3) is the missing comparison, since the Spectre graph is mostly valence 3.
+- β_c follows coordination: with the honeycomb control (0.1614, same fine-scan job 1712312), β_c·(z̄+2) ≈ 1.3 on Spectre, square and honeycomb alike. The open question is only the jump-without-crossing on the Spectre (possible weak first order or boundary effect).
