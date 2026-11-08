@@ -583,6 +583,19 @@ Read Brent's `QUANTUM_GRAVITY.md` (in spectre-monotile-py). For each claim, writ
 - **Not yet checked.** Whether C by itself, which swaps bumps and dents, preserves the substitution. If it does not, then PC is the full mirror-type symmetry of the hull.
 - **G2b result (2026-11-08): C alone is not a symmetry.** No new computation was needed. C leaves the geometry alone, so it keeps every chair cell in place and swaps the decoration on each tile, T ↦ C(T). For the C-image of a tiling to be a tiling again, C(T) would have to be a rotated copy of T in the same cell set. The only maps that keep the chair's cell set are the 6 axis permutations, and the proper ones are the 3 rotations about the diagonal. By G2 the identity matches all 192 heights and the two rotations match 144, so none of them sends every height to its opposite. So C(T) is not a tile of the hull, and C by itself is not a hull symmetry. P alone fails for the same reason (G2), and with Γ14 this leaves PC as the hull's only mirror-type symmetry. The same argument works on every tile, so the substitution never comes into it.
 
+### K result (2026-11-08): claims in `QUANTUM_GRAVITY.md` turned into tests
+
+Read from `brentharts/spectre-monotile-py`. That file already separates Exact / Numeric / Hypothesis well, so most entries are tested results, not claims. The open ones:
+
+| Entry | Computable quantity | Refuted if | Status |
+|---|---|---|---|
+| §3.3 selection rules: compare Spectre inflation with E8 shell counts | growth law of each | they cannot match | **Refuted now, by hand.** E8 shell counts are 240·σ₃(n), polynomial in n; Spectre supertile counts grow like (4+√15)^k, exponential. A match is only possible after a logarithmic reparametrisation, which the E8 shelling does not supply. |
+| §3.2 192 = 8 × 24 (Chair44 tips vs E8 fibres) | already tested (`chair_e8_192.py`) | n/a | Coincidence of counts; keep closed. |
+| §3.5 a Spectre → E8 construction | does ℤ[ζ₁₂] (rank 4, the Spectre vertex module) embed in E8 with the Spectre window as the image of a fibre-closed set? First step: the rank-4 module's internal space is 2D, while E8 cut-and-project to 2D needs a 6D internal space | the window dimensions cannot be matched by any ℤ-linear map | Foothold: compute the Spectre's own cut-and-project data (rank 4, 2 + 2) against E8's 8 = 2 + 6; a mismatch in rank is decisive unless one passes to a sublattice. Not run. |
+| §3.4 fibres (curves) vs Hopf fibres (point sets) | none | n/a | **Deferred**: no computable quantity; the link is the shared word. |
+| Twist hopping `L` (1.012–1.709) | dependence of L on the Z₂ vortex density (R1) | no correlation across k | Could feed the comparison table; low priority. |
+| "12 directions" (±X, ±Y, ±Z with twists) | counting statement | n/a | Kept as a count. Dic12 has order 48 = 4 × 12, and its cyclic subgroup of order 24 holds the rotations; the 12 directions match neither the order-48 group nor a coset count without an extra choice, so record it as a coincidence unless a map is written down. |
+
 ### Updated priority (2026-11-08, after G1–G2)
 
 G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
@@ -591,7 +604,7 @@ G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
 2. ~~**G4: can the twist sign play the role of C?**~~ **DONE (2026-11-08), `research/spectre_pc_twist.py`.** Result: yes, with an intrinsic sign. Mirroring a depth-3 patch and taking ribbon angle g → −g reproduces every lifted ribbon exactly (all centre lines, all rotation edges, all 567 reflection edges). Reflection edges need twist sign s → −s, except the 72 edges at the atan2 branch a = 180°, which need s → +s: `atan2` returns +π for both the edge and its mirror, so the code's axis u is not mirror-covariant there, and R(−u, θ) = R(u, −θ) absorbs the flip. Defining the half-twist handedness relative to the reflection axis makes PC an exact symmetry. Structural difference from Chair44: the Spectre mirror maps the hull to the *mirror* hull, while for Chair44 P is an automorphism of the hull itself (Γ14). Original item:  Test whether flipping every ribbon twist sign, combined with reflecting the Spectre, maps lifted Spectre patches to lifted patches, using the R4 and R6 code. If it does, the Spectre has its own PC and the bridge has a target to respect. If it does not, this asymmetry is the first real structural difference between the two tiles.
 3. ~~**I: the table comparing the Spectre with ordinary lattices.**~~ **DONE (2026-11-08): `COMPARISON_TABLE.md`.** Follow-up: honeycomb β_c control; fill H1/H2 rows.
 4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
-5. **K, then J.** Writing tasks.
+5. **K, then J.** Writing tasks. **K done** (table above); J next.
 
 ## Giants (long-horizon, uncertain, deliberately more than we can finish)
 
