@@ -409,3 +409,16 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 ## E′ on the Hat: blocked on construction (plan step 3)
 - **Missing code.** The repo has no Hat implementation: no metatile substitution, no window, no internal GIFS. The test is therefore not cheap. It needs the Hat metatile inflation (H, T, P, F; factor φ²) and its window, which is a Rauzy fractal in ℝ² (Baake–Gähler–Sadun, arXiv:2305.05639). The contact matrix must then be built the way the Spectre's was in `research/window_gifs*.py`.
 - **A shortcut to try first.** BGS / BGMM (arXiv:2502.03268) state that some boundaries of the Hat windows have non-integer Hausdorff dimension. If either paper gives that dimension d, E′ predicts that φ^{2d} is a unit of a quadratic subfield of ℚ(φ) = ℚ(√5). That field has no proper quadratic subfield, so E′ forces φ^{2d} ∈ ℚ(√5). This can be checked from the published number without new code.
+
+## E′ on the Hat: decided from the literature, E′ refuted as stated (2026-11-08)
+- **Published value.** Baake–Gähler–Sadun (arXiv:2305.05639, §3) state that the Koch-type window boundaries of the Hat have d_H = log(2+√3)/(2 log φ) ≈ 1.368, computed from the induced edge IFS. The inflation factor is φ².
+- **E′ predicted** a seam unit in ℚ(φ²) = ℚ(√5).
+- **Actual.** The Hat's seam unit is 2+√3, a unit of ℚ(√3) of norm 1, and **it is not in ℚ(√5)**.
+  - So E′ fails for the Hat: "the seam unit lies in a subfield of the inflation field" holds for the Spectre only by coincidence, or because the Spectre's field ℚ(√6, √10) happens to contain ℚ(√6).
+- **Pattern that survives (heuristic, labelled as such):**
+  - Hat: seam unit 2+√3 = (1+√3)²/2, per inflation φ².
+  - Spectre: seam unit 5+2√6 = (√2+√3)², per inflation λ².
+  - Both seam rates involve √3 and are units of real quadratic fields. A natural source is the 6- and 12-fold rotational geometry of the two tiles, through cos 30° = √3/2.
+  - **Candidate E″:** the seam unit comes from the rotation group of the tile edges, not from the inflation field.
+  - **Test:** take Hat-family tiles Tile(a,b), whose inflation factors vary, and check whether the seam unit stays in ℚ(√3) as the inflation field changes. BGS treat the whole family.
+- **Action for the paper.** Drop E′ as a conjecture. If anything is said, present the two seam units side by side as an observation.
