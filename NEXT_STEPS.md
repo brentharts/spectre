@@ -333,4 +333,4 @@ Each task ends in a theorem, an exact number, or a documented negative result. C
 - Periodic controls (hexagonal, square) give the same formula with their own vertex densities. Nothing here distinguishes the Spectre beyond R1.
 - Consequence: a real Spectre signal needs a model that is not exactly solvable. Options are Z2 gauge-Higgs (matter on tiles, which R8 already is in the free limit), the tiling × time (2+1D, which has a deconfinement transition), or a periodic approximant with non-contractible loops. Step 2 (SU(2) area and volume spectra) goes ahead as planned.
 
-- 2026-11-08: all queued jobs still PENDING. R6 script `research/ribbon_linking.py` and R7 sweep `research/genus_sweep.py` written (82f18ac); R6 submitted at 2 CPUs (lane budget 64). R7 waits for budget.
+- 2026-11-08: all queued jobs still PENDING. R6 script `research/ribbon_linking.py` and R7 sweep `research/genus_sweep.py` written (82f18ac); R6 submitted as job 1702945 at 2 CPUs (lane now 64/64). R7 waits for budget.
