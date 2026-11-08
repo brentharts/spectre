@@ -581,12 +581,13 @@ Read Brent's `QUANTUM_GRAVITY.md` (in spectre-monotile-py). For each claim, writ
     - Fibres attach to tips, so a bridge that respects PC must send the mirror to "Spectre reflection plus something", and that something must play the role of C.
     - The candidate for that role is the twist sign of the lifted ribbons: R4 found the twist signs coboundary-equivalent, and R6 found no arrow of time. This is the next thing to test for G.
 - **Not yet checked.** Whether C by itself, which swaps bumps and dents, preserves the substitution. If it does not, then PC is the full mirror-type symmetry of the hull.
+- **G2b result (2026-11-08): C alone is not a symmetry.** No new computation was needed. C leaves the geometry alone, so it keeps every chair cell in place and swaps the decoration on each tile, T ↦ C(T). For the C-image of a tiling to be a tiling again, C(T) would have to be a rotated copy of T in the same cell set. The only maps that keep the chair's cell set are the 6 axis permutations, and the proper ones are the 3 rotations about the diagonal. By G2 the identity matches all 192 heights and the two rotations match 144, so none of them sends every height to its opposite. So C(T) is not a tile of the hull, and C by itself is not a hull symmetry. P alone fails for the same reason (G2), and with Γ14 this leaves PC as the hull's only mirror-type symmetry. The same argument works on every tile, so the substitution never comes into it.
 
 ### Updated priority (2026-11-08, after G1–G2)
 
 G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
 
-1. **G2b: does C alone fit the substitution?** C swaps every bump with the dent of the same depth. Apply it to the supertiles of `chair44_mirror.py` and check whether the decorated supertiles stay consistent. This needs the substitution to carry the decorations, not only the frames. If C fails, then PC is the full mirror-type symmetry of the hull.
+1. ~~**G2b: does C alone fit the substitution?**~~ **Done: no** (see the G2b result above). C swaps every bump with the dent of the same depth. Apply it to the supertiles of `chair44_mirror.py` and check whether the decorated supertiles stay consistent. This needs the substitution to carry the decorations, not only the frames. If C fails, then PC is the full mirror-type symmetry of the hull.
 2. **G4: can the twist sign play the role of C?** Test whether flipping every ribbon twist sign, combined with reflecting the Spectre, maps lifted Spectre patches to lifted patches, using the R4 and R6 code. If it does, the Spectre has its own PC and the bridge has a target to respect. If it does not, this asymmetry is the first real structural difference between the two tiles.
 3. **I: the table comparing the Spectre with ordinary lattices.** Done locally from results we already have.
 4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
