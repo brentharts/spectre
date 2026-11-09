@@ -481,7 +481,7 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - No Binder crossing between any pair of levels 3/4/5.
   - The jump in U (0 → 2/3) sharpens and moves down with size: its midpoint is ≈ 0.0862 at N = 4401 and ≈ 0.0855 at N = 34649, rising within Δβ ≈ 0.001.
   - Estimate: β_c ≈ 0.0855 ± 0.0007. A jump this abrupt without a crossing may point to a weakly first-order transition or to strong boundary effects (open spatial boundary). That is a question for later, not a blocker.
-- Remaining follow-up: R8 with complex π/2 flux.
+- Remaining follow-up: ~~R8 with complex π/2 flux~~, done 2026-11-09: all Bott 0 (see H1/H2 status).
 
 ### Item F, why X_k vanishes (2026-11-08, from the recorded tensors)
 
@@ -496,7 +496,7 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 
 - **R7 genus sweep, third attempt (job 1715742).** Installs scikit-image with `pip --target` into a side directory on PYTHONPATH. The second attempt (1715015) failed because `pip --user` is refused inside the virtualenv. Depths 2–3.
 - **Item F mirror check (job 1715771, `research/chair44_mirror.py`).** Tests directly whether the level-k supertile (k ≤ 6) equals its x ↔ y mirror image with frames conjugated. All True: the Chair44 hull is recorded as achiral and F is closed.
-- Still open: R8 with complex π/2 flux.
+- Still open: ~~R8 with complex π/2 flux~~, done 2026-11-09: all Bott 0 (see H1/H2 status).
 
 ### Results 2026-11-08 (sixth batch)
 
@@ -505,3 +505,247 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - This explains X_k ≡ 0: the Chair44 supertiles are achiral, so every pseudoscalar of them vanishes. The Spectre's handedness (item A) has no analogue in Chair44.
   - What would upgrade this to a proof: show that the substitution commutes with the mirror on the 3888 collared types. The check above is the computational evidence for that.
 - **R7 (job 1715742): running.** The scikit-image install succeeded this time.
+
+## Next ideas (2026-11-08, from the discussion with Brent after PR #14)
+
+These ideas turn points from the discussion into tests that can be computed. The tests come first. The most speculative physics is kept apart.
+
+### G. Connect the shapes, not only the expansion rates (top priority)
+
+So far the Spectre and Chair44 are connected only through their expansion rates. Brent's `chair_fibers.py` places the Spectre's 28 Bézier handles against the tips of the chair pyramid, but this is a geometric construction and is not yet a model.
+
+- **Constraint from item F.** The Chair44 hull is achiral, and the Spectre hull is chiral (item A). A construction that commutes with the mirror cannot produce Spectre handedness from Chair44. So any real bridge must break the x ↔ y mirror. That is a quick test to run on every candidate map.
+- **G1.** Read `models/chair_fibers.py` and `GEOMETRY_BRIDGE.md`. Write the proposed correspondence down as an explicit map, from points on the chair tips to vertices or handles of the Spectre.
+- **G2.** Apply the mirror test of `chair44_mirror.py` to that map. If the map commutes with the mirror, it cannot carry the Spectre's handedness, and we record that as a negative result.
+- **G3.** If the map breaks the mirror, check whether it intertwines the substitutions, up to the matching of expansion rates. If it does, it is a genuine shape-level link.
+
+### H. "Space is defined by interactions": compare graph distance with Euclidean distance
+
+The claim is that space is defined by interactions. A version we can test is to ask whether graph distance on the Spectre graph reproduces Euclidean distance.
+
+- **H1, dilation.** Over many vertex pairs, compute the ratio (graph distance)/(Euclidean distance). On periodic lattices this ratio tends to a direction-dependent constant. Does it on the Spectre, and is the limit isotropic? Run square and honeycomb controls.
+- **H2, correlations.** For free fermions at half filling on the Spectre graph:
+  - Compute the mutual information between two small regions. Does it decay with graph distance or with Euclidean distance? (H1 tells us whether these differ.)
+  - Compute the entanglement entropy of discs. Does it follow the area law, or the area law plus a log term? Run the same controls.
+- If the Spectre matches the controls, that is a clean null result (see I).
+
+### I. A table comparing the Spectre with periodic controls
+
+As noted in an earlier review, "the Spectre behaves like any other graph" would itself be a publishable answer. Collect every observable so far in one table, with the Spectre value next to the square and honeycomb values. The observables are:
+
+- vortex density;
+- valence-4 density;
+- β_c for Z₂ deconfinement;
+- Bott indices;
+- gap labels;
+- H1 and H2, once they have run.
+
+The table shows which properties actually depend on the monotile. It would be the central figure of the paper.
+
+### J. Any flow model must obey Bell's inequality limits (a constraint, not a test)
+
+Quantum predictions are statistical. That is a fact about quantum theory, not a gap that a model can fill. Any deterministic, local "energy flow on the tiling" model satisfies CHSH ≤ 2, but experiments reach about 2.8.
+
+So a flow model on the monotile background must give up at least one of the following:
+
+- locality in the tiling metric. This links to the idea in H that there is "no space between" entangled particles;
+- independence of the measurement settings;
+- single outcomes.
+
+Before Part II makes claims about entanglement, it should state which one it gives up.
+
+### K. Turn the speculative documents into tests
+
+Read Brent's `QUANTUM_GRAVITY.md` (in spectre-monotile-py). For each claim, write down a quantity that can be computed on the tiling, and say what result would refute it. Defer any claim with no such quantity. Keep the "12 directions" count (±X, ±Y, ±Z with twists) as a counting statement, and compare it with the Dic12 holonomy group (order 48) from R4.
+
+### Priority
+
+1. G1–G2. They are cheap and use the existing mirror code.
+2. I. A local table of results we already have.
+3. H1, then H2. These are cluster jobs of up to 64 CPUs.
+4. K, then J. These are writing tasks.
+
+### Results 2026-11-08: G1 and G2
+
+- **G1. What `chair_fibers.py` actually is.**
+  - It hangs one flat Spectre at a placement that is freely chosen.
+  - It pairs the Spectre's 42 attachment points (14 vertices and 28 handles) with 42 of the 192 Chair44 pyramid tips. The pairing is the minimum-energy assignment (Hungarian algorithm) over smoothest cubic fibres.
+  - Its own docstring says the pairing is "not a canonical correspondence". It is a construction for a single tile. It does not map one hull to the other, and it does not act on the substitutions, so G3 does not apply to it yet.
+- **G2. The x ↔ y mirror on the decorated tile** (`research/chair44_decoration_symmetry.py`, exact, run locally):
+  - Under the x ↔ y mirror, all 192 pyramid features land on features of the opposite height. Every bump +j lands on a dent −j and every dent on a bump.
+  - The other two mirrors give 144 opposite and 48 unmatched.
+  - The two non-trivial rotations about the diagonal give 144 matched and 48 unmatched, so the decorated tile has no proper rotational symmetry.
+  - **Conclusion.** The decorated Chair44 tile is chiral as a tile: its mirror image is not one of its rotations. However, mirror ∘ C is an exact symmetry of the tile, where C swaps every bump with the dent of the same depth. Bumps and dents are complementary (+j fits −j), so C maps any valid tiling to a valid tiling. Together with the frame-level mirror invariance (job 1715771), the hull is symmetric under PC, the mirror combined with bump/dent exchange. It is not symmetric under P alone at the level of decorations. That is a CP-like structure.
+  - **What this means for a bridge.**
+    - The Spectre tiles without reflections, and it has no analogue of C.
+    - Fibres attach to tips, so a bridge that respects PC must send the mirror to "Spectre reflection plus something", and that something must play the role of C.
+    - The candidate for that role is the twist sign of the lifted ribbons: R4 found the twist signs coboundary-equivalent, and R6 found no arrow of time. This is the next thing to test for G.
+- **Not yet checked.** Whether C by itself, which swaps bumps and dents, preserves the substitution. If it does not, then PC is the full mirror-type symmetry of the hull.
+- **G2b result (2026-11-08): C alone is not a symmetry.** No new computation was needed. C leaves the geometry alone, so it keeps every chair cell in place and swaps the decoration on each tile, T ↦ C(T). For the C-image of a tiling to be a tiling again, C(T) would have to be a rotated copy of T in the same cell set. The only maps that keep the chair's cell set are the 6 axis permutations, and the proper ones are the 3 rotations about the diagonal. By G2 the identity matches all 192 heights and the two rotations match 144, so none of them sends every height to its opposite. So C(T) is not a tile of the hull, and C by itself is not a hull symmetry. P alone fails for the same reason (G2), and with Γ14 this leaves PC as the hull's only mirror-type symmetry. The same argument works on every tile, so the substitution never comes into it.
+
+### K result (2026-11-08): claims in `QUANTUM_GRAVITY.md` turned into tests
+
+Read from `brentharts/spectre-monotile-py`. That file already separates Exact / Numeric / Hypothesis well, so most entries are tested results, not claims. The open ones:
+
+| Entry | Computable quantity | Refuted if | Status |
+|---|---|---|---|
+| §3.3 selection rules: compare Spectre inflation with E8 shell counts | growth law of each | they cannot match | **Refuted now, by hand.** E8 shell counts are 240·σ₃(n), polynomial in n; Spectre supertile counts grow like (4+√15)^k, exponential. A match is only possible after a logarithmic reparametrisation, which the E8 shelling does not supply. |
+| §3.2 192 = 8 × 24 (Chair44 tips vs E8 fibres) | already tested (`chair_e8_192.py`) | n/a | Coincidence of counts; keep closed. |
+| §3.5 a Spectre → E8 construction | does ℤ[ζ₁₂] (rank 4, the Spectre vertex module) embed in E8 with the Spectre window as the image of a fibre-closed set? First step: the rank-4 module's internal space is 2D, while E8 cut-and-project to 2D needs a 6D internal space | the window dimensions cannot be matched by any ℤ-linear map | Foothold: compute the Spectre's own cut-and-project data (rank 4, 2 + 2) against E8's 8 = 2 + 6; a mismatch in rank is decisive unless one passes to a sublattice. Not run. |
+| §3.4 fibres (curves) vs Hopf fibres (point sets) | none | n/a | **Deferred**: no computable quantity; the link is the shared word. |
+| Twist hopping `L` (1.012–1.709) | dependence of L on the Z₂ vortex density (R1) | no correlation across k | Could feed the comparison table; low priority. |
+| "12 directions" (±X, ±Y, ±Z with twists) | counting statement | n/a | Kept as a count. Dic12 has order 48 = 4 × 12, and its cyclic subgroup of order 24 holds the rotations; the 12 directions match neither the order-48 group nor a coset count without an extra choice, so record it as a coincidence unless a map is written down. |
+
+### J draft (2026-11-08): the Bell constraint, paragraph for Part II
+
+> Any model in which a classical quantity flows locally along the tiling and fixes measurement outcomes satisfies the CHSH bound |S| ≤ 2, whatever the tiling. Experiments reach S ≈ 2√2. A flow model on the monotile background must therefore drop locality in the tiling metric, independence of measurement settings, or single outcomes. Our results bear on the first option only: H1 measures how far the tiling's graph metric is from the Euclidean one, and the R3 result shows the Z₂ flux is not a local edge assignment out to radius 50. Neither makes the graph metric non-local in the sense CHSH needs: graph distance between distant regions still grows linearly (H1). So the tiling by itself does not supply the needed non-locality; Part II must state which assumption it drops, and should not suggest the tiling evades Bell.
+
+The choice of which assumption to drop is the authors' (Brent's), not ours; this is a draft for them to edit.
+
+### Updated priority (2026-11-08, after G1–G2)
+
+G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
+
+1. ~~**G2b: does C alone fit the substitution?**~~ **Done: no** (see the G2b result above). C swaps every bump with the dent of the same depth. Apply it to the supertiles of `chair44_mirror.py` and check whether the decorated supertiles stay consistent. This needs the substitution to carry the decorations, not only the frames. If C fails, then PC is the full mirror-type symmetry of the hull.
+2. ~~**G4: can the twist sign play the role of C?**~~ **DONE (2026-11-08), `research/spectre_pc_twist.py`.** Result: yes, with an intrinsic sign. Mirroring a depth-3 patch and taking ribbon angle g → −g reproduces every lifted ribbon exactly (all centre lines, all rotation edges, all 567 reflection edges). Reflection edges need twist sign s → −s, except the 72 edges at the atan2 branch a = 180°, which need s → +s: `atan2` returns +π for both the edge and its mirror, so the code's axis u is not mirror-covariant there, and R(−u, θ) = R(u, −θ) absorbs the flip. Defining the half-twist handedness relative to the reflection axis makes PC an exact symmetry. Structural difference from Chair44: the Spectre mirror maps the hull to the *mirror* hull, while for Chair44 P is an automorphism of the hull itself (Γ14). Original item:  Test whether flipping every ribbon twist sign, combined with reflecting the Spectre, maps lifted Spectre patches to lifted patches, using the R4 and R6 code. If it does, the Spectre has its own PC and the bridge has a target to respect. If it does not, this asymmetry is the first real structural difference between the two tiles.
+3. ~~**I: the table comparing the Spectre with ordinary lattices.**~~ **DONE (2026-11-08): `COMPARISON_TABLE.md`.** Follow-up: honeycomb β_c control (done: already in job 1712312, 0.1614; table updated); fill H1/H2 rows.
+4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
+5. **K, then J.** Writing tasks. **K done** (table above); **J drafted** (needs Brent's choice; the linearity claim is supported by H1: d_G ≈ 1.50·r).
+
+## Giants (long-horizon, uncertain, deliberately more than we can finish)
+
+Each giant could take weeks or months, and may come to nothing. For each one we record a **foothold**, meaning a first step small enough for a single job or script. We also record what would count as **interesting** and what would count as **dead**. Pick from this list when the short items above run out, and don't expect to clear it.
+
+### Γ1. A spin liquid of Kitaev type whose ground-state flux is the holonomy vortices
+
+Lieb's theorem fixes the flux sector that minimises the energy on bipartite lattices. On the Spectre graph, the R1/R2 holonomy vortices are a natural candidate flux pattern.
+- **Foothold.** For free Majoranas hopping on the Spectre graph, compare the ground-state energy with all fluxes zero, with π flux exactly at the holonomy vortices, and with π flux on random sets of the same density. Use the same patch sizes as R1.
+- **Interesting.** The vortex pattern wins. The holonomy would then be selected by energy, not only by geometry.
+- **Dead.** The vortex pattern sits in the middle of the random ensemble.
+
+### Γ2. Substitution as renormalisation: a tensor network built from the supertile tree
+
+The supertile hierarchy behaves like a bulk direction: each inflation step coarse-grains. This is close in spirit to the "conformal quasicrystals" programme of Boyle, Dickens and Flicker (arXiv:1805.02665), where aperiodic tilings appear on the boundary of hyperbolic tilings.
+- **Foothold.**
+  - Build a tree tensor network or MERA whose isometries follow the Spectre substitution.
+  - Compute the entanglement entropy of boundary regions against the number of tree levels the region cuts.
+  - Compare with the Fibonacci 1D case, which is understood.
+- **Interesting.** A Ryu–Takayanagi-like count: the entropy equals the minimal cut through the supertile tree.
+
+### Γ3. The whole Spectre tiling as a cut-and-project set
+
+R2 suggests that the vortex set is a model set. The Hat has been shown to be a model set by Baake, Gähler, Mazáč and Sadun. **Check the literature for the Spectre first.**
+- **Foothold.** Take the internal space from the gap-labelling module ℤ + ℤ(5+√15)/10 and the field ℚ(√6, √10). Plot the star-map images of the vertices of all types, and see whether they form windows with fractal boundaries.
+- **Interesting.**
+  - An explicit window.
+  - A box-counting dimension for the window boundary. This could tie to the seam rate in item E.
+
+### Γ4. 2+1D SU(2) lattice gauge theory on Spectre × time
+
+This extends the Z₂ deconfinement result and R11.
+- **Foothold.** Heat-bath SU(2) Monte Carlo on level-3 patches, measuring:
+  - Polyakov loops;
+  - the isotropy of the string tension, using Wilson loops along different directions of the tiling.
+- **Interesting.**
+  - The string tension is anisotropic in a way the controls are not.
+  - Or β_c, scaled by coordination as for Z₂, deviates from the periodic lattices.
+- **Dead.** Everything is fitted by the mean coordination.
+
+### Γ5. Emergent Lorentz invariance from a quantum walk
+
+- **Foothold.** Run a discrete-time quantum walk on the Spectre graph, using the coin from the Dic12 holonomy of R4. Measure the light cone after T steps: the spread of the walk, and whether that spread is the same in every direction (anisotropy against angle).
+- **Interesting.**
+  - The light cone becomes isotropic faster than on the square or honeycomb lattice, because aperiodicity averages out the directions.
+  - That would be a concrete sense in which the monotile is "better spacetime".
+
+### Γ6. Curvature from the tiling: Ollivier–Ricci curvature and deficits from the holonomy
+
+- **Foothold.** Compute the Ollivier–Ricci curvature of every edge of the Spectre graph, then look at:
+  - its distribution;
+  - its correlation with the holonomy vortices;
+  - its sum over patches.
+- **Interesting.** The curvature concentrates on the vortices. That would make the vortices discrete point masses, which is the Regge picture.
+- **Dead.** The curvature is uncorrelated with the vortices.
+
+### Γ7. Spectral type of the Spectre Hamiltonian
+
+Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
+- **Foothold.** For the R8/R9 Hamiltonians at levels 3–5, compute:
+  - level-spacing statistics (Poisson, GOE, or critical);
+  - the inverse participation ratio and its scaling with N;
+  - box-counting of the integrated density of states.
+- **Interesting.** A clean multifractal spectrum f(α) that differs from the controls and from Penrose.
+
+### Γ8. Diffraction of the Spectre, the vortex set and Chair44
+
+- **Foothold.** Compute the FFT diffraction of large patches of each: the Spectre vertices, the vortex set, and a Chair44 cut.
+- **Interesting.** Index the Bragg peaks by the gap-labelling module. If the vortex set shows pure-point diffraction, that would support Γ3.
+
+### Γ9. Time from the hierarchy: causal sets built from substitution
+
+- **Foothold.**
+  - Make a poset from the supertiles, ordered by containment and adjacency across levels.
+  - Estimate its Myrheim–Meyer dimension.
+  - Compare it with the clock eigenvalues from `research/parity_clock.py`.
+- **Interesting.** The dimension is not an integer, or it is exactly 2+1.
+- This is the concrete form of "each particle has its own time": the time of a tile is its depth in the hierarchy.
+
+### Γ10. Locality in the hierarchy and Bell's inequality
+
+This takes J further. Suppose that "no space in between" means that two tiles with a common supertile ancestor at level k are neighbours at hierarchy distance k.
+- **Foothold.** Build a hidden-variable model in which outcomes depend on local settings plus shared state from a common ancestor. Ask whether the hierarchy distance permits CHSH > 2 while staying local in the hierarchy.
+- **Expected.** It does, because this is a non-local model in ordinary space.
+- **Interesting.** The minimal hierarchy depth needed, or a natural cutoff at the Tsirelson bound 2√2.
+
+### Γ11. K-theory and gap labels of the 3D Chair44 hull
+
+- **Foothold.**
+  - Turn the Čech cohomology 1, 3, 17, 21 into K₀ and K₁ of the tiling C*-algebra.
+  - Predict the gap labels of a 3D Chair44 Hamiltonian.
+  - Test them numerically on cubes, as R9 did in 2D.
+- **Interesting.**
+  - The labels from torsion.
+  - Whether PC (mirror plus bump/dent swap) acts on them non-trivially.
+
+### Γ12. A real substitution-level bridge between Spectre and Chair44, or a proof that there is none
+
+The goal is a 3D substitution whose 2D sections or projections are MLD to the Spectre (mutually locally derivable: each can be read off from the other by a local rule). Chair44 is the candidate.
+- **Constraints already found.**
+  - Matching expansion rates.
+  - PC symmetry against a Spectre without reflections.
+  - The fields differ: Spectre ℚ(√6, √10), Chair44 dyadic.
+- **Foothold.** Compare the fields of the two hulls, using cohomology and gap labels.
+  - Differing fields would rule out an MLD relation. This might be provable quickly.
+  - It would leave only weaker relations, such as factor maps or orbit equivalence.
+- **Interesting either way.** A no-go theorem is publishable.
+
+### Γ13. The Hat/Spectre family Tile(a, b): physics as a function of shape
+
+- **Foothold.** Take every observable from table I and recompute it along the family Tile(a, b) where the tilings exist. Only Tile(1, 1), the Spectre, needs no reflections, so it is a singular point of the family.
+- **Interesting.** An observable that jumps exactly at the Spectre point. That would be the cleanest "monotile-specific" signal possible.
+
+### Γ14. A proof of Chair44 mirror invariance, and of PC
+
+- **Foothold.** Act with the mirror on the 3888 collared types, and verify that it commutes with the substitution on the collared level. This is finite and exact.
+- Then extend the check to the decorations, which proves PC.
+- This turns the computations of items F and G2 into theorems.
+- **Result 2026-11-08: mirror half done.** The check didn't need the collared types; the uncollared cell substitution was enough. `research/chair44_mirror_proof.py` defines the x ↔ y mirror on the 168 labels (24 frames × 7 cells) by (f, k) ↦ (P f P, P c_k), and on octants by b ↦ P b. It checks that sigma[m(l)][P b] = m(sigma[l][b]) for all 1344 pairs: there are 0 failures. The identity-frame seed is also mirror-invariant. By induction, every level-k supertile equals its mirror image. So the achirality of the Chair44 hull (item F) is now a theorem, not just a check up to k ≤ 6. **Decoration half done (2026-11-09), `research/chair44_pc_proof.py`: PROVED.** A tile with frame f carries the decoration f(D). The script re-runs the frame-level check, then checks that the x ↔ y mirror sends each of the 192 features of D to the same position with the opposite height, so P(D) = −D = C(D). Then PC sends f(D) to (P f P)(P C D) = (P f P)(D), which is exactly the decoration of the mirrored tile, so PC maps every decorated supertile to itself. PC is a theorem. Assumption: all tiles carry one decoration rotated by their frame, in the [0,2]^3 coordinates of the features table. Run with `python research/chair44_pc_proof.py r44_features.csv` (the table comes from brentharts/spectre-monotile-py and is not vendored).
+
+### H1/H2 status (2026-11-08)
+- H1 (`research/graph_dilation.py`, K=5,6, 8 CPUs) submitted 20:26 UTC.
+- H2 (`research/entanglement_h2.py`, K=3,4, 32 CPUs) submitted 21:25 UTC.
+- First attempts (jobs 1718217, 1718996) failed at import: `research/handedness.py` missing from bundle. Resubmitted with it: H1 job 1719878, H2 job 1719943.
+- **H1 result (job 1719878): the Spectre graph has a limiting dilation, and it is nearly isotropic.**
+  - Mean d_G/r by radius bin (K=6, 1.67M vertices, 128 sources): 1.614 (r 4–8), 1.562, 1.535, 1.518, 1.505, 1.498, 1.495, 1.499 (r 512–1024). K=5 agrees to 0.01. The ratio converges to ≈ 1.50 from above; the spread over pairs stays ≈ 0.05 rather than shrinking.
+  - Far-field anisotropy: Spectre 0.06, honeycomb 0.078, square 0.22. Square and honeycomb sit at 1.273 for all r.
+  - Reading: the Spectre graph metric is a constant multiple of the Euclidean one at large scale, with less direction dependence than either periodic lattice. That supports "space emerges from the graph", but it is generic behaviour for a quasi-isotropic tiling, not a Spectre-specific signal.
+- **H2 result (job 1719943, done 1h12m): area law everywhere, nothing Spectre-specific.**
+  - Disc entanglement fit S = aR + bR lnR + c. Spectre K=3: a=4.85, b=−0.96; K=4: a=4.73, b=−0.74. Square: b=+0.18 / +0.47. Honeycomb: a≈3.1–3.4, b≈−0.38 at both sizes.
+  - The leading term is linear in R (area law) on all three graphs. The R lnR coefficient is negative for Spectre and honeycomb and positive for square, and the Spectre value moves toward zero with size, so it is not a stable signal yet.
+  - Mutual information vs distance: R² of ln I against graph distance ≈ against Euclidean distance on every graph (Spectre K=4 0.347 vs 0.348). That is what H1 predicts: the two metrics are proportional, so this test cannot tell them apart.
+  - J draft linearity claim: supported. H1 gives d_G ≈ 1.50·r, linear in r, and H2 shows nothing beyond it.
+- **R8 complex flux result (job 1720472, `research/flux_complex.py`): every Bott index is 0, at π and at π/2.**
+  - The flux constraint holds to residual ≤ 2e−11 at K=3 and K=4.
+  - K=3: π control 42 gaps, max |Bott| 1e−9; π/2: 39 gaps, every Bott rounds to 0 (max |Bott| < 1e−3).
+  - K=4: π 8 gaps, π/2 3 gaps, also all 0.
+  - Reading: breaking time reversal with π/2 vortex flux does not open a Chern-type gap. Vortex flux by itself does not make the Spectre hopping model topological. **Negative result; R8 is closed.**
