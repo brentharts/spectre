@@ -884,3 +884,16 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. Run module_fit's refinement at K4 and K3, and check whether the refined strong peaks there coincide with the sheared points, which reach h 0.49 at K4.
   2. Test 7.7295 against second-order terms: a quadratic correction to the x* fit, or k = k5 + Mᵀk* + Nᵀk*² using the window phase.
+
+### Γ8 refine K4/K3 + quad_fit v1 (`research/module_fit_k4_v1.json`, `research/module_fit_k3_v1.json`, `research/quad_fit_v1.json`)
+- **No second-order term.** Quadratic terms explain 0.002% (K5), 0.016% (K4) and 0.1% (K3) of the residual variance, far below the 10% rule. The residual radius is unchanged (3.77, 3.75, 3.63). The deformation is linear plus a bounded window. A smooth second-order distortion cannot account for the 7.7295 family.
+- **K4 refined peaks are identical to K5's.**
+  - Same |k|, same angles and same heights: 6.0925 at 137.89° and 17.89° (h 0.49), 7.937 at 162.78° and −137.22° (h 0.49), and 7.7295 at −152.05° and −32.05° (h 0.70).
+  - The pattern's handedness does **not** alternate with K, even though the fitted M does.
+  - At K4, where M has the + sign, the sheared-module points sit on the strong peaks (distance 1.7–2.2e-3). That is at the 2e-3 threshold, which is marginal but consistent with the 2–5e-4 local shifts found by sheared_scan.
+  - At K5 the fitted M has the opposite sign and indexes only the mirror partners. So the odd-K fit picks up the mirrored shear, and the strong 0.49 families belong to the + orientation.
+- **K3 is a smaller patch, with different leading peaks:** 7.733 at h 0.78–0.79, and 6.01 at h 0.40–0.41. Only 7.92 and 6.10 (h 0.35) come near the sheared points (about 0.015 away).
+- **7.7295 remains unindexed at every K.** It is the strongest vortex family: h 0.70 at K4 and K5, and 0.78 at K3. It is neither a linear sheared-module point nor a quadratic correction.
+- Next for Γ8:
+  1. Apply the + orientation M (the K4 fit) to the K5 patch, and the K5 M to K4. Check whether the strong 6.0925 and 7.937 families are indexed at K5 with height about 0.49. That would settle whether the alternating M is a fit artifact, for example from the patch's boundary and orientation.
+  2. Index 7.7295 against the vortex subset alone. Fit the vortex x* deformation on vortex sites only, and test whether 7.7295 is a module point of a vortex sublattice, such as a superlattice from the supertile hierarchy.
