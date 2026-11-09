@@ -14,7 +14,7 @@ reader can tell a theorem from a hunch.
 | **Elementary** | true, but nearly a restatement of definitions; does not support an inference |
 | **Numerology** | a coincidence of numbers we noticed and do **not** build on |
 
-Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md`](E8.md), [`LINES.md`](LINES.md), [`CLOCK.md`](CLOCK.md), [`WILSON.md`](WILSON.md),
+Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md`](E8.md), [`LINES.md`](LINES.md), [`CLOCK.md`](CLOCK.md), [`WILSON.md`](WILSON.md), [`CICY.md`](CICY.md),
 [`HOPF.md`](HOPF.md), [`GLOSSARY.md`](GLOSSARY.md).
 
 ---
@@ -48,6 +48,11 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md
 | 23 | A U(1) Wilson action with the Spectre tiles as the only plaquettes tells corner types apart | **Falsified (Exact)**: the loop self-energy of the boundary of a union R of tiles is exactly the number of tiles in R, an area law with no perimeter and no corner term (tiles are independent, so the flux covariance is the identity); tested on 20 random unions of the level-2 patch | `spectre_wilson.py`, [`WILSON.md`](WILSON.md) §1 |
 | 24 | A U(1) Wilson action on the lift lattice A₂ ⊕ A₂ (triangles in each plane weight 2, red-green parallelograms weight 1/3, isotropic Maxwell limit, relative error 1.3e-6) gives a perimeter + corner form with a constant per corner type | **Numeric**: α = 0.300, b(turn 60°) = −0.070, b(turn 120°) = −0.315, b(90°) = −0.139, max residual 0.068 on 12 loops of side 3 and 4; the sharp (turn 120°) corner is separated, the blunt (turn 60°) and the 90° corners are not (difference 0.069 against residual 0.068). Unconstrained self-energy only | `spectre_wilson.py`, [`WILSON.md`](WILSON.md) §2 |
 | 25 | The Spectre outline lifted to A₂ ⊕ A₂ has the energy that perimeter + corner predicts | **Numeric, Negative**: E = 3.1826 (all 71 outlines, one value); predicted 2.884; the gap is 0.30, 0.18, 0.19 at scale 1, 2, 3, so it does not converge to 0. The mirror outline has exactly the same energy: the action is parity symmetric and cannot see the chirality of the tile | `spectre_wilson.py`, [`WILSON.md`](WILSON.md) §3 |
+| 26 | Chair44 coincidence rate: the number of addresses of the 2^M cube with an undetermined label is c(M) = 28·2^M − 48 and the label excess is E(M) = 140·2^M + 48 (CICY `chair44_nested`) | **Exact, two implementations**: the 168-label substitution of `chair44_twoadic` gives the same 209-set / 41-multiset automaton and the same counts for M = 1…7; CICY's finite certificate covers all M | `chair44_notch_axis.py` (K1), [`CICY.md`](CICY.md) §2 |
+| 27 | The notch axis (d = g(1,1,1) up to sign) is determined by the 2-adic address except at exactly 16 addresses of the 2^M cube for every M ≥ 2: the 8 corners and the 8 central cells; elsewhere the undetermined labels give only ±d | **Exact** (finite certificate, recurrence of order ≤ 210 checked for M = 2…260; positions M = 2…6) and **Counted** for the ±d statement | `chair44_notch_axis.py` (K2, K3), [`CICY.md`](CICY.md) §2 |
+| 28 | Every X-bond is a bond of a Mystic: X iff exactly one of the two tiles is a Mystic, no two Mystics share an edge, the X-bonds are disjoint 14-cycles (one per Mystic) through two valence-4 vertices each; so X-bonds = 14·#Mystics and = 7·#valence-4 vertices | **Counted** (Delta patch, depths 3, 4, 5; 7× identity for all nine seeds, depths 2–4) | `spectre_mystic_xbond.py` (M1, M2), [`CICY.md`](CICY.md) §1 |
+| 29 | The flavour frequency p = Pr(Φ²) is 1/2, and ρ_X = 1 − √15/5 (the open item of the Readme, SPECTRE.md §9 and CICY `x_density`) | **Exact given the Counted atlas** (charge conservation with the Perron frequencies in ℤ[√15]: 12g + 2g² + 4pg(1−g) = 14g); consistent with the measured 0.683, 0.579, 0.538 and Aitken 0.511 | `spectre_mystic_xbond.py` (M3, M4), [`CICY.md`](CICY.md) §1 |
+| 30 | The index 12 of CICY's cusp-torus holonomy (ℤ/12 character of SL(2,ℤ) ⋉ Heis) is the 12 of the Spectre's edge directions and of its Dic₁₂ holonomy | **Numerology** until a map is exhibited | [`CICY.md`](CICY.md) §3 |
 
 ## 2. To the Quantum Gravity Lab fork
 

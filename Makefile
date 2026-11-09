@@ -61,6 +61,7 @@ facts:
 	$(PYTHON) chair44_hull.py --tests
 	$(PYTHON) chair44_lines.py --tests
 	$(PYTHON) chair44_polarisation.py --tests
+	$(PYTHON) chair44_notch_axis.py --tests
 	$(PYTHON) spectre_outline_arrow.py --tests
 
 # three pdflatex passes: the second still reports "Label(s) may have changed"
@@ -123,6 +124,7 @@ check: facts atlas lean readme
 	$(PYTHON) spectre_line_sums.py --tests
 	$(PYTHON) spectre_density_clock.py --tests
 	$(PYTHON) spectre_wilson.py
+	$(PYTHON) spectre_mystic_xbond.py --tests
 	$(PYTHON) spectre_energy.py --check
 	$(PYTHON) spectre_diffraction.py --check
 	$(PYTHON) spectre_ledger.py --check
