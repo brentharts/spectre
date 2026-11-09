@@ -910,3 +910,16 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. At odd K, use the mirrored internal map: x* = Σ n_j ζ^{7j}, or conj(ζ^{5j}). Refit M and index the K5 vortex set. Check whether the h 0.49 families at 17.89°/137.89° appear.
   2. Use the vortex window to index 7.7295. Scan the module points of the other Galois maps (ζ⁷, ζ¹¹) with the radius-1.7 vortex window, and test whether 7.7295 belongs to a coarser vortex module, for example a supertile superlattice scaled by the Spectre inflation factor.
+
+### Γ8 galois_fit v1 (`research/galois_fit_v1.json`)
+- **ζ⁷ is exactly equivalent to ζ⁵ (null by construction).** x*₇ = conj(x*₅) is a reflection of internal space. The fit absorbs it: M's second row flips sign, and the indexed physical k, heights and matches are identical to 1e-4 at both K. So the internal-map choice cannot explain the parity effect, and the mirror hypothesis as stated fails the decision rule.
+- **At K5 the module lands on the mirrored orientation.**
+  - The top points are 6.0937 at −17.9°, 42.1° and −137.9° (h 0.324). The measured family is at +17.89° and 137.89°.
+  - The nearest point to the 6.0925 orbit is 0.23 away, and to 7.937 is 0.49 away.
+  - At K4 the same orbits match within 5e-4 (vortex window), with h 0.49.
+  - So the mirror lives in physical space: the K5 lattice coordinates n give x reflected relative to the true positions, or equivalently K5's peaks are conj of the module's.
+- **The vortex window only shrinks the radius** (1.75 at K5, 1.64 at K4) and does not change the indexing.
+- **7.7295 is still unindexed:** the nearest point is 0.72–0.76 away with h ≤ 0.004, so it fails.
+- Next for Γ8:
+  1. At odd K, index with conj(k), meaning the physical mirror x → conj(x) applied to n, and confirm the 17.89° families at h 0.49 for K5. Equivalently, find which reflection in the substitution maps the n basis.
+  2. For 7.7295: test a supertile superlattice. Take supertile centres, or the vortex sites of a single orientation class, as the point set, and index with the module scaled by the inflation factor (4+√15). Also check whether 7.7295/6.0925 ≈ 1.2687 is an algebraic ratio in ℚ(√3).
