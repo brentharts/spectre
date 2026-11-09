@@ -749,6 +749,22 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
   - The decision rule (internal radius change under 10% from K4 to K5) fails by a factor of 28. The module tests of peak_index v1 and module_fit v1 were therefore moot, not evidence against Bragg peaks.
   - The Bragg-like stability of the Spectre peaks then fits the BGMS picture: the Spectre is a *deformed* (topologically conjugate) model set, not a ℤ[ζ12] cut-and-project.
 - **Next for Γ8:** test the deformed-model-set picture. The internal and physical radii grow at the same rate, so fit x* ≈ M x + r with M a 2×2 real matrix fitted by least squares at K5. Check whether the residual r is bounded: its radius should stay roughly fixed from K3 to K5. If it is, r is the window coordinate. Compute S(k) at the module points of the lattice dual to (x, r).
+- **Deform fit v1** (`research/deform_fit_v1.json`, K3–K5): **bounded window found, so the Spectre vertex set is a linearly deformed ℤ[ζ12] model set.**
+  - With M fitted per depth, the residual r = x* − M x − b has the following radii:
+
+    | Depth | Max radius | q99 | Median |
+    |---|---|---|---|
+    | K3 | 3.63 | 3.09 | 1.35 |
+    | K4 | 3.75 | 3.10 | 1.38 |
+    | K5 | 3.77 | 3.11 | 1.39 |
+
+    The physical radius grows 8× over the same depths. The radius changes by 0.5% from K4 to K5, so the decision rule passes.
+  - M is an anti-conformal similarity, M = [[0.1637, −0.491], [−0.491, −0.1637]], with both singular values 0.5176 = √(2−√3) = |1−ζ12|. So x* ≈ λ·conj(x) + r, with |λ| = √(2−√3).
+  - The K5 fit carries over to K3 unchanged (radius 3.71) but not to K4 (radius 169). The orientation of M alternates between even and odd depths, consistent with the reflection in the Spectre substitution.
+  - Interpretation: (x, r) is a cut-and-project lift with a compact window of radius about 3.8. The plain ζ⁵ module tests failed because they ignored the −M x shear.
+- **Next for Γ8:** index the peaks in the sheared module. The phases k·x + q·r are lattice-periodic exactly when (k + Mᵀq, −q) lies in the ζ⁵ dual module. So predicted Bragg peaks sit at k = k_ζ5 − Mᵀ k*, with amplitude set by the window transform at q = k*, and strong peaks need |k*| ≲ 1.
+  - Recompute S(k)/N² at these points for K5 and check against the refined peaks: is h ≈ 0.70 at |k| = 7.7295 for the vortices?
+  - Also measure the window shape (the r-scatter at K5) for the vertex and vortex subsets.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
