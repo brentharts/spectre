@@ -6,7 +6,8 @@ the lattice, so with k = k5 + M^T k*:  exp(-i k.x) = exp(i k*.(r + b)).  Hence S
 the predicted peak height is the window transform at k*.  Compute it (and the direct S(k)) for vertex and vortex
 sets, and compare with the refined FFT peaks of module_fit v1.
 
-Usage: python research/sheared_index.py OUT.json K
+Usage: python research/sheared_index.py OUT.json K [K ...]
+Each K row also gives h_mirror = direct S at conj(k) (the ky -> -ky partner), to test chirality.
 """
 import sys, json
 sys.path.insert(0, "."); sys.path.insert(0, "research")
@@ -19,7 +20,12 @@ REFINED = {"vortex": [7.7295, 6.0925, 7.937], "vertices": [7.7293]}
 
 
 def main():
-    out, K = sys.argv[1], int(sys.argv[2])
+    out = sys.argv[1]; allres = []
+    for K in map(int, sys.argv[2:]):
+        allres.append(run(K)); json.dump(allres, open(out, "w"), indent=1)
+
+
+def run(K):
     _, _, V, _ = build(K)
     n = np.unique(V.reshape(-1, 4), axis=0).astype(float) / 28
     x = n @ np.exp(1j * np.pi / 6 * np.arange(4)); xs = n @ np.exp(5j * np.pi / 6 * np.arange(4))
@@ -39,13 +45,15 @@ def main():
         w = sf(-ks, rr)                     # |<exp(i k*.r)>|^2 predicted
         o = np.argsort(w)[::-1][:60]
         h = sf(k[o], pts)                   # direct S(k)/N^2 at those k
+        hm = sf(np.conj(k[o]), pts)         # mirror partner
         rows = [dict(m=m[i].tolist(), k=float(abs(k[i])), kx=float(k[i].real), ky=float(k[i].imag),
-                     kstar=float(abs(ks[i])), pred=float(w[i]), h=float(hh)) for i, hh in zip(o, h)]
+                     kstar=float(abs(ks[i])), pred=float(w[i]), h=float(hh), h_mirror=float(mm)) for i, hh, mm in zip(o, h, hm)]
         res[name] = sorted(rows, key=lambda d: -d["h"])
         res[f"{name}_match"] = {str(q): min(rows, key=lambda d: abs(d["k"] - q)) for q in REFINED[name]}
-        print(name, [(round(d["k"], 4), round(d["pred"], 3), round(d["h"], 3)) for d in res[name][:10]], flush=True)
+        res[f"{name}_mirror_ratio"] = float(np.mean([d["h_mirror"] for d in rows[:12]]) / max(np.mean([d["h"] for d in rows[:12]]), 1e-12))
+        print(K, name, [(round(d["k"], 4), round(d["pred"], 3), round(d["h"], 3), round(d["h_mirror"], 3)) for d in res[name][:10]], flush=True)
         print(name, "match", {q: (round(d["k"], 4), round(d["h"], 3)) for q, d in res[f"{name}_match"].items()}, flush=True)
-        json.dump(res, open(out, "w"), indent=1)
+    return res
 
 
 if __name__ == "__main__":
