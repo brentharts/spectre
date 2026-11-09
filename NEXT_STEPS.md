@@ -765,6 +765,26 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 - **Next for Γ8:** index the peaks in the sheared module. The phases k·x + q·r are lattice-periodic exactly when (k + Mᵀq, −q) lies in the ζ⁵ dual module. So predicted Bragg peaks sit at k = k_ζ5 − Mᵀ k*, with amplitude set by the window transform at q = k*, and strong peaks need |k*| ≲ 1.
   - Recompute S(k)/N² at these points for K5 and check against the refined peaks: is h ≈ 0.70 at |k| = 7.7295 for the vortices?
   - Also measure the window shape (the r-scatter at K5) for the vertex and vortex subsets.
+- **Sheared index v1** (`research/sheared_index_v1.json`, K5): **decision rule fails, but the algebra is confirmed.**
+  - The direct S(k)/N² at each sheared point k = k5 + Mᵀk* equals the predicted |⟨exp(i k*·r)⟩|² to 3 decimals. So the identity holds, and peak heights are window transforms.
+  - Strongest predicted peaks:
+    - Vortices: h ≈ 0.32 at |k| = 6.0937 and 7.9359, both with |k*| = 1.88.
+    - All vertices: h ≈ 0.003 at the same |k|. The vertex window transform almost cancels there.
+  - Comparison with the refined FFT peaks:
+
+    | Refined peak | Nearest sheared point | Gap | Height there | Refined height |
+    |---|---|---|---|---|
+    | vortex 6.0925 | 6.0937 | 1.2e-3, just outside the 1e-3 tolerance | 0.32 | 0.49 |
+    | vortex 7.937 | 7.9359 | 1.1e-3 | 0.32 | — |
+    | vortex 7.7295 (strongest, h 0.70) | 7.695 | far | 0.018 | 0.70 |
+    | vertex 7.7293 | none | — | — | — |
+
+  - Reading: the linear deformation gets the main vortex peak family to about 1e-3 (2× the noise floor's relative error ~2e-5 ×50). It does not produce the strongest vortex peak or the vertex peak, so x* ≈ Mx + b is only an approximation. Two likely causes:
+    - M is fitted, not exact. An error δM ~ 6e-4 times |k*| = 1.88 already gives a 1e-3 shift.
+    - The true deformation may be nonlinear but bounded (BGMS), which shifts the peaks onto a different module.
+- **Next for Γ8:** separate the two causes.
+  1. Scan S(k) directly in a ±0.01 box around each predicted sheared point for the vortex set at K5. If maxima sit within 2e-3 at h ≈ 0.49 and 0.70, then M is just slightly off, and fitting M to the peaks should give an exact algebraic M.
+  2. Also fit the 4 refined peak vectors as integer combinations of 4 free generators. If they fit, the true Fourier module has rank 4 but is not ζ-based; this follows the inflation-module idea in internal_check v1.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
