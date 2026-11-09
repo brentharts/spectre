@@ -16,7 +16,8 @@ import numpy as np
 from graph_dilation import spectre_graph
 from ollivier_ricci import vortices
 
-M = 4096          # FFT grid
+import os
+M = int(os.environ.get("DIFF_M", 4096))          # FFT grid
 KMAX = 2 * np.pi * 1.5   # reciprocal radius used (edge length 1, so 1.5 cycles per edge)
 NPEAK = 40
 
