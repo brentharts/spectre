@@ -718,7 +718,17 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 - **Next for Γ8:** index the Spectre vortex Bragg peaks (|k| ≈ 7.73) in the gap-labelling module, and the tromino peaks in ℤ[1/2]-type dyadic frequencies.
 - **Peak indexing v1** (`research/peak_index.py`, `research/peak_index_v1.json`; pure Python on the committed `diffraction_v2_k5.json`): **not indexed.** Vertices are x = Σ n_j ζ^j with ζ = e^{iπ/6}, j = 0..3 (edge length 1), and the internal map is the Galois conjugate ζ → ζ⁵. Lifting each peak k to (k, k*) with k·ζ^j + k*·ζ^{5j} ∈ 2πℤ, the best m ∈ [−8, 8]⁴ leaves a residual of 7–25 FFT bins and |k*| ≈ 13–58 for every top peak, at both K4 and K5. The two depths agree on the peak positions to about one bin, so the misfit is real and not a resolution effect. Rescaling the position module by 1/2, 1/3 or 1/4 makes it worse. A strong peak must have small |k*|, so with this embedding the top peaks (vertices and vortices, |k| ≈ 7.73, 6.02, 6.09, 7.93) are **not** in the Fourier module with a small internal part. Either the Spectre's internal map is not the plain ζ → ζ⁵ conjugate (BGMS use a different ℝ² embedding), or the spectre_graph positions are not the integer ζ-coordinates.
 - **Next for Γ8:** (a) on the cluster, check that the `spectre_graph` coordinates divided by the median edge are exactly in ℤ[ζ12]. (b) Fit the module from the data, without assuming an embedding: find four peak vectors such that every other top peak is an integer combination of them within one bin. Then read the internal map off that basis. (c) Compute the exact structure factor directly at those module points, avoiding FFT binning.
-- **Submitted:** `research/module_fit.py` (a, c for ζ⁵ and ζ⁷, and b by direct-sum peak refinement), K4, job 1726244.
+- **Ran:** `research/module_fit.py` (a, c for ζ⁵ and ζ⁷, and b by direct-sum peak refinement), K4, job 1726244.
+- **Module fit v1** (`research/module_fit_v1.json`, K4): **the ζ⁵/ζ⁷ model-set module is rejected.**
+  - (a) The coordinates are exact: int64 ζ-coordinates with a single raw edge length of 28. After dividing by the median edge, the vertices are exactly in ℤ[ζ12], so the coordinates are not the problem.
+  - (c) Direct S(k)/N² at every module point with m ∈ [−6, 6]⁴ and |k| < 3π gives h at most 0.003 for vertices and at most 0.029 for vortices, with |k*| ≥ 31, for both ζ⁵ and ζ⁷. These are far below the refined peaks. The decision rule (a point with |k*| < 5 and h within 10% of the top peak) fails.
+  - (b) Direct-sum refinement fixes the top peaks to about 1e-4:
+    - vortex h ≈ 0.70 at |k| = 7.7295 (±(6.552, −4.101), ±(6.828, 3.623));
+    - vortex h ≈ 0.49 at |k| = 6.0925 and 7.937;
+    - vertex h ≈ 0.30 at 7.7293.
+  - Re-indexing these refined k with `peak_index` gives residuals below 0.2 bins, but only with |k*| = 13–68. With m in a 4D box, any 2D k can be approximated this way, so the fit carries no information.
+  - Conclusion: the Spectre's Bragg peaks are not in the Fourier module of the plain ℤ[ζ12] cut-and-project with a Galois-conjugate internal space. The internal space must carry an extra (e.g. collaring/gap-label) factor.
+- **Next for Γ8:** fit an empirical rank-4 basis from the 8 refined peak vectors (the integer-relation/LLL step of (b)), then test whether the remaining peaks are ℤ-combinations of it.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
