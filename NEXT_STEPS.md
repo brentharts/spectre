@@ -676,7 +676,12 @@ This extends the Z₂ deconfinement result and R11.
     - The values are similar at α=1/2. They are stable and grow from K3 to K4.
   - **Verdict: the decision rule passes, with the sign reversed.** The vortices carry *negative* Ollivier curvature, beyond what degree accounts for.
   - **Caveat.** Every degree-2 vortex has the same local motif, so this may be a fact about local combinatorics rather than emergent geometry.
-  - **Next.** Test whether κ per vortex matches the holonomy deficit (a Regge angle). Repeat on Chair44.
+  - **v2 check (2026-11-09; `research/ollivier_ricci_v2.json`).** The v1 control left degree composition free, so v2 regresses out each degree-class count separately and adds non-overlapping discs with Fisher-z 95% CIs.
+    - Disjoint discs, α=0, per-degree control: K3 r=4 −0.56 [−0.73, −0.32]; K4 r=4 −0.59 [−0.65, −0.52], r=8 −0.72 [−0.80, −0.61], r=16 −0.76 [−0.89, −0.52]. K3 r=8 is −0.43 but its CI includes 0 (too few discs). α=1/2 is the same.
+    - **The decision rule passes:** the negative disc correlation survives the per-degree control, same sign at K3 and K4.
+    - Histograms qualify it. Every degree-2 vortex has κ = −1/3, but so do ~3,500 of the ~17,700 non-vortex degree-2 vertices at K4. Vortices therefore pick out a common motif rather than carrying a unique curvature value. At degree 3 the vortex/other gap changes sign between K3 (−0.33 vs −0.37) and K4 (−0.39 vs −0.36).
+  - **Regge test submitted** (`research/regge.py`, job 1724187). Interior vertices are flat, so the only deficit is the integer holonomy winding w; the vortex flag is w mod 2. The test asks whether κ depends on w beyond its parity.
+  - **Next.** Repeat on Chair44.
 
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
