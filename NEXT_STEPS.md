@@ -734,7 +734,21 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
   - The noise floor is about 2e-5: k₀'s own symmetry partners match at 5e-6 to 3e-5, and the vertex and vortex sets agree to 1e-5.
   - So the top peaks are not ℚ(ζ12)-commensurate with small coefficients. The Fourier module either has rank above 4 or needs large coefficients.
   - Angles mod 30° are generic (28.0°, 17.9°, 12.8°, 2.0°, 15.7°, 14.3°, 7.2°), as expected for a chiral tiling.
-- **Submitted:** `research/internal_check.py`, K3–K5. It is the model-set precondition: it lists the integer edge vectors and tests whether the ζ⁵ and ζ⁷ internal images stay bounded (radius change under 10% from K4 to K5).
+- **Ran:** `research/internal_check.py`, K3–K5. It is the model-set precondition: it lists the integer edge vectors and tests whether the ζ⁵ and ζ⁷ internal images stay bounded (radius change under 10% from K4 to K5).
+- **Internal check v1** (`research/internal_check_v1.json`, K3–K5): **the ζ⁵ and ζ⁷ windows are unbounded, so the Spectre is not a Galois-conjugate ℤ[ζ12] model set.**
+  - Edges: every edge is 28 × a 12th root of unity. There are exactly 8 integer edge vectors up to sign, and all coordinates are divisible by 28. Point (a) is confirmed exactly.
+  - Radii by depth (ζ⁵ and ζ⁷ give identical radii, as complex conjugates should):
+
+    | Depth | Physical radius | Internal radius |
+    |---|---|---|
+    | K3 | 59.3 | 32.8 |
+    | K4 | 170.7 | 90.5 |
+    | K5 | 483.3 | 252.3 |
+
+  - The internal radius grows by about 2.8 per level, the same as the physical radius: internal/physical = 0.553, 0.530, 0.522. The 2.8 per level is close to √(4+√15) ≈ 2.81, the linear inflation, and the vertex count grows by about 7.5–7.7 per level, approaching 4+√15. That inflation lies in ℚ(√15), not ℚ(ζ12), so conjugating ζ does not contract the patch.
+  - The decision rule (internal radius change under 10% from K4 to K5) fails by a factor of 28. The module tests of peak_index v1 and module_fit v1 were therefore moot, not evidence against Bragg peaks.
+  - The Bragg-like stability of the Spectre peaks then fits the BGMS picture: the Spectre is a *deformed* (topologically conjugate) model set, not a ℤ[ζ12] cut-and-project.
+- **Next for Γ8:** test the deformed-model-set picture. The internal and physical radii grow at the same rate, so fit x* ≈ M x + r with M a 2×2 real matrix fitted by least squares at K5. Check whether the residual r is bounded: its radius should stay roughly fixed from K3 to K5. If it is, r is the window coordinate. Compute S(k) at the module points of the lattice dual to (x, r).
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
