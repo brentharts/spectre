@@ -666,6 +666,17 @@ This extends the Z₂ deconfinement result and R11.
   - its sum over patches.
 - **Interesting.** The curvature concentrates on the vortices. That would make the vortices discrete point masses, which is the Regge picture.
 - **Dead.** The curvature is uncorrelated with the vortices.
+- **Result (foothold done; `research/ollivier_ricci.py`, cluster run K=3,4).**
+  - Edge curvature takes only 4 values: −2/3, −1/2, −1/3, 0 at idleness α=0, and exactly half of each at α=1/2. The mean is −0.265 at K3 and −0.274 at K4, between the square lattice (0) and the honeycomb (−0.65/−0.66).
+  - Degree-2 vertices: vortex vertices sit at κ = −1/3 exactly, against −0.19/−0.20 for the others (K3/K4). That is more negative, by the same amount at both levels.
+  - Degree-3 vertices: the gap is small and changes sign between levels (−0.33 vs −0.37 at K3, −0.39 vs −0.36 at K4). There are no degree-4 vortices.
+  - Disc sums of vertex κ against the vortex count in the disc, after regressing out the degree sum and the vertex count:
+    - K3: partial correlation −0.60 at r=4, −0.60 at r=8, −0.65 at r=16.
+    - K4: partial correlation −0.71 at r=4, −0.72 at r=8, −0.75 at r=16.
+    - The values are similar at α=1/2. They are stable and grow from K3 to K4.
+  - **Verdict: the decision rule passes, with the sign reversed.** The vortices carry *negative* Ollivier curvature, beyond what degree accounts for.
+  - **Caveat.** Every degree-2 vortex has the same local motif, so this may be a fact about local combinatorics rather than emergent geometry.
+  - **Next.** Test whether κ per vortex matches the holonomy deficit (a Regge angle). Repeat on Chair44.
 
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
