@@ -871,3 +871,16 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
   - K=3: π control 42 gaps, max |Bott| 1e−9; π/2: 39 gaps, every Bott rounds to 0 (max |Bott| < 1e−3).
   - K=4: π 8 gaps, π/2 3 gaps, also all 0.
   - Reading: breaking time reversal with π/2 vortex flux does not open a Chern-type gap. Vortex flux by itself does not make the Spectre hopping model topological. **Negative result; R8 is closed.**
+
+### Γ8 sheared_mirror v1 (`research/sheared_mirror_v1.json`, sheared_index at K5, K4, K3)
+- The fitted M has off-diagonal −0.49 at K5 and K3 and +0.49 at K4. So the orientation of the shear alternates with K parity, as deform_fit found.
+- At every K, the height at the mirror point conj(k) is about 0 (mirror ratio ≤ 0.02 for vortices and vertices). Each sheared peak has no mirror partner in its own patch, so the diffraction is truly chiral at every K.
+- Decision rule: no parity flip of the ratio. The chirality is fixed within each patch, and it is not an artifact of the orientation convention. The handedness follows the sign of M.
+- Peak heights differ by K:
+  - K4: the sheared module reaches the strong level, h 0.488 at k 6.094 and 0.484 at 7.936.
+  - K5: h 0.32.
+  - K3: h 0.33.
+- The 7.7295 family (h 0.70 at K5) is still unindexed at every K. The best matches are only h 0.02 to 0.07.
+- Next for Γ8:
+  1. Run module_fit's refinement at K4 and K3, and check whether the refined strong peaks there coincide with the sheared points, which reach h 0.49 at K4.
+  2. Test 7.7295 against second-order terms: a quadratic correction to the x* fit, or k = k5 + Mᵀk* + Nᵀk*² using the window phase.
