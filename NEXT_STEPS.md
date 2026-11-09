@@ -688,6 +688,7 @@ This extends the Z₂ deconfinement result and R11.
   - **Chair44 submitted** (`research/chair44_curvature.py`, job 1724879). This computes Ollivier κ on the tile-adjacency graph of a middle-layer cut of Chair44, at depths 3–7. Chair44 has no holonomy, so the defect candidate is the L-tromino cross-section, where a chair is cut through its notch.
 
   - **Chair44 v1** (`research/chair44_curvature_v1_midlayer.json`): degenerate. The middle layer z = 2^n runs along chair boundaries. It is a plain grid of 2×2 squares with exactly one L-tromino at every depth, all squares have κ ≈ 0, and the correlation is undefined. v2 (job 1725087) uses the layer with the most trominoes.
+  - **Chair44 v2** (`research/chair44_curvature_v2.json`, job 1725087): **the test is ill-posed on Chair44.** In the best layer, every tromino has degree 5 and every square degree 4, so the tromino count equals the degree-5 count and is collinear with the degree controls (r8, r16 give NaN). κ is a function of tile type alone: every tromino has κ = −0.040 (sd 0), and the squares have κ = 0.21–0.33, falling with depth. The r4 partial r is +0.03 [−0.13, 0.19] at depth 6 and −0.26 [−0.33, −0.19] at depth 7, so the sign is not stable and the decision rule fails. Like the Spectre (motif-fixed κ), the curvature carries no information beyond the local tile type. **Γ6 is closed as negative on both tilings.**
 
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
@@ -713,6 +714,8 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
   - The grid does not explain the 25% per-level fall in v1: K4 gives 1.32 on the 4096² grid and 1.34 on 8192². The fall is a small-patch effect at K2–K3 that levels off by K4.
   - This supports Γ3 (vortices as a model set). **Next:** index the peaks by the gap-labelling module.
 - The Chair44 cut in v2 used the middle layer, which turned out to be degenerate (see Γ6). It is rerun in job 1725087.
+- **Chair44 v2** (`research/chair44_diffraction_v2.json`, best-layer cut, depths 3–7): **all three point sets are Bragg.** Top non-lattice h from depth 6 to 7: centroids 1.32 → 1.25 (−5%), vertices 0.56 → 0.58 (+3%), trominoes 1.63 → 1.55 (−5%), while N grows 4×. The tromino peaks are at |k| ≈ 7.85 and the centroid peaks at 8.46. This is as expected for a limit-periodic (2-adic model set) cut, and it passes the < 20% rule. In both tilings, the defect set (vortices or trominoes) is pure point.
+- **Next for Γ8:** index the Spectre vortex Bragg peaks (|k| ≈ 7.73) in the gap-labelling module, and the tromino peaks in ℤ[1/2]-type dyadic frequencies.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
