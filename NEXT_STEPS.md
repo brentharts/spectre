@@ -779,7 +779,7 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
     | vortex 7.7295 (strongest, h 0.70) | 7.695 | far | 0.018 | 0.70 |
     | vertex 7.7293 | none | — | — | — |
 
-  - Reading: the linear deformation gets the main vortex peak family to about 1e-3 (2× the noise floor's relative error ~2e-5 ×50). It does not produce the strongest vortex peak or the vertex peak, so x* ≈ Mx + b is only an approximation. Two likely causes:
+  - Reading: the linear deformation gets the main vortex peak family to about 1e-3 in |k| (relative error 2e-4, still 10× above the 2e-5 noise floor). It does not produce the strongest vortex peak or the vertex peak, so x* ≈ Mx + b is only an approximation. Two likely causes:
     - M is fitted, not exact. An error δM ~ 6e-4 times |k*| = 1.88 already gives a 1e-3 shift.
     - The true deformation may be nonlinear but bounded (BGMS), which shifts the peaks onto a different module.
 - **Next for Γ8:** separate the two causes.
