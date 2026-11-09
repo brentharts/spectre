@@ -122,6 +122,7 @@ check: facts atlas lean readme
 	$(PYTHON) spectre_e8.py
 	$(PYTHON) spectre_line_sums.py --tests
 	$(PYTHON) spectre_density_clock.py --tests
+	$(PYTHON) spectre_wilson.py
 	$(PYTHON) spectre_energy.py --check
 	$(PYTHON) spectre_diffraction.py --check
 	$(PYTHON) spectre_ledger.py --check
