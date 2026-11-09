@@ -710,7 +710,7 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
   - Vortex set: top h is 1.34 at K4 and 1.30 at K5, a 3% change while N grows 13-fold (1,554 → 20,417). This passes the 20% rule.
   - Vertices: 0.50 → 0.48.
   - The vortex peaks sit at the vertex peaks (|k| ≈ 7.73) and hold about 10% of the vortex intensity.
-  - The 25% per-level fall in v1 came from the coarse 4096² grid at small K, not from diffuse scattering.
+  - The grid does not explain the 25% per-level fall in v1: K4 gives 1.32 on the 4096² grid and 1.34 on 8192². The fall is a small-patch effect at K2–K3 that levels off by K4.
   - This supports Γ3 (vortices as a model set). **Next:** index the peaks by the gap-labelling module.
 - The Chair44 cut in v2 used the middle layer, which turned out to be degenerate (see Γ6). It is rerun in job 1725087.
 
