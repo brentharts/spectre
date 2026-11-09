@@ -481,7 +481,7 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
   - No Binder crossing between any pair of levels 3/4/5.
   - The jump in U (0 → 2/3) sharpens and moves down with size: its midpoint is ≈ 0.0862 at N = 4401 and ≈ 0.0855 at N = 34649, rising within Δβ ≈ 0.001.
   - Estimate: β_c ≈ 0.0855 ± 0.0007. A jump this abrupt without a crossing may point to a weakly first-order transition or to strong boundary effects (open spatial boundary). That is a question for later, not a blocker.
-- Remaining follow-up: R8 with complex π/2 flux.
+- Remaining follow-up: ~~R8 with complex π/2 flux~~, done 2026-11-09: all Bott 0 (see H1/H2 status).
 
 ### Item F, why X_k vanishes (2026-11-08, from the recorded tensors)
 
@@ -496,7 +496,7 @@ The "Recommended order" sections above are out of date. Most of R1–R8 and R11 
 
 - **R7 genus sweep, third attempt (job 1715742).** Installs scikit-image with `pip --target` into a side directory on PYTHONPATH. The second attempt (1715015) failed because `pip --user` is refused inside the virtualenv. Depths 2–3.
 - **Item F mirror check (job 1715771, `research/chair44_mirror.py`).** Tests directly whether the level-k supertile (k ≤ 6) equals its x ↔ y mirror image with frames conjugated. All True: the Chair44 hull is recorded as achiral and F is closed.
-- Still open: R8 with complex π/2 flux.
+- Still open: ~~R8 with complex π/2 flux~~, done 2026-11-09: all Bott 0 (see H1/H2 status).
 
 ### Results 2026-11-08 (sixth batch)
 
@@ -610,7 +610,7 @@ G1 and G2 are done; see "Results 2026-11-08: G1 and G2" above. The new order is:
 2. ~~**G4: can the twist sign play the role of C?**~~ **DONE (2026-11-08), `research/spectre_pc_twist.py`.** Result: yes, with an intrinsic sign. Mirroring a depth-3 patch and taking ribbon angle g → −g reproduces every lifted ribbon exactly (all centre lines, all rotation edges, all 567 reflection edges). Reflection edges need twist sign s → −s, except the 72 edges at the atan2 branch a = 180°, which need s → +s: `atan2` returns +π for both the edge and its mirror, so the code's axis u is not mirror-covariant there, and R(−u, θ) = R(u, −θ) absorbs the flip. Defining the half-twist handedness relative to the reflection axis makes PC an exact symmetry. Structural difference from Chair44: the Spectre mirror maps the hull to the *mirror* hull, while for Chair44 P is an automorphism of the hull itself (Γ14). Original item:  Test whether flipping every ribbon twist sign, combined with reflecting the Spectre, maps lifted Spectre patches to lifted patches, using the R4 and R6 code. If it does, the Spectre has its own PC and the bridge has a target to respect. If it does not, this asymmetry is the first real structural difference between the two tiles.
 3. ~~**I: the table comparing the Spectre with ordinary lattices.**~~ **DONE (2026-11-08): `COMPARISON_TABLE.md`.** Follow-up: honeycomb β_c control (done: already in job 1712312, 0.1614; table updated); fill H1/H2 rows.
 4. **H1, then H2: distance and entanglement.** Cluster jobs of at most 64 CPUs.
-5. **K, then J.** Writing tasks. **K done** (table above); **J drafted** (needs Brent's choice; the linearity claim awaits H1).
+5. **K, then J.** Writing tasks. **K done** (table above); **J drafted** (needs Brent's choice; the linearity claim is supported by H1: d_G ≈ 1.50·r).
 
 ## Giants (long-horizon, uncertain, deliberately more than we can finish)
 
@@ -739,4 +739,13 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
   - Mean d_G/r by radius bin (K=6, 1.67M vertices, 128 sources): 1.614 (r 4–8), 1.562, 1.535, 1.518, 1.505, 1.498, 1.495, 1.499 (r 512–1024). K=5 agrees to 0.01. The ratio converges to ≈ 1.50 from above; the spread over pairs stays ≈ 0.05 rather than shrinking.
   - Far-field anisotropy: Spectre 0.06, honeycomb 0.078, square 0.22. Square and honeycomb sit at 1.273 for all r.
   - Reading: the Spectre graph metric is a constant multiple of the Euclidean one at large scale, with less direction dependence than either periodic lattice. That supports "space emerges from the graph", but it is generic behaviour for a quasi-isotropic tiling, not a Spectre-specific signal.
-- H2 (job 1719943) still running; R8 π/2 flux (`research/flux_complex.py`) submitted.
+- **H2 result (job 1719943, done 1h12m): area law everywhere, nothing Spectre-specific.**
+  - Disc entanglement fit S = aR + bR lnR + c. Spectre K=3: a=4.85, b=−0.96; K=4: a=4.73, b=−0.74. Square: b=+0.18 / +0.47. Honeycomb: a≈3.1–3.4, b≈−0.38 at both sizes.
+  - The leading term is linear in R (area law) on all three graphs. The R lnR coefficient is negative for Spectre and honeycomb and positive for square, and the Spectre value moves toward zero with size, so it is not a stable signal yet.
+  - Mutual information vs distance: R² of ln I against graph distance ≈ against Euclidean distance on every graph (Spectre K=4 0.347 vs 0.348). That is what H1 predicts: the two metrics are proportional, so this test cannot tell them apart.
+  - J draft linearity claim: supported. H1 gives d_G ≈ 1.50·r, linear in r, and H2 shows nothing beyond it.
+- **R8 complex flux result (job 1720472, `research/flux_complex.py`): every Bott index is 0, at π and at π/2.**
+  - The flux constraint holds to residual ≤ 2e−11 at K=3 and K=4.
+  - K=3: π control 42 gaps, max |Bott| 1e−9; π/2: 39 gaps, every Bott rounds to 0 (max |Bott| < 1e−3).
+  - K=4: π 8 gaps, π/2 3 gaps, also all 0.
+  - Reading: breaking time reversal with π/2 vortex flux does not open a Chern-type gap. Vortex flux by itself does not make the Spectre hopping model topological. **Negative result; R8 is closed.**

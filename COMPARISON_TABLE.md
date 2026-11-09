@@ -15,7 +15,7 @@ Each row is an observable already computed in this project. "n/c" means the cont
 | Ribbon linking vs. twist sign (R6) | zero writhe; no sign change | n/a | n/a | No arrow of time either way |
 | Mirror-type symmetry | PC holds with axis-relative twist; maps hull to the mirror hull (G4) | hull achiral | hull achiral | **Yes**: the Spectre hull is chiral |
 | H1 graph/Euclidean dilation (r→∞; far-field anisotropy) | 1.50 (1.507 K=5, 1.499 K=6); anisotropy 0.06 | 1.273; 0.22 (lattice directions) | 1.273; 0.078 | Value yes (tile geometry); limit exists and is the most isotropic of the three |
-| H2 mutual information / entanglement | pending | pending | pending | pending |
+| H2 disc entanglement S(R)=aR+bR·lnR+c (K=4 size); R² of ln I vs graph / Euclid distance | a=4.73, b=−0.74; R² 0.35 / 0.35 | a=3.62, b=+0.47; R² 0.08 / 0.11 | a=3.38, b=−0.39; R² 0.49 / 0.51 | Area law in all three; sign of the R·lnR correction differs (negative for Spectre and honeycomb). Graph vs Euclid distance indistinguishable (follows from H1) |
 
 ## Reading
 
