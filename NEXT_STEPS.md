@@ -728,7 +728,13 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
     - vertex h ≈ 0.30 at 7.7293.
   - Re-indexing these refined k with `peak_index` gives residuals below 0.2 bins, but only with |k*| = 13–68. With m in a 4D box, any 2D k can be approximated this way, so the fit carries no information.
   - Conclusion: the Spectre's Bragg peaks are not in the Fourier module of the plain ℤ[ζ12] cut-and-project with a Galois-conjugate internal space. The internal space must carry an extra (e.g. collaring/gap-label) factor.
-- **Next for Γ8:** fit an empirical rank-4 basis from the 8 refined peak vectors (the integer-relation/LLL step of (b)), then test whether the remaining peaks are ℤ-combinations of it.
+- **Commensurability check** (local, pure Python on `module_fit_v1.json`): this tests whether the other peak families lie in k₀·ℚ(ζ12), where k₀ is the strongest peak (|k| = 7.7295).
+  - **No match.** The search looked for α, β ∈ ℤ[ζ12] with coefficients in [−3, 3] and k/k₀ = α/β.
+  - The best relative error is 5e-4 to 3e-3 for the families at |k| = 6.09, 7.94, 6.02, 5.72, 7.91 and 5.33.
+  - The noise floor is about 2e-5: k₀'s own symmetry partners match at 5e-6 to 3e-5, and the vertex and vortex sets agree to 1e-5.
+  - So the top peaks are not ℚ(ζ12)-commensurate with small coefficients. The Fourier module either has rank above 4 or needs large coefficients.
+  - Angles mod 30° are generic (28.0°, 17.9°, 12.8°, 2.0°, 15.7°, 14.3°, 7.2°), as expected for a chiral tiling.
+- **Submitted:** `research/internal_check.py`, K3–K5. It is the model-set precondition: it lists the integer edge vectors and tests whether the ζ⁵ and ζ⁷ internal images stay bounded (radius change under 10% from K4 to K5).
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
