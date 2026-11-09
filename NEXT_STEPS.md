@@ -685,6 +685,8 @@ This extends the Z₂ deconfinement result and R11.
 
   - **Regge result** (`research/regge_v1.json`). **Fails.** In K2–K4 the winding is only ever w ∈ {−1, 0, 1}, so |w| is the vortex flag and has nothing to add beyond parity: sum_abs_w_given_vortex is 0.00 [−0.28, 0.28] at K3 r4 and 0.01 [−0.09, 0.11] at K4 r4. κ is fixed exactly by the motif (deg, w, n_pi): every class except (2,0,0) and (3,0,0) has zero spread. At degree 3, (w=0, n_pi=1) and (w=1, n_pi=0) both give −1/3, and (w=1, n_pi=1) gives −4/9. The disc sum of n_pi tracks κ more strongly than the vortex count does (K4 r8: −0.74 [−0.81, −0.64] against −0.62). So curvature follows π-steps of the holonomy rather than the vortex flux. There are no Regge point masses.
 
+  - **Chair44 submitted** (`research/chair44_curvature.py`, job 1724879). This computes Ollivier κ on the tile-adjacency graph of a middle-layer cut of Chair44, at depths 3–7. Chair44 has no holonomy, so the defect candidate is the L-tromino cross-section, where a chair is cut through its notch.
+
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
 Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
@@ -702,7 +704,7 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 - **Result v1** (`research/diffraction.py`, `research/diffraction_v1.json`; disc of 0.8·R_max, |k| < 3π).
   - Vertices: h = I/N² for the top peak is 0.43, 0.48 and 0.49 at K2, K3 and K4. That is stable while N grows sixtyfold, so these are Bragg peaks. They hold about 44% of the intensity; the strongest are at |k| ≈ 7.7.
   - Vortex set: h is 2.51, 1.77 and 1.32. It falls by 25% per level while N grows about sevenfold, so the drop is far slower than diffuse 1/N but fails the 20% stability rule. The peaks sit at the same |k| as the vertex peaks. **Undecided.** It needs K5, or a fit of h(N) with a constant plus 1/N.
-- **Next.** Run K5 for the vortex set, and compute the Chair44 cut using `chair44_slice.py`.
+- **Submitted v2** (job 1724806): the vortex set at K5 with an 8192² grid, and the diffraction of a middle-layer cut of Chair44 at depths 2–7 (`research/chair44_diffraction.py`). The cut uses three point sets: tile centroids, tiling vertices, and L-tromino centroids.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
