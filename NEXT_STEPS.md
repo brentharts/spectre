@@ -687,6 +687,8 @@ This extends the Z₂ deconfinement result and R11.
 
   - **Chair44 submitted** (`research/chair44_curvature.py`, job 1724879). This computes Ollivier κ on the tile-adjacency graph of a middle-layer cut of Chair44, at depths 3–7. Chair44 has no holonomy, so the defect candidate is the L-tromino cross-section, where a chair is cut through its notch.
 
+  - **Chair44 v1** (`research/chair44_curvature_v1_midlayer.json`): degenerate. The middle layer z = 2^n runs along chair boundaries. It is a plain grid of 2×2 squares with exactly one L-tromino at every depth, all squares have κ ≈ 0, and the correlation is undefined. v2 (job 1725087) uses the layer with the most trominoes.
+
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
 Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
@@ -704,7 +706,13 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 - **Result v1** (`research/diffraction.py`, `research/diffraction_v1.json`; disc of 0.8·R_max, |k| < 3π).
   - Vertices: h = I/N² for the top peak is 0.43, 0.48 and 0.49 at K2, K3 and K4. That is stable while N grows sixtyfold, so these are Bragg peaks. They hold about 44% of the intensity; the strongest are at |k| ≈ 7.7.
   - Vortex set: h is 2.51, 1.77 and 1.32. It falls by 25% per level while N grows about sevenfold, so the drop is far slower than diffuse 1/N but fails the 20% stability rule. The peaks sit at the same |k| as the vertex peaks. **Undecided.** It needs K5, or a fit of h(N) with a constant plus 1/N.
-- **Submitted v2** (job 1724806): the vortex set at K5 with an 8192² grid, and the diffraction of a middle-layer cut of Chair44 at depths 2–7 (`research/chair44_diffraction.py`). The cut uses three point sets: tile centroids, tiling vertices, and L-tromino centroids.
+- **Result v2, K5** (`research/diffraction_v2_k5.json`, 8192² grid). **The vortex set is Bragg.**
+  - Vortex set: top h is 1.34 at K4 and 1.30 at K5, a 3% change while N grows 13-fold (1,554 → 20,417). This passes the 20% rule.
+  - Vertices: 0.50 → 0.48.
+  - The vortex peaks sit at the vertex peaks (|k| ≈ 7.73) and hold about 10% of the vortex intensity.
+  - The 25% per-level fall in v1 came from the coarse 4096² grid at small K, not from diffuse scattering.
+  - This supports Γ3 (vortices as a model set). **Next:** index the peaks by the gap-labelling module.
+- The Chair44 cut in v2 used the middle layer, which turned out to be degenerate (see Γ6). It is rerun in job 1725087.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
