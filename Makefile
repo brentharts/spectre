@@ -60,6 +60,8 @@ facts:
 	$(PYTHON) chair44facts.py --selftest
 	$(PYTHON) chair44_hull.py --tests
 	$(PYTHON) chair44_lines.py --tests
+	$(PYTHON) chair44_polarisation.py --tests
+	$(PYTHON) spectre_outline_arrow.py --tests
 
 # three pdflatex passes: the second still reports "Label(s) may have changed"
 # the all-orders proof of the Spectre perimeter recurrence (independent code, about 2 minutes)
@@ -118,6 +120,8 @@ check: facts atlas lean readme
 	$(PYTHON) spectre_pancake.py --check
 	$(PYTHON) spectre_bkl.py --check
 	$(PYTHON) spectre_e8.py
+	$(PYTHON) spectre_line_sums.py --tests
+	$(PYTHON) spectre_density_clock.py --tests
 	$(PYTHON) spectre_energy.py --check
 	$(PYTHON) spectre_diffraction.py --check
 	$(PYTHON) spectre_ledger.py --check

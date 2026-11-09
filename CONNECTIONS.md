@@ -14,7 +14,7 @@ reader can tell a theorem from a hunch.
 | **Elementary** | true, but nearly a restatement of definitions; does not support an inference |
 | **Numerology** | a coincidence of numbers we noticed and do **not** build on |
 
-Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md`](E8.md),
+Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md`](E8.md), [`LINES.md`](LINES.md), [`CLOCK.md`](CLOCK.md),
 [`HOPF.md`](HOPF.md), [`GLOSSARY.md`](GLOSSARY.md).
 
 ---
@@ -40,6 +40,11 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md
 | 15 | Spectre 4D lift lattice ℤ[ζ₁₂] = red A₂ ⊕ green A₂ embeds isometrically in E₈ (via the Hurwitz-pair model and its Z[ω] structure); every Spectre edge becomes a root, red in the pole D₄a, green in D₄b; 8+6 red/green edges per tile for 63 of 71 tiles, 6+8 for the other 8 | **Exact** on the level-2 patch (71 tiles, 518 vertices); the embedding itself is a lattice map, so the edge statement holds for every patch | `spectre_e8.py`, [`E8.md`](E8.md) |
 | 16 | Spectre inflation (x⁴−8x²+1, λ² = 4+√15) extends to an automorphism of E₈ | **Falsified**: eigenvalues of modulus ≠ 1, E₈ automorphisms have finite order. ℚ(λ) = ℚ(√6, √10) contains √15 but not √3, √5 or φ | `spectre_e8.py` |
 | 17 | √15 = √3·√5 (hexagonal × icosahedral field) points to a construction joining E₈'s Eisenstein and icosian structures | **Numerology** until a map is exhibited | [`E8.md`](E8.md) §4 |
+| 18 | Notch vector along an axis line of a depth-n Chair44 patch: the sum along the line is bounded (\|sum\| ≤ 6, n = 3…7, **Counted**); the sum across it is exactly (±M, ±M) on a fraction **13/24 + 1/(3·4ⁿ⁻¹)** of the lines for every n ≥ 3 and every one of the 168 root labels, so the limit is 13/24 | **Exact** for the fraction (18-state subset automaton, (Q−4)(Q−1)Q³ = 0, equal to brute force for n ≤ 7); **Counted** for the bounded longitudinal sum and the equal sign states; shuffled labels give none | `chair44_polarisation.py`, [`LINES.md`](LINES.md) |
+| 19 | That drift singles out a direction of travel (an arrow) | **Falsified for this observable**: the sum is the same traversed backwards, so it labels the line, not the orientation | `chair44_polarisation.py`, [`LINES.md`](LINES.md) |
+| 20 | The same line sums for the Spectre (tile-orientation vector, level-5 patch, 4 directions): no ballistic component; mean \|S_k\| grows as k^e, e = 0.26…0.62, up to 1.6 times a shuffled-orientation control | **Counted** (sampled lines; negative result: the Chair44 effect is not a general monotile property, it goes with the integer inflation) | `spectre_line_sums.py`, [`LINES.md`](LINES.md) |
+| 21 | Background "interaction density": the density of valence-4 vertices is exactly ρ₀ = (5−√15)/5 per spectre (∈ ℤ + ℤ(5+√15)/10); the weighted count in a complete level-j supertile differs from ρ₀·(its spectres) by (label constant)·(4−√15)ʲ — ratio 0.127 per level, 0.197 → 0.025 → 0.003 vertices for the Delta at j = 1, 2, 3 | **Exact** for ρ₀ (recorded; reproduced from the 38 collared types at K = 6); **Counted** for the decay (K = 6 patch, j ≤ 3, ratio equal to 4−√15 to 3 digits). Contrast: the Chair44 notch sum of a depth-n supertile is 7·2ⁿ(1,1,1) (**Exact**, `chair44_lines.py`). Says nothing about gravity: the tiling has no potential of its own | `spectre_density_clock.py`, [`CLOCK.md`](CLOCK.md) |
+| 22 | The Spectre outline as a closed 14-step walk in 12 directions: same cyclic turning word for all 80 tiles of levels 1–2, steps sum to 0, no proper sub-run closes, the mirror tile has a different word (chiral polygon), all 559 placements of the level-3 patch are proper motions; red/green word achiral | **Exact** (integer lift; finite patches). That this gives an arrow of time is a **Hypothesis**: the closure is symmetric under reversal, only the order (chirality) carries a direction | `spectre_outline_arrow.py`, [`CLOCK.md`](CLOCK.md) |
 
 ## 2. To the Quantum Gravity Lab fork
 
