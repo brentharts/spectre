@@ -897,3 +897,16 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. Apply the + orientation M (the K4 fit) to the K5 patch, and the K5 M to K4. Check whether the strong 6.0925 and 7.937 families are indexed at K5 with height about 0.49. That would settle whether the alternating M is a fit artifact, for example from the patch's boundary and orientation.
   2. Index 7.7295 against the vortex subset alone. Fit the vortex x* deformation on vortex sites only, and test whether 7.7295 is a module point of a vortex sublattice, such as a superlattice from the supertile hierarchy.
+
+### Γ8 cross_fit v1 (`research/cross_fit_v1.json`)
+- **The sign of M is not a fit artifact.**
+  - If each patch is indexed with the other patch's M, everything vanishes: h ≤ 0.001 at K5 with K4's M, and ≤ 0.11 (only at |k| 2.63) at K4 with K5's M.
+  - With its own M, each patch is indexed: K4 gets 6.094 and 7.936 at h 0.49, and K5 gets 6.0937 and 7.936 at h 0.32.
+  - So the lattice coordinates n of odd-K and even-K patches have opposite conjugate shears, while the physical diffraction keeps one handedness (refined peaks are identical at K4 and K5).
+  - This fits the Spectre substitution containing a reflection: odd K appears mirrored in n-coordinates. At K5 the ζ⁵ map then acts as the mirrored Galois map, and the strong + orientation families (6.0925 at 17.89°/137.89°, h 0.49) are not reached by K5's own module.
+- **The vortex-only fit is the same shear but a much smaller window.** Its M equals the all-site M to 1e-3, but the residual radius is 1.75 (K5) and 1.64 (K4), against 3.77 and 3.75 for all sites. So the vortices form a model subset with roughly half the window radius.
+  - At K4 the vortex fit tightens the match to the refined peaks: 6.0917 (h 0.492) and 7.9381 (h 0.489).
+  - **7.7295 is still not indexed:** the nearest points are 7.695–7.701 with h ≤ 0.06. By the decision rule (within 5e-3 and h > 0.5) it fails.
+- Next for Γ8:
+  1. At odd K, use the mirrored internal map: x* = Σ n_j ζ^{7j}, or conj(ζ^{5j}). Refit M and index the K5 vortex set. Check whether the h 0.49 families at 17.89°/137.89° appear.
+  2. Use the vortex window to index 7.7295. Scan the module points of the other Galois maps (ζ⁷, ζ¹¹) with the radius-1.7 vortex window, and test whether 7.7295 belongs to a coarser vortex module, for example a supertile superlattice scaled by the Spectre inflation factor.
