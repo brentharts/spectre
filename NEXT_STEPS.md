@@ -923,3 +923,16 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. At odd K, index with conj(k), meaning the physical mirror x → conj(x) applied to n, and confirm the 17.89° families at h 0.49 for K5. Equivalently, find which reflection in the substitution maps the n basis.
   2. For 7.7295: test a supertile superlattice. Take supertile centres, or the vortex sites of a single orientation class, as the point set, and index with the module scaled by the inflation factor (4+√15). Also check whether 7.7295/6.0925 ≈ 1.2687 is an algebraic ratio in ℚ(√3).
+
+### Γ8 supertile_index v1 (`research/supertile_index_v1.json`, `research/module_fit_k5_v1.json`)
+- **Odd K is the physical mirror of even K.** For every K5 point set (tile centres, each tile label, L1 and L2 supertile centres), S is 0 at the K4 refined peaks k. At conj(k) it reproduces the K4 heights.
+  - Tile centres: 0.026, 0.046 and 0.002 at K5, against the same three values at K4.
+  - Gamma: 0.395 against 0.405 at 7.937.
+  - L2: 0.655 against 0.669 at 6.0925.
+  - The parity flip of M (cross_fit v1) is therefore a true reflection of the patch: the Spectre substitution reverses handedness at each level. It is not a lattice-coordinate effect.
+- **The 6.0925 family is a level-2 supertile superlattice peak.** L2 supertile centres give h 0.67 (K4, N 57) and 0.655 (K5, N 450, mirrored). Tile centres give 0.05, and L1 centres give at most 0.15.
+- **7.7295 is not a supertile peak.** No L0, L1 or L2 set, or per-label subset, reaches h > 0.5 there; the maximum is 0.17 (K5 L1 Gamma, mirrored). This fails the decision rule.
+- **Caveat: the K5 vortex refinement disagrees with sheared_index.** module_fit at K5 refines only weak vortex peaks (h ≤ 0.19, at 7.201, 4.783 and 5.72), while sheared_index v1 found h 0.32 at 6.0937. So the decision rule for "K5 refined = conj of K4 refined" fails, and the most likely cause is the K5 vortex mask or scaling in module_fit (median-edge scale, coarse-scan subsample). Recheck module_fit on K5 vortices with the sheared_index centring before relying on K5 refined peaks.
+- Next for Γ8:
+  1. Make module_fit parity-aware: apply conj at odd K. Reconcile its K5 vortex set with sheared_index, then re-refine K5.
+  2. 7.7295: test the vortex subsets by orientation class (12 rotations, split by reflection) and by the vortex label from ollivier_ricci. Also test the level-2 supertile labels separately with larger K (K6, mirrored like K4).
