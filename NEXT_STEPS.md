@@ -785,6 +785,23 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 - **Next for Γ8:** separate the two causes.
   1. Scan S(k) directly in a ±0.01 box around each predicted sheared point for the vortex set at K5. If maxima sit within 2e-3 at h ≈ 0.49 and 0.70, then M is just slightly off, and fitting M to the peaks should give an exact algebraic M.
   2. Also fit the 4 refined peak vectors as integer combinations of 4 free generators. If they fit, the true Fourier module has rank 4 but is not ζ-based; this follows the inflation-module idea in internal_check v1.
+- **Sheared scan v1** (`research/sheared_scan_v1.json`, K5): **the 'M slightly off' explanation fails, and the result is unexpected.**
+  - Every strong sheared-module point is a genuine local maximum of S(k) for the vortex set. The maxima sit within 2–5e-4 of the prediction, at the predicted height:
+    - h 0.324 at |k| 6.0937
+    - h 0.322 at |k| 7.9359
+    - weaker ones at 3.518, 4.582, 6.003 and 7.695
+  - These peaks are the **exact mirror images (ky → −ky)** of the refined FFT families:
+    - The sheared 6.0937 points lie at −137.89° and −17.89°; the refined 6.0925 points (h 0.49) lie at +137.885° and +17.888°.
+    - The sheared 7.9359 points lie at −162.78° and −42.78°; the refined 7.937 points (h 0.49) lie at +162.784° and −137.217°.
+  - So the vortex diffraction is **not mirror-symmetric**, as expected for a chiral tiling. The linear-deformation model reproduces the weaker mirror partner of each strong family.
+  - The strongest vortex family (7.7295, at −152.05° and −32.05°, h 0.70) has no sheared point and no mirror one.
+  - The vertex set carries almost no weight at these points (h ≤ 0.003).
+- **Generator fit (local, pure Python, light):** the 16 refined peak vectors are not small-integer combinations (coefficients in [−4, 4]) of the two strongest families a (7.937) and b (6.0925) under 60° rotations. The residuals are 0.28–0.72.
+  - The refined families do come in exact 6-fold orbits (angle steps of 60° and 120°).
+  - Their orientations relative to the 0° axis are 42.78°, 17.89° and 27.95° modulo 60°. None of these is a multiple of 15°, consistent with chirality.
+- **Next for Γ8:**
+  1. Repeat sheared_index with the conjugate embedding: either evaluate S at conj(k), or fit x* against conj(x) using ζ⁷. This asks whether the mirrored model indexes the strong families at h 0.49 and 0.70, and whether the chirality is just an orientation-convention flip in M (deform_fit showed that M alternates with K parity).
+  2. Repeat the K4 vs K5 comparison, since odd and even depths have opposite M orientation and may swap which mirror partner is strong.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
