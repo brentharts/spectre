@@ -73,26 +73,36 @@ def analyse(z, e, name, vort=None, rng=None):
                 s = inner & (deg == d); sv = s & vort; sn = s & ~vort
                 bydeg[int(d)] = dict(n_vortex=int(sv.sum()), n_other=int(sn.sum()),
                                      kappa_vortex=float(kv[sv].mean()) if sv.any() else None,
-                                     kappa_other=float(kv[sn].mean()) if sn.any() else None)
+                                     kappa_other=float(kv[sn].mean()) if sn.any() else None,
+                                     hist_vortex=[[float(v), int(c)] for v, c in zip(*np.unique(np.round(kv[sv], 4), return_counts=True))],
+                                     hist_other=[[float(v), int(c)] for v, c in zip(*np.unique(np.round(kv[sn], 4), return_counts=True))])
             r["vertex_kappa_by_degree"] = bydeg
-            # disc sums: sum of vertex kappa vs vortex count, partialling out the degree sum
-            idx = np.nonzero(inner)[0]; rows = []
+            # disc sums: sum of vertex kappa vs vortex count.  Controls: (a) degree sum + count (weak; v1),
+            # (b) separate counts of each degree class (strong).  Overlapping random discs and a
+            # non-overlapping greedy packing (independent samples; Fisher-z 95% CI).
+            idx = np.nonzero(inner)[0]; degs = [int(d) for d in np.unique(deg[inner])]; corr = {}
             for rad in (4, 8, 16):
                 pool = idx[R[idx] < Rb - 3 - rad]
                 if len(pool) == 0: continue
-                cs = rng.choice(pool, size=min(400, len(pool)), replace=True)
-                for ci in cs:
-                    m = inner & (np.abs(z - z[ci]) < rad)
-                    rows.append((rad, kv[m].sum(), vort[m].sum(), deg[m].sum(), m.sum()))
-            rows = np.array(rows, float); corr = {}
-            for rad in (4, 8, 16):
-                X = rows[rows[:, 0] == rad]
-                if len(X) < 10: continue
-                D = np.c_[np.ones(len(X)), X[:, 3], X[:, 4]]       # regress out degree sum and vertex count
-                res = lambda y: y - D @ np.linalg.lstsq(D, y, rcond=None)[0]
-                a, b = res(X[:, 1]), res(X[:, 2])
-                corr[rad] = dict(raw=float(np.corrcoef(X[:, 1], X[:, 2])[0, 1]),
-                                 partial=float(a @ b / np.sqrt((a @ a) * (b @ b) + 1e-300)), discs=int(len(X)))
+                packed = []
+                for ci in rng.permutation(pool):
+                    if all(abs(z[ci] - z[q]) >= 2 * rad for q in packed): packed.append(ci)
+                for tag, cs in (("overlap", rng.choice(pool, size=min(400, len(pool)), replace=True)), ("disjoint", np.array(packed))):
+                    rows = []
+                    for ci in cs:
+                        m = inner & (np.abs(z - z[ci]) < rad)
+                        rows.append([kv[m].sum(), vort[m].sum(), deg[m].sum(), m.sum()] + [(m & (deg == d)).sum() for d in degs])
+                    X = np.array(rows, float)
+                    if len(X) < 10: continue
+                    res = lambda y, D: y - D @ np.linalg.lstsq(D, y, rcond=None)[0]
+                    one = np.ones(len(X)); c = dict(discs=int(len(X)), raw=float(np.corrcoef(X[:, 0], X[:, 1])[0, 1]))
+                    for ctl, D, k in (("partial_degsum", np.c_[one, X[:, 2], X[:, 3]], 2), ("partial_bydegree", np.c_[one, X[:, 4:]], len(degs))):
+                        a, b = res(X[:, 0], D), res(X[:, 1], D)
+                        pr = float(a @ b / np.sqrt((a @ a) * (b @ b) + 1e-300)); c[ctl] = pr
+                        dof = len(X) - k - 3
+                        if dof > 0 and abs(pr) < 1:
+                            zf = np.arctanh(pr); h = 1.96 / np.sqrt(dof); c[ctl + "_ci95"] = [float(np.tanh(zf - h)), float(np.tanh(zf + h))]
+                    corr["r%d_%s" % (rad, tag)] = c
             r["disc_sum_vs_vortices"] = corr
         out["alpha_%g" % al] = r
     return out
