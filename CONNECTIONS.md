@@ -14,7 +14,7 @@ reader can tell a theorem from a hunch.
 | **Elementary** | true, but nearly a restatement of definitions; does not support an inference |
 | **Numerology** | a coincidence of numbers we noticed and do **not** build on |
 
-Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md),
+Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md), [`E8.md`](E8.md),
 [`HOPF.md`](HOPF.md), [`GLOSSARY.md`](GLOSSARY.md).
 
 ---
@@ -37,6 +37,9 @@ Companion pages: [`SPECTRE.md`](SPECTRE.md), [`CHAIR44.md`](CHAIR44.md),
 | 12 | Box averages are uniform (1/168), line averages are not: 6 chair stacks give ballistic sums along the body diagonal | **Exact** | `chair44_lines.py` |
 | 13 | No lattice direction is uniquely ergodic | **Conditional** (hull picture; irrational directions not covered) | `chair44_lines.py` |
 | 14 | Spectre and Chair44 as the "same kind of object" (both have an inflation) | **Elementary** — the difference is the point: Pisot unit + real internal space versus integer inflation + 2-adic internal space | `chair44_vs_spectre.py` |
+| 15 | Spectre 4D lift lattice ℤ[ζ₁₂] = red A₂ ⊕ green A₂ embeds isometrically in E₈ (via the Hurwitz-pair model and its Z[ω] structure); every Spectre edge becomes a root, red in the pole D₄a, green in D₄b; 8+6 red/green edges per tile for 63 of 71 tiles, 6+8 for the other 8 | **Exact** on the level-2 patch (71 tiles, 518 vertices); the embedding itself is a lattice map, so the edge statement holds for every patch | `spectre_e8.py`, [`E8.md`](E8.md) |
+| 16 | Spectre inflation (x⁴−8x²+1, λ² = 4+√15) extends to an automorphism of E₈ | **Falsified**: eigenvalues of modulus ≠ 1, E₈ automorphisms have finite order. ℚ(λ) = ℚ(√6, √10) contains √15 but not √3, √5 or φ | `spectre_e8.py` |
+| 17 | √15 = √3·√5 (hexagonal × icosahedral field) points to a construction joining E₈'s Eisenstein and icosian structures | **Numerology** until a map is exhibited | [`E8.md`](E8.md) §4 |
 
 ## 2. To the Quantum Gravity Lab fork
 
