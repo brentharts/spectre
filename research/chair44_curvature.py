@@ -1,6 +1,6 @@
 """Γ6, Chair44 part: Ollivier-Ricci curvature on a planar cut of the Chair44 patch.
 
-The cut is the middle layer z = 2**depth: a tiling by 2x2 squares (4 cells) and L-trominoes (3 cells).
+The cut is the z-layer with the most L-trominoes (the middle layer has only one): a tiling by 2x2 squares (4 cells) and L-trominoes (3 cells).
 Chair44 has no holonomy vortices, so the defect candidate is the L-tromino (a chair cut through its notch).
 Graph: the tile-adjacency graph of the cut (tiles adjacent if they share a unit cell edge).
 Vertex kappa = mean of edge kappa (alpha = 0) over its edges, interior tiles only.
@@ -15,11 +15,11 @@ from collections import defaultdict
 import numpy as np
 from ollivier_ricci import adjacency, kappa
 from regge import pc
-from chair44_slice import slice_layer
+from chair44_diffraction import best_layer
 
 
 def graph(depth):
-    lay = slice_layer(depth, 2, 2 ** depth); occ = lay >= 0
+    lay, _ = best_layer(depth); occ = lay >= 0
     ids, inv = np.unique(lay[occ], return_inverse=True)
     lab = -np.ones(lay.shape, int); lab[occ] = inv; n = len(ids)
     cnt = np.bincount(inv); xs, ys = np.nonzero(occ)

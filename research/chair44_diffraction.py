@@ -1,7 +1,7 @@
 """Γ8, Chair44 part: diffraction of a planar cut of the Chair44 patch, by the same Bragg test as
 research/diffraction.py (h = I/N^2 of the top peaks, stable across depth for Bragg, ~1/N for diffuse).
 
-The cut is the middle layer z = 2**depth of the depth-n patch (cells of edge 1): a polyomino tiling by
+The cut is the z-layer of the depth-n patch with the most L-trominoes (see best_layer) (cells of edge 1): a polyomino tiling by
 2x2 squares and L-trominoes.  Point sets:
   centroids   centroid of every tile cross-section
   vertices    lattice corners whose four cells are all occupied and belong to >= 3 different tiles
@@ -14,11 +14,23 @@ import sys, json, time
 sys.path.insert(0, "."); sys.path.insert(0, "research")
 import numpy as np
 import diffraction as D
-from chair44_slice import slice_layer
+from chair44_slice import occupancy
+
+
+def best_layer(depth):
+    """the z-layer with the most L-tromino cross-sections (the middle layer z = 2**depth runs along
+    chair boundaries and is an almost pure square grid with a single tromino)."""
+    _, tile = occupancy(depth); best = None
+    for c in range(tile.shape[2]):
+        lay = tile[:, :, c]; v = lay[lay >= 0]
+        if not len(v): continue
+        nt = int((np.unique(v, return_counts=True)[1] == 3).sum())
+        if best is None or nt > best[0]: best = (nt, c)
+    return tile[:, :, best[1]].copy(), best[1]
 
 
 def point_sets(depth):
-    lay = slice_layer(depth, 2, 2 ** depth)
+    lay, _ = best_layer(depth)
     occ = lay >= 0
     ids, inv, cnt = np.unique(lay[occ], return_inverse=True, return_counts=True)
     xs, ys = np.nonzero(occ)
