@@ -1,0 +1,159 @@
+[
+ {
+  "depth": 3,
+  "tiles": 49,
+  "interior": 21,
+  "trominoes": 1,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 20,
+    "kappa_mean": -0.00625,
+    "kappa_sd": 0.018750000000000003
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 1,
+    "kappa_mean": -0.033333333333333326,
+    "kappa_sd": 0.0
+   }
+  ],
+  "seconds": 0.1
+ },
+ {
+  "depth": 4,
+  "tiles": 193,
+  "interior": 133,
+  "trominoes": 1,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 132,
+    "kappa_mean": -0.000946969696969697,
+    "kappa_sd": 0.0076347137767978695
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 1,
+    "kappa_mean": -0.033333333333333326,
+    "kappa_sd": 0.0
+   }
+  ],
+  "seconds": 0.2
+ },
+ {
+  "depth": 5,
+  "tiles": 769,
+  "interior": 645,
+  "trominoes": 1,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 644,
+    "kappa_mean": -0.00019409937888198756,
+    "kappa_sd": 0.00347757625527347
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 1,
+    "kappa_mean": -0.033333333333333326,
+    "kappa_sd": 0.0
+   }
+  ],
+  "r4": {
+   "n_discs": 23,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "seconds": 1.0
+ },
+ {
+  "depth": 6,
+  "tiles": 3073,
+  "interior": 2821,
+  "trominoes": 1,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 2820,
+    "kappa_mean": -4.4326241134751776e-05,
+    "kappa_sd": 0.0016638585442485339
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 1,
+    "kappa_mean": -0.033333333333333326,
+    "kappa_sd": 0.0
+   }
+  ],
+  "r4": {
+   "n_discs": 112,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "r8": {
+   "n_discs": 26,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "seconds": 6.2
+ },
+ {
+  "depth": 7,
+  "tiles": 12289,
+  "interior": 11781,
+  "trominoes": 1,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 11780,
+    "kappa_mean": -1.0611205432937182e-05,
+    "kappa_sd": 0.0008143019967296125
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 1,
+    "kappa_mean": -0.033333333333333326,
+    "kappa_sd": 0.0
+   }
+  ],
+  "r4": {
+   "n_discs": 484,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "r8": {
+   "n_discs": 124,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "r16": {
+   "n_discs": 27,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "seconds": 43.8
+ }
+]

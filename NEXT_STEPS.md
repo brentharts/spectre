@@ -666,6 +666,29 @@ This extends the Z₂ deconfinement result and R11.
   - its sum over patches.
 - **Interesting.** The curvature concentrates on the vortices. That would make the vortices discrete point masses, which is the Regge picture.
 - **Dead.** The curvature is uncorrelated with the vortices.
+- **Result (foothold done; `research/ollivier_ricci.py`, cluster run K=3,4).**
+  - Edge curvature takes only 4 values: −2/3, −1/2, −1/3, 0 at idleness α=0, and exactly half of each at α=1/2. The mean is −0.265 at K3 and −0.274 at K4, between the square lattice (0) and the honeycomb (−0.65/−0.66).
+  - Degree-2 vertices: vortex vertices sit at κ = −1/3 exactly, against −0.19/−0.20 for the others (K3/K4). That is more negative, by the same amount at both levels.
+  - Degree-3 vertices: the gap is small and changes sign between levels (−0.33 vs −0.37 at K3, −0.39 vs −0.36 at K4). There are no degree-4 vortices.
+  - Disc sums of vertex κ against the vortex count in the disc, after regressing out the degree sum and the vertex count:
+    - K3: partial correlation −0.60 at r=4, −0.60 at r=8, −0.65 at r=16.
+    - K4: partial correlation −0.71 at r=4, −0.72 at r=8, −0.75 at r=16.
+    - The values are similar at α=1/2. They are stable and grow from K3 to K4.
+  - **Verdict: the decision rule passes, with the sign reversed.** The vortices carry *negative* Ollivier curvature, beyond what degree accounts for.
+  - **Caveat.** Every degree-2 vortex has the same local motif, so this may be a fact about local combinatorics rather than emergent geometry.
+  - **v2 check (2026-11-09; `research/ollivier_ricci_v2.json`).** The v1 control left degree composition free, so v2 regresses out each degree-class count separately and adds non-overlapping discs with Fisher-z 95% CIs.
+    - Disjoint discs, α=0, per-degree control: K3 r=4 −0.56 [−0.73, −0.32]; K4 r=4 −0.59 [−0.65, −0.52], r=8 −0.72 [−0.80, −0.61], r=16 −0.76 [−0.89, −0.52]. K3 r=8 is −0.43 but its CI includes 0 (too few discs). α=1/2 is the same.
+    - **The decision rule passes:** the negative disc correlation survives the per-degree control, same sign at K3 and K4.
+    - Histograms qualify it. Every degree-2 vortex has κ = −1/3, but so do ~3,500 of the ~17,700 non-vortex degree-2 vertices at K4. Vortices therefore pick out a common motif rather than carrying a unique curvature value. At degree 3 the vortex/other gap changes sign between K3 (−0.33 vs −0.37) and K4 (−0.39 vs −0.36).
+  - **Regge test submitted** (`research/regge.py`, job 1724187). Interior vertices are flat, so the only deficit is the integer holonomy winding w; the vortex flag is w mod 2. The test asks whether κ depends on w beyond its parity.
+  - **Next.** Repeat on Chair44.
+
+  - **Regge result** (`research/regge_v1.json`). **Fails.** In K2–K4 the winding is only ever w ∈ {−1, 0, 1}, so |w| is the vortex flag and has nothing to add beyond parity: sum_abs_w_given_vortex is 0.00 [−0.28, 0.28] at K3 r4 and 0.01 [−0.09, 0.11] at K4 r4. κ is fixed exactly by the motif (deg, w, n_pi): every class except (2,0,0) and (3,0,0) has zero spread. At degree 3, (w=0, n_pi=1) and (w=1, n_pi=0) both give −1/3, and (w=1, n_pi=1) gives −4/9. The disc sum of n_pi tracks κ more strongly than the vortex count does (K4 r8: −0.74 [−0.81, −0.64] against −0.62). So curvature follows π-steps of the holonomy rather than the vortex flux. There are no Regge point masses.
+
+  - **Chair44 submitted** (`research/chair44_curvature.py`, job 1724879). This computes Ollivier κ on the tile-adjacency graph of a middle-layer cut of Chair44, at depths 3–7. Chair44 has no holonomy, so the defect candidate is the L-tromino cross-section, where a chair is cut through its notch.
+
+  - **Chair44 v1** (`research/chair44_curvature_v1_midlayer.json`): degenerate. The middle layer z = 2^n runs along chair boundaries. It is a plain grid of 2×2 squares with exactly one L-tromino at every depth, all squares have κ ≈ 0, and the correlation is undefined. v2 (job 1725087) uses the layer with the most trominoes.
+  - **Chair44 v2** (`research/chair44_curvature_v2.json`, job 1725087): **the test is ill-posed on Chair44.** In the best layer, every tromino has degree 5 and every square degree 4, so the tromino count equals the degree-5 count and is collinear with the degree controls (r8, r16 give NaN). κ is a function of tile type alone: every tromino has κ = −0.040 (sd 0), and the squares have κ = 0.21–0.33, falling with depth. The r4 partial r is +0.03 [−0.13, 0.19] at depth 6 and −0.26 [−0.33, −0.19] at depth 7, so the sign is not stable and the decision rule fails. Like the Spectre (motif-fixed κ), the curvature carries no information beyond the local tile type. **Γ6 is closed as negative on both tilings.**
 
 ### Γ7. Spectral type of the Spectre Hamiltonian
 
@@ -680,6 +703,105 @@ Is the spectrum a Cantor set? Are the eigenstates critical (multifractal)?
 
 - **Foothold.** Compute the FFT diffraction of large patches of each: the Spectre vertices, the vortex set, and a Chair44 cut.
 - **Interesting.** Index the Bragg peaks by the gap-labelling module. If the vortex set shows pure-point diffraction, that would support Γ3.
+
+- **Result v1** (`research/diffraction.py`, `research/diffraction_v1.json`; disc of 0.8·R_max, |k| < 3π).
+  - Vertices: h = I/N² for the top peak is 0.43, 0.48 and 0.49 at K2, K3 and K4. That is stable while N grows sixtyfold, so these are Bragg peaks. They hold about 44% of the intensity; the strongest are at |k| ≈ 7.7.
+  - Vortex set: h is 2.51, 1.77 and 1.32. It falls by 25% per level while N grows about sevenfold, so the drop is far slower than diffuse 1/N but fails the 20% stability rule. The peaks sit at the same |k| as the vertex peaks. **Undecided.** It needs K5, or a fit of h(N) with a constant plus 1/N.
+- **Result v2, K5** (`research/diffraction_v2_k5.json`, 8192² grid). **The vortex set is Bragg.**
+  - Vortex set: top h is 1.34 at K4 and 1.30 at K5, a 3% change while N grows 13-fold (1,554 → 20,417). This passes the 20% rule.
+  - Vertices: 0.50 → 0.48.
+  - The vortex peaks sit at the vertex peaks (|k| ≈ 7.73) and hold about 10% of the vortex intensity.
+  - The grid does not explain the 25% per-level fall in v1: K4 gives 1.32 on the 4096² grid and 1.34 on 8192². The fall is a small-patch effect at K2–K3 that levels off by K4.
+  - This supports Γ3 (vortices as a model set). **Next:** index the peaks by the gap-labelling module.
+- The Chair44 cut in v2 used the middle layer, which turned out to be degenerate (see Γ6). It is rerun in job 1725087.
+- **Chair44 v2** (`research/chair44_diffraction_v2.json`, best-layer cut, depths 3–7): **all three point sets are Bragg.** Top non-lattice h from depth 6 to 7: centroids 1.32 → 1.25 (−5%), vertices 0.56 → 0.58 (+3%), trominoes 1.63 → 1.55 (−5%), while N grows 4×. The tromino peaks are at |k| ≈ 7.85 and the centroid peaks at 8.46. This is as expected for a limit-periodic (2-adic model set) cut, and it passes the < 20% rule. In both tilings, the defect set (vortices or trominoes) is pure point.
+- **Next for Γ8:** index the Spectre vortex Bragg peaks (|k| ≈ 7.73) in the gap-labelling module, and the tromino peaks in ℤ[1/2]-type dyadic frequencies.
+- **Peak indexing v1** (`research/peak_index.py`, `research/peak_index_v1.json`; pure Python on the committed `diffraction_v2_k5.json`): **not indexed.** Vertices are x = Σ n_j ζ^j with ζ = e^{iπ/6}, j = 0..3 (edge length 1), and the internal map is the Galois conjugate ζ → ζ⁵. Lifting each peak k to (k, k*) with k·ζ^j + k*·ζ^{5j} ∈ 2πℤ, the best m ∈ [−8, 8]⁴ leaves a residual of 7–25 FFT bins and |k*| ≈ 13–58 for every top peak, at both K4 and K5. The two depths agree on the peak positions to about one bin, so the misfit is real and not a resolution effect. Rescaling the position module by 1/2, 1/3 or 1/4 makes it worse. A strong peak must have small |k*|, so with this embedding the top peaks (vertices and vortices, |k| ≈ 7.73, 6.02, 6.09, 7.93) are **not** in the Fourier module with a small internal part. Either the Spectre's internal map is not the plain ζ → ζ⁵ conjugate (BGMS use a different ℝ² embedding), or the spectre_graph positions are not the integer ζ-coordinates.
+- **Next for Γ8:** (a) on the cluster, check that the `spectre_graph` coordinates divided by the median edge are exactly in ℤ[ζ12]. (b) Fit the module from the data, without assuming an embedding: find four peak vectors such that every other top peak is an integer combination of them within one bin. Then read the internal map off that basis. (c) Compute the exact structure factor directly at those module points, avoiding FFT binning.
+- **Ran:** `research/module_fit.py` (a, c for ζ⁵ and ζ⁷, and b by direct-sum peak refinement), K4, job 1726244.
+- **Module fit v1** (`research/module_fit_v1.json`, K4): **the ζ⁵/ζ⁷ model-set module is rejected.**
+  - (a) The coordinates are exact: int64 ζ-coordinates with a single raw edge length of 28. After dividing by the median edge, the vertices are exactly in ℤ[ζ12], so the coordinates are not the problem.
+  - (c) Direct S(k)/N² at every module point with m ∈ [−6, 6]⁴ and |k| < 3π gives h at most 0.003 for vertices and at most 0.029 for vortices, with |k*| ≥ 31, for both ζ⁵ and ζ⁷. These are far below the refined peaks. The decision rule (a point with |k*| < 5 and h within 10% of the top peak) fails.
+  - (b) Direct-sum refinement fixes the top peaks to about 1e-4:
+    - vortex h ≈ 0.70 at |k| = 7.7295 (±(6.552, −4.101), ±(6.828, 3.623));
+    - vortex h ≈ 0.49 at |k| = 6.0925 and 7.937;
+    - vertex h ≈ 0.30 at 7.7293.
+  - Re-indexing these refined k with `peak_index` gives residuals below 0.2 bins, but only with |k*| = 13–68. With m in a 4D box, any 2D k can be approximated this way, so the fit carries no information.
+  - Conclusion: the Spectre's Bragg peaks are not in the Fourier module of the plain ℤ[ζ12] cut-and-project with a Galois-conjugate internal space. The internal space must carry an extra (e.g. collaring/gap-label) factor.
+- **Commensurability check** (local, pure Python on `module_fit_v1.json`): this tests whether the other peak families lie in k₀·ℚ(ζ12), where k₀ is the strongest peak (|k| = 7.7295).
+  - **No match.** The search looked for α, β ∈ ℤ[ζ12] with coefficients in [−3, 3] and k/k₀ = α/β.
+  - The best relative error is 5e-4 to 3e-3 for the families at |k| = 6.09, 7.94, 6.02, 5.72, 7.91 and 5.33.
+  - The noise floor is about 2e-5: k₀'s own symmetry partners match at 5e-6 to 3e-5, and the vertex and vortex sets agree to 1e-5.
+  - So the top peaks are not ℚ(ζ12)-commensurate with small coefficients. The Fourier module either has rank above 4 or needs large coefficients.
+  - Angles mod 30° are generic (28.0°, 17.9°, 12.8°, 2.0°, 15.7°, 14.3°, 7.2°), as expected for a chiral tiling.
+- **Ran:** `research/internal_check.py`, K3–K5. It is the model-set precondition: it lists the integer edge vectors and tests whether the ζ⁵ and ζ⁷ internal images stay bounded (radius change under 10% from K4 to K5).
+- **Internal check v1** (`research/internal_check_v1.json`, K3–K5): **the ζ⁵ and ζ⁷ windows are unbounded, so the Spectre is not a Galois-conjugate ℤ[ζ12] model set.**
+  - Edges: every edge is 28 × a 12th root of unity. There are exactly 8 integer edge vectors up to sign, and all coordinates are divisible by 28. Point (a) is confirmed exactly.
+  - Radii by depth (ζ⁵ and ζ⁷ give identical radii, as complex conjugates should):
+
+    | Depth | Physical radius | Internal radius |
+    |---|---|---|
+    | K3 | 59.3 | 32.8 |
+    | K4 | 170.7 | 90.5 |
+    | K5 | 483.3 | 252.3 |
+
+  - The internal radius grows by about 2.8 per level, the same as the physical radius: internal/physical = 0.553, 0.530, 0.522. The 2.8 per level is close to √(4+√15) ≈ 2.81, the linear inflation, and the vertex count grows by about 7.5–7.7 per level, approaching 4+√15. That inflation lies in ℚ(√15), not ℚ(ζ12), so conjugating ζ does not contract the patch.
+  - The decision rule (internal radius change under 10% from K4 to K5) fails by a factor of 28. The module tests of peak_index v1 and module_fit v1 were therefore moot, not evidence against Bragg peaks.
+  - The Bragg-like stability of the Spectre peaks then fits the BGMS picture: the Spectre is a *deformed* (topologically conjugate) model set, not a ℤ[ζ12] cut-and-project.
+- **Next for Γ8:** test the deformed-model-set picture. The internal and physical radii grow at the same rate, so fit x* ≈ M x + r with M a 2×2 real matrix fitted by least squares at K5. Check whether the residual r is bounded: its radius should stay roughly fixed from K3 to K5. If it is, r is the window coordinate. Compute S(k) at the module points of the lattice dual to (x, r).
+- **Deform fit v1** (`research/deform_fit_v1.json`, K3–K5): **bounded window found, so the Spectre vertex set is a linearly deformed ℤ[ζ12] model set.**
+  - With M fitted per depth, the residual r = x* − M x − b has the following radii:
+
+    | Depth | Max radius | q99 | Median |
+    |---|---|---|---|
+    | K3 | 3.63 | 3.09 | 1.35 |
+    | K4 | 3.75 | 3.10 | 1.38 |
+    | K5 | 3.77 | 3.11 | 1.39 |
+
+    The physical radius grows 8× over the same depths. The radius changes by 0.5% from K4 to K5, so the decision rule passes.
+  - M is an anti-conformal similarity, M = [[0.1637, −0.491], [−0.491, −0.1637]], with both singular values 0.5176 = √(2−√3) = |1−ζ12|. So x* ≈ λ·conj(x) + r, with |λ| = √(2−√3).
+  - The K5 fit carries over to K3 unchanged (radius 3.71) but not to K4 (radius 169). The orientation of M alternates between even and odd depths, consistent with the reflection in the Spectre substitution.
+  - Interpretation: (x, r) is a cut-and-project lift with a compact window of radius about 3.8. The plain ζ⁵ module tests failed because they ignored the −M x shear.
+- **Next for Γ8:** index the peaks in the sheared module. The phases k·x + q·r are lattice-periodic exactly when (k + Mᵀq, −q) lies in the ζ⁵ dual module. So predicted Bragg peaks sit at k = k_ζ5 − Mᵀ k*, with amplitude set by the window transform at q = k*, and strong peaks need |k*| ≲ 1.
+  - Recompute S(k)/N² at these points for K5 and check against the refined peaks: is h ≈ 0.70 at |k| = 7.7295 for the vortices?
+  - Also measure the window shape (the r-scatter at K5) for the vertex and vortex subsets.
+- **Sheared index v1** (`research/sheared_index_v1.json`, K5): **decision rule fails, but the algebra is confirmed.**
+  - The direct S(k)/N² at each sheared point k = k5 + Mᵀk* equals the predicted |⟨exp(i k*·r)⟩|² to 3 decimals. So the identity holds, and peak heights are window transforms.
+  - Strongest predicted peaks:
+    - Vortices: h ≈ 0.32 at |k| = 6.0937 and 7.9359, both with |k*| = 1.88.
+    - All vertices: h ≈ 0.003 at the same |k|. The vertex window transform almost cancels there.
+  - Comparison with the refined FFT peaks:
+
+    | Refined peak | Nearest sheared point | Gap | Height there | Refined height |
+    |---|---|---|---|---|
+    | vortex 6.0925 | 6.0937 | 1.2e-3, just outside the 1e-3 tolerance | 0.32 | 0.49 |
+    | vortex 7.937 | 7.9359 | 1.1e-3 | 0.32 | — |
+    | vortex 7.7295 (strongest, h 0.70) | 7.695 | far | 0.018 | 0.70 |
+    | vertex 7.7293 | none | — | — | — |
+
+  - Reading: the linear deformation gets the main vortex peak family to about 1e-3 in |k| (relative error 2e-4, still 10× above the 2e-5 noise floor). It does not produce the strongest vortex peak or the vertex peak, so x* ≈ Mx + b is only an approximation. Two likely causes:
+    - M is fitted, not exact. An error δM ~ 6e-4 times |k*| = 1.88 already gives a 1e-3 shift.
+    - The true deformation may be nonlinear but bounded (BGMS), which shifts the peaks onto a different module.
+- **Next for Γ8:** separate the two causes.
+  1. Scan S(k) directly in a ±0.01 box around each predicted sheared point for the vortex set at K5. If maxima sit within 2e-3 at h ≈ 0.49 and 0.70, then M is just slightly off, and fitting M to the peaks should give an exact algebraic M.
+  2. Also fit the 4 refined peak vectors as integer combinations of 4 free generators. If they fit, the true Fourier module has rank 4 but is not ζ-based; this follows the inflation-module idea in internal_check v1.
+- **Sheared scan v1** (`research/sheared_scan_v1.json`, K5): **the 'M slightly off' explanation fails, and the result is unexpected.**
+  - Every strong sheared-module point is a genuine local maximum of S(k) for the vortex set. The maxima sit within 2–5e-4 of the prediction, at the predicted height:
+    - h 0.324 at |k| 6.0937
+    - h 0.322 at |k| 7.9359
+    - weaker ones at 3.518, 4.582, 6.003 and 7.695
+  - These peaks are the **exact mirror images (ky → −ky)** of the refined FFT families:
+    - The sheared 6.0937 points lie at −137.89° and −17.89°; the refined 6.0925 points (h 0.49) lie at +137.885° and +17.888°.
+    - The sheared 7.9359 points lie at −162.78° and −42.78°; the refined 7.937 points (h 0.49) lie at +162.784° and −137.217°.
+  - So the vortex diffraction is **not mirror-symmetric**, as expected for a chiral tiling. The linear-deformation model reproduces the weaker mirror partner of each strong family.
+  - The strongest vortex family (7.7295, at −152.05° and −32.05°, h 0.70) has no sheared point and no mirror one.
+  - The vertex set carries almost no weight at these points (h ≤ 0.003).
+- **Generator fit (local, pure Python, light):** the 16 refined peak vectors are not small-integer combinations (coefficients in [−4, 4]) of the two strongest families a (7.937) and b (6.0925) under 60° rotations. The residuals are 0.28–0.72.
+  - The refined families do come in exact 6-fold orbits (angle steps of 60° and 120°).
+  - Their orientations relative to the 0° axis are 42.78°, 17.89° and 27.95° modulo 60°. None of these is a multiple of 15°, consistent with chirality.
+- **Next for Γ8:**
+  1. Repeat sheared_index with the conjugate embedding: either evaluate S at conj(k), or fit x* against conj(x) using ζ⁷. This asks whether the mirrored model indexes the strong families at h 0.49 and 0.70, and whether the chirality is just an orientation-convention flip in M (deform_fit showed that M alternates with K parity).
+  2. Repeat the K4 vs K5 comparison, since odd and even depths have opposite M orientation and may swap which mirror partner is strong.
 
 ### Γ9. Time from the hierarchy: causal sets built from substitution
 
@@ -749,3 +871,95 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
   - K=3: π control 42 gaps, max |Bott| 1e−9; π/2: 39 gaps, every Bott rounds to 0 (max |Bott| < 1e−3).
   - K=4: π 8 gaps, π/2 3 gaps, also all 0.
   - Reading: breaking time reversal with π/2 vortex flux does not open a Chern-type gap. Vortex flux by itself does not make the Spectre hopping model topological. **Negative result; R8 is closed.**
+
+### Γ8 sheared_mirror v1 (`research/sheared_mirror_v1.json`, sheared_index at K5, K4, K3)
+- The fitted M has off-diagonal −0.49 at K5 and K3 and +0.49 at K4. So the orientation of the shear alternates with K parity, as deform_fit found.
+- At every K, the height at the mirror point conj(k) is about 0 (mirror ratio ≤ 0.02 for vortices and vertices). Each sheared peak has no mirror partner in its own patch, so the diffraction is truly chiral at every K.
+- Decision rule: no parity flip of the ratio. The chirality is fixed within each patch, and it is not an artifact of the orientation convention. The handedness follows the sign of M.
+- Peak heights differ by K:
+  - K4: the sheared module reaches the strong level, h 0.488 at k 6.094 and 0.484 at 7.936.
+  - K5: h 0.32.
+  - K3: h 0.33.
+- The 7.7295 family (h 0.70 at K5) is still unindexed at every K. The best matches are only h 0.02 to 0.07.
+- Next for Γ8:
+  1. Run module_fit's refinement at K4 and K3, and check whether the refined strong peaks there coincide with the sheared points, which reach h 0.49 at K4.
+  2. Test 7.7295 against second-order terms: a quadratic correction to the x* fit, or k = k5 + Mᵀk* + Nᵀk*² using the window phase.
+
+### Γ8 refine K4/K3 + quad_fit v1 (`research/module_fit_k4_v1.json`, `research/module_fit_k3_v1.json`, `research/quad_fit_v1.json`)
+- **No second-order term.** Quadratic terms explain 0.002% (K5), 0.016% (K4) and 0.1% (K3) of the residual variance, far below the 10% rule. The residual radius is unchanged (3.77, 3.75, 3.63). The deformation is linear plus a bounded window. A smooth second-order distortion cannot account for the 7.7295 family.
+- **K4 refined peaks are identical to K5's.**
+  - Same |k|, same angles and same heights: 6.0925 at 137.89° and 17.89° (h 0.49), 7.937 at 162.78° and −137.22° (h 0.49), and 7.7295 at −152.05° and −32.05° (h 0.70).
+  - The pattern's handedness does **not** alternate with K, even though the fitted M does.
+  - At K4, where M has the + sign, the sheared-module points sit on the strong peaks (distance 1.7–2.2e-3). That is at the 2e-3 threshold, which is marginal but consistent with the 2–5e-4 local shifts found by sheared_scan.
+  - At K5 the fitted M has the opposite sign and indexes only the mirror partners. So the odd-K fit picks up the mirrored shear, and the strong 0.49 families belong to the + orientation.
+- **K3 is a smaller patch, with different leading peaks:** 7.733 at h 0.78–0.79, and 6.01 at h 0.40–0.41. Only 7.92 and 6.10 (h 0.35) come near the sheared points (about 0.015 away).
+- **7.7295 remains unindexed at every K.** It is the strongest vortex family: h 0.70 at K4 and K5, and 0.78 at K3. It is neither a linear sheared-module point nor a quadratic correction.
+- Next for Γ8:
+  1. Apply the + orientation M (the K4 fit) to the K5 patch, and the K5 M to K4. Check whether the strong 6.0925 and 7.937 families are indexed at K5 with height about 0.49. That would settle whether the alternating M is a fit artifact, for example from the patch's boundary and orientation.
+  2. Index 7.7295 against the vortex subset alone. Fit the vortex x* deformation on vortex sites only, and test whether 7.7295 is a module point of a vortex sublattice, such as a superlattice from the supertile hierarchy.
+
+### Γ8 cross_fit v1 (`research/cross_fit_v1.json`)
+- **The sign of M is not a fit artifact.**
+  - If each patch is indexed with the other patch's M, everything vanishes: h ≤ 0.001 at K5 with K4's M, and ≤ 0.11 (only at |k| 2.63) at K4 with K5's M.
+  - With its own M, each patch is indexed: K4 gets 6.094 and 7.936 at h 0.49, and K5 gets 6.0937 and 7.936 at h 0.32.
+  - So the lattice coordinates n of odd-K and even-K patches have opposite conjugate shears, while the physical diffraction keeps one handedness (refined peaks are identical at K4 and K5).
+  - This fits the Spectre substitution containing a reflection: odd K appears mirrored in n-coordinates. At K5 the ζ⁵ map then acts as the mirrored Galois map, and the strong + orientation families (6.0925 at 17.89°/137.89°, h 0.49) are not reached by K5's own module.
+- **The vortex-only fit is the same shear but a much smaller window.** Its M equals the all-site M to 1e-3, but the residual radius is 1.75 (K5) and 1.64 (K4), against 3.77 and 3.75 for all sites. So the vortices form a model subset with roughly half the window radius.
+  - At K4 the vortex fit tightens the match to the refined peaks: 6.0917 (h 0.492) and 7.9381 (h 0.489).
+  - **7.7295 is still not indexed:** the nearest points are 7.695–7.701 with h ≤ 0.06. By the decision rule (within 5e-3 and h > 0.5) it fails.
+- Next for Γ8:
+  1. At odd K, use the mirrored internal map: x* = Σ n_j ζ^{7j}, or conj(ζ^{5j}). Refit M and index the K5 vortex set. Check whether the h 0.49 families at 17.89°/137.89° appear.
+  2. Use the vortex window to index 7.7295. Scan the module points of the other Galois maps (ζ⁷, ζ¹¹) with the radius-1.7 vortex window, and test whether 7.7295 belongs to a coarser vortex module, for example a supertile superlattice scaled by the Spectre inflation factor.
+
+### Γ8 galois_fit v1 (`research/galois_fit_v1.json`)
+- **ζ⁷ is exactly equivalent to ζ⁵ (null by construction).** x*₇ = conj(x*₅) is a reflection of internal space. The fit absorbs it: M's second row flips sign, and the indexed physical k, heights and matches are identical to 1e-4 at both K. So the internal-map choice cannot explain the parity effect, and the mirror hypothesis as stated fails the decision rule.
+- **At K5 the module lands on the mirrored orientation.**
+  - The top points are 6.0937 at −17.9°, 42.1° and −137.9° (h 0.324). The measured family is at +17.89° and 137.89°.
+  - The nearest point to the 6.0925 orbit is 0.23 away, and to 7.937 is 0.49 away.
+  - At K4 the same orbits match within 5e-4 (vortex window), with h 0.49.
+  - So the mirror lives in physical space: the K5 lattice coordinates n give x reflected relative to the true positions, or equivalently K5's peaks are conj of the module's.
+- **The vortex window only shrinks the radius** (1.75 at K5, 1.64 at K4) and does not change the indexing.
+- **7.7295 is still unindexed:** the nearest point is 0.72–0.76 away with h ≤ 0.004, so it fails.
+- Next for Γ8:
+  1. At odd K, index with conj(k), meaning the physical mirror x → conj(x) applied to n, and confirm the 17.89° families at h 0.49 for K5. Equivalently, find which reflection in the substitution maps the n basis.
+  2. For 7.7295: test a supertile superlattice. Take supertile centres, or the vortex sites of a single orientation class, as the point set, and index with the module scaled by the inflation factor (4+√15). Also check whether 7.7295/6.0925 ≈ 1.2687 is an algebraic ratio in ℚ(√3).
+
+### Γ8 supertile_index v1 (`research/supertile_index_v1.json`, `research/module_fit_k5_v1.json`)
+- **Odd K is the physical mirror of even K.** For every K5 point set (tile centres, each tile label, L1 and L2 supertile centres), S is 0 at the K4 refined peaks k. At conj(k) it reproduces the K4 heights.
+  - Tile centres: 0.026, 0.046 and 0.002 at K5, against the same three values at K4.
+  - Gamma: 0.395 against 0.405 at 7.937.
+  - L2: 0.655 against 0.669 at 6.0925.
+  - The parity flip of M (cross_fit v1) is therefore a true reflection of the patch: the Spectre substitution reverses handedness at each level. It is not a lattice-coordinate effect.
+- **The 6.0925 family is a level-2 supertile superlattice peak.** L2 supertile centres give h 0.67 (K4, N 57) and 0.655 (K5, N 450, mirrored). Tile centres give 0.05, and L1 centres give at most 0.15.
+- **7.7295 is not a supertile peak.** No L0, L1 or L2 set, or per-label subset, reaches h > 0.5 there; the maximum is 0.17 (K5 L1 Gamma, mirrored). This fails the decision rule.
+- **Caveat: the K5 vortex refinement disagrees with sheared_index.** module_fit at K5 refines only weak vortex peaks (h ≤ 0.19, at 7.201, 4.783 and 5.72), while sheared_index v1 found h 0.32 at 6.0937. So the decision rule for "K5 refined = conj of K4 refined" fails, and the most likely cause is the K5 vortex mask or scaling in module_fit (median-edge scale, coarse-scan subsample). Recheck module_fit on K5 vortices with the sheared_index centring before relying on K5 refined peaks.
+- Next for Γ8:
+  1. Make module_fit parity-aware: apply conj at odd K. Reconcile its K5 vortex set with sheared_index, then re-refine K5.
+  2. 7.7295: test the vortex subsets by orientation class (12 rotations, split by reflection) and by the vortex label from ollivier_ricci. Also test the level-2 supertile labels separately with larger K (K6, mirrored like K4).
+
+### Γ8 refine_seeded v1 (`research/refine_seeded_v1.json`)
+- **The module_fit discrepancy was the coarse scan.** Seeded refinement on the sheared_index vortex set (N 20417 at K5) finds the strong peaks that the 361-point grid missed.
+- **The K5 peaks are the conj of the K4 peaks.** Every K4 seed has S = 0 at K5, and its conj refines to the mirrored family:
+
+| family | K5 (conj) | angle | K4 |
+| --- | --- | --- | --- |
+| 7.7295 | h 0.733 at 7.7295 | ±32.04° | 0.702 |
+| 6.0925 | h 0.324 at 6.0937 | −17.89° | 0.493 |
+| 7.937 | h 0.323 at 7.9358 | −162.78° | 0.49 |
+| 6.0202 | h 0.353 | −97.18° | 0.438 |
+| 5.722 | h 0.189 | −104.35° | 0.17 |
+
+- Angles are exact conjugates. Magnitudes agree to 1.4e-3 at most, which is the K5 sheared-module drift already seen in sheared_index.
+- **The decision rule passes partly.** Positions pass; 7.7295 passes within 0.03; the ± families fail on height, at 0.32 against 0.49. So K5 carries the same families mirrored, but the ± families are weaker at odd K.
+- module_fit's "refined" K5 list (`module_fit_k5_v1.json`) is superseded by this file.
+- Next for Γ8:
+  1. Explain the odd-K height drop of the ± families (0.49 → 0.32) while 7.7295 stays at 0.70–0.73. Candidates: boundary or shape at odd K, or a vortex mask defined against one orientation.
+  2. 7.7295: orientation-class vortex subsets, and K6.
+
+### Status: PR #17 opened (2026-11-10)
+- The Γ6 curvature and Γ8 indexing work up to refine_seeded v1 is in brentharts/spectre PR #17. `PR17_PROGRESS.md` summarises it.
+- Settled: the sheared module indexes 6.0925 and 7.937; the deformation is linear; the vortex window is about half the radius; odd K is the physical mirror of even K; 6.0925 is a level-2 supertile peak; ζ⁷ is equivalent to ζ⁵; the 7.7295/6.0925 ratio is not in ℚ(√3); the K5 module_fit list is superseded.
+- Next for Γ8, in order:
+  1. **Odd-K height drop:** run refine_seeded at K6 and K7. If the drop tracks parity rather than size, compare a vortex mask defined at even K with its mirror at odd K, and the patch boundary and shape.
+  2. **7.7295:** refine on vortex subsets by orientation class (12 rotations, split by reflection), by ollivier_ricci vortex label, and by level-2 supertile label, at K6. If no subset concentrates the peak, try a two-module (sum of shears) fit, or a second internal window.
+  3. Fold the results into a follow-up PR, after #17 is merged.

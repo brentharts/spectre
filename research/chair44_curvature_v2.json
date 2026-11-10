@@ -1,0 +1,168 @@
+[
+ {
+  "depth": 3,
+  "tiles": 80,
+  "interior": 52,
+  "trominoes": 36,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 16,
+    "kappa_mean": 0.33124999999999993,
+    "kappa_sd": 0.08172935519138765
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 36,
+    "kappa_mean": -0.04000000000000001,
+    "kappa_sd": 2.851614316424119e-17
+   }
+  ],
+  "seconds": 0.1
+ },
+ {
+  "depth": 4,
+  "tiles": 320,
+  "interior": 260,
+  "trominoes": 196,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 64,
+    "kappa_mean": 0.27031249999999996,
+    "kappa_sd": 0.08159482118216818
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 196,
+    "kappa_mean": -0.04,
+    "kappa_sd": 2.7219358151836478e-17
+   }
+  ],
+  "seconds": 0.4
+ },
+ {
+  "depth": 5,
+  "tiles": 1280,
+  "interior": 1156,
+  "trominoes": 900,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 256,
+    "kappa_mean": 0.236328125,
+    "kappa_sd": 0.06628090191740284
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 900,
+    "kappa_mean": -0.04,
+    "kappa_sd": 2.7277297065171286e-17
+   }
+  ],
+  "r4": {
+   "n_discs": 35,
+   "tromino_count": {
+    "r": -0.5319569071124175,
+    "ci95": [
+     -0.7428610171380132,
+     -0.22499147061283306
+    ]
+   }
+  },
+  "seconds": 1.9
+ },
+ {
+  "depth": 6,
+  "tiles": 5120,
+  "interior": 4868,
+  "trominoes": 3844,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 1024,
+    "kappa_mean": 0.21845703125,
+    "kappa_sd": 0.04993806818136365
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 3844,
+    "kappa_mean": -0.04000000000000001,
+    "kappa_sd": 2.649684189391546e-17
+   }
+  ],
+  "r4": {
+   "n_discs": 153,
+   "tromino_count": {
+    "r": 0.028175889756893998,
+    "ci95": [
+     -0.13268769426424384,
+     0.1875932156576821
+    ]
+   }
+  },
+  "r8": {
+   "n_discs": 38,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "seconds": 9.8
+ },
+ {
+  "depth": 7,
+  "tiles": 20480,
+  "interior": 19972,
+  "trominoes": 15876,
+  "table": [
+   {
+    "deg": 4,
+    "cells": 4,
+    "count": 4096,
+    "kappa_mean": 0.2093017578125,
+    "kappa_sd": 0.03640357764918299
+   },
+   {
+    "deg": 5,
+    "cells": 3,
+    "count": 15876,
+    "kappa_mean": -0.04000000000000001,
+    "kappa_sd": 2.6452690630601078e-17
+   }
+  ],
+  "r4": {
+   "n_discs": 641,
+   "tromino_count": {
+    "r": -0.26009592436397455,
+    "ci95": [
+     -0.3310361842016567,
+     -0.18623212525210084
+    ]
+   }
+  },
+  "r8": {
+   "n_discs": 162,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "r16": {
+   "n_discs": 39,
+   "tromino_count": {
+    "r": NaN,
+    "ci95": null
+   }
+  },
+  "seconds": 60.1
+ }
+]
