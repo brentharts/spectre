@@ -936,3 +936,22 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. Make module_fit parity-aware: apply conj at odd K. Reconcile its K5 vortex set with sheared_index, then re-refine K5.
   2. 7.7295: test the vortex subsets by orientation class (12 rotations, split by reflection) and by the vortex label from ollivier_ricci. Also test the level-2 supertile labels separately with larger K (K6, mirrored like K4).
+
+### Γ8 refine_seeded v1 (`research/refine_seeded_v1.json`)
+- **The module_fit discrepancy was the coarse scan.** Seeded refinement on the sheared_index vortex set (N 20417 at K5) finds the strong peaks that the 361-point grid missed.
+- **The K5 peaks are the conj of the K4 peaks.** Every K4 seed has S = 0 at K5, and its conj refines to the mirrored family:
+
+| family | K5 (conj) | angle | K4 |
+| --- | --- | --- | --- |
+| 7.7295 | h 0.733 at 7.7295 | ±32.04° | 0.702 |
+| 6.0925 | h 0.324 at 6.0937 | −17.89° | 0.493 |
+| 7.937 | h 0.323 at 7.9358 | −162.78° | 0.49 |
+| 6.0202 | h 0.353 | −97.18° | 0.438 |
+| 5.722 | h 0.189 | −104.35° | 0.17 |
+
+- Angles are exact conjugates. Magnitudes agree to 1.4e-3 at most, which is the K5 sheared-module drift already seen in sheared_index.
+- **The decision rule passes partly.** Positions pass; 7.7295 passes within 0.03; the ± families fail on height, at 0.32 against 0.49. So K5 carries the same families mirrored, but the ± families are weaker at odd K.
+- module_fit's "refined" K5 list (`module_fit_k5_v1.json`) is superseded by this file.
+- Next for Γ8:
+  1. Explain the odd-K height drop of the ± families (0.49 → 0.32) while 7.7295 stays at 0.70–0.73. Candidates: boundary or shape at odd K, or a vortex mask defined against one orientation.
+  2. 7.7295: orientation-class vortex subsets, and K6.
