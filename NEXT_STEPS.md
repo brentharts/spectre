@@ -955,3 +955,11 @@ The goal is a 3D substitution whose 2D sections or projections are MLD to the Sp
 - Next for Γ8:
   1. Explain the odd-K height drop of the ± families (0.49 → 0.32) while 7.7295 stays at 0.70–0.73. Candidates: boundary or shape at odd K, or a vortex mask defined against one orientation.
   2. 7.7295: orientation-class vortex subsets, and K6.
+
+### Status: PR #17 opened (2026-11-10)
+- The Γ6 curvature and Γ8 indexing work up to refine_seeded v1 is in brentharts/spectre PR #17. `PR17_PROGRESS.md` summarises it.
+- Settled: the sheared module indexes 6.0925 and 7.937; the deformation is linear; the vortex window is about half the radius; odd K is the physical mirror of even K; 6.0925 is a level-2 supertile peak; ζ⁷ is equivalent to ζ⁵; the 7.7295/6.0925 ratio is not in ℚ(√3); the K5 module_fit list is superseded.
+- Next for Γ8, in order:
+  1. **Odd-K height drop:** run refine_seeded at K6 and K7. If the drop tracks parity rather than size, compare a vortex mask defined at even K with its mirror at odd K, and the patch boundary and shape.
+  2. **7.7295:** refine on vortex subsets by orientation class (12 rotations, split by reflection), by ollivier_ricci vortex label, and by level-2 supertile label, at K6. If no subset concentrates the peak, try a two-module (sum of shears) fit, or a second internal window.
+  3. Fold the results into a follow-up PR, after #17 is merged.
